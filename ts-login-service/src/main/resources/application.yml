@@ -8,8 +8,3 @@ spring:
   application:
     name: ts-login-service
 
-  zipkin:
-    baseUrl: http://zipkin:9411/
-  sleuth:
-    sampler:
-      percentage: 1.0
