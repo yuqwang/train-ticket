@@ -51,7 +51,7 @@ public class AccountLoginServiceImpl implements AccountLoginService {
 //        LoginResult lr = restTemplate.postForObject(
 //                "http://ts-sso-service:12349/account/login",
 //                li,LoginResult.class);
-        requestEntity = new HttpEntity(headers);
+        requestEntity = new HttpEntity(li,headers);
         ResponseEntity<LoginResult> re = restTemplate.exchange(
                 "http://ts-sso-service:12349/account/login",
                 HttpMethod.POST,
@@ -73,7 +73,7 @@ public class AccountLoginServiceImpl implements AccountLoginService {
     @Override
     public LogoutResult logout(LogoutInfo li,HttpServletRequest request,HttpServletResponse response, HttpHeaders headers){
 //        LogoutResult lr = restTemplate.postForObject("http://ts-sso-service:12349/logout",li,LogoutResult.class);
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(li,headers);
         ResponseEntity<LogoutResult> re = restTemplate.exchange(
                 "http://ts-sso-service:12349/logout",
                 HttpMethod.POST,

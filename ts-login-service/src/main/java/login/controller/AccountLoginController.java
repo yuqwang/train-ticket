@@ -21,6 +21,7 @@ public class AccountLoginController {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public LoginResult login(@RequestBody LoginInfo li, @CookieValue String YsbCaptcha,  HttpServletResponse response,@RequestHeader HttpHeaders headers){
+        System.out.println(String.format("The headers in login service is %s", headers.toString()));
         if(YsbCaptcha == null || YsbCaptcha.length() == 0 ||
                 li.getEmail() == null || li.getEmail().length() == 0 ||
                 li.getPassword() == null || li.getPassword().length() == 0 ||

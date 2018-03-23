@@ -1,6 +1,7 @@
 package sso.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import sso.domain.*;
 import sso.service.AccountSsoService;
@@ -51,7 +52,8 @@ public class AccountSsoController {
     }
 
     @RequestMapping(path = "/account/login", method = RequestMethod.POST)
-    public LoginResult login(@RequestBody LoginInfo li) {
+    public LoginResult login(@RequestBody LoginInfo li, @RequestHeader HttpHeaders headers) {
+        System.out.println(String.format("The headers in sso service is %s", headers.toString()));
         LoginResult lr = ssoService.login(li);
         if(lr.getStatus() == false){
             System.out.println("[SSO Service][Login] Login Fail. No token generate.");
