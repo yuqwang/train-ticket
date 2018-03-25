@@ -5,10 +5,9 @@ import com.trainticket.domain.Payment;
 import com.trainticket.domain.PaymentInfo;
 import com.trainticket.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.*;
 
 /**
@@ -21,17 +20,17 @@ public class PaymentController {
     PaymentService service;
 
     @RequestMapping(path="/payment/pay",method= RequestMethod.POST)
-    public boolean pay(@RequestBody PaymentInfo info){
-        return service.pay(info);
+    public boolean pay(@RequestBody PaymentInfo info, @RequestHeader HttpHeaders headers){
+        return service.pay(info, headers);
     }
 
     @RequestMapping(path="/payment/addMoney",method= RequestMethod.POST)
-    public boolean addMoney(@RequestBody AddMoneyInfo info){
-        return service.addMoney(info);
+    public boolean addMoney(@RequestBody AddMoneyInfo info, @RequestHeader HttpHeaders headers){
+        return service.addMoney(info, headers);
     }
 
     @RequestMapping(path="/payment/query",method= RequestMethod.GET)
-    public List<Payment> query(){
-        return service.query();
+    public List<Payment> query(@RequestHeader HttpHeaders headers){
+        return service.query(headers);
     }
 }
