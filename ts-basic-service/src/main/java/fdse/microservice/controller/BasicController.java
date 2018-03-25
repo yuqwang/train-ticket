@@ -6,6 +6,7 @@ import fdse.microservice.domain.QueryStation;
 import fdse.microservice.domain.ResultForTravel;
 import fdse.microservice.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,12 +19,12 @@ public class BasicController {
     BasicService service;
 
     @RequestMapping(value="/basic/queryForTravel", method= RequestMethod.POST)
-    public ResultForTravel queryForTravel(@RequestBody QueryForTravel info){
-        return service.queryForTravel(info);
+    public ResultForTravel queryForTravel(@RequestBody QueryForTravel info, @RequestHeader HttpHeaders headers){
+        return service.queryForTravel(info, headers);
     }
 
     @RequestMapping(value="/basic/queryForStationId", method= RequestMethod.POST)
-    public String queryForStationId(@RequestBody QueryStation info){
-        return service.queryForStationId(info);
+    public String queryForStationId(@RequestBody QueryStation info, @RequestHeader HttpHeaders headers){
+        return service.queryForStationId(info, headers);
     }
 }

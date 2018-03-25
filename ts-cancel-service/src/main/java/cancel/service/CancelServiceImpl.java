@@ -3,6 +3,10 @@ package cancel.service;
 import cancel.async.AsyncTask;
 import cancel.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import java.text.DecimalFormat;
@@ -19,10 +23,10 @@ public class CancelServiceImpl implements CancelService{
     private AsyncTask asyncTask;
 
     @Override
-    public CancelOrderResult cancelOrder(CancelOrderInfo info,String loginToken,String loginId) throws Exception{
+    public CancelOrderResult cancelOrder(CancelOrderInfo info,String loginToken,String loginId, HttpHeaders headers) throws Exception{
         GetOrderByIdInfo getFromOrderInfo = new GetOrderByIdInfo();
         getFromOrderInfo.setOrderId(info.getOrderId());
-        GetOrderResult orderResult = getOrderByIdFromOrder(getFromOrderInfo);
+        GetOrderResult orderResult = getOrderByIdFromOrder(getFromOrderInfo, headers);
         if(orderResult.isStatus() == true){
             System.out.println("[Cancel Order Service][Cancel Order] Order found G|H");
             Order order = orderResult.getOrder();
@@ -34,10 +38,7 @@ public class CancelServiceImpl implements CancelService{
                 changeOrderInfo.setLoginToken(loginToken);
                 changeOrderInfo.setOrder(order);
 
-
-
-
-                ChangeOrderResult changeOrderResult = cancelFromOrder(changeOrderInfo);
+                ChangeOrderResult changeOrderResult = cancelFromOrder(changeOrderInfo, headers);
                 if(changeOrderResult.isStatus() == true){
                     CancelOrderResult finalResult = new CancelOrderResult();
                     finalResult.setStatus(true);
@@ -45,13 +46,13 @@ public class CancelServiceImpl implements CancelService{
                     System.out.println("[Cancel Order Service][Cancel Order] Success.");
                     //Draw back money
                     String money = calculateRefund(order);
-                    boolean status = drawbackMoney(money,loginId);
+                    boolean status = drawbackMoney(money,loginId, headers);
                     if(status == true){
                         System.out.println("[Cancel Order Service][Draw Back Money] Success.");
 
                         GetAccountByIdInfo getAccountByIdInfo = new GetAccountByIdInfo();
                         getAccountByIdInfo.setAccountId(order.getAccountId().toString());
-                        GetAccountByIdResult result = getAccount(getAccountByIdInfo);
+                        GetAccountByIdResult result = getAccount(getAccountByIdInfo, headers);
                         if(result.isStatus() == false){
                             return null;
                         }
@@ -70,7 +71,7 @@ public class CancelServiceImpl implements CancelService{
                         notifyInfo.setSeatClass(SeatClass.getNameByCode(order.getSeatClass()));
                         notifyInfo.setStartingTime(order.getTravelTime().toString());
 
-                        sendEmail(notifyInfo);
+                        sendEmail(notifyInfo, headers);
 
                     }else{
                         System.out.println("[Cancel Order Service][Draw Back Money] Fail.");
@@ -97,7 +98,7 @@ public class CancelServiceImpl implements CancelService{
         }else{
             GetOrderByIdInfo getFromOtherOrderInfo = new GetOrderByIdInfo();
             getFromOtherOrderInfo.setOrderId(info.getOrderId());
-            GetOrderResult orderOtherResult = getOrderByIdFromOrderOther(getFromOtherOrderInfo);
+            GetOrderResult orderOtherResult = getOrderByIdFromOrderOther(getFromOtherOrderInfo, headers);
             if(orderOtherResult.isStatus() == true){
                 System.out.println("[Cancel Order Service][Cancel Order] Order found Z|K|Other");
 
@@ -111,7 +112,7 @@ public class CancelServiceImpl implements CancelService{
                     ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
                     changeOrderInfo.setLoginToken(loginToken);
                     changeOrderInfo.setOrder(order);
-                    ChangeOrderResult changeOrderResult = cancelFromOtherOrder(changeOrderInfo);
+                    ChangeOrderResult changeOrderResult = cancelFromOtherOrder(changeOrderInfo, headers);
 
 
 //                    /***********************Error Process Seq - Correct Part*************************/
@@ -197,7 +198,7 @@ public class CancelServiceImpl implements CancelService{
                         System.out.println("[Cancel Order Service][Cancel Order] Success.");
                         //Draw back money
                         String money = calculateRefund(order);
-                        boolean status = drawbackMoney(money,loginId);
+                        boolean status = drawbackMoney(money,loginId, headers);
                         if(status == true){
                             System.out.println("[Cancel Order Service][Draw Back Money] Success.");
                         }else{
@@ -228,21 +229,28 @@ public class CancelServiceImpl implements CancelService{
         }
     }
 
-    public boolean sendEmail(NotifyInfo notifyInfo){
+    public boolean sendEmail(NotifyInfo notifyInfo, HttpHeaders headers ){
         System.out.println("[Cancel Order Service][Send Email]");
-        boolean result = restTemplate.postForObject(
+        HttpEntity requestEntity = new HttpEntity(notifyInfo, headers);
+        ResponseEntity<Boolean> re = restTemplate.exchange(
                 "http://ts-notification-service:17853/notification/order_cancel_success",
-                notifyInfo,
-                Boolean.class
-        );
+                HttpMethod.POST,
+                requestEntity,
+                Boolean.class);
+        boolean result = re.getBody();
+//        boolean result = restTemplate.postForObject(
+//                "http://ts-notification-service:17853/notification/order_cancel_success",
+//                notifyInfo,
+//                Boolean.class
+//        );
         return result;
     }
 
-
-    public CalculateRefundResult calculateRefund(CancelOrderInfo info){
+    @Override
+    public CalculateRefundResult calculateRefund(CancelOrderInfo info, HttpHeaders headers){
         GetOrderByIdInfo getFromOrderInfo = new GetOrderByIdInfo();
         getFromOrderInfo.setOrderId(info.getOrderId());
-        GetOrderResult orderResult = getOrderByIdFromOrder(getFromOrderInfo);
+        GetOrderResult orderResult = getOrderByIdFromOrder(getFromOrderInfo, headers);
         if(orderResult.isStatus() == true){
             Order order = orderResult.getOrder();
             if(order.getStatus() == OrderStatus.NOTPAID.getCode()
@@ -274,7 +282,7 @@ public class CancelServiceImpl implements CancelService{
         }else{
             GetOrderByIdInfo getFromOtherOrderInfo = new GetOrderByIdInfo();
             getFromOtherOrderInfo.setOrderId(info.getOrderId());
-            GetOrderResult orderOtherResult = getOrderByIdFromOrderOther(getFromOtherOrderInfo);
+            GetOrderResult orderOtherResult = getOrderByIdFromOrderOther(getFromOtherOrderInfo, headers);
             if(orderOtherResult.isStatus() == true){
                 Order order = orderOtherResult.getOrder();
                 if(order.getStatus() == OrderStatus.NOTPAID.getCode()
@@ -351,24 +359,38 @@ public class CancelServiceImpl implements CancelService{
     }
 
 
-    private ChangeOrderResult cancelFromOrder(ChangeOrderInfo info){
+    private ChangeOrderResult cancelFromOrder(ChangeOrderInfo info,  HttpHeaders headers){
         System.out.println("[Cancel Order Service][Change Order Status] Changing....");
         ChangeOrderResult result = restTemplate.postForObject("http://ts-order-service:12031/order/update",info,ChangeOrderResult.class);
         return result;
     }
 
-    private ChangeOrderResult cancelFromOtherOrder(ChangeOrderInfo info){
+    private ChangeOrderResult cancelFromOtherOrder(ChangeOrderInfo info, HttpHeaders headers){
         System.out.println("[Cancel Order Service][Change Order Status] Changing....");
-        ChangeOrderResult result = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",info,ChangeOrderResult.class);
+        HttpEntity requestEntity = new HttpEntity(info, headers);
+        ResponseEntity<ChangeOrderResult> re = restTemplate.exchange(
+                "http://ts-order-other-service:12032/orderOther/update",
+                HttpMethod.POST,
+                requestEntity,
+                ChangeOrderResult.class);
+        ChangeOrderResult result = re.getBody();
+//        ChangeOrderResult result = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",info,ChangeOrderResult.class);
         return result;
     }
 
-    public boolean drawbackMoney(String money,String userId){
+    public boolean drawbackMoney(String money,String userId, HttpHeaders headers){
         System.out.println("[Cancel Order Service][Draw Back Money] Draw back money...");
         DrawBackInfo info = new DrawBackInfo();
         info.setMoney(money);
         info.setUserId(userId);
-        String result = restTemplate.postForObject("http://ts-inside-payment-service:18673/inside_payment/drawBack",info,String.class);
+        HttpEntity requestEntity = new HttpEntity(info, headers);
+        ResponseEntity<String> re = restTemplate.exchange(
+                "http://ts-inside-payment-service:18673/inside_payment/drawBack",
+                HttpMethod.POST,
+                requestEntity,
+               String.class);
+        String result = re.getBody();
+//        String result = restTemplate.postForObject("http://ts-inside-payment-service:18673/inside_payment/drawBack",info,String.class);
         if(result.equals("true")){
             return true;
         }else{
@@ -376,29 +398,50 @@ public class CancelServiceImpl implements CancelService{
         }
     }
 
-    public GetAccountByIdResult getAccount(GetAccountByIdInfo info){
+    public GetAccountByIdResult getAccount(GetAccountByIdInfo info, HttpHeaders headers){
         System.out.println("[Cancel Order Service][Get By Id]");
-        GetAccountByIdResult result = restTemplate.postForObject(
+        HttpEntity requestEntity = new HttpEntity(info, headers);
+        ResponseEntity<GetAccountByIdResult> re = restTemplate.exchange(
                 "http://ts-sso-service:12349/account/findById",
-                info,
-                GetAccountByIdResult.class
-        );
+                HttpMethod.POST,
+                requestEntity,
+                GetAccountByIdResult.class);
+        GetAccountByIdResult result = re.getBody();
+//        GetAccountByIdResult result = restTemplate.postForObject(
+//                "http://ts-sso-service:12349/account/findById",
+//                info,
+//                GetAccountByIdResult.class
+//        );
         return result;
     }
 
-    private GetOrderResult getOrderByIdFromOrder(GetOrderByIdInfo info){
+    private GetOrderResult getOrderByIdFromOrder(GetOrderByIdInfo info, HttpHeaders headers){
         System.out.println("[Cancel Order Service][Get Order] Getting....");
-        GetOrderResult cor = restTemplate.postForObject(
-                "http://ts-order-service:12031/order/getById/"
-                ,info,GetOrderResult.class);
+        HttpEntity requestEntity = new HttpEntity(info, headers);
+        ResponseEntity<GetOrderResult> re = restTemplate.exchange(
+                "http://ts-order-service:12031/order/getById/",
+                HttpMethod.POST,
+                requestEntity,
+                GetOrderResult.class);
+        GetOrderResult cor = re.getBody();
+//        GetOrderResult cor = restTemplate.postForObject(
+//                "http://ts-order-service:12031/order/getById/"
+//                ,info,GetOrderResult.class);
         return cor;
     }
 
-    private GetOrderResult getOrderByIdFromOrderOther(GetOrderByIdInfo info){
+    private GetOrderResult getOrderByIdFromOrderOther(GetOrderByIdInfo info, HttpHeaders headers){
         System.out.println("[Cancel Order Service][Get Order] Getting....");
-        GetOrderResult cor = restTemplate.postForObject(
-                "http://ts-order-other-service:12032/orderOther/getById/"
-                ,info,GetOrderResult.class);
+        HttpEntity requestEntity = new HttpEntity(info, headers);
+        ResponseEntity<GetOrderResult> re = restTemplate.exchange(
+                "http://ts-order-other-service:12032/orderOther/getById/",
+                HttpMethod.POST,
+                requestEntity,
+                GetOrderResult.class);
+        GetOrderResult cor = re.getBody();
+//        GetOrderResult cor = restTemplate.postForObject(
+//                "http://ts-order-other-service:12032/orderOther/getById/"
+//                ,info,GetOrderResult.class);
         return cor;
     }
 
