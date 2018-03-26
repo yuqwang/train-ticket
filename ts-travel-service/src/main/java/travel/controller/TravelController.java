@@ -1,6 +1,7 @@
 package travel.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import travel.domain.*;
 import travel.service.TravelService;
@@ -14,14 +15,14 @@ public class TravelController {
     private TravelService travelService;
 
     @RequestMapping(value="/travel/getTrainTypeByTripId/{tripId}", method = RequestMethod.GET)
-    public GetTrainTypeResult getTrainTypeByTripId(@PathVariable String tripId){
-        return travelService.getTrainTypeByTripId(tripId);
+    public GetTrainTypeResult getTrainTypeByTripId(@PathVariable String tripId,@RequestHeader HttpHeaders headers){
+        return travelService.getTrainTypeByTripId(tripId, headers);
     }
 
     @RequestMapping(value = "/travel/getRouteByTripId/{tripId}", method = RequestMethod.GET)
-    public GetRouteResult getRouteByTripId(@PathVariable String tripId){
+    public GetRouteResult getRouteByTripId(@PathVariable String tripId,@RequestHeader HttpHeaders headers){
         System.out.println("[Get Route By Trip ID] TripId:" + tripId);
-        return travelService.getRouteByTripId(tripId);
+        return travelService.getRouteByTripId(tripId, headers);
     }
 
     @RequestMapping(value = "/travel/getTripsByRouteId", method = RequestMethod.POST)
@@ -57,7 +58,7 @@ public class TravelController {
     //返回Trip以及剩余票数
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/travel/query", method= RequestMethod.POST)
-    public ArrayList<TripResponse> query(@RequestBody QueryInfo info){
+    public ArrayList<TripResponse> query(@RequestBody QueryInfo info,@RequestHeader HttpHeaders headers){
         if(info.getStartingPlace() == null || info.getStartingPlace().length() == 0 ||
                 info.getEndPlace() == null || info.getEndPlace().length() == 0 ||
                 info.getDepartureTime() == null){
@@ -66,12 +67,12 @@ public class TravelController {
             return errorList;
         }
         System.out.println("[Travel Service] Query TripResponse");
-        return travelService.query(info);
+        return travelService.query(info, headers);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/travel/queryWithPackage", method= RequestMethod.POST)
-    public QueryTripResponsePackage queryPackage(@RequestBody QueryInfo info){
+    public QueryTripResponsePackage queryPackage(@RequestBody QueryInfo info,@RequestHeader HttpHeaders headers){
         if(info.getStartingPlace() == null || info.getStartingPlace().length() == 0 ||
                 info.getEndPlace() == null || info.getEndPlace().length() == 0 ||
                 info.getDepartureTime() == null){
@@ -80,15 +81,15 @@ public class TravelController {
             return new QueryTripResponsePackage(false,"Fail.",errorList);
         }
         System.out.println("[Travel Service] Query TripResponse");
-        ArrayList<TripResponse> responses = travelService.query(info);
+        ArrayList<TripResponse> responses = travelService.query(info,headers);
         return new QueryTripResponsePackage(true,"Success.",responses);
     }
 
     //返回某一个Trip以及剩余票数
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/travel/getTripAllDetailInfo", method= RequestMethod.POST)
-    public GetTripAllDetailResult getTripAllDetailInfo(@RequestBody GetTripAllDetailInfo gtdi){
-        return travelService.getTripAllDetailInfo(gtdi);
+    public GetTripAllDetailResult getTripAllDetailInfo(@RequestBody GetTripAllDetailInfo gtdi,@RequestHeader HttpHeaders headers){
+        return travelService.getTripAllDetailInfo(gtdi, headers);
     }
 
     @CrossOrigin(origins = "*")
@@ -99,7 +100,7 @@ public class TravelController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/travel/adminQueryAll", method= RequestMethod.GET)
-    public AdminFindAllResult adminQueryAll(){
-        return travelService.adminQueryAll();
+    public AdminFindAllResult adminQueryAll(@RequestHeader HttpHeaders headers){
+        return travelService.adminQueryAll(headers);
     }
 }

@@ -1,6 +1,7 @@
 package security.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import security.domain.*;
 import security.domain.CheckResult;
@@ -48,8 +49,8 @@ public class SecurityController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/security/check", method = RequestMethod.POST)
-    public CheckResult check(@RequestBody CheckInfo info){
+    public CheckResult check(@RequestBody CheckInfo info, @RequestHeader HttpHeaders headers){
         System.out.println("[Security Service][Check Security] Check Account Id:" + info.getAccountId());
-        return securityService.check(info);
+        return securityService.check(info,headers);
     }
 }

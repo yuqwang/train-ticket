@@ -1,5 +1,6 @@
 package travel.service;
 
+import org.springframework.http.HttpHeaders;
 import travel.domain.*;
 
 import java.util.ArrayList;
@@ -18,17 +19,17 @@ public interface TravelService {
 
     String delete(Information2 info);
 
-    ArrayList<TripResponse> query(QueryInfo info);
+    ArrayList<TripResponse> query(QueryInfo info, HttpHeaders headers);
 
-    GetTripAllDetailResult getTripAllDetailInfo(GetTripAllDetailInfo gtdi);
+    GetTripAllDetailResult getTripAllDetailInfo(GetTripAllDetailInfo gtdi, HttpHeaders headers);
 
-    GetRouteResult getRouteByTripId(String tripId);
+    GetRouteResult getRouteByTripId(String tripId, HttpHeaders headers);
 
-    GetTrainTypeResult getTrainTypeByTripId(String tripId);
+    GetTrainTypeResult getTrainTypeByTripId(String tripId, HttpHeaders headers);
 
     List<Trip> queryAll();
 
     GetTripsByRouteIdResult getTripByRoute(GetTripsByRouteIdInfo info);
 
-    AdminFindAllResult adminQueryAll();
+    AdminFindAllResult adminQueryAll(HttpHeaders headers);
 }

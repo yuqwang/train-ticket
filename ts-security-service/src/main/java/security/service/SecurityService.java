@@ -1,5 +1,6 @@
 package security.service;
 
+import org.springframework.http.HttpHeaders;
 import security.domain.*;
 
 public interface SecurityService {
@@ -12,6 +13,6 @@ public interface SecurityService {
 
     DeleteConfigResult deleteSecurityConfig(DeleteConfigInfo info);
 
-    CheckResult check(CheckInfo info);
+    CheckResult check(CheckInfo info,HttpHeaders headers);
 
 }
