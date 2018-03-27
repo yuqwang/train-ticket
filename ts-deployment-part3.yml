@@ -55,6 +55,62 @@ spec:
         backend:
           serviceName: ts-ui-dashboard
           servicePort: 8080
+      - path: /.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /add&delete.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /admin.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /admin_config.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /admin_contacts.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /admin_price.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /admin_route.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /admin_station.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /admin_train.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /admin_travel.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /admin_user.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /adminlogin.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /voucher.html
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
+      - path: /assets/.*
+        backend:
+          serviceName: ts-ui-dashboard
+          servicePort: 8080
       - path: /account/.*
         backend:
           serviceName: ts-sso-service
