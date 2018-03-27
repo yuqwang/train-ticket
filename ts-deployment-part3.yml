@@ -127,6 +127,14 @@ spec:
         backend:
           serviceName: ts-preserve-other-service
           servicePort: 14569
+      - path: /preserve
+        backend:
+          serviceName: ts-preserve-service
+          servicePort: 14568
+      - path: /preserveOther
+        backend:
+          serviceName: ts-preserve-other-service
+          servicePort: 14569
       - path: /price/.*
         backend:
           serviceName: ts-price-service
