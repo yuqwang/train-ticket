@@ -116,8 +116,15 @@ public class PreserveServiceImpl implements PreserveService{
             query.setEndPlace(oti.getTo());
             query.setDepartureTime(new Date());
 
-            ResultForTravel resultForTravel = restTemplate.postForObject(
-                    "http://ts-ticketinfo-service:15681/ticketinfo/queryForTravel", query ,ResultForTravel.class);
+            HttpEntity requestEntity = new HttpEntity(query, headers);
+            ResponseEntity<ResultForTravel> re = restTemplate.exchange(
+                    "http://ts-ticketinfo-service:15681/ticketinfo/queryForTravel",
+                    HttpMethod.POST,
+                    requestEntity,
+                    ResultForTravel.class);
+            ResultForTravel resultForTravel = re.getBody();
+//            ResultForTravel resultForTravel = restTemplate.postForObject(
+//                    "http://ts-ticketinfo-service:15681/ticketinfo/queryForTravel", query ,ResultForTravel.class);
 
             order.setSeatClass(oti.getSeatType());
             System.out.println("[Preserve Service][Order] Order Travel Date:" + oti.getDate().toString());
