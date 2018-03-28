@@ -9,6 +9,7 @@ import urllib.request
 class GetVoucherHandler(tornado.web.RequestHandler):
 
     def post(self, *args, **kwargs):
+        myheaders = self.getForwardHeaders(self.request)
         #解析传过来的数据：订单id和车型指示（0代表普通，1代表动车高铁）
         data = json.loads(self.request.body)
         orderId = data["orderId"]
@@ -18,7 +19,7 @@ class GetVoucherHandler(tornado.web.RequestHandler):
 
         if(queryVoucher == None):
             #根据订单id请求订单的详细信息
-            orderResult = self.queryOrderByIdAndType(orderId,type)
+            orderResult = self.queryOrderByIdAndType(orderId,type,myheaders)
             order = orderResult['order']
 
             # jsonStr = json.dumps(orderResult)
@@ -46,7 +47,28 @@ class GetVoucherHandler(tornado.web.RequestHandler):
         else:
             self.write(queryVoucher)
 
-    def queryOrderByIdAndType(self,orderId,type):
+    #Extract the header information
+    def getForwardHeaders(self,request):
+        headers = {}
+        incoming_headers = [ 'x-request-id',
+                             'x-b3-traceid',
+                             'x-b3-spanid',
+                             'x-b3-parentspanid',
+                             'x-b3-sampled',
+                             'x-b3-flags',
+                             'x-ot-span-context'
+                             ]
+        for ihdr in incoming_headers:
+            val = request.headers.get(ihdr)
+            if val is not None:
+                headers[ihdr] = val
+
+        #Add the Content-Type header info
+        headers["Content-Type"] = "application/json"
+
+        return headers
+
+    def queryOrderByIdAndType(self,orderId,type,myheaders):
         type = int(type)
         #普通列车
         if(type == 0):
@@ -55,8 +77,7 @@ class GetVoucherHandler(tornado.web.RequestHandler):
             url='http://ts-order-service:12031/order/getById'
         values ={'orderId':orderId}
         jdata = json.dumps(values).encode(encoding='utf-8')# 对数据进行JSON格式化编码
-        header_dict = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko',"Content-Type": "application/json"}
-        req = urllib.request.Request(url=url,data=jdata,headers=header_dict)# 生成页面请求的完整数据
+        req = urllib.request.Request(url=url,data=jdata,headers=myheaders)# 生成页面请求的完整数据
         response = urllib.request.urlopen(req)# 发送页面请求
         return json.loads(response.read())# 获取服务器返回的页面信息
 
