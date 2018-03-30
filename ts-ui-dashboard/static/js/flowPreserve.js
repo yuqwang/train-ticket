@@ -586,6 +586,8 @@ $("#ticket_confirm_cancel_btn").click(function () {
     location.hash="anchor_flow_preserve_select_contacts";
 })
 
+var preservePeopleNumber = 0;
+
 $("#ticket_confirm_confirm_btn").click(function () {
     if(getCookie("loginId").length < 1 || getCookie("loginToken").length < 1){
         alert("Please Login");
@@ -671,6 +673,14 @@ $("#ticket_confirm_confirm_btn").click(function () {
                 $("#preserve_pay_userId").val(result["order"]["accountId"]);
                 $("#preserve_pay_tripId").val(result["order"]["trainNumber"]);
                 location.hash="anchor_flow_preserve_pay";
+                // if(preservePeopleNumber >= parseInt(result['preserveNumber'])){
+                //     alert("OOPS! The preserve people number unexpectedly decreased!");
+                // } else {
+                //     preservePeopleNumber = parseInt(result['preserveNumber']);
+                //     $('#preserve-people-number').val(preservePeopleNumber);
+                // }
+                preservePeopleNumber = parseInt(result['preserveNumber']);
+                $('#preserve-people-number').val(preservePeopleNumber);
             }
         },
         complete: function(){
