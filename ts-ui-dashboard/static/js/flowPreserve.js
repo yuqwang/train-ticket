@@ -61,6 +61,9 @@ $("#flow_preserve_login_button").click(function() {
                 $("#flow_preserve_login_status").text(obj["status"]);
                 $("#flow_preserve_login_msg").text(obj["message"]);
                 $("#user_login_id").text(obj["account"].id);
+                 //instance fault: login number
+                $('#login-people-number').val(obj["loginNum"]);
+
                 location.hash="anchor_flow_preserve_select_trip";
             }else{
                 // setCookie("loginId", "", -1);

@@ -10,8 +10,19 @@ public class LoginResult {
 
     private String token;
 
+    private int loginNum;
+
     public LoginResult(){
         //Default Constructor
+    }
+
+
+    public int getLoginNum() {
+        return loginNum;
+    }
+
+    public void setLoginNum(int loginNum) {
+        this.loginNum = loginNum;
     }
 
     public boolean getStatus() {

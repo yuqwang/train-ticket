@@ -26,8 +26,11 @@ public class AccountLoginServiceImpl implements AccountLoginService {
     //cookie失效时间，秒为单位
     public static final int COOKIE_EXPIRED = 21600;
 
+    private int loginNum = 0;
+
     @Override
     public LoginResult login(LoginInfo li,String YsbCaptcha, HttpServletResponse response, HttpHeaders headers){
+        loginNum ++;
         headers.add("Cookie","YsbCaptcha=" + YsbCaptcha);
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("verificationCode", li.getVerificationCode());
@@ -67,6 +70,8 @@ public class AccountLoginServiceImpl implements AccountLoginService {
             CookieUtil.addCookie(response, "loginId", lr.getAccount().getId().toString(), COOKIE_EXPIRED);
             CookieUtil.addCookie(response, "loginToken", lr.getToken(), COOKIE_EXPIRED);
         }
+
+        lr.setLoginNum(loginNum);
         return lr;
     }
 
