@@ -19,6 +19,11 @@ public class ConfigController {
     @Autowired
     private ConfigService configService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home(@RequestHeader HttpHeaders headers){
+        return "Welcome to [ Config Service ] !";
+    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/config/create", method = RequestMethod.POST)
     public String delete(@RequestBody Information info, @RequestHeader HttpHeaders headers){

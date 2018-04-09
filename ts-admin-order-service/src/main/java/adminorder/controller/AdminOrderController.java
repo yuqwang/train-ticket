@@ -18,6 +18,11 @@ public class AdminOrderController {
     @Autowired
     AdminOrderService adminOrderService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home(@RequestHeader HttpHeaders headers) {
+        return "Welcome to [ AdminOrder Service ] !";
+    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/adminorder/findAll/{id}", method = RequestMethod.GET)
     public GetAllOrderResult getAllOrders(@PathVariable String id, @RequestHeader HttpHeaders headers){

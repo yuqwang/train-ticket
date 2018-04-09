@@ -14,6 +14,11 @@ public class InsidePaymentController {
     @Autowired
     public InsidePaymentService service;
 
+    @RequestMapping(path = "/inside_payment/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ InsidePayment Service ] !";
+    }
+
     @RequestMapping(value="/inside_payment/pay", method = RequestMethod.POST)
     public boolean pay(@RequestBody PaymentInfo info, HttpServletRequest request, @RequestHeader HttpHeaders headers){
         System.out.println("[Inside Payment Service][Pay] Pay for:" + info.getOrderId());

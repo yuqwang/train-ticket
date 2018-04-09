@@ -18,6 +18,11 @@ public class BasicController {
     @Autowired
     BasicService service;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home(@RequestHeader HttpHeaders headers){
+        return "Welcome to [ Basic Service ] !";
+    }
+
     @RequestMapping(value="/basic/queryForTravel", method= RequestMethod.POST)
     public ResultForTravel queryForTravel(@RequestBody QueryForTravel info, @RequestHeader HttpHeaders headers){
         return service.queryForTravel(info, headers);

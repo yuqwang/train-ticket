@@ -15,6 +15,11 @@ public class AdminRouteController {
     @Autowired
     AdminRouteService adminRouteService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home(@RequestHeader HttpHeaders headers) {
+        return "Welcome to [ AdminRoute Service ] !";
+    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/adminroute/findAll/{id}", method = RequestMethod.GET)
     public GetRoutesListlResult getAllRoutes(@PathVariable String id, @RequestHeader HttpHeaders headers){

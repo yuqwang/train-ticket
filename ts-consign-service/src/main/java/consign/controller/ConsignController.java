@@ -16,6 +16,11 @@ public class ConsignController {
     @Autowired
     ConsignService service;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home(@RequestHeader HttpHeaders headers){
+        return "Welcome to [ Consign Service ] !";
+    }
+
     @RequestMapping(value = "/consign/insertConsign", method= RequestMethod.POST)
     public InsertConsignRecordResult insertConsign(@RequestBody ConsignRequest request, @RequestHeader HttpHeaders headers){
         return service.insertConsignRecord(request, headers);

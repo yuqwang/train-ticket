@@ -21,6 +21,11 @@ public class TrainController {
     @Autowired
     private TrainService trainService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ Train Service ] !";
+    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/train/create",method= RequestMethod.POST)
     public boolean create(@RequestBody Information info){

@@ -119,6 +119,14 @@ spec:
         backend:
           serviceName: ts-register-service
           servicePort: 12344
+      - path: /register/.*
+        backend:
+          serviceName: ts-register-service
+          servicePort: 12344
+      - path: /login/.*
+        backend:
+          serviceName: ts-login-service
+          servicePort: 12342
       - path: /login
         backend:
           serviceName: ts-login-service
@@ -219,6 +227,10 @@ spec:
         backend:
           serviceName: ts-rebook-service
           servicePort: 18886
+      - path: /cancel/.*
+        backend:
+          serviceName: ts-cancel-service
+          servicePort: 18885
       - path: /cancelOrder
         backend:
           serviceName: ts-cancel-service

@@ -13,6 +13,11 @@ public class RebookController {
     @Autowired
     RebookService service;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ Rebook Service ] !";
+    }
+
     @RequestMapping(value="/rebook/payDifference", method = RequestMethod.POST)
     public RebookResult payDifference(@RequestBody RebookInfo info, @CookieValue String loginId,
                                       @CookieValue String loginToken, @RequestHeader HttpHeaders headers){

@@ -14,6 +14,11 @@ public class Travel2Controller {
     @Autowired
     private Travel2Service service;
 
+    @RequestMapping(path = "/travel2/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ Travle2 Service ] !";
+    }
+
     @RequestMapping(value="/travel2/getTrainTypeByTripId/{tripId}", method = RequestMethod.GET)
     public GetTrainTypeResult getTrainTypeByTripId(@PathVariable String tripId,@RequestHeader HttpHeaders headers){
         return service.getTrainTypeByTripId(tripId, headers);

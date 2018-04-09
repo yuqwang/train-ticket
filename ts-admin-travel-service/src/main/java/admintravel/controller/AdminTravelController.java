@@ -14,6 +14,11 @@ public class AdminTravelController {
     @Autowired
     AdminTravelService adminTravelService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home(@RequestHeader HttpHeaders headers) {
+        return "Welcome to [ AdminTravel Service ] !";
+    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/admintravel/findAll/{id}", method = RequestMethod.GET)
     public AdminFindAllResult getAllTravels(@PathVariable String id, @RequestHeader HttpHeaders headers){

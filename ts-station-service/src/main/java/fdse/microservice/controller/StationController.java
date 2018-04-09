@@ -18,6 +18,11 @@ public class StationController {
     @Autowired
     private StationService stationService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ Station Service ] !";
+    }
+
     @RequestMapping(value="/station/create",method= RequestMethod.POST)
     public boolean create(@RequestBody Information info){
         return stationService.create(info);

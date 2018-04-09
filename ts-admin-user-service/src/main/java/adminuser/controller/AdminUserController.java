@@ -17,6 +17,11 @@ public class AdminUserController {
     @Autowired
     AdminUserService adminUserService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home(@RequestHeader HttpHeaders headers) {
+        return "Welcome to [ AdminUser Service ] !";
+    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/adminuser/findAll/{id}", method = RequestMethod.GET)
     public FindAllAccountResult getAllUsers(@PathVariable String id, @RequestHeader HttpHeaders headers){
