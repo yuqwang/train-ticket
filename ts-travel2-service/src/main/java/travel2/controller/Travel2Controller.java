@@ -14,7 +14,7 @@ public class Travel2Controller {
     @Autowired
     private Travel2Service service;
 
-    @RequestMapping(path = "/travel2/welcome", method = RequestMethod.GET)
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home() {
         return "Welcome to [ Travle2 Service ] !";
     }

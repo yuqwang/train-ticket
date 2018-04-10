@@ -6,8 +6,8 @@ var path = require('path');
 
 var db = require('./db');
 
-router.get('/', function(req, res, next) {
-    res.send("welcome to ts-ticket-office-service");
+router.get('/welcome', function(req, res, next) {
+    res.send("Welcome to ts-ticket-office-service");
 });
 
 // router.get('/init', function(req, res, next) {

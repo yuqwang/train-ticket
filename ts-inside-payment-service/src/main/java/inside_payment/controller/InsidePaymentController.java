@@ -14,7 +14,7 @@ public class InsidePaymentController {
     @Autowired
     public InsidePaymentService service;
 
-    @RequestMapping(path = "/inside_payment/welcome", method = RequestMethod.GET)
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home() {
         return "Welcome to [ InsidePayment Service ] !";
     }
