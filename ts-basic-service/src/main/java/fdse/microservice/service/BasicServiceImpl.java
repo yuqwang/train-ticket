@@ -8,7 +8,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class BasicServiceImpl implements BasicService{
@@ -22,42 +26,13 @@ public class BasicServiceImpl implements BasicService{
         ResultForTravel result = new ResultForTravel();
         result.setStatus(true);
         //车站站名服务
-//        boolean startingPlaceExist = restTemplate.postForObject(
-//                "http://ts-station-service:12345/station/exist", new QueryStation(info.getStartingPlace()), Boolean.class);
-//        boolean endPlaceExist = restTemplate.postForObject(
-//                "http://ts-station-service:12345/station/exist", new QueryStation(info.getEndPlace()),  Boolean.class);
         boolean startingPlaceExist = checkStationExists(info.getStartingPlace(), headers);
         boolean endPlaceExist = checkStationExists(info.getEndPlace(), headers);
         if(!startingPlaceExist || !endPlaceExist){
             result.setStatus(false);
         }
 
-//        String startingPlaceId = restTemplate.postForObject(
-//                "http://ts-station-service:12345/station/queryForId", new QueryStation(info.getStartingPlace()), String.class);
-//        String endPlaceId = restTemplate.postForObject(
-//                "http://ts-station-service:12345/station/queryForId", new QueryStation(info.getEndPlace()),  String.class);
-
-
-
-        //配置
-        //查询车票配比，以车站ABC为例，A是始发站，B是途径的车站，C是终点站，分配AC 50%，如果总票数100，那么AC有50张票，AB和BC也各有
-        //50张票，因为AB和AC拼起来正好是一张AC。
-//        String proportion = restTemplate.postForObject("http://ts-config-service:15679/config/query",
-//                new QueryConfig("DirectTicketAllocationProportion"), String.class
-//        );
-//        double percent = 1.0;
-//        if(proportion.contains("%")) {
-//            proportion = proportion.replaceAll("%", "");
-//            percent = Double.valueOf(proportion)/100;
-//            result.setPercent(percent);
-//        }else{
-//            result.setStatus(false);
-//        }
-
         //车服务
-//        TrainType trainType = restTemplate.postForObject(
-//                "http://ts-train-service:14567/train/retrieve", new QueryTrainType(info.getTrip().getTrainTypeId()), TrainType.class
-//        );
         TrainType trainType = queryTrainType(info.getTrip().getTrainTypeId(), headers);
         if(trainType == null){
             System.out.println("traintype doesn't exist");
@@ -66,20 +41,9 @@ public class BasicServiceImpl implements BasicService{
             result.setTrainType(trainType);
         }
 
-        //票价服务
-//        QueryPriceInfo queryPriceInfo = new QueryPriceInfo();
-//        queryPriceInfo.setStartingPlaceId(startingPlaceId);
-//        queryPriceInfo.setEndPlaceId(endPlaceId);
-//        queryPriceInfo.setTrainTypeId(trainType.getId());
-//        queryPriceInfo.setSeatClass("economyClass");
-//        String priceForEconomyClass = restTemplate.postForObject(
-//                "http://ts-price-service:16579/price/query",queryPriceInfo , String.class
-//        );
-//
-//        queryPriceInfo.setSeatClass("confortClass");
-//        String priceForConfortClass = restTemplate.postForObject(
-//                "http://ts-price-service:16579/price/query", queryPriceInfo, String.class
-//        );
+
+        /*Out of memory error!!!!!!!*/
+        memory();
 
         String routeId = info.getTrip().getRouteId();
         String trainTypeString = trainType.getId();
@@ -105,6 +69,37 @@ public class BasicServiceImpl implements BasicService{
 
         return result;
     }
+
+
+    private void memory() {
+        List<byte[]> list = new ArrayList<byte[]>();
+        Runtime run = Runtime.getRuntime();
+        int i = 1;
+        int time = 1;
+        long memory = run.maxMemory();
+        long maxTime = ((memory/1024/1024)- 50 ) * 1024 / 5;
+        while (time < maxTime) {
+            byte[] arr = new byte[1024 * 5];
+            list.add(arr);
+
+            if (i++ % 1000 == 0) {
+                try {
+                    Thread.sleep(600);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                System.out.print("[Order Service]Max RAM=" + run.maxMemory() / 1024 / 1024 + "M,");
+                System.out.print("[Order Service]Allocated RAM=" + run.totalMemory() / 1024 / 1024 + "M,");
+                System.out.print("[Order Service]Rest RAM=" + run.freeMemory() / 1024 / 1024 + "M");
+                System.out.println(
+                        "[Order Service]Max available RAM=" + (run.maxMemory() - run.totalMemory() + run.freeMemory()) / 1024 / 1024 + "M");
+            }
+            time ++;
+        }
+    }
+
+
 
     @Override
     public String queryForStationId(QueryStation info, HttpHeaders headers){
