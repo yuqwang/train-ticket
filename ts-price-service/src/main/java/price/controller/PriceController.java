@@ -15,6 +15,11 @@ public class PriceController {
     @Autowired
     PriceService service;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ Price Service ] !";
+    }
+
     @RequestMapping(value="/price/query", method= RequestMethod.POST)
     public ReturnSinglePriceConfigResult query(@RequestBody QueryPriceConfigByTrainAndRoute info,
                                                @RequestHeader HttpHeaders headers){

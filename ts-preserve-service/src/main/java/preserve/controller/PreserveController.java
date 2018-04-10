@@ -12,6 +12,11 @@ public class PreserveController {
     @Autowired
     private PreserveService preserveService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ Preserve Service ] !";
+    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/preserve", method = RequestMethod.POST)
     public OrderTicketsResult preserve(@RequestBody OrderTicketsInfo oti,@CookieValue String loginId,

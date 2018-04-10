@@ -18,6 +18,11 @@ public class TicketInfoController {
     @Autowired
     TicketInfoService service;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ TicketInfo Service ] !";
+    }
+
     @RequestMapping(value="/ticketinfo/queryForTravel", method = RequestMethod.POST)
     public ResultForTravel queryForTravel(@RequestBody QueryForTravel info,@RequestHeader HttpHeaders headers){
         return service.queryForTravel(info,headers);

@@ -19,6 +19,11 @@ public class PaymentController {
     @Autowired
     PaymentService service;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ Payment Service ] !";
+    }
+
     @RequestMapping(path="/payment/pay",method= RequestMethod.POST)
     public boolean pay(@RequestBody PaymentInfo info, @RequestHeader HttpHeaders headers){
         return service.pay(info, headers);

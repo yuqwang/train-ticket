@@ -29,7 +29,7 @@ db.initMongo(function (result) {
     }
 });
 
-app.use('/office', router);
+app.use('/', router);
 
 
 // catch 404 and forward to error handler

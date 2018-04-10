@@ -47,7 +47,11 @@ func hello(val string) string {
 	return string(str)
 }
 
+func welcome() string {
+	return "Welcome to news service"
+}
+
 func main() {
-	web.Get("/(.*)", hello)
+	web.Get("/welcome", welcome)
 	web.Run("0.0.0.0:12862")
 }

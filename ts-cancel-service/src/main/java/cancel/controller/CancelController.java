@@ -19,6 +19,11 @@ public class CancelController {
     @Autowired
     CancelService cancelService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home(@RequestHeader HttpHeaders headers){
+        return "Welcome to [ Cancel Service ] !";
+    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/cancelCalculateRefund", method = RequestMethod.POST)
     public CalculateRefundResult calculate(@RequestBody CancelOrderInfo info, @RequestHeader HttpHeaders headers){

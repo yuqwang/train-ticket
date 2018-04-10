@@ -13,6 +13,11 @@ public class SeatController {
     @Autowired
     private SeatService seatService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ Seat Service ] !";
+    }
+
     //分配座位
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/seat/getSeat", method= RequestMethod.POST)

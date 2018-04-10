@@ -6,6 +6,10 @@ import pymysql
 import urllib
 import urllib.request
 
+class WelcomeHandler(tornado.web.RequestHandler):
+    def get(self):
+        self.write("Hello, world")
+
 class GetVoucherHandler(tornado.web.RequestHandler):
 
     def post(self, *args, **kwargs):
@@ -120,7 +124,8 @@ class GetVoucherHandler(tornado.web.RequestHandler):
 
 def make_app():
     return tornado.web.Application([
-        (r"/getVoucher", GetVoucherHandler)
+        (r"/getVoucher", GetVoucherHandler),
+        (r"/welcome", WelcomeHandler)
     ])
 
 def initDatabase():

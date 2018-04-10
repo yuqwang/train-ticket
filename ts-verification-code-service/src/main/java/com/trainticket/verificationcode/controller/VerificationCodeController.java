@@ -18,12 +18,15 @@ public class VerificationCodeController {
 	@Autowired
 	private VerificationCodeService verificationCodeService;
 
+	@RequestMapping(path = "/welcome", method = RequestMethod.GET)
+	public String home() {
+		return "Welcome to [ VerificationCode Service ] !";
+	}
 
 	@RequestMapping(value="/error",method=RequestMethod.GET)
 	public String welcome(){
 		return "error";
 	}
-
 	
 	@RequestMapping(value = "/verification/generate", method = RequestMethod.GET)
 	public void imagecode(HttpServletRequest request, HttpServletResponse response) throws Exception {

@@ -16,6 +16,11 @@ public class RoutePlanController {
     @Autowired
     private RoutePlanService routePlanService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ RoutePlan Service ] !";
+    }
+
     @RequestMapping(value = "/routePlan/cheapestRoute", method = RequestMethod.POST)
     public RoutePlanResults getCheapestRoutes(@RequestBody GetRoutePlanInfo info,@RequestHeader HttpHeaders headers){
         System.out.println("[Route Plan Service][Get Cheapest Routes] From:" + info.getFormStationName() +

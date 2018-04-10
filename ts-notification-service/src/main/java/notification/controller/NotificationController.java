@@ -14,6 +14,11 @@ public class NotificationController {
     @Autowired
     NotificationService service;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ Notification Service ] !";
+    }
+
     @RequestMapping(value="/notification/preserve_success", method = RequestMethod.POST)
     public boolean preserve_success(@RequestBody NotifyInfo info, @RequestHeader HttpHeaders headers){
         return service.preserve_success(info, headers);

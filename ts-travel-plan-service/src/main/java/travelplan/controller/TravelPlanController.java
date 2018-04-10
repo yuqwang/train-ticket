@@ -15,6 +15,11 @@ public class TravelPlanController {
     @Autowired
     TravelPlanService travelPlanService;
 
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String home() {
+        return "Welcome to [ TravelPlan Service ] !";
+    }
+
     @RequestMapping(value="/travelPlan/getTransferResult", method= RequestMethod.POST)
     public TransferTravelSearchResult getTransferResult(@RequestBody TransferTravelSearchInfo info,@RequestHeader HttpHeaders headers) {
         System.out.println("[Search Transit]");
