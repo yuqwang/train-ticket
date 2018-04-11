@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-basic-info-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-admin-basic-info-service
+        image: 10.141.212.25:5555/istio-error-config-ts-admin-basic-info-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18767
@@ -31,7 +31,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-order-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-admin-order-service
+        image: 10.141.212.25:5555/istio-error-config-ts-admin-order-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16112
@@ -51,7 +51,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-route-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-admin-route-service
+        image: 10.141.212.25:5555/istio-error-config-ts-admin-route-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16113
@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-travel-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-admin-travel-service
+        image: 10.141.212.25:5555/istio-error-config-ts-admin-travel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16114
@@ -98,7 +98,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-user-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-admin-user-service
+        image: 10.141.212.25:5555/istio-error-config-ts-admin-user-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16115
@@ -118,7 +118,7 @@ spec:
     spec:
       containers:
       - name: ts-assurance-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-assurance-service
+        image: 10.141.212.25:5555/istio-error-config-ts-assurance-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18888
@@ -172,7 +172,7 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-cancel-service
+        image: 10.141.212.25:5555/istio-error-config-ts-cancel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18885
@@ -192,7 +192,7 @@ spec:
     spec:
       containers:
       - name: ts-config-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-config-service
+        image: 10.141.212.25:5555/istio-error-config-ts-config-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15679
@@ -212,7 +212,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-consign-price-service
+        image: 10.141.212.25:5555/istio-error-config-ts-consign-price-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16110
@@ -232,7 +232,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-consign-service
+        image: 10.141.212.25:5555/istio-error-config-ts-consign-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16111
@@ -252,7 +252,7 @@ spec:
     spec:
       containers:
       - name: ts-contacts-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-contacts-service
+        image: 10.141.212.25:5555/istio-error-config-ts-contacts-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12347
@@ -272,7 +272,7 @@ spec:
     spec:
       containers:
       - name: ts-execute-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-execute-service
+        image: 10.141.212.25:5555/istio-error-config-ts-execute-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12386
@@ -292,7 +292,7 @@ spec:
     spec:
       containers:
       - name: ts-food-map-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-food-map-service
+        image: 10.141.212.25:5555/istio-error-config-ts-food-map-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18855
@@ -312,7 +312,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-food-service
+        image: 10.141.212.25:5555/istio-error-config-ts-food-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18856
@@ -332,7 +332,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-inside-payment-service
+        image: 10.141.212.25:5555/istio-error-config-ts-inside-payment-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18673
@@ -352,7 +352,7 @@ spec:
     spec:
       containers:
       - name: ts-login-service
-        image: 10.141.212.25:5555/istio-error-instance-ts-login-service
+        image: 10.141.212.25:5555/istio-error-config-ts-login-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12342
@@ -379,7 +379,7 @@ spec:
     spec:
       containers:
       - name: ts-news-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-news-service
+        image: 10.141.212.25:5555/istio-error-config-ts-news-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12862
@@ -399,7 +399,7 @@ spec:
     spec:
       containers:
       - name: ts-notification-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-notification-service
+        image: 10.141.212.25:5555/istio-error-config-ts-notification-service
         imagePullPolicy: Always
         ports:
         - containerPort: 17853
@@ -419,7 +419,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-order-other-service
+        image: 10.141.212.25:5555/istio-error-config-ts-order-other-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12032
@@ -439,7 +439,7 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-order-service
+        image: 10.141.212.25:5555/istio-error-config-ts-order-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12031
@@ -459,7 +459,7 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-payment-service
+        image: 10.141.212.25:5555/istio-error-config-ts-payment-service
         imagePullPolicy: Always
         ports:
         - containerPort: 19001
@@ -479,7 +479,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-other-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-preserve-other-service
+        image: 10.141.212.25:5555/istio-error-config-ts-preserve-other-service
         imagePullPolicy: Always
         ports:
         - containerPort: 14569
@@ -499,7 +499,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: 10.141.212.25:5555/istio-error-instance-ts-preserve-service
+        image: 10.141.212.25:5555/istio-error-config-ts-preserve-service
         imagePullPolicy: Always
         ports:
         - containerPort: 14568
@@ -519,7 +519,7 @@ spec:
     spec:
       containers:
       - name: ts-price-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-price-service
+        image: 10.141.212.25:5555/istio-error-config-ts-price-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16579
@@ -539,7 +539,7 @@ spec:
     spec:
       containers:
       - name: ts-rebook-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-rebook-service
+        image: 10.141.212.25:5555/istio-error-config-ts-rebook-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18886
@@ -559,7 +559,7 @@ spec:
     spec:
       containers:
       - name: ts-register-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-register-service
+        image: 10.141.212.25:5555/istio-error-config-ts-register-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12344
@@ -579,7 +579,7 @@ spec:
     spec:
       containers:
       - name: ts-route-plan-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-route-plan-service
+        image: 10.141.212.25:5555/istio-error-config-ts-route-plan-service
         imagePullPolicy: Always
         ports:
         - containerPort: 14578
@@ -599,7 +599,7 @@ spec:
     spec:
       containers:
       - name: ts-route-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-route-service
+        image: 10.141.212.25:5555/istio-error-config-ts-route-service
         imagePullPolicy: Always
         ports:
         - containerPort: 11178
@@ -619,7 +619,7 @@ spec:
     spec:
       containers:
       - name: ts-seat-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-seat-service
+        image: 10.141.212.25:5555/istio-error-config-ts-seat-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18898
@@ -639,7 +639,7 @@ spec:
     spec:
       containers:
       - name: ts-security-service
-        image: 10.141.212.25:5555/istio-error-instance-ts-security-service
+        image: 10.141.212.25:5555/istio-error-config-ts-security-service
         imagePullPolicy: Always
         ports:
         - containerPort: 11188
@@ -659,7 +659,7 @@ spec:
     spec:
       containers:
       - name: ts-sso-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-sso-service
+        image: 10.141.212.25:5555/istio-error-config-ts-sso-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12349
@@ -686,7 +686,7 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-station-service
+        image: 10.141.212.25:5555/istio-error-config-ts-station-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12345
@@ -706,7 +706,7 @@ spec:
     spec:
       containers:
       - name: ts-ticket-office-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-ticket-office-service
+        image: 10.141.212.25:5555/istio-error-config-ts-ticket-office-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16108
@@ -726,7 +726,7 @@ spec:
     spec:
       containers:
       - name: ts-ticketinfo-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-ticketinfo-service
+        image: 10.141.212.25:5555/istio-error-config-ts-ticketinfo-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15681
@@ -746,7 +746,7 @@ spec:
     spec:
       containers:
       - name: ts-train-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-train-service
+        image: 10.141.212.25:5555/istio-error-config-ts-train-service
         imagePullPolicy: Always
         ports:
         - containerPort: 14567
@@ -766,7 +766,7 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-travel2-service
+        image: 10.141.212.25:5555/istio-error-config-ts-travel2-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16346
@@ -786,7 +786,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-plan-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-travel-plan-service
+        image: 10.141.212.25:5555/istio-error-config-ts-travel-plan-service
         imagePullPolicy: Always
         ports:
         - containerPort: 14322
@@ -806,7 +806,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-travel-service
+        image: 10.141.212.25:5555/istio-error-config-ts-travel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12346
@@ -826,7 +826,7 @@ spec:
     spec:
       containers:
       - name: ts-verification-code-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-verification-code-service
+        image: 10.141.212.25:5555/istio-error-config-ts-verification-code-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15678
@@ -846,7 +846,7 @@ spec:
     spec:
       containers:
       - name: ts-voucher-service
-        image: 10.141.212.25:5555/istio-zipkin-ts-voucher-service
+        image: 10.141.212.25:5555/istio-error-config-ts-voucher-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16101
