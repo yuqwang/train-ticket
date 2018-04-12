@@ -8,7 +8,7 @@ import urllib.request
 
 class WelcomeHandler(tornado.web.RequestHandler):
     def get(self):
-        self.write("Hello, world")
+        self.write("Welcome to voucher service!")
 
 class GetVoucherHandler(tornado.web.RequestHandler):
 
