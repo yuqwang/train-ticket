@@ -118,6 +118,11 @@ public class OrderOtherController {
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/orderOther/update", method = RequestMethod.POST)
     public ChangeOrderResult saveOrderInfo(@RequestBody ChangeOrderInfo orderInfo, @RequestHeader HttpHeaders headers){
+
+        if(headers.get("CheckAsync") != null || !headers.get("CheckAsync").isEmpty()){
+            headers.remove("CheckAsync");
+        }
+
         VerifyResult tokenResult = verifySsoLogin(orderInfo.getLoginToken(),headers);
         if(tokenResult.isStatus() == true){
             System.out.println("[Order Other Service][Verify Login] Success");

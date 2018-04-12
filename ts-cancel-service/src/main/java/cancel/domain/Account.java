@@ -1,9 +1,7 @@
 package cancel.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.UUID;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Account {
 
     private UUID id;

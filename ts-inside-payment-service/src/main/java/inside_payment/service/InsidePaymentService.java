@@ -2,6 +2,7 @@ package inside_payment.service;
 
 import inside_payment.domain.*;
 import org.springframework.http.HttpHeaders;
+import org.springframework.integration.dsl.http.Http;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -28,5 +29,7 @@ public interface InsidePaymentService {
     List<AddMoney> queryAddMoney(HttpHeaders headers);
 
     void initPayment(Payment payment, HttpHeaders headers);
+
+    boolean drawBackAndCancel(DrawbackAndCancel info, HttpHeaders httpHeaders);
 
 }

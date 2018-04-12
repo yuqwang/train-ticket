@@ -259,6 +259,41 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         }
     }
 
+    public boolean drawBackAndCancel(DrawbackAndCancel info, HttpHeaders httpHeaders){
+
+        String orderId = info.getOrderId();
+        String loginToken = info.getLoginToken();
+        //1.Search Order Info
+        System.out.println("[Cancel Order Service][Get Order] Getting....");
+        GetOrderByIdInfo getOrderInfo = new GetOrderByIdInfo();
+        getOrderInfo.setOrderId(orderId);
+        GetOrderResult cor = restTemplate.postForObject(
+                "http://ts-order-other-service:12032/orderOther/getById/"
+                ,getOrderInfo,GetOrderResult.class);
+        Order order = cor.getOrder();
+        //2.Change order status to cancelling
+        order.setStatus(OrderStatus.Canceling.getCode());
+        ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
+        changeOrderInfo.setOrder(order);
+        changeOrderInfo.setLoginToken(loginToken);
+        ChangeOrderResult changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",changeOrderInfo,ChangeOrderResult.class);
+        if(changeOrderResult.isStatus() == false){
+            System.out.println("[Cancel Order Service]Unexpected error");
+        }
+
+        if(addMoneyRepository.findByUserId(info.getUserId()) != null){
+            AddMoney addMoney = new AddMoney();
+            addMoney.setUserId(info.getUserId());
+            addMoney.setMoney(info.getMoney());
+            addMoney.setType(AddMoneyType.D);
+            addMoneyRepository.save(addMoney);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
     @Override
     public boolean payDifference(PaymentDifferenceInfo info, HttpServletRequest request, HttpHeaders headers){
         QueryOrderResult result;

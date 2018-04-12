@@ -45,6 +45,17 @@ public class InsidePaymentController {
         return service.drawBack(info, headers);
     }
 
+
+    @RequestMapping(value="/inside_payment/drawBackAndCancel", method = RequestMethod.POST)
+    public boolean drawBackAndCancel(@RequestBody DrawbackAndCancel info, @RequestHeader HttpHeaders headers){
+
+        if(headers.get("CheckAsync") != null || !headers.get("CheckAsync").isEmpty()){
+            headers.remove("CheckAsync");
+        }
+
+        return service.drawBackAndCancel(info, headers);
+    }
+
     @RequestMapping(value="/inside_payment/payDifference", method = RequestMethod.POST)
     public boolean payDifference(@RequestBody PaymentDifferenceInfo info, HttpServletRequest request, @RequestHeader HttpHeaders headers){
         return service.payDifference(info, request, headers);

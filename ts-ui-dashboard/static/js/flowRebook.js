@@ -578,7 +578,7 @@ function addListenerToOrderCancel(){
                     }else{
                         $("#cancel_money_refund").text("Error ");
                     }
-                },
+                }
             });
         }
     }
@@ -613,6 +613,9 @@ $("#ticket_cancel_panel_confirm").click(function(){
                 $("#ticket_cancel_panel").css('display','none');
             }
             alert(result["message"]);
+        },
+        error: function(result){
+            alert("Ticket Cancel Process Error");
         }
     });
 });
