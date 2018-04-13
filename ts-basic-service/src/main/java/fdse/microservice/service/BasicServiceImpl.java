@@ -17,6 +17,52 @@ public class BasicServiceImpl implements BasicService{
     private RestTemplate restTemplate;
 
     @Override
+    public GetOrderResult getOrderFromMultiResources(GetOrderByIdInfo info, HttpHeaders headers){
+        GetOrderResult result = new GetOrderResult();
+        GetOrderByIdInfo getOrderByIdInfo = new GetOrderByIdInfo(info.getOrderId());
+        GetOrderResult resultOrder = getOrderByIdFromOrder(getOrderByIdInfo,headers);
+        GetOrderResult resultOtherOrder = getOrderByIdFromOrderOther(getOrderByIdInfo,headers);
+        if(resultOrder.isStatus() && !resultOtherOrder.isStatus()){
+            result.setMessage("Success");
+            result.setStatus(true);
+            result.setOrder(resultOrder.getOrder());
+        }else if(!resultOrder.isStatus() && resultOtherOrder.isStatus()){
+            result.setMessage("Success");
+            result.setStatus(true);
+            result.setOrder(resultOtherOrder.getOrder());
+        }else{
+            result.setMessage("Fail");
+            result.setStatus(false);
+            result.setOrder(null);
+        }
+        return result;
+    }
+
+    private GetOrderResult getOrderByIdFromOrder(GetOrderByIdInfo info, HttpHeaders headers){
+        System.out.println("[Cancel Order Service][Get Order] Getting....");
+        HttpEntity requestEntity = new HttpEntity(info, headers);
+        ResponseEntity<GetOrderResult> re = restTemplate.exchange(
+                "http://ts-order-service:12031/order/getById/",
+                HttpMethod.POST,
+                requestEntity,
+                GetOrderResult.class);
+        GetOrderResult cor = re.getBody();
+        return cor;
+    }
+
+    private GetOrderResult getOrderByIdFromOrderOther(GetOrderByIdInfo info, HttpHeaders headers){
+        System.out.println("[Cancel Order Service][Get Order] Getting....");
+        HttpEntity requestEntity = new HttpEntity(info, headers);
+        ResponseEntity<GetOrderResult> re = restTemplate.exchange(
+                "http://ts-order-other-service:12032/orderOther/getById/",
+                HttpMethod.POST,
+                requestEntity,
+                GetOrderResult.class);
+        GetOrderResult cor = re.getBody();
+        return cor;
+    }
+
+    @Override
     public ResultForTravel queryForTravel(QueryForTravel info, HttpHeaders headers){
 
         ResultForTravel result = new ResultForTravel();

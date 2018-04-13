@@ -267,16 +267,43 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         System.out.println("[Cancel Order Service][Get Order] Getting....");
         GetOrderByIdInfo getOrderInfo = new GetOrderByIdInfo();
         getOrderInfo.setOrderId(orderId);
-        GetOrderResult cor = restTemplate.postForObject(
-                "http://ts-order-other-service:12032/orderOther/getById/"
-                ,getOrderInfo,GetOrderResult.class);
+
+
+//        GetOrderResult cor = restTemplate.postForObject(
+//                "http://ts-order-other-service:12032/orderOther/getById/"
+//                ,getOrderInfo,GetOrderResult.class);
+        HttpEntity orderOtherEntity = new HttpEntity(getOrderInfo,httpHeaders);
+        ResponseEntity<GetOrderResult> taskGetOrder = restTemplate.exchange(
+                "http://ts-order-other-service:12032/orderOther/getById/",
+                HttpMethod.POST,
+                orderOtherEntity,
+                GetOrderResult.class);
+        GetOrderResult cor = taskGetOrder.getBody();
+
+
+
         Order order = cor.getOrder();
         //2.Change order status to cancelling
         order.setStatus(OrderStatus.Canceling.getCode());
         ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
         changeOrderInfo.setOrder(order);
         changeOrderInfo.setLoginToken(loginToken);
-        ChangeOrderResult changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",changeOrderInfo,ChangeOrderResult.class);
+
+
+//
+//        ChangeOrderResult changeOrderResult = restTemplate.postForObject(
+//                "http://ts-order-other-service:12032/orderOther/update",changeOrderInfo,ChangeOrderResult.class);
+
+
+        HttpEntity cancelOrderEntity = new HttpEntity(changeOrderInfo,httpHeaders);
+        ResponseEntity<ChangeOrderResult> taskCancelOrder = restTemplate.exchange(
+                "http://ts-order-other-service:12032/orderOther/update",
+                HttpMethod.POST,
+                cancelOrderEntity,
+                ChangeOrderResult.class);
+        ChangeOrderResult changeOrderResult = taskCancelOrder.getBody();
+
+
         if(changeOrderResult.isStatus() == false){
             System.out.println("[Cancel Order Service]Unexpected error");
         }

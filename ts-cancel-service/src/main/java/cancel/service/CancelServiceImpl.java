@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.client.RestTemplate;
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -191,6 +192,77 @@ public class CancelServiceImpl implements CancelService{
             }
         }
     }
+
+    @Override
+    public CancelOrderResult cancelOrderVersion2(CancelOrderInfo info, String loginToken,
+                                                 String loginId, HttpHeaders headers) throws Exception{
+        if(loginToken == null ){
+            loginToken = "admin";
+        }
+        CancelOrderResult result = new CancelOrderResult();
+        VerifyResult verifyResult = verifySsoLogin(loginToken,headers);
+        if(false == verifyResult.isStatus()){
+            result.setStatus(false);
+            result.setMessage("Not Login");
+        }else{
+            headers.add("Cookie","jichao=dododo");
+            String orderId = info.getOrderId();
+            Order order = getOrderFromBasicInfo(orderId,headers);
+            String money = calculateRefund(order);
+            AsyncSendToCancelOrderInfo cancelOrderInfo = new AsyncSendToCancelOrderInfo();
+            cancelOrderInfo.setLoginToken(loginToken);
+            cancelOrderInfo.setOrderId(orderId);
+            ChangeOrderResult cancelOrderResult = null;
+            ChangeOrderResult cancelOrderOtherResult = null;
+            boolean drawBackMoneyResult = false;
+            try{
+                //1.异步调用order-service
+                Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2(cancelOrderInfo,headers);
+                //2.异步调用order-other-serivce
+                Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2(cancelOrderInfo,headers);
+                //3.异步调用inside-payment-service
+                Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancel(money,loginId,orderId,loginToken,headers);
+                while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()) {
+                    //block and waiting result
+                }
+                cancelOrderResult = taskOrderUpdate.get();
+                cancelOrderOtherResult = taskOrderOtherUpdate.get();
+                drawBackMoneyResult = taskDrawBackMoney.get();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+            if((cancelOrderResult.isStatus() ^ cancelOrderOtherResult.isStatus()) && drawBackMoneyResult){
+                Order orderFinal = getOrderFromBasicInfo(orderId,headers);
+                //检查订单的状态，对的话返回正确，不对的话返回错误
+                if(orderFinal.getStatus() != OrderStatus.CANCEL.getCode()){
+                    throw new Exception("[Error Process Seq]");
+                }else{
+                    CancelOrderResult finalResult = new CancelOrderResult();
+                    finalResult.setStatus(true);
+                    finalResult.setMessage("Success.Processes Seq.");
+                    return finalResult;
+                }
+            }else{
+                result = new CancelOrderResult();
+                result.setStatus(false);
+                result.setMessage("Something Wrong");
+            }
+        }
+        return result;
+    }
+
+    private VerifyResult verifySsoLogin(String loginToken, @RequestHeader HttpHeaders headers){
+        System.out.println("[cancelOrderVersion2][Verify Login] Verifying....");
+        HttpEntity requestTokenResult = new HttpEntity(null,headers);
+        ResponseEntity<VerifyResult> reTokenResult  = restTemplate.exchange(
+                "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
+                HttpMethod.GET,
+                requestTokenResult,
+                VerifyResult.class);
+        VerifyResult tokenResult = reTokenResult.getBody();
+        return tokenResult;
+    }
+
 
     public boolean sendEmail(NotifyInfo notifyInfo, HttpHeaders headers ){
         System.out.println("[Cancel Order Service][Send Email]");
@@ -376,6 +448,25 @@ public class CancelServiceImpl implements CancelService{
 //                GetAccountByIdResult.class
 //        );
         return result;
+    }
+
+    private Order getOrderFromBasicInfo(String orderId, HttpHeaders headers){
+
+        GetOrderByIdInfo info = new GetOrderByIdInfo(orderId);
+
+        System.out.println("[Cancel Order Service][getOrderFromBasicInfo] Getting....");
+        HttpEntity requestEntity = new HttpEntity(info, headers);
+        ResponseEntity<GetOrderResult> re = restTemplate.exchange(
+                "http://ts-basic-service:15680/basic/getOrderFromMultiSource",
+                HttpMethod.POST,
+                requestEntity,
+                GetOrderResult.class);
+        GetOrderResult cor = re.getBody();
+        if(cor.isStatus()){
+            return cor.getOrder();
+        }else{
+            return null;
+        }
     }
 
     private GetOrderResult getOrderByIdFromOrder(GetOrderByIdInfo info, HttpHeaders headers){

@@ -145,6 +145,12 @@ public class OrderController {
         return orderService.deleteOrder(info,headers);
     }
 
+    @CrossOrigin(origins = "*")
+    @RequestMapping(path="/order/cancelOrder",method = RequestMethod.POST)
+    public ChangeOrderResult cancelOrder(@RequestBody AsyncSendToCancelOrderInfo info, @RequestHeader HttpHeaders headers){
+        return orderService.cancelOrder(info,headers);
+    }
+
     /***************For super admin(Single Service Test*******************/
 
     @CrossOrigin(origins = "*")

@@ -28,36 +28,38 @@ public class CancelController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/cancelOrder", method = RequestMethod.POST)
-    public CancelOrderResult cancelTicket(@RequestBody CancelOrderInfo info, @CookieValue String loginToken, @CookieValue String loginId, @RequestHeader HttpHeaders headers){
-        System.out.println("[Cancel Order Service][Cancel Ticket] info:" + info.getOrderId());
-        if(loginToken == null ){
-            loginToken = "admin";
-        }
-        System.out.println("[Cancel Order Service][Cancel Order] order ID:" + info.getOrderId() + "  loginToken:" + loginToken);
-        if(loginToken == null){
-            System.out.println("[Cancel Order Service][Cancel Order] Not receive any login token");
-            CancelOrderResult result = new CancelOrderResult();
-            result.setStatus(false);
-            result.setMessage("No Login Token");
-            return result;
-        }
-        VerifyResult verifyResult = verifySsoLogin(loginToken);
-        if(verifyResult.isStatus() == false){
-            System.out.println("[Cancel Order Service][Cancel Order] Do not login.");
-            CancelOrderResult result = new CancelOrderResult();
-            result.setStatus(false);
-            result.setMessage("Not Login");
-            return result;
-        }else{
-            System.out.println("[Cancel Order Service][Cancel Ticket] Verify Success");
-            try{
-                return cancelService.cancelOrder(info,loginToken,loginId, headers);
-            }catch(Exception e){
-                e.printStackTrace();
-                return null;
-            }
+    public CancelOrderResult cancelTicket(@RequestBody CancelOrderInfo info, @CookieValue String loginToken, @CookieValue String loginId, @RequestHeader HttpHeaders headers) throws Exception{
+        return cancelService.cancelOrderVersion2(info,loginToken,loginId,headers);
 
-        }
+        //        System.out.println("[Cancel Order Service][Cancel Ticket] info:" + info.getOrderId());
+//        if(loginToken == null ){
+//            loginToken = "admin";
+//        }
+//        System.out.println("[Cancel Order Service][Cancel Order] order ID:" + info.getOrderId() + "  loginToken:" + loginToken);
+//        if(loginToken == null){
+//            System.out.println("[Cancel Order Service][Cancel Order] Not receive any login token");
+//            CancelOrderResult result = new CancelOrderResult();
+//            result.setStatus(false);
+//            result.setMessage("No Login Token");
+//            return result;
+//        }
+//        VerifyResult verifyResult = verifySsoLogin(loginToken);
+//        if(verifyResult.isStatus() == false){
+//            System.out.println("[Cancel Order Service][Cancel Order] Do not login.");
+//            CancelOrderResult result = new CancelOrderResult();
+//            result.setStatus(false);
+//            result.setMessage("Not Login");
+//            return result;
+//        }else{
+//            System.out.println("[Cancel Order Service][Cancel Ticket] Verify Success");
+//            try{
+//                return cancelService.cancelOrder(info,loginToken,loginId, headers);
+//            }catch(Exception e){
+//                e.printStackTrace();
+//                return null;
+//            }
+//
+//        }
     }
 
     private VerifyResult verifySsoLogin(String loginToken){

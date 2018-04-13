@@ -426,5 +426,24 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         }
         return result;
     }
+
+    @Override
+    public ChangeOrderResult cancelOrder(AsyncSendToCancelOrderInfo info, HttpHeaders headers){
+        Order order = orderOtherRepository.findById(UUID.fromString(info.getOrderId()));
+        ChangeOrderResult result = new ChangeOrderResult();
+        if(order == null){
+            result.setStatus(false);
+            result.setMessage("Order Not Found");
+            result.setOrder(null);
+        }else{
+            order.setStatus(OrderStatus.CANCEL.getCode());
+            orderOtherRepository.save(order);
+            result.setStatus(true);
+            result.setMessage("Success");
+            result.setOrder(order);
+        }
+        return result;
+    }
+
 }
 

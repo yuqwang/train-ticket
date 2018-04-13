@@ -1,4 +1,4 @@
-package cancel.domain;
+package fdse.microservice.domain;
 
 public class GetOrderByIdInfo {
 

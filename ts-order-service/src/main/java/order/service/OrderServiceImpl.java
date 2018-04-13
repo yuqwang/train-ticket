@@ -427,5 +427,23 @@ public class OrderServiceImpl implements OrderService{
         }
         return result;
     }
+
+    @Override
+    public ChangeOrderResult cancelOrder(AsyncSendToCancelOrderInfo info, HttpHeaders headers){
+        Order order = orderRepository.findById(UUID.fromString(info.getOrderId()));
+        ChangeOrderResult result = new ChangeOrderResult();
+        if(order == null){
+            result.setStatus(false);
+            result.setMessage("Order Not Found");
+            result.setOrder(null);
+        }else{
+            order.setStatus(OrderStatus.CANCEL.getCode());
+            orderRepository.save(order);
+            result.setStatus(true);
+            result.setMessage("Success");
+            result.setOrder(order);
+        }
+        return result;
+    }
 }
 

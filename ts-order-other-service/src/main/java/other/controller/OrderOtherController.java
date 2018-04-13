@@ -118,11 +118,7 @@ public class OrderOtherController {
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/orderOther/update", method = RequestMethod.POST)
     public ChangeOrderResult saveOrderInfo(@RequestBody ChangeOrderInfo orderInfo, @RequestHeader HttpHeaders headers){
-
-        if(headers.get("CheckAsync") != null || !headers.get("CheckAsync").isEmpty()){
-            headers.remove("CheckAsync");
-        }
-
+        System.out.println("[==================]Cookie:" + headers.get("Cookie"));
         VerifyResult tokenResult = verifySsoLogin(orderInfo.getLoginToken(),headers);
         if(tokenResult.isStatus() == true){
             System.out.println("[Order Other Service][Verify Login] Success");
@@ -148,6 +144,12 @@ public class OrderOtherController {
     public DeleteOrderResult deleteOrder(@RequestBody DeleteOrderInfo info, @RequestHeader HttpHeaders headers){
         System.out.println("[Order Other Service][Delete Order] Order Id:" + info.getOrderId());
         return orderService.deleteOrder(info, headers);
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(path="/orderOther/cancelOrder",method = RequestMethod.POST)
+    public ChangeOrderResult cancelOrder(@RequestBody AsyncSendToCancelOrderInfo info, @RequestHeader HttpHeaders headers){
+        return orderService.cancelOrder(info,headers);
     }
 
 

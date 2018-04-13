@@ -49,9 +49,8 @@ public class InsidePaymentController {
     @RequestMapping(value="/inside_payment/drawBackAndCancel", method = RequestMethod.POST)
     public boolean drawBackAndCancel(@RequestBody DrawbackAndCancel info, @RequestHeader HttpHeaders headers){
 
-        if(headers.get("CheckAsync") != null || !headers.get("CheckAsync").isEmpty()){
-            headers.remove("CheckAsync");
-        }
+        System.out.println("[==================]Cookie:" + headers.get("Cookie"));
+        headers.set("Cookie","");
 
         return service.drawBackAndCancel(info, headers);
     }

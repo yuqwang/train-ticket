@@ -9,4 +9,7 @@ import org.springframework.http.HttpHeaders;
 public interface BasicService {
     ResultForTravel queryForTravel(QueryForTravel info, HttpHeaders headers);
     String queryForStationId(QueryStation info, HttpHeaders headers);
+
+    GetOrderResult getOrderFromMultiResources(GetOrderByIdInfo info, HttpHeaders headers);
+
 }
