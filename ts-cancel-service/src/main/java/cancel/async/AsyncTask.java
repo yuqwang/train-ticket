@@ -43,6 +43,7 @@ public class AsyncTask {
                 HttpMethod.POST,
                 requestEntity,
                 ChangeOrderResult.class);
+        System.out.println("ts-order-service返回");
         return new AsyncResult<>(re.getBody());
     }
 
@@ -69,6 +70,7 @@ public class AsyncTask {
                 HttpMethod.POST,
                 requestEntity,
                 ChangeOrderResult.class);
+        System.out.println("ts-order-other-service返回");
         return new AsyncResult<>(re.getBody());
     }
 
@@ -90,6 +92,7 @@ public class AsyncTask {
                 requestEntity,
                 String.class);
         String result = re.getBody();
+        System.out.println("ts-inside-payment-service返回");
         return new AsyncResult<>(result.equals("true"));
     }
 

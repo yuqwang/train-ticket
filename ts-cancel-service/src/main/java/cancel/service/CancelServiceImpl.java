@@ -200,53 +200,59 @@ public class CancelServiceImpl implements CancelService{
             loginToken = "admin";
         }
         CancelOrderResult result = new CancelOrderResult();
-        VerifyResult verifyResult = verifySsoLogin(loginToken,headers);
-        if(false == verifyResult.isStatus()){
-            result.setStatus(false);
-            result.setMessage("Not Login");
-        }else{
-            headers.add("Cookie","jichao=dododo");
-            String orderId = info.getOrderId();
-            Order order = getOrderFromBasicInfo(orderId,headers);
-            String money = calculateRefund(order);
-            AsyncSendToCancelOrderInfo cancelOrderInfo = new AsyncSendToCancelOrderInfo();
-            cancelOrderInfo.setLoginToken(loginToken);
-            cancelOrderInfo.setOrderId(orderId);
-            ChangeOrderResult cancelOrderResult = null;
-            ChangeOrderResult cancelOrderOtherResult = null;
-            boolean drawBackMoneyResult = false;
-            try{
-                //1.异步调用order-service
-                Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2(cancelOrderInfo,headers);
-                //2.异步调用order-other-serivce
-                Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2(cancelOrderInfo,headers);
-                //3.异步调用inside-payment-service
-                Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancel(money,loginId,orderId,loginToken,headers);
-                while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()) {
-                    //block and waiting result
-                }
-                cancelOrderResult = taskOrderUpdate.get();
-                cancelOrderOtherResult = taskOrderOtherUpdate.get();
-                drawBackMoneyResult = taskDrawBackMoney.get();
-            }catch(Exception e){
-                e.printStackTrace();
+        //VerifyResult verifyResult = verifySsoLogin(loginToken,headers);
+//        if(false == verifyResult.isStatus()){
+//            result.setStatus(false);
+//            result.setMessage("Not Login");
+//        }else{
+//
+//        }
+        headers.add("Cookie","jichao=dododo");
+        String orderId = info.getOrderId();
+//        Order order = getOrderFromBasicInfo(orderId,headers);
+//
+//
+//        String money = calculateRefund(order);
+        AsyncSendToCancelOrderInfo cancelOrderInfo = new AsyncSendToCancelOrderInfo();
+        cancelOrderInfo.setLoginToken(loginToken);
+        cancelOrderInfo.setOrderId(orderId);
+        ChangeOrderResult cancelOrderResult = null;
+        ChangeOrderResult cancelOrderOtherResult = null;
+        boolean drawBackMoneyResult = false;
+        try{
+            //1.异步调用order-service
+            System.out.println("1.异步调用order-service");
+            Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2(cancelOrderInfo,headers);
+            //2.异步调用order-other-serivce
+            System.out.println("2.异步调用order-other-serivce");
+            Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2(cancelOrderInfo,headers);
+            //3.异步调用inside-payment-service
+            System.out.println("3.异步调用inside-payment-service");
+            Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancel("100",loginId,orderId,loginToken,headers);
+            while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()) {
+                //block and waiting result
             }
-            if((cancelOrderResult.isStatus() ^ cancelOrderOtherResult.isStatus()) && drawBackMoneyResult){
-                Order orderFinal = getOrderFromBasicInfo(orderId,headers);
-                //检查订单的状态，对的话返回正确，不对的话返回错误
-                if(orderFinal.getStatus() != OrderStatus.CANCEL.getCode()){
-                    throw new Exception("[Error Process Seq]");
-                }else{
-                    CancelOrderResult finalResult = new CancelOrderResult();
-                    finalResult.setStatus(true);
-                    finalResult.setMessage("Success.Processes Seq.");
-                    return finalResult;
-                }
+            cancelOrderResult = taskOrderUpdate.get();
+            cancelOrderOtherResult = taskOrderOtherUpdate.get();
+            drawBackMoneyResult = taskDrawBackMoney.get();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        if((cancelOrderResult.isStatus() ^ cancelOrderOtherResult.isStatus()) && drawBackMoneyResult){
+            Order orderFinal = getOrderFromBasicInfo(orderId,headers);
+            //检查订单的状态，对的话返回正确，不对的话返回错误
+            if(orderFinal.getStatus() != OrderStatus.CANCEL.getCode()){
+                throw new Exception("[Error Process Seq]");
             }else{
-                result = new CancelOrderResult();
-                result.setStatus(false);
-                result.setMessage("Something Wrong");
+                CancelOrderResult finalResult = new CancelOrderResult();
+                finalResult.setStatus(true);
+                finalResult.setMessage("Success.Processes Seq.");
+                return finalResult;
             }
+        }else{
+            result = new CancelOrderResult();
+            result.setStatus(false);
+            result.setMessage("Something Wrong");
         }
         return result;
     }
@@ -463,6 +469,7 @@ public class CancelServiceImpl implements CancelService{
                 GetOrderResult.class);
         GetOrderResult cor = re.getBody();
         if(cor.isStatus()){
+            System.out.println("[=======]getOrderFromBasicInfo OK");
             return cor.getOrder();
         }else{
             return null;
