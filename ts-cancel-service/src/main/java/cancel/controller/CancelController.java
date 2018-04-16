@@ -1,5 +1,6 @@
 package cancel.controller;
 
+import cancel.async.AsyncTask;
 import cancel.domain.CalculateRefundResult;
 import cancel.domain.CancelOrderInfo;
 import cancel.domain.CancelOrderResult;
@@ -18,6 +19,18 @@ public class CancelController {
 
     @Autowired
     CancelService cancelService;
+
+    @Autowired
+    private AsyncTask asyncTask;
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(path = "/welcome", method = RequestMethod.GET)
+    public String calculate(@RequestHeader HttpHeaders headers) throws Exception{
+        asyncTask.helloOrderService(headers);
+        asyncTask.helloOrderOtherService(headers);
+        asyncTask.helloInsidePaymentService(headers);
+        return "complete";
+    }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/cancelCalculateRefund", method = RequestMethod.POST)

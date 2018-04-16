@@ -19,6 +19,42 @@ public class AsyncTask {
     @Autowired
 	private RestTemplate restTemplate;
 
+    @Async("myAsync")
+    public Future<String> helloOrderService(HttpHeaders headers)  throws InterruptedException {
+        HttpEntity requestEntity = new HttpEntity(null, headers);
+        ResponseEntity<String> re = restTemplate.exchange(
+                "http://ts-order-service:12031/welcome",
+                HttpMethod.GET,
+                requestEntity,
+                String.class);
+        System.out.println("[=====]" + re.getBody());
+        return new AsyncResult<>(re.getBody());
+    }
+
+    @Async("myAsync")
+    public Future<String> helloOrderOtherService(HttpHeaders headers)  throws InterruptedException {
+        HttpEntity requestEntity = new HttpEntity(null, headers);
+        ResponseEntity<String> re = restTemplate.exchange(
+                "http://ts-order-other-service:12032/welcome",
+                HttpMethod.GET,
+                requestEntity,
+                String.class);
+        System.out.println("[=====]" + re.getBody());
+        return new AsyncResult<>(re.getBody());
+    }
+
+    @Async("myAsync")
+    public Future<String> helloInsidePaymentService(HttpHeaders headers)  throws InterruptedException {
+        HttpEntity requestEntity = new HttpEntity(null, headers);
+        ResponseEntity<String> re = restTemplate.exchange(
+                "http://ts-inside-payment-service:18673/welcome",
+                HttpMethod.GET,
+                requestEntity,
+                String.class);
+        System.out.println("[=====]" + re.getBody());
+        return new AsyncResult<>(re.getBody());
+    }
+
 
     @Async("myAsync")
     public Future<ChangeOrderResult> updateOrderStatusToCancel(ChangeOrderInfo info, HttpHeaders headers) throws InterruptedException{

@@ -1,0 +1,132 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-cancel-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-cancel-service
+    spec:
+      containers:
+      - name: ts-cancel-service
+        image: 10.141.212.25:5555/f1/cluster-ts-cancel-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18885
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-inside-payment-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-inside-payment-service
+    spec:
+      containers:
+      - name: ts-inside-payment-service
+        image: 10.141.212.25:5555/f1/cluster-ts-inside-payment-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18673
+
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-order-other-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-order-other-service
+    spec:
+      containers:
+      - name: ts-order-other-service
+        image: 10.141.212.25:5555/f1/cluster-ts-order-other-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12032
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-order-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-order-service
+    spec:
+      containers:
+      - name: ts-order-service
+        image: 10.141.212.25:5555/f1/cluster-ts-order-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12031
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-cancel-service
+spec:
+  type: NodePort
+  ports:
+    - name: http-cancel
+      port: 18885
+      nodePort: 30085
+  selector:
+   app: ts-cancel-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-other-service
+spec:
+  ports:
+    - name: http
+      port: 12032
+  selector:
+   app: ts-order-other-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-service
+spec:
+  ports:
+    - name: http
+      port: 12031
+  selector:
+   app: ts-order-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-inside-payment-service
+spec:
+  ports:
+    - name: http
+      port: 18673
+  selector:
+   app: ts-inside-payment-service
+
+---
