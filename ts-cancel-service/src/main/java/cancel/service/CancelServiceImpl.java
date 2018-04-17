@@ -25,194 +25,10 @@ public class CancelServiceImpl implements CancelService{
     private AsyncTask asyncTask;
 
     @Override
-    public CancelOrderResult cancelOrder(CancelOrderInfo info,String loginToken,String loginId, HttpHeaders headers) throws Exception{
-        GetOrderByIdInfo getFromOrderInfo = new GetOrderByIdInfo();
-        getFromOrderInfo.setOrderId(info.getOrderId());
-        GetOrderResult orderResult = getOrderByIdFromOrder(getFromOrderInfo, headers);
-        if(orderResult.isStatus() == true){
-            System.out.println("[Cancel Order Service][Cancel Order] Order found G|H");
-            Order order = orderResult.getOrder();
-            if(order.getStatus() == OrderStatus.NOTPAID.getCode()
-                    || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()){
-
-                order.setStatus(OrderStatus.CANCEL.getCode());
-                ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
-                changeOrderInfo.setLoginToken(loginToken);
-                changeOrderInfo.setOrder(order);
-
-                ChangeOrderResult changeOrderResult = cancelFromOrder(changeOrderInfo, headers);
-                if(changeOrderResult.isStatus() == true){
-                    CancelOrderResult finalResult = new CancelOrderResult();
-                    finalResult.setStatus(true);
-                    finalResult.setMessage("Success.");
-                    System.out.println("[Cancel Order Service][Cancel Order] Success.");
-                    //Draw back money
-                    String money = calculateRefund(order);
-                    boolean status = drawbackMoney(money,loginId, headers);
-                    if(status == true){
-                        System.out.println("[Cancel Order Service][Draw Back Money] Success.");
-
-                        GetAccountByIdInfo getAccountByIdInfo = new GetAccountByIdInfo();
-                        getAccountByIdInfo.setAccountId(order.getAccountId().toString());
-                        GetAccountByIdResult result = getAccount(getAccountByIdInfo, headers);
-                        if(result.isStatus() == false){
-                            return null;
-                        }
-
-                        NotifyInfo notifyInfo = new NotifyInfo();
-                        notifyInfo.setDate(new Date().toString());
-
-
-                        notifyInfo.setEmail(result.getAccount().getEmail());
-                        notifyInfo.setStartingPlace(order.getFrom());
-                        notifyInfo.setEndPlace(order.getTo());
-                        notifyInfo.setUsername(result.getAccount().getName());
-                        notifyInfo.setSeatNumber(order.getSeatNumber());
-                        notifyInfo.setOrderNumber(order.getId().toString());
-                        notifyInfo.setPrice(order.getPrice());
-                        notifyInfo.setSeatClass(SeatClass.getNameByCode(order.getSeatClass()));
-                        notifyInfo.setStartingTime(order.getTravelTime().toString());
-
-                        sendEmail(notifyInfo, headers);
-
-                    }else{
-                        System.out.println("[Cancel Order Service][Draw Back Money] Fail.");
-                    }
-
-
-
-                    return finalResult;
-                }else{
-                    CancelOrderResult finalResult = new CancelOrderResult();
-                    finalResult.setStatus(false);
-                    finalResult.setMessage(changeOrderResult.getMessage());
-                    System.out.println("[Cancel Order Service][Cancel Order] Fail.Reason:" + changeOrderResult.getMessage());
-                    return finalResult;
-                }
-
-            }else{
-                CancelOrderResult result = new CancelOrderResult();
-                result.setStatus(false);
-                result.setMessage("Order Status Cancel Not Permitted");
-                System.out.println("[Cancel Order Service][Cancel Order] Order Status Not Permitted.");
-                return result;
-            }
-        }else{
-            GetOrderByIdInfo getFromOtherOrderInfo = new GetOrderByIdInfo();
-            getFromOtherOrderInfo.setOrderId(info.getOrderId());
-            GetOrderResult orderOtherResult = getOrderByIdFromOrderOther(getFromOtherOrderInfo, headers);
-            if(orderOtherResult.isStatus() == true){
-                System.out.println("[Cancel Order Service][Cancel Order] Order found Z|K|Other");
-
-                Order order = orderOtherResult.getOrder();
-                if(order.getStatus() == OrderStatus.NOTPAID.getCode()
-                        || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()){
-
-                    System.out.println("[Cancel Order Service][Cancel Order] Order status ok");
-
-                    order.setStatus(OrderStatus.CANCEL.getCode());
-                    ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
-                    changeOrderInfo.setLoginToken(loginToken);
-                    changeOrderInfo.setOrder(order);
-//                    ChangeOrderResult changeOrderResult = cancelFromOtherOrder(changeOrderInfo);
-
-
-                    /*********************** Fault Reproduction - Error Process Seq *************************/
-                    //1.return money
-                    String money = calculateRefund(order);
-                    Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancel(money,loginId,order.getId().toString(),loginToken,headers);
-
-                    //2.change status to [canceled]
-                    Future<ChangeOrderResult> taskCancelOrder = asyncTask.updateOtherOrderStatusToCancel(changeOrderInfo,headers);
-
-                    ChangeOrderResult changeOrderResult;
-                    boolean drawBackMoneyStatus;
-
-//                    boolean status = true;
-                    while(!taskCancelOrder.isDone() || !taskDrawBackMoney.isDone()) {
-
-//                        if(!taskDrawBackMoney.isDone() && taskCancelOrder.isDone()){
-//                            status = false;
-//                        }
-                    }
-
-                    drawBackMoneyStatus = taskDrawBackMoney.get();
-                    changeOrderResult = taskCancelOrder.get();
-                    System.out.println("[Cancel Order Service][Cancel Order] Two Process Done");
-
-
-                    /********************************************************************************/
-                    GetOrderByIdInfo localInfo = new GetOrderByIdInfo();
-                    localInfo.setOrderId(order.getId().toString());
-                    GetOrderResult gor = getOrderByIdFromOrderOther(localInfo,headers);
-                    boolean status;
-                    if(gor.getOrder().getStatus() != OrderStatus.CANCEL.getCode()){
-                        System.out.println("订单状态不对");
-                        status = false;
-                    }else{
-                        System.out.println("订单状态正确");
-                        status = true;
-                    }
-
-
-                    if(changeOrderResult.isStatus() == true && drawBackMoneyStatus == true){
-                        if(status == false) {
-                            System.out.println("[Cancel Order Service]Fail. Processes Seq");
-                            throw new Exception("[Error Process Seq]");
-                            //return null;
-                        }else{
-                            CancelOrderResult finalResult = new CancelOrderResult();
-                            finalResult.setStatus(true);
-                            finalResult.setMessage("Success.Processes Seq.");
-                            System.out.println("[Cancel Order Service]Success.Processes Seq.");
-                            return finalResult;
-                        }
-                    }else if(changeOrderResult.isStatus() == true && drawBackMoneyStatus == false){
-                        throw new RuntimeException("[????] Draw Back Money Fail but Cancel Order Success.");
-
-                    }else if(changeOrderResult.isStatus() == false && drawBackMoneyStatus == true){
-                        throw new RuntimeException("[???????] Draw Back Money Success but Cancel Order Fail.");
-                    }else{
-                        throw new RuntimeException("[???????] All Fail");
-                    }
-
-                }else{
-                    CancelOrderResult result = new CancelOrderResult();
-                    result.setStatus(false);
-                    result.setMessage("Order Status Cancel Not Permitted");
-                    System.out.println("[Cancel Order Service][Cancel Order] Order Status Not Permitted.");
-                    return result;
-                }
-            }else{
-                CancelOrderResult result = new CancelOrderResult();
-                result.setStatus(false);
-                result.setMessage("Order Not Found");
-                System.out.println("[Cancel Order Service][Cancel Order] Order Not Found.");
-                return result;
-            }
-        }
-    }
-
-    @Override
     public CancelOrderResult cancelOrderVersion2(CancelOrderInfo info, String loginToken,
                                                  String loginId, HttpHeaders headers) throws Exception{
-        if(loginToken == null ){
-            loginToken = "admin";
-        }
-        CancelOrderResult result = new CancelOrderResult();
-        //VerifyResult verifyResult = verifySsoLogin(loginToken,headers);
-//        if(false == verifyResult.isStatus()){
-//            result.setStatus(false);
-//            result.setMessage("Not Login");
-//        }else{
-//
-//        }
-        headers.add("Cookie","jichao=dododo");
+        CancelOrderResult result;
         String orderId = info.getOrderId();
-//        Order order = getOrderFromBasicInfo(orderId,headers);
-//
-//
-//        String money = calculateRefund(order);
         AsyncSendToCancelOrderInfo cancelOrderInfo = new AsyncSendToCancelOrderInfo();
         cancelOrderInfo.setLoginToken(loginToken);
         cancelOrderInfo.setOrderId(orderId);
@@ -220,17 +36,15 @@ public class CancelServiceImpl implements CancelService{
         ChangeOrderResult cancelOrderOtherResult = null;
         boolean drawBackMoneyResult = false;
         try{
-            //1.异步调用order-service
+            headers.add("Cookie","jichao=dododo");
             System.out.println("1.异步调用order-service");
-            Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2(cancelOrderInfo,headers);
-            //2.异步调用order-other-serivce
+            Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
             System.out.println("2.异步调用order-other-serivce");
-            Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2(cancelOrderInfo,headers);
-            //3.异步调用inside-payment-service
+            Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
             System.out.println("3.异步调用inside-payment-service");
-            Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancel("100",loginId,orderId,loginToken,headers);
+            Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancelDoGet("0",loginId,orderId,loginToken,headers);
             while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()) {
-                //block and waiting result
+
             }
             cancelOrderResult = taskOrderUpdate.get();
             cancelOrderOtherResult = taskOrderOtherUpdate.get();

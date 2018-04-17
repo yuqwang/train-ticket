@@ -60,6 +60,26 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  name: ts-basic-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-basic-service
+    spec:
+      containers:
+      - name: ts-basic-service
+        image: 10.141.212.25:5555/f1/cluster-ts-basic-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15680
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
   name: ts-order-service
 spec:
   replicas: 1
@@ -76,6 +96,87 @@ spec:
         - containerPort: 12031
 
 ---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-login-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-login-service
+    spec:
+      containers:
+      - name: ts-login-service
+        image: 10.141.212.25:5555/f1/cluster-ts-login-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12342
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-verification-code-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-verification-code-service
+    spec:
+      containers:
+      - name: ts-verification-code-service
+        image: 10.141.212.25:5555/f1/cluster-ts-verification-code-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15678
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-sso-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-sso-service
+    spec:
+      containers:
+      - name: ts-sso-service
+        image: 10.141.212.25:5555/f1/cluster-ts-sso-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12349
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-station-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-station-service
+    spec:
+      containers:
+      - name: ts-station-service
+        image: 10.141.212.25:5555/f1/cluster-ts-station-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12345
+
+---
+
 
 apiVersion: v1
 kind: Service
@@ -130,3 +231,58 @@ spec:
    app: ts-inside-payment-service
 
 ---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-basic-service
+spec:
+  ports:
+    - name: http
+      port: 15680
+  selector:
+   app: ts-basic-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-login-service
+spec:
+  ports:
+    - name: http
+      port: 12342
+  selector:
+   app: ts-login-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-verification-code-service
+spec:
+  ports:
+    - name: http
+      port: 15678
+  selector:
+   app: ts-verification-code-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-sso-service
+spec:
+  ports:
+    - name: http
+      port: 12349
+  selector:
+   app: ts-sso-service
+
+---
+
+
+

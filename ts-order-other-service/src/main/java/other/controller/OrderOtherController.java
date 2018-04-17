@@ -21,9 +21,24 @@ public class OrderOtherController {
     private RestTemplate restTemplate;
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
-    public String home() {
+    public String home(@RequestHeader HttpHeaders headers) {
+        System.out.println("[====/welcome====] Cookie:" + headers.get("Cookie"));
         return "Welcome to [ Order Other Service ] !";
     }
+
+    @RequestMapping(path="/orderOther/cancelOrder/{orderId}/{loginToken}",method = RequestMethod.GET)
+    public ChangeOrderResult cancelOrder(@PathVariable String orderId,@PathVariable String loginToken, @RequestHeader HttpHeaders headers){
+        //System.out.println("[====/orderOther/cancelOrder====]Id:" + info.getOrderId());
+        System.out.println("[====/orderOther/cancelOrder====] Cookie:" + headers.get("Cookie"));
+        AsyncSendToCancelOrderInfo info = new AsyncSendToCancelOrderInfo();
+        info.setLoginToken(loginToken);
+        info.setOrderId(orderId);
+//        ChangeOrderResult result = new ChangeOrderResult();
+//        result.setStatus(true);
+//        return result;
+        return orderService.cancelOrder(info,headers);
+    }
+
 
     /***************************For Normal Use***************************/
 
@@ -119,7 +134,10 @@ public class OrderOtherController {
     @RequestMapping(path = "/orderOther/update", method = RequestMethod.POST)
     public ChangeOrderResult saveOrderInfo(@RequestBody ChangeOrderInfo orderInfo, @RequestHeader HttpHeaders headers){
         System.out.println("[==================]Cookie:" + headers.get("Cookie"));
-        VerifyResult tokenResult = verifySsoLogin(orderInfo.getLoginToken(),headers);
+//        VerifyResult tokenResult = verifySsoLogin(orderInfo.getLoginToken(), headers);
+        VerifyResult tokenResult = new VerifyResult();
+        tokenResult.setStatus(true);
+        tokenResult.setMessage("Test");
         if(tokenResult.isStatus() == true){
             System.out.println("[Order Other Service][Verify Login] Success");
             return orderService.saveChanges(orderInfo.getOrder(), headers);
@@ -146,11 +164,6 @@ public class OrderOtherController {
         return orderService.deleteOrder(info, headers);
     }
 
-    @CrossOrigin(origins = "*")
-    @RequestMapping(path="/orderOther/cancelOrder",method = RequestMethod.POST)
-    public ChangeOrderResult cancelOrder(@RequestBody AsyncSendToCancelOrderInfo info, @RequestHeader HttpHeaders headers){
-        return orderService.cancelOrder(info,headers);
-    }
 
 
     /***************For super admin(Single Service Test*******************/
@@ -163,19 +176,21 @@ public class OrderOtherController {
     }
 
     private VerifyResult verifySsoLogin(String loginToken, @RequestHeader HttpHeaders headers){
-        System.out.println("[Order Service][Verify Login] Verifying....");
-
-        HttpEntity requestTokenResult = new HttpEntity(null,headers);
-        ResponseEntity<VerifyResult> reTokenResult  = restTemplate.exchange(
-                "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
-                HttpMethod.GET,
-                requestTokenResult,
-                VerifyResult.class);
-        VerifyResult tokenResult = reTokenResult.getBody();
-//        VerifyResult tokenResult = restTemplate.getForObject(
+//        System.out.println("[Order Service][Verify Login] Verifying....");
+//
+//        HttpEntity requestTokenResult = new HttpEntity(null,headers);
+//        ResponseEntity<VerifyResult> reTokenResult  = restTemplate.exchange(
 //                "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
+//                HttpMethod.GET,
+//                requestTokenResult,
 //                VerifyResult.class);
-
+//        VerifyResult tokenResult = reTokenResult.getBody();
+////        VerifyResult tokenResult = restTemplate.getForObject(
+////                "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
+////                VerifyResult.class);
+        VerifyResult tokenResult = new VerifyResult();
+        tokenResult.setStatus(true);
+        tokenResult.setMessage("Test");
 
         return tokenResult;
     }

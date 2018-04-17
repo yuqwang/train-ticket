@@ -36,6 +36,11 @@ public class InitData implements CommandLineRunner {
         order.setPrice("100.0");
         service.initOrder(order, new HttpHeaders());
 
+
+        for(int i = 0;i < 20;i++){
+            order.setId(UUID.randomUUID());
+            service.initOrder(order, new HttpHeaders());
+        }
 //
 //        Order orderTwo = new Order();
 //        orderTwo.setId(UUID.fromString("8177ac5a-61ac-42f4-83f4-bd7b394d0531"));

@@ -7,8 +7,6 @@ import org.springframework.http.HttpHeaders;
 
 public interface CancelService {
 
-    CancelOrderResult cancelOrder(CancelOrderInfo info,String loginToken,String loginId, HttpHeaders headers) throws Exception;
-
     CalculateRefundResult calculateRefund(CancelOrderInfo info, HttpHeaders headers);
 
     CancelOrderResult cancelOrderVersion2(CancelOrderInfo info, String loginToken,

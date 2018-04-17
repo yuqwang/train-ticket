@@ -435,12 +435,14 @@ public class OrderOtherServiceImpl implements OrderOtherService{
             result.setStatus(false);
             result.setMessage("Order Not Found");
             result.setOrder(null);
+            System.out.println("取消订单失败");
         }else{
             order.setStatus(OrderStatus.CANCEL.getCode());
             orderOtherRepository.save(order);
             result.setStatus(true);
             result.setMessage("Success");
             result.setOrder(order);
+            System.out.println("取消订单成功");
         }
         return result;
     }

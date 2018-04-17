@@ -15,8 +15,23 @@ public class InsidePaymentController {
     public InsidePaymentService service;
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
-    public String home() {
+    public String home(@RequestHeader HttpHeaders headers) {
+        System.out.println("[====/welcome====] Cookie:" + headers.get("Cookie"));
         return "Welcome to [ Inside Payment Service ] !";
+    }
+
+    @RequestMapping(value="/inside_payment/drawBackAndCancel/{userId}/{money}/{orderId}/{loginToken}", method = RequestMethod.GET)
+    public boolean drawBackAndCancel(@PathVariable String userId, @PathVariable String money,
+            @PathVariable String orderId, @PathVariable String loginToken, @RequestHeader HttpHeaders headers){
+        System.out.println("[====/inside_payment/drawBackAndCancel====]");
+        System.out.println("[==================]Cookie:" + headers.get("Cookie"));
+        DrawbackAndCancel info = new DrawbackAndCancel();
+        info.setLoginToken(loginToken);
+        info.setMoney(money);
+        info.setOrderId(orderId);
+        info.setUserId(userId);
+//        return true;
+        return service.drawBackAndCancel(info, headers);
     }
 
     @RequestMapping(value="/inside_payment/pay", method = RequestMethod.POST)
@@ -51,14 +66,7 @@ public class InsidePaymentController {
     }
 
 
-    @RequestMapping(value="/inside_payment/drawBackAndCancel", method = RequestMethod.POST)
-    public boolean drawBackAndCancel(@RequestBody DrawbackAndCancel info, @RequestHeader HttpHeaders headers){
 
-        System.out.println("[==================]Cookie:" + headers.get("Cookie"));
-        headers.set("Cookie","");
-
-        return service.drawBackAndCancel(info, headers);
-    }
 
     @RequestMapping(value="/inside_payment/payDifference", method = RequestMethod.POST)
     public boolean payDifference(@RequestBody PaymentDifferenceInfo info, HttpServletRequest request, @RequestHeader HttpHeaders headers){

@@ -21,8 +21,22 @@ public class OrderController {
     private RestTemplate restTemplate;
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
-    public String home() {
+    public String home(@RequestHeader HttpHeaders headers) {
+        System.out.println("[====/welcome====] Cookie:" + headers.get("Cookie"));
         return "Welcome to [ Order Service ] !";
+    }
+
+    @RequestMapping(path="/order/cancelOrder/{orderId}/{loginToken}",method = RequestMethod.GET)
+    public ChangeOrderResult cancelOrder(@PathVariable String orderId,@PathVariable String loginToken,  @RequestHeader HttpHeaders headers){
+        //System.out.println("[====/orderOther/cancelOrder====]Id:" + info.getOrderId());
+        System.out.println("[====/orderOther/cancelOrder====] Cookie:" + headers.get("Cookie"));
+//        ChangeOrderResult result = new ChangeOrderResult();
+//        result.setStatus(false);
+//        return result;
+        AsyncSendToCancelOrderInfo info = new AsyncSendToCancelOrderInfo();
+        info.setLoginToken(loginToken);
+        info.setOrderId(orderId);
+        return orderService.cancelOrder(info,headers);
     }
 
     /***************************For Normal Use***************************/
@@ -118,7 +132,10 @@ public class OrderController {
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/order/update", method = RequestMethod.POST)
     public ChangeOrderResult saveOrderInfo(@RequestBody ChangeOrderInfo orderInfo, @RequestHeader HttpHeaders headers){
-        VerifyResult tokenResult = verifySsoLogin(orderInfo.getLoginToken(), headers);
+//        VerifyResult tokenResult = verifySsoLogin(orderInfo.getLoginToken(), headers);
+        VerifyResult tokenResult = new VerifyResult();
+        tokenResult.setStatus(true);
+        tokenResult.setMessage("Test");
         if(tokenResult.isStatus() == true){
             System.out.println("[Order Service][Verify Login] Success");
             return orderService.saveChanges(orderInfo.getOrder(),headers);
@@ -145,11 +162,7 @@ public class OrderController {
         return orderService.deleteOrder(info,headers);
     }
 
-    @CrossOrigin(origins = "*")
-    @RequestMapping(path="/order/cancelOrder",method = RequestMethod.POST)
-    public ChangeOrderResult cancelOrder(@RequestBody AsyncSendToCancelOrderInfo info, @RequestHeader HttpHeaders headers){
-        return orderService.cancelOrder(info,headers);
-    }
+
 
     /***************For super admin(Single Service Test*******************/
 
@@ -161,20 +174,22 @@ public class OrderController {
     }
 
     private VerifyResult verifySsoLogin(String loginToken, @RequestHeader HttpHeaders headers){
-        System.out.println("[Order Service][Verify Login] Verifying....");
-
-        HttpEntity requestTokenResult = new HttpEntity(null,headers);
-        ResponseEntity<VerifyResult> reTokenResult  = restTemplate.exchange(
-                "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
-                HttpMethod.GET,
-                requestTokenResult,
-                VerifyResult.class);
-        VerifyResult tokenResult = reTokenResult.getBody();
-//        VerifyResult tokenResult = restTemplate.getForObject(
+//        System.out.println("[Order Service][Verify Login] Verifying....");
+//
+//        HttpEntity requestTokenResult = new HttpEntity(null,headers);
+//        ResponseEntity<VerifyResult> reTokenResult  = restTemplate.exchange(
 //                "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
+//                HttpMethod.GET,
+//                requestTokenResult,
 //                VerifyResult.class);
+//        VerifyResult tokenResult = reTokenResult.getBody();
+////        VerifyResult tokenResult = restTemplate.getForObject(
+////                "http://ts-sso-service:12349/verifyLoginToken/" + loginToken,
+////                VerifyResult.class);
 
-
+        VerifyResult tokenResult = new VerifyResult();
+        tokenResult.setStatus(true);
+        tokenResult.setMessage("Test");
         return tokenResult;
     }
 
