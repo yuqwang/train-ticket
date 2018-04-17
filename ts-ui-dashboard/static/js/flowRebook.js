@@ -600,11 +600,11 @@ $("#ticket_cancel_panel_confirm").click(function(){
     }
     var cancelOrderInfoData = JSON.stringify(cancelOrderInfo);
     $.ajax({
-        type: "post",
-        url: "/cancelOrder",
+        type: "get",
+        url: "/cancelOrder/" + cancelOrderInfo.orderId,
         contentType: "application/json",
         dataType: "json",
-        data: cancelOrderInfoData,
+        //data: cancelOrderInfoData,
         xhrFields: {
             withCredentials: true
         },

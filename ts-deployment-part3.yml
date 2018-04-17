@@ -223,6 +223,10 @@ spec:
         backend:
           serviceName: ts-cancel-service
           servicePort: 18885
+      - path: /cancelOrder/.*
+        backend:
+          serviceName: ts-cancel-service
+          servicePort: 18885
       - path: /cancelCalculateRefund
         backend:
           serviceName: ts-cancel-service
