@@ -15,8 +15,18 @@ public class ResultForTravel {
 
     private HashMap<String,String> prices;
 
+    private String message;
+
     public ResultForTravel(){
         //Default Constructor
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public boolean isStatus() {

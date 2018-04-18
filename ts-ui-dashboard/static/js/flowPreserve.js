@@ -124,8 +124,12 @@ function checkDateFormat(date){
     }
 }
 
+
+// {"startingPlace":"Shang Hai","endPlace":"Su Zhou","departureTime":"2018-04-28"}
+
 function queryForTravelInfo(data,path) {
     $("#travel_booking_button").attr("disabled",true);
+    alert(data);
     $.ajax({
         type: "post",
         url: path,
@@ -136,6 +140,12 @@ function queryForTravelInfo(data,path) {
             withCredentials: true
         },
         success: function (result) {
+            alert("return");
+            if(result == null){
+                alert("Error");
+            }else{
+                alert("Not Null =" + JSON.stringify(result));
+            }
             if (result[0] != null) {
                 var obj = result;
                 for (var i = 0, l = obj.length; i < l; i++) {

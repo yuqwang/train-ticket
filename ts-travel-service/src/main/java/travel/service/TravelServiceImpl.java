@@ -170,6 +170,9 @@ public class TravelServiceImpl implements TravelService{
                     tempRoute.getStations().contains(endPlaceId) &&
                     tempRoute.getStations().indexOf(startingPlaceId) < tempRoute.getStations().indexOf(endPlaceId)){
                 TripResponse response = getTickets(tempTrip,tempRoute,startingPlaceId,endPlaceId,startingPlaceName,endPlaceName,info.getDepartureTime(), headers);
+                if(response == null){
+                    return null;
+                }
                 list.add(response);
             }
         }
@@ -230,6 +233,12 @@ public class TravelServiceImpl implements TravelService{
                 requestEntity,
                 ResultForTravel.class);
         ResultForTravel resultForTravel = re.getBody();
+
+
+        if(resultForTravel.isStatus() == false && resultForTravel.getMessage().contains("OOM")){
+            System.out.println("报出了OOOOOOOOOOMMMMMMMMMMMMMMMMMMMM");
+            return null;
+        }
 
 //        ResultForTravel resultForTravel = restTemplate.postForObject(
 //                "http://ts-ticketinfo-service:15681/ticketinfo/queryForTravel", query ,ResultForTravel.class);

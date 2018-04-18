@@ -23,15 +23,38 @@ public class TicketInfoServiceImpl implements TicketInfoService{
     @Override
     public ResultForTravel queryForTravel(QueryForTravel info,HttpHeaders headers){
         HttpEntity requestEntity = new HttpEntity(info,headers);
-        ResponseEntity<ResultForTravel> re = restTemplate.exchange(
-                "http://ts-basic-service:15680/basic/queryForTravel",
-                HttpMethod.POST,
-                requestEntity,
-                ResultForTravel.class);
-        ResultForTravel result = re.getBody();
-//        ResultForTravel result = restTemplate.postForObject(
-//                "http://ts-basic-service:15680/basic/queryForTravel", info, ResultForTravel.class);
-        return result;
+
+        try{
+            ResponseEntity<ResultForTravel> re = restTemplate.exchange(
+                    "http://ts-basic-service:15680/basic/queryForTravel",
+                    HttpMethod.POST,
+                    requestEntity,
+                    ResultForTravel.class);
+            ResultForTravel result = re.getBody();
+            return result;
+        }catch(Exception e){
+            ResponseEntity<String> sayHello = restTemplate.exchange(
+                    "http://ts-basic-service:15680/welcome",
+                    HttpMethod.GET,
+                    requestEntity,
+                    String.class);
+
+            if(sayHello.getStatusCodeValue() == 200){
+                ResultForTravel result = new ResultForTravel();
+                result.setStatus(false);
+                result.setMessage("OOM");
+                System.out.println("basic-welcome 200状态码但是basic-queryForTravel 500状态码");
+                return result;
+            }else{
+                System.out.println("不知道发生了什么，状态码：" + sayHello.getStatusCodeValue());
+                ResultForTravel result = new ResultForTravel();
+                result.setStatus(false);
+                result.setMessage(sayHello.getBody());
+                return null;
+            }
+        }
+
+
     }
 
     @Override

@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 services:
 
   rabbitmq:
@@ -247,6 +247,8 @@ services:
         - 15680:15680
       networks:
           - my-network
+      mem_limit: 200M
+      memswap_limit: 500M
 
   ts-ticketinfo-service:
         build: ts-ticketinfo-service
@@ -525,10 +527,6 @@ services:
               restart: always
               ports:
                 - 16113:16113
-              deploy:
-                replicas: 1
-                restart_policy:
-                  condition: on-failure
               networks:
                 - my-network
 
@@ -538,10 +536,6 @@ services:
                 restart: always
                 ports:
                   - 16114:16114
-                deploy:
-                  replicas: 1
-                  restart_policy:
-                    condition: on-failure
                 networks:
                   - my-network
 
@@ -551,10 +545,6 @@ services:
                   restart: always
                   ports:
                     - 16115:16115
-                  deploy:
-                    replicas: 1
-                    restart_policy:
-                      condition: on-failure
                   networks:
                     - my-network
 
