@@ -20,9 +20,13 @@ public class TestFlowOne {
 
         //注意把这里换成你的集群的ip
         CancelOrderResult result = restTemplate.getForObject(
-                "10.141.212.21:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
+                "http://10.141.212.21:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
                 CancelOrderResult.class);
-        //[Error Process Seq] - 顺序没控制好的话result.message返回这个 status为false
+
+        System.out.println("[Message]" + result.getMessage());
+        System.out.println("[Status]" + result.isStatus());
+
+        //[Error Process Seq] - 返回500 exception
         //Success.Processes Seq. - 顺序控制好了返回这个 status为true
         //Something Wrong - 其他不知道什么意外乱七八糟的情况返回这个,status为false
 

@@ -56,7 +56,11 @@ public class CancelServiceImpl implements CancelService{
             Order orderFinal = getOrderFromBasicInfo(orderId,headers);
             //检查订单的状态，对的话返回正确，不对的话返回错误
             if(orderFinal.getStatus() != OrderStatus.CANCEL.getCode()){
-                throw new Exception("[Error Process Seq]");
+                CancelOrderResult finalResult = new CancelOrderResult();
+                finalResult.setStatus(false);
+                finalResult.setMessage("[Error Process Seq]");
+                return finalResult;
+                //throw new Exception("[Error Process Seq]");
             }else{
                 CancelOrderResult finalResult = new CancelOrderResult();
                 finalResult.setStatus(true);
