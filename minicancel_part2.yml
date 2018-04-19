@@ -177,19 +177,58 @@ spec:
 
 ---
 
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-assurance-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-assurance-service
+    spec:
+      containers:
+      - name: ts-assurance-service
+        image: 10.141.212.25:5555/f1/cluster-ts-assurance-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18888
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-food-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-food-service
+    spec:
+      containers:
+      - name: ts-food-service
+        image: 10.141.212.25:5555/f1/cluster-ts-food-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18856
+
+---
 
 apiVersion: v1
-kind: Service
-metadata:
-  name: ts-cancel-service
-spec:
-  type: NodePort
-  ports:
-    - name: http-cancel
-      port: 18885
-      nodePort: 30085
-  selector:
-   app: ts-cancel-service
+   kind: Service
+   metadata:
+     name: ts-cancel-service
+   spec:
+     type: NodePort
+     ports:
+       - name: http-cancel
+         port: 18885
+         nodePort: 30085
+     selector:
+      app: ts-cancel-service
 
 ---
 
@@ -281,6 +320,32 @@ spec:
       port: 12349
   selector:
    app: ts-sso-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-assurance-service
+spec:
+  ports:
+    - name: http
+      port: 18888
+  selector:
+   app: ts-assurance-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-food-service
+spec:
+  ports:
+    - name: http
+      port: 18856
+  selector:
+   app: ts-food-service
 
 ---
 

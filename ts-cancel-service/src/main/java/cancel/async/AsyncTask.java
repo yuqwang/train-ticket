@@ -152,7 +152,6 @@ public class AsyncTask {
             System.out.println("[Cancel Order Service] Normal Process，Normal Cancel Process");
         }
 
-        DrawbackAndCancel info = new DrawbackAndCancel(userId,money,orderId,loginToken);
         HttpEntity requestEntity = new HttpEntity(null, headers);
         ResponseEntity<String> re = restTemplate.exchange(
                 "http://ts-inside-payment-service:18673/inside_payment/drawBackAndCancel/" + userId +
@@ -163,6 +162,28 @@ public class AsyncTask {
         String result = re.getBody();
         System.out.println("ts-inside-payment-service返回");
         return new AsyncResult<>(result.equals("true"));
+    }
+
+    @Async("mySimpleAsync")
+    public Future<CancelFoodOrderResult> cancelFoodOrder(String orderId, HttpHeaders headers){
+        HttpEntity requestEntity = new HttpEntity(null, headers);
+        ResponseEntity<CancelFoodOrderResult> re = restTemplate.exchange(
+                "http://ts-food-service:18856/food/cancelFoodOrder/doGet/" + orderId,
+                HttpMethod.GET,
+                requestEntity,
+                CancelFoodOrderResult.class);
+        return new AsyncResult<>(re.getBody());
+    }
+
+    @Async("mySimpleAsync")
+    public Future<DeleteAssuranceResult> cancelAssuranceOrder(String orderId, HttpHeaders headers){
+        HttpEntity requestEntity = new HttpEntity(null, headers);
+        ResponseEntity<DeleteAssuranceResult> re = restTemplate.exchange(
+                "http://ts-assurance-service:18888/assurance/deleteAssuranceByOrderIdDoGet/" + orderId,
+                HttpMethod.GET,
+                requestEntity,
+                DeleteAssuranceResult.class);
+        return new AsyncResult<>(re.getBody());
     }
 
 

@@ -215,7 +215,7 @@ public class FoodServiceImpl implements FoodService{
         CancelFoodOrderResult result = new  CancelFoodOrderResult();
         if(fo == null){
             System.out.println("[Food-Service][Cancel FoodOrder] Order Id Is Non-Existent.");
-            result.setStatus(false);
+            result.setStatus(true);
             result.setMessage("Order Id Is Non-Existent.");
             result.setFoodOrder(null);
         } else {
