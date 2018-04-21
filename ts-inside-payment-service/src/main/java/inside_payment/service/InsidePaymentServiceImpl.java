@@ -1,8 +1,8 @@
 package inside_payment.service;
 
-import inside_payment.async.AsyncTask;
 import inside_payment.domain.*;
 import inside_payment.repository.AddMoneyRepository;
+import inside_payment.repository.DrawBackRepository;
 import inside_payment.repository.PaymentRepository;
 import inside_payment.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class InsidePaymentServiceImpl implements InsidePaymentService{
@@ -26,7 +28,16 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
     public PaymentRepository paymentRepository;
 
     @Autowired
+    public DrawBackRepository drawBackRepository;
+
+    @Autowired
     public RestTemplate restTemplate;
+
+    private Random random = new Random();
+
+    public boolean enableAutoCheck = false;
+
+    public final AtomicLong equal = new AtomicLong();
 
     @Override
     public boolean pay(PaymentInfo info, HttpServletRequest request, HttpHeaders headers){
@@ -300,10 +311,140 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             addMoney.setMoney(info.getMoney());
             addMoney.setType(AddMoneyType.D);
             addMoneyRepository.save(addMoney);
+            reCalculateRefundMoney(order,info.getOrderId(), info.getMoney(), info.getLoginToken());
             return true;
         }else{
             return false;
         }
+    }
+
+
+
+    public ChangeOrderResult reCalculateRefundMoney(Order order, String orderId, String money, String loginToken) {
+
+        ChangeOrderResult changeOrderResult;
+        String result = calculateRefund(order);
+
+        System.out.println();
+        System.out.println("money:" + money);
+        System.out.println("result.getRefund():"+result);
+        System.out.println();
+
+        if(!result.equals(money)){
+            equal.set(2);
+//            DrawBack drawBack = drawBackRepository.findByOrderId(orderId);
+//            addMoneyRepository.deleteByUserIdAndMoney(drawBack.getUserId(),money);
+            AddMoney addMoney = new AddMoney();
+//            addMoney.setUserId(drawBack.getUserId());
+            addMoney.setUserId(order.getAccountId().toString());
+            addMoney.setMoney(result);
+            addMoney.setType(AddMoneyType.D);
+            addMoneyRepository.save(addMoney);
+            //设置订单状态为已退款
+//            GetOrderByIdInfo getOrderInfo = new GetOrderByIdInfo();
+//            getOrderInfo.setOrderId(orderId);
+//            GetOrderResult cor = restTemplate.postForObject(
+//                    "http://ts-order-other-service:12032/orderOther/getById"
+//                    ,getOrderInfo,GetOrderResult.class);
+//            Order order = cor.getOrder();
+            order.setStatus(OrderStatus.CANCEL.getCode());
+            ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
+            changeOrderInfo.setOrder(order);
+            changeOrderInfo.setLoginToken(loginToken);
+            System.out.println();
+            System.out.println("orderOther/update before");
+            System.out.println("---重新修改过程---");
+            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",changeOrderInfo,ChangeOrderResult.class);
+            System.out.println();
+            System.out.println("http://ts-order-other-service:12032/orderOther/update after");
+            System.out.println();
+        }else{
+            equal.set(1);
+//            GetOrderByIdInfo getOrderInfo = new GetOrderByIdInfo();
+//            getOrderInfo.setOrderId(orderId);
+//            GetOrderResult cor = restTemplate.postForObject(
+//                    "http://ts-order-other-service:12032/orderOther/getById"
+//                    ,getOrderInfo,GetOrderResult.class);
+//            Order order = cor.getOrder();
+            ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
+            changeOrderInfo.setOrder(order);
+            changeOrderInfo.setLoginToken(loginToken);
+            System.out.println();
+            System.out.println("orderOther/update before");
+            System.out.println("---一般过程---");
+            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",changeOrderInfo,ChangeOrderResult.class);
+            System.out.println();
+            System.out.println("orderOther/update after");
+            System.out.println();
+//            changeOrderResult = new ChangeOrderResult();
+//            changeOrderResult.setStatus(false);
+
+        }
+        return changeOrderResult;
+    }
+
+
+
+    private String calculateRefund(Order order){
+        double totalPrice = Double.parseDouble(order.getPrice());
+        double price;
+        int c = random.nextInt(6);
+        if(c ==  1 || c == 3 || c == 5){
+            price = totalPrice * 0.8;
+        }else {
+            price = totalPrice * 0.7;
+        }
+
+        DecimalFormat priceFormat = new java.text.DecimalFormat("0.00");
+        String str = priceFormat.format(price);
+        System.out.println();
+        System.out.println("[Cancel Order]calculate refund - " + str);
+        System.out.println();
+        return str;
+//        if(order.getStatus() == OrderStatus.NOTPAID.getCode()){
+//            return "0.00";
+//        }
+//        System.out.println("[Cancel Order] Order Travel Date:" + order.getTravelDate().toString());
+//        Date nowDate = new Date();
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(order.getTravelDate());
+//        int year = cal.get(Calendar.YEAR);
+//        int month = cal.get(Calendar.MONTH);
+//        int day = cal.get(Calendar.DAY_OF_MONTH);
+//        Calendar cal2 = Calendar.getInstance();
+//        cal2.setTime(order.getTravelTime());
+//        int hour = cal2.get(Calendar.HOUR);
+//        int minute = cal2.get(Calendar.MINUTE);
+//        int second = cal2.get(Calendar.SECOND);
+//        Date startTime = new Date(year,
+//                month,
+//                day,
+//                hour,
+//                minute,
+//                second);
+//        System.out.println("[Cancel Order] nowDate  :" + nowDate.toString());
+//        System.out.println("[Cancel Order] startTime:" + startTime.toString());
+//        if(nowDate.after(startTime)){
+//            System.out.println("[Cancel Order] Ticket expire refund 0");
+//            return "0";
+//        }else{
+//            double totalPrice = Double.parseDouble(order.getPrice());
+//            double price ;
+//
+//            int c = counter.incrementAndGet() % 6;
+//            if(c ==  1 || c == 2 || c == 3){
+//                price = totalPrice * 0.8;
+//            }else {
+//                price = totalPrice * 0.7;
+//            }
+//
+//            DecimalFormat priceFormat = new java.text.DecimalFormat("0.00");
+//            String str = priceFormat.format(price);
+//            System.out.println();
+//            System.out.println("[Cancel Order]calculate refund - " + str);
+//            System.out.println();
+//            return str;
+//        }
     }
 
 

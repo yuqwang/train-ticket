@@ -13,7 +13,9 @@ import org.springframework.web.client.RestTemplate;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class CancelServiceImpl implements CancelService{
@@ -23,6 +25,8 @@ public class CancelServiceImpl implements CancelService{
 
     @Autowired
     private AsyncTask asyncTask;
+
+    private Random random = new Random();
 
     @Override
     public CancelOrderResult cancelOrderVersion2(CancelOrderInfo info, String loginToken,
@@ -48,11 +52,12 @@ public class CancelServiceImpl implements CancelService{
             System.out.println("3.异步调用order-service");
             Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
             System.out.println("4.异步调用assurance-service");
-            asyncTask.cancelAssuranceOrder(orderId,headers);
+            Future<DeleteAssuranceResult> taaskAssurance = asyncTask.cancelAssuranceOrder(orderId,headers);
             System.out.println("5.异步调用food-service");
-            asyncTask.cancelFoodOrder(orderId,headers);
+            Future<CancelFoodOrderResult> taskFood = asyncTask.cancelFoodOrder(orderId,headers);
 
-            while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()) {
+            while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()
+                    || taaskAssurance.isDone() || taskFood.isDone()) {
 
             }
             cancelOrderResult = taskOrderUpdate.get();
@@ -190,42 +195,66 @@ public class CancelServiceImpl implements CancelService{
     }
 
     private String calculateRefund(Order order){
-        if(order.getStatus() == OrderStatus.NOTPAID.getCode()){
-            return "0.00";
+        double totalPrice = Double.parseDouble(order.getPrice());
+        double price;
+        int c = random.nextInt(6);
+        if(c ==  1 || c == 3 || c == 5){
+            price = totalPrice * 0.8;
+        }else {
+            price = totalPrice * 0.7;
         }
-        System.out.println("[Cancel Order] Order Travel Date:" + order.getTravelDate().toString());
-        Date nowDate = new Date();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(order.getTravelDate());
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        Calendar cal2 = Calendar.getInstance();
-        cal2.setTime(order.getTravelTime());
-        int hour = cal2.get(Calendar.HOUR);
-        int minute = cal2.get(Calendar.MINUTE);
-        int second = cal2.get(Calendar.SECOND);
-        Date startTime = new Date(year,
-                                  month,
-                                  day,
-                                  hour,
-                                  minute,
-                                  second);
-        System.out.println("[Cancel Order] nowDate  :" + nowDate.toString());
-        System.out.println("[Cancel Order] startTime:" + startTime.toString());
-        if(nowDate.after(startTime)){
-            System.out.println("[Cancel Order] Ticket expire refund 0");
-            return "0";
-        }else{
-            double totalPrice = Double.parseDouble(order.getPrice());
-            double price = totalPrice * 0.8;
-            DecimalFormat priceFormat = new java.text.DecimalFormat("0.00");
-            String str = priceFormat.format(price);
-            System.out.println("[Cancel Order]calculate refund - " + str);
-            return str;
-        }
-    }
 
+        DecimalFormat priceFormat = new java.text.DecimalFormat("0.00");
+        String str = priceFormat.format(price);
+        System.out.println();
+        System.out.println("[Cancel Order]calculate refund - " + str);
+        System.out.println();
+        return str;
+//        if(order.getStatus() == OrderStatus.NOTPAID.getCode()){
+//            return "0.00";
+//        }
+//        System.out.println("[Cancel Order] Order Travel Date:" + order.getTravelDate().toString());
+//        Date nowDate = new Date();
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(order.getTravelDate());
+//        int year = cal.get(Calendar.YEAR);
+//        int month = cal.get(Calendar.MONTH);
+//        int day = cal.get(Calendar.DAY_OF_MONTH);
+//        Calendar cal2 = Calendar.getInstance();
+//        cal2.setTime(order.getTravelTime());
+//        int hour = cal2.get(Calendar.HOUR);
+//        int minute = cal2.get(Calendar.MINUTE);
+//        int second = cal2.get(Calendar.SECOND);
+//        Date startTime = new Date(year,
+//                month,
+//                day,
+//                hour,
+//                minute,
+//                second);
+//        System.out.println("[Cancel Order] nowDate  :" + nowDate.toString());
+//        System.out.println("[Cancel Order] startTime:" + startTime.toString());
+//        if(nowDate.after(startTime)){
+//            System.out.println("[Cancel Order] Ticket expire refund 0");
+//            return "0";
+//        }else{
+//            double totalPrice = Double.parseDouble(order.getPrice());
+//            double price ;
+//
+//            int c = counter.incrementAndGet() % 6;
+//            if(c ==  1 || c == 2 || c == 3){
+//                price = totalPrice * 0.8;
+//            }else {
+//                price = totalPrice * 0.7;
+//            }
+//
+//            DecimalFormat priceFormat = new java.text.DecimalFormat("0.00");
+//            String str = priceFormat.format(price);
+//            System.out.println();
+//            System.out.println("[Cancel Order]calculate refund - " + str);
+//            System.out.println();
+//            return str;
+//        }
+    }
 
     private ChangeOrderResult cancelFromOrder(ChangeOrderInfo info,  HttpHeaders headers){
         System.out.println("[Cancel Order Service][Change Order Status] Changing....");
