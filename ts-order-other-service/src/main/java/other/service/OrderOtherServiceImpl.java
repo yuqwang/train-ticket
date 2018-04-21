@@ -437,6 +437,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
             result.setOrder(null);
             System.out.println("取消订单失败");
         }else{
+            System.out.println("订单取消：" + order.getFrom());
             order.setStatus(OrderStatus.CANCEL.getCode());
             orderOtherRepository.save(order);
             result.setStatus(true);

@@ -35,10 +35,14 @@ public class CancelServiceImpl implements CancelService{
         ChangeOrderResult cancelOrderResult = null;
         ChangeOrderResult cancelOrderOtherResult = null;
         boolean drawBackMoneyResult = false;
+
+        Order orderBegin = getOrderFromBasicInfo(orderId,headers);
+        String price = calculateRefund(orderBegin);
+
         try{
             headers.add("Cookie","jichao=dododo");
             System.out.println("1.异步调用inside-payment-service");
-            Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancelDoGet("0",loginId,orderId,loginToken,headers);
+            Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancelDoGet(price,loginId,orderId,loginToken,headers);
             System.out.println("2.异步调用order-other-serivce");
             Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
             System.out.println("3.异步调用order-service");

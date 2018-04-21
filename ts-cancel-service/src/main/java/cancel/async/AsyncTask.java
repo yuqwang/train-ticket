@@ -172,6 +172,7 @@ public class AsyncTask {
                 HttpMethod.GET,
                 requestEntity,
                 CancelFoodOrderResult.class);
+        System.out.println("ts-food-service返回");
         return new AsyncResult<>(re.getBody());
     }
 
@@ -183,6 +184,7 @@ public class AsyncTask {
                 HttpMethod.GET,
                 requestEntity,
                 DeleteAssuranceResult.class);
+        System.out.println("ts-assurance-service返回");
         return new AsyncResult<>(re.getBody());
     }
 

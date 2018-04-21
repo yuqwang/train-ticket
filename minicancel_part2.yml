@@ -218,17 +218,17 @@ spec:
 ---
 
 apiVersion: v1
-   kind: Service
-   metadata:
-     name: ts-cancel-service
-   spec:
-     type: NodePort
-     ports:
-       - name: http-cancel
-         port: 18885
-         nodePort: 30085
-     selector:
-      app: ts-cancel-service
+kind: Service
+metadata:
+  name: ts-cancel-service
+spec:
+  type: NodePort
+  ports:
+    - name: http-cancel
+      port: 18885
+      nodePort: 30085
+  selector:
+    app: ts-cancel-service
 
 ---
 
