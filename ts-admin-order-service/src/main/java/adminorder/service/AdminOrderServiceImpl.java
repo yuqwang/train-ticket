@@ -22,6 +22,53 @@ public class AdminOrderServiceImpl implements AdminOrderService {
     private RestTemplate restTemplate;
 
     @Override
+    public boolean suspendOrder(String fromStationId,String toStationId, HttpHeaders headers){
+        System.out.println(fromStationId + " " + toStationId);
+
+//        restTemplate.getForObject("http://ts-order-other-service:12032/orderOther/suspend/" + fromStationId + "/" + toStationId, Boolean.class);
+        HttpEntity requestEntity = new HttpEntity(null, headers);
+        ResponseEntity<Boolean> re = restTemplate.exchange(
+                "http://ts-order-other-service:12032/orderOther/suspend/" + fromStationId + "/" + toStationId,
+                HttpMethod.GET,
+                requestEntity,
+                Boolean.class);
+
+        //        ValueOperations<String, String> ops = redisTemplate.opsForValue();
+//        ops.set("adminOrderSuspendFromStationId",fromStationId);
+//        ops.set("adminOrderSuspendToStationId",toStationId);
+        return true;
+    }
+
+    @Override
+    public boolean cancelSuspenOrder(String fromStationId,String toStationId, HttpHeaders headers){
+//        if(redisTemplate.hasKey("adminOrderSuspendFromStationId")){
+//            ValueOperations<String, String> ops = redisTemplate.opsForValue();
+//            ops.set("adminOrderSuspendFromStationId", "");
+//            System.out.println("adminOrderSuspendFromStationId 已清空");
+//        }else{
+//            System.out.println("adminOrderSuspendFromStationId 不存在");
+//        }
+//        if(redisTemplate.hasKey("adminOrderSuspendToStationId")){
+//            ValueOperations<String, String> ops = redisTemplate.opsForValue();
+//            ops.set("adminOrderSuspendToStationId", "");
+//            System.out.println("adminOrderSuspendToStationId 已清空");
+//        }else{
+//            System.out.println("adminOrderSuspendToStationId 不存在");
+//        }
+        System.out.println(fromStationId + " " + toStationId);
+//        restTemplate.getForObject("http://ts-order-other-service:12032//orderOther/cancelSuspend/" + fromStationId + "/" + toStationId, Boolean.class);
+
+        HttpEntity requestEntity = new HttpEntity(null, headers);
+        ResponseEntity<Boolean> re = restTemplate.exchange(
+                "http://ts-order-other-service:12032//orderOther/cancelSuspend/" + fromStationId + "/" + toStationId,
+                HttpMethod.GET,
+                requestEntity,
+                Boolean.class);
+
+        return true;
+    }
+
+    @Override
     public GetAllOrderResult getAllOrders(String id, HttpHeaders headers) {
         if(checkId(id)){
             System.out.println("[Admin Order Service][Get All Orders]");

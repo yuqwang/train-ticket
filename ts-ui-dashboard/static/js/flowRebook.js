@@ -21,6 +21,25 @@ function setTodayDateRebook(){
  *  Flow Rebook - Step 1 - Refresh Your Orders
  **/
 
+$("#refresh_all_order_list_async_button").click(function(){
+    $.ajax({
+        type: "get",
+        url: "/orderOther/asyncViewAllOrder",
+        contentType: "application/json",
+        dataType: "json",
+        xhrFields: {
+            withCredentials: true
+        },
+        success: function(result){
+            //alert("  ");
+        },
+        complete: function(){
+
+        }
+    });
+});
+
+
 $("#refresh_my_order_list_button").click(function(){
     if(getCookie("loginId").length < 1 || getCookie("loginToken").length < 1){
         alert("Please Login");

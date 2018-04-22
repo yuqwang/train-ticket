@@ -42,4 +42,10 @@ public interface OrderOtherService {
     AddOrderResult addNewOrder(Order order, HttpHeaders headers);
 
     UpdateOrderResult updateOrder(Order order, HttpHeaders headers);
+
+    QueryOrderResult getAllOrdersAsync();
+
+    boolean cancelSuspend(String fromId,String toId);
+
+    boolean suspend(String fromId,String toId);
 }

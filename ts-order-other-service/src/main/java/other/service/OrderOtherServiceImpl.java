@@ -1,6 +1,7 @@
 package other.service;
 
 import org.springframework.http.HttpHeaders;
+import other.async.AsyncTask;
 import other.domain.*;
 import other.repository.OrderOtherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,30 @@ import java.util.*;
 public class OrderOtherServiceImpl implements OrderOtherService{
 
     @Autowired
+    private AsyncTask asyncTask;
+
+    @Autowired
     private OrderOtherRepository orderOtherRepository;
+
+    public String fromId;
+
+    public String toId;
+
+    //    @Autowired
+//    private StringRedisTemplate redisTemplate;
+    @Override
+    public boolean cancelSuspend(String fromId,String toId){
+        this.fromId = "";
+        this.toId = "";
+        return true;
+    }
+
+    @Override
+    public boolean suspend(String fromId,String toId){
+        this.fromId = fromId;
+        this.toId = toId;
+        return true;
+    }
 
     @Override
     public LeftTicketInfo getSoldTickets(SeatRequest seatRequest, HttpHeaders headers){
@@ -163,36 +187,89 @@ public class OrderOtherServiceImpl implements OrderOtherService{
 
     @Override
     public ChangeOrderResult saveChanges(Order order, HttpHeaders headers){
-        Order oldOrder = findOrderById(order.getId(), headers);
-        ChangeOrderResult cor = new ChangeOrderResult();
-        if(oldOrder == null){
-            System.out.println("[Order Other Service][Modify Order] Fail.Order not found.");
-            cor.setStatus(false);
-            cor.setMessage("Order Not Found");
+
+
+        System.out.println("[服务池子] " + asyncTask.count);
+        System.out.println("[锁定区域] " + fromId + " || " + toId);
+        System.out.println("[正在修改] " + order.getFrom() + " || " + order.getTo());
+        boolean checkSuspendOrder = checkOrderIsSuspend(order.getFrom(),order.getTo());
+
+        if(checkSuspendOrder == false) {
+
+
+            ChangeOrderResult cor = new ChangeOrderResult();
             cor.setOrder(null);
-        }else{
-            oldOrder.setAccountId(order.getAccountId());
-            oldOrder.setBoughtDate(order.getBoughtDate());
-            oldOrder.setTravelDate(order.getTravelDate());
-            oldOrder.setTravelTime(order.getTravelTime());
-            oldOrder.setCoachNumber(order.getCoachNumber());
-            oldOrder.setSeatClass(order.getSeatClass());
-            oldOrder.setSeatNumber(order.getSeatNumber());
-            oldOrder.setFrom(order.getFrom());
-            oldOrder.setTo(order.getTo());
-            oldOrder.setStatus(order.getStatus());
-            oldOrder.setTrainNumber(order.getTrainNumber());
-            oldOrder.setPrice(order.getPrice());
-            oldOrder.setContactsName(order.getContactsName());
-            oldOrder.setContactsDocumentNumber(order.getContactsDocumentNumber());
-            oldOrder.setDocumentType(order.getDocumentType());
-            orderOtherRepository.save(oldOrder);
-            System.out.println("[Order Other Service] Success.");
-            cor.setOrder(oldOrder);
-            cor.setStatus(true);
-            cor.setMessage("Success");
+            cor.setStatus(false);
+            cor.setMessage("[Error] The order is suspending by admin.");
+            return cor;
+
+//            try{
+//                System.out.println("[抛出错误]");
+//                throw new Exception("[Error] The order is suspending by admin.");
+//            }catch(Exception e){
+//                e.printStackTrace();
+//                System.out.println("[Order Other Service] Success.");
+//
+//            }finally{
+//
+//                Order oldOrder = findOrderById(order.getId(),headers);
+//                ChangeOrderResult cor = new ChangeOrderResult();
+//
+//                oldOrder.setAccountId(order.getAccountId());
+//                oldOrder.setBoughtDate(order.getBoughtDate());
+//                oldOrder.setTravelDate(order.getTravelDate());
+//                oldOrder.setTravelTime(order.getTravelTime());
+//                oldOrder.setCoachNumber(order.getCoachNumber());
+//                oldOrder.setSeatClass(order.getSeatClass());
+//                oldOrder.setSeatNumber(order.getSeatNumber());
+//                oldOrder.setFrom(order.getFrom());
+//                oldOrder.setTo(order.getTo());
+//                oldOrder.setStatus(order.getStatus());
+//                oldOrder.setTrainNumber(order.getTrainNumber());
+//                oldOrder.setPrice(order.getPrice());
+//                oldOrder.setContactsName(order.getContactsName());
+//                oldOrder.setContactsDocumentNumber(order.getContactsDocumentNumber());
+//                oldOrder.setDocumentType(order.getDocumentType());
+//                orderOtherRepository.save(oldOrder);
+//                System.out.println("[Order Other Service] Success.");
+//                cor.setOrder(oldOrder);
+//                cor.setStatus(true);
+//                cor.setMessage("Success");
+//                return cor;
+//            }
+
+        }else {
+            Order oldOrder = findOrderById(order.getId(),headers);
+            ChangeOrderResult cor = new ChangeOrderResult();
+            if(oldOrder == null){
+                System.out.println("[Order Other Service][Modify Order] Fail.Order not found.");
+                cor.setStatus(false);
+                cor.setMessage("Order Not Found");
+                cor.setOrder(null);
+            }else{
+                oldOrder.setAccountId(order.getAccountId());
+                oldOrder.setBoughtDate(order.getBoughtDate());
+                oldOrder.setTravelDate(order.getTravelDate());
+                oldOrder.setTravelTime(order.getTravelTime());
+                oldOrder.setCoachNumber(order.getCoachNumber());
+                oldOrder.setSeatClass(order.getSeatClass());
+                oldOrder.setSeatNumber(order.getSeatNumber());
+                oldOrder.setFrom(order.getFrom());
+                oldOrder.setTo(order.getTo());
+                oldOrder.setStatus(order.getStatus());
+                oldOrder.setTrainNumber(order.getTrainNumber());
+                oldOrder.setPrice(order.getPrice());
+                oldOrder.setContactsName(order.getContactsName());
+                oldOrder.setContactsDocumentNumber(order.getContactsDocumentNumber());
+                oldOrder.setDocumentType(order.getDocumentType());
+                orderOtherRepository.save(oldOrder);
+                System.out.println("[Order Other Service] Success.");
+                cor.setOrder(oldOrder);
+                cor.setStatus(true);
+                cor.setMessage("Success");
+            }
+            return cor;
         }
-        return cor;
     }
 
     @Override
@@ -261,21 +338,50 @@ public class OrderOtherServiceImpl implements OrderOtherService{
     }
 
     @Override
+    public QueryOrderResult getAllOrdersAsync(){
+
+        try{
+            int size = new Random().nextInt(7);
+            for(int i = 0; i < size;i++){
+                asyncTask.viewAllOrderAsync();
+            }
+            //QueryOrderResult result = resultFuture.get();
+            ArrayList<Order> orders = orderOtherRepository.findAll();
+            QueryOrderResult result = new QueryOrderResult(true,"Success.",orders);
+            return result;
+        } catch (Exception e){
+            return null;
+        }
+
+    }
+
+    @Override
     public ModifyOrderStatusResult modifyOrder(ModifyOrderStatusInfo info, HttpHeaders headers){
         Order order = orderOtherRepository.findById(UUID.fromString(info.getOrderId()));
-        ModifyOrderStatusResult result = new ModifyOrderStatusResult();
-        if(order == null){
-            result.setStatus(false);
-            result.setMessage("Order Not Found");
-            result.setOrder(null);
+
+        boolean checkSuspendOrder = checkOrderIsSuspend(order.getFrom(),order.getTo());
+
+        System.out.println("[服务池子] " + AsyncTask.count);
+        System.out.println("[已被锁定区域] " + fromId + " || " + toId);
+        System.out.println("[系统试图修改] " + order.getFrom() + " || " + order.getTo());
+
+        if(checkSuspendOrder == false) {
+            throw new RuntimeException("[Error] The order is suspending by admin.");
         }else{
-            order.setStatus(info.getStatus());
-            orderOtherRepository.save(order);
-            result.setStatus(true);
-            result.setMessage("Success");
-            result.setOrder(order);
+            ModifyOrderStatusResult result = new ModifyOrderStatusResult();
+            if(order == null){
+                result.setStatus(false);
+                result.setMessage("Order Not Found");
+                result.setOrder(null);
+            }else{
+                order.setStatus(info.getStatus());
+                orderOtherRepository.save(order);
+                result.setStatus(true);
+                result.setMessage("Success");
+                result.setOrder(order);
+            }
+            return result;
         }
-        return result;
     }
 
     @Override
@@ -426,5 +532,16 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         }
         return result;
     }
+
+
+    private boolean checkOrderIsSuspend(String fromStationId, String toStationId){
+        if(fromStationId.equals(fromId) || fromStationId.equals(toId)
+                || toStationId.equals(fromId) || toStationId.equals(toId)){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
 }
 

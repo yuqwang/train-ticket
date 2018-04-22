@@ -14,4 +14,7 @@ public interface AdminOrderService {
     DeleteOrderResult deleteOrder(DeleteOrderRequest request, HttpHeaders headers);
     UpdateOrderResult updateOrder(UpdateOrderRequest request, HttpHeaders headers);
     AddOrderResult addOrder(AddOrderRequest request, HttpHeaders headers);
+    boolean suspendOrder(String fromStationId, String toStationId, HttpHeaders headers);
+
+    boolean cancelSuspenOrder(String fromStationId, String toStationId, HttpHeaders headers);
 }

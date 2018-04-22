@@ -27,6 +27,22 @@ public class OrderOtherController {
 
     /***************************For Normal Use***************************/
 
+    @RequestMapping(value = "/orderOther/suspend/{fromId}/{toId}", method = RequestMethod.GET)
+    public Boolean setSuspendStation(@PathVariable String fromId, @PathVariable String toId){
+        return new Boolean(orderService.suspend(fromId,toId));
+    }
+
+    @RequestMapping(value = "/orderOther/cancelSuspend/{fromId}/{toId}", method = RequestMethod.GET)
+    public Boolean setCancelSuspendStation(@PathVariable String fromId, @PathVariable String toId){
+        return new Boolean(orderService.cancelSuspend(fromId,toId));
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(path = "/orderOther/asyncViewAllOrder", method = RequestMethod.GET)
+    public QueryOrderResult asyncViewAllOrder(){
+        return orderService.getAllOrdersAsync();
+    }
+
     @RequestMapping(value="/orderOther/getTicketListByDateAndTripId", method = RequestMethod.POST)
     public LeftTicketInfo getTicketListByDateAndTripId(@RequestBody SeatRequest seatRequest, @RequestHeader HttpHeaders headers){
         System.out.println("[Order Other Service][Get Sold Ticket] Date:" + seatRequest.getTravelDate().toString());

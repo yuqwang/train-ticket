@@ -23,4 +23,27 @@ public class OrderOtherApplication {
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
+
+    //Two Kind Of Status
+    //First： order-other-service async-task thread-pool：
+    //                                       int a = AsyncTask.count
+    //Second： station id on admin operating:
+    //                                       String a = orderOtherServiceImpl.fromId;
+    //                                       String b = orderOtherServiceImpl.toId;
+    //Use the following method to print the key in Zipkin
+/**
+ @Bean
+ public SpanAdjuster spanCollector() {
+ return new SpanAdjuster() {
+ @Override
+ public Span adjust(Span span) {
+ return span.toBuilder()
+ .tag("controller_state",
+ "<------------Your Key Here----------->")
+ //.name(span.getName() + "--------------------")
+ .build();
+ }
+ };
+ }
+ **/
 }
