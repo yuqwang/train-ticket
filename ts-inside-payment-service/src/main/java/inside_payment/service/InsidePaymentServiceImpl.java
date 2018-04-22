@@ -10,6 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.integration.dsl.http.Http;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
@@ -311,7 +312,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             addMoney.setMoney(info.getMoney());
             addMoney.setType(AddMoneyType.D);
             addMoneyRepository.save(addMoney);
-            reCalculateRefundMoney(order,info.getOrderId(), info.getMoney(), info.getLoginToken());
+            reCalculateRefundMoney(order,info.getOrderId(), info.getMoney(), info.getLoginToken(),httpHeaders);
             return true;
         }else{
             return false;
@@ -320,7 +321,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 
 
 
-    public ChangeOrderResult reCalculateRefundMoney(Order order, String orderId, String money, String loginToken) {
+    public ChangeOrderResult reCalculateRefundMoney(Order order, String orderId, String money, String loginToken, HttpHeaders headers) {
 
         ChangeOrderResult changeOrderResult;
         String result = calculateRefund(order);
@@ -354,7 +355,17 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             System.out.println();
             System.out.println("orderOther/update before");
             System.out.println("---重新修改过程---");
-            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",changeOrderInfo,ChangeOrderResult.class);
+
+//            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",
+//                  changeOrderInfo,ChangeOrderResult.class);
+            HttpEntity orderOtherEntity = new HttpEntity(changeOrderInfo,headers);
+            ResponseEntity<ChangeOrderResult> taskUpdateOrder = restTemplate.exchange(
+                    "http://ts-order-other-service:12032/orderOther/update",
+                    HttpMethod.POST,
+                    orderOtherEntity,
+                    ChangeOrderResult.class);
+            changeOrderResult = taskUpdateOrder.getBody();
+
             System.out.println();
             System.out.println("http://ts-order-other-service:12032/orderOther/update after");
             System.out.println();
@@ -372,7 +383,18 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             System.out.println();
             System.out.println("orderOther/update before");
             System.out.println("---一般过程---");
-            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",changeOrderInfo,ChangeOrderResult.class);
+//            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",changeOrderInfo,ChangeOrderResult.class);
+
+            //            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",
+//                  changeOrderInfo,ChangeOrderResult.class);
+            HttpEntity orderOtherEntity = new HttpEntity(changeOrderInfo,headers);
+            ResponseEntity<ChangeOrderResult> taskUpdateOrder = restTemplate.exchange(
+                    "http://ts-order-other-service:12032/orderOther/update",
+                    HttpMethod.POST,
+                    orderOtherEntity,
+                    ChangeOrderResult.class);
+            changeOrderResult = taskUpdateOrder.getBody();
+
             System.out.println();
             System.out.println("orderOther/update after");
             System.out.println();
