@@ -79,7 +79,14 @@ public class CancelServiceImpl implements CancelService{
         }else{
             result = new CancelOrderResult();
             result.setStatus(false);
-            result.setMessage("Something Wrong");
+            String message = "Something Wrong.";
+            if(drawBackMoneyResult == false){
+                message += " [Drawback Money] Drawback Money";
+            }
+            if(!(cancelOrderResult.isStatus() ^ cancelOrderOtherResult.isStatus())){
+                message += " [Order Change] Something Wrong";
+            }
+            result.setMessage(message);
         }
         return result;
     }

@@ -217,6 +217,46 @@ spec:
 
 ---
 
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-consign-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-consign-service
+    spec:
+      containers:
+      - name: ts-consign-service
+        image: 10.141.212.25:5555/f1/cluster-ts-consign-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16111
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-consign-price-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-consign-price-service
+    spec:
+      containers:
+      - name: ts-consign-price-service
+        image: 10.141.212.25:5555/f1/cluster-ts-consign-price-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16110
+
+---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -346,6 +386,32 @@ spec:
       port: 18856
   selector:
    app: ts-food-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-service
+spec:
+  ports:
+    - name: http
+      port: 16111
+  selector:
+   app: ts-consign-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-price-service
+spec:
+  ports:
+    - name: http
+      port: 16110
+  selector:
+   app: ts-consign-price-service
 
 ---
 
