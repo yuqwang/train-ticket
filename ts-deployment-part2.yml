@@ -80,7 +80,7 @@ spec:
             memory: "200Mi"
             cpu: "200m"
           limits:
-            memory: "300Mi"
+            memory: "350Mi"
             cpu: "300m"
 
 ---
@@ -127,7 +127,7 @@ spec:
             memory: "200Mi"
             cpu: "200m"
           limits:
-            memory: "300Mi"
+            memory: "350Mi"
             cpu: "300m"
 
 ---
@@ -361,7 +361,7 @@ spec:
             memory: "200Mi"
             cpu: "200m"
           limits:
-            memory: "300Mi"
+            memory: "350Mi"
             cpu: "300m"
 
 ---
@@ -668,7 +668,7 @@ spec:
             memory: "200Mi"
             cpu: "200m"
           limits:
-            memory: "300Mi"
+            memory: "350Mi"
             cpu: "300m"
 
 ---
@@ -730,6 +730,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 15681
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -810,6 +817,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 12346
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
