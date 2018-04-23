@@ -23,6 +23,17 @@ public class OrderOtherServiceImpl implements OrderOtherService{
 
     //    @Autowired
 //    private StringRedisTemplate redisTemplate;
+
+    @Override
+    public String getFromId(){
+        return fromId;
+    }
+
+    @Override
+    public String getToId(){
+        return toId;
+    }
+
     @Override
     public boolean cancelSuspend(String fromId,String toId){
         this.fromId = "";

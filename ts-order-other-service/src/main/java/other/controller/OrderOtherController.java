@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import other.domain.*;
 import other.service.OrderOtherService;
+import other.service.OrderOtherServiceImpl;
+
 import java.util.ArrayList;
 
 @RestController
@@ -25,7 +27,10 @@ public class OrderOtherController {
         return "Welcome to [ Order Other Service ] !";
     }
 
-    /***************************For Normal Use***************************/
+    @RequestMapping(value = "/orderOther/getSuspend", method = RequestMethod.GET)
+    public String getSuspendStation(){
+        return "[From]" + orderService.getFromId() + " [To]" + orderService.getToId();
+    }
 
     @RequestMapping(value = "/orderOther/suspend/{fromId}/{toId}", method = RequestMethod.GET)
     public Boolean setSuspendStation(@PathVariable String fromId, @PathVariable String toId){

@@ -48,4 +48,8 @@ public interface OrderOtherService {
     boolean cancelSuspend(String fromId,String toId);
 
     boolean suspend(String fromId,String toId);
+
+    String getFromId();
+
+    String getToId();
 }
