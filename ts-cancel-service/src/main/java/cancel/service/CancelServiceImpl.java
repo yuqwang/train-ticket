@@ -103,17 +103,17 @@ public class CancelServiceImpl implements CancelService{
                 System.out.println("[Cancel Order Service][Cancel Order] Order found Z|K|Other");
                 Order order = orderOtherResult.getOrder();
 
-                //获取20次锁定的id，检查结果
+                //获取锁定的id，检查结果
                 if(true == checkStationLock(order.getFrom(),order.getTo())){
                     System.out.println("[=====] CancelService检查到车站被锁定");
                     throw new RuntimeException("[Error] The order is suspending by admin.");
                 }
 
 
-
-                if(order.getStatus() == OrderStatus.NOTPAID.getCode()
-                        || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()){
-
+                boolean continueStatus = true;
+//                if(order.getStatus() == OrderStatus.NOTPAID.getCode()
+//                        || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()){
+                if(continueStatus == true){
                     System.out.println("[Cancel Order Service][Cancel Order] Order status ok");
 
                     order.setStatus(OrderStatus.CANCEL.getCode());
@@ -256,7 +256,12 @@ public class CancelServiceImpl implements CancelService{
 
     private boolean checkStationLock(String fromStationId,String toStationId){
 
-        for(int i = 0;i < 20; i++){
+        for(int i = 0;i < 1; i++){
+            try{
+                Thread.sleep(50);
+            }catch(Exception e){
+                e.printStackTrace();
+            }
             String fromId = restTemplate.getForObject(
                     "http://ts-order-other-service:12032/orderOther/getSuspendFrom",
                     String.class);

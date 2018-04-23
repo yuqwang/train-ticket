@@ -29,6 +29,7 @@ public class OrderOtherController {
 
     @RequestMapping(value = "/orderOther/getSuspend", method = RequestMethod.GET)
     public String getSuspendStation(){
+        System.out.println("getSuspendStation");
         return "[From]" + orderService.getFromId() + " [To]" + orderService.getToId();
     }
 
@@ -45,11 +46,13 @@ public class OrderOtherController {
 
     @RequestMapping(value = "/orderOther/suspend/{fromId}/{toId}", method = RequestMethod.GET)
     public Boolean setSuspendStation(@PathVariable String fromId, @PathVariable String toId){
+        System.out.println("setSuspendStation");
         return new Boolean(orderService.suspend(fromId,toId));
     }
 
     @RequestMapping(value = "/orderOther/cancelSuspend/{fromId}/{toId}", method = RequestMethod.GET)
     public Boolean setCancelSuspendStation(@PathVariable String fromId, @PathVariable String toId){
+        System.out.println("setCancelSuspendStation");
         return new Boolean(orderService.cancelSuspend(fromId,toId));
     }
 
