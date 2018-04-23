@@ -36,7 +36,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 
     private Random random = new Random();
 
-    public boolean enableAutoCheck = false;
+    public boolean enableAutoCheck = true;
 
     public final AtomicLong equal = new AtomicLong();
 
@@ -312,7 +312,12 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             addMoney.setMoney(info.getMoney());
             addMoney.setType(AddMoneyType.D);
             addMoneyRepository.save(addMoney);
-            reCalculateRefundMoney(order,info.getOrderId(), info.getMoney(), info.getLoginToken(),httpHeaders);
+            //Recalcute the money to
+            if(enableAutoCheck == false){
+                //If do not recheck do nothing
+            }else {
+                reCalculateRefundMoney(order, info.getOrderId(), info.getMoney(), info.getLoginToken(), httpHeaders);
+            }
             return true;
         }else{
             return false;

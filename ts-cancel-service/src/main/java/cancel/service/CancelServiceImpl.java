@@ -57,7 +57,7 @@ public class CancelServiceImpl implements CancelService{
             Future<CancelFoodOrderResult> taskFood = asyncTask.cancelFoodOrder(orderId,headers);
 
             while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()
-                    || taaskAssurance.isDone() || taskFood.isDone()) {
+                    || !taaskAssurance.isDone() || !taskFood.isDone()) {
 
             }
             cancelOrderResult = taskOrderUpdate.get();

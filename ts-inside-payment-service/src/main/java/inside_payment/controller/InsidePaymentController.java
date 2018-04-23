@@ -2,6 +2,7 @@ package inside_payment.controller;
 
 import inside_payment.domain.*;
 import inside_payment.service.InsidePaymentService;
+import inside_payment.service.InsidePaymentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +15,26 @@ public class InsidePaymentController {
     @Autowired
     public InsidePaymentService service;
 
+    @Autowired
+    public InsidePaymentServiceImpl serviceImpl;
+
+
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home(@RequestHeader HttpHeaders headers) {
         System.out.println("[====/welcome====] Cookie:" + headers.get("Cookie"));
         return "Welcome to [ Inside Payment Service ] !";
+    }
+
+    @RequestMapping(value="/inside_payment/openRecheck", method = RequestMethod.GET)
+    public boolean openRecheck(){
+        serviceImpl.enableAutoCheck = true;
+        return true;
+    }
+
+    @RequestMapping(value="/inside_payment/closeRecheck", method = RequestMethod.GET)
+    public boolean closeRecheck(){
+        serviceImpl.enableAutoCheck = false;
+        return true;
     }
 
     @RequestMapping(value="/inside_payment/drawBackAndCancel/{userId}/{money}/{orderId}/{loginToken}", method = RequestMethod.GET)
