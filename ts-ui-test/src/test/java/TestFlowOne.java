@@ -26,9 +26,17 @@ public class TestFlowOne {
         System.out.println("[Message]" + result.getMessage());
         System.out.println("[Status]" + result.isStatus());
 
-        //[Error Process Seq] - 返回500 exception
-        //Success.Processes Seq. - 顺序控制好了返回这个 status为true
-        //Something Wrong - 其他不知道什么意外乱七八糟的情况返回这个,status为false
+        //错误返回：
+        // {
+        //    "status": false,
+        //    "message": "[Error Process Seq]"
+        //}
+        //正常返回：
+        //{
+        //    "status": true,
+        //    "message": "Success.Processes Seq."
+        //}
+        //其他返回均不合法
 
         Assert.assertEquals(result.isStatus() && result.getMessage().contains("Success.Processes Seq"),true);
     }
