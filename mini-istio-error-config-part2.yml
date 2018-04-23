@@ -1,0 +1,466 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-basic-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-basic-service
+    spec:
+      containers:
+      - name: ts-basic-service
+        image: 10.141.212.25:5555/istio-error-config-ts-basic-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15680
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-config-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-config-service
+    spec:
+      containers:
+      - name: ts-config-service
+        image: 10.141.212.25:5555/istio-error-config-ts-config-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15679
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-order-other-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-order-other-service
+    spec:
+      containers:
+      - name: ts-order-other-service
+        image: 10.141.212.25:5555/istio-error-config-ts-order-other-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12032
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-order-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-order-service
+    spec:
+      containers:
+      - name: ts-order-service
+        image: 10.141.212.25:5555/istio-error-config-ts-order-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12031
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-price-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-price-service
+    spec:
+      containers:
+      - name: ts-price-service
+        image: 10.141.212.25:5555/istio-error-config-ts-price-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16579
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-route-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-route-service
+    spec:
+      containers:
+      - name: ts-route-service
+        image: 10.141.212.25:5555/istio-error-config-ts-route-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 11178
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-seat-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-seat-service
+    spec:
+      containers:
+      - name: ts-seat-service
+        image: 10.141.212.25:5555/istio-error-config-ts-seat-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18898
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-station-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-station-service
+    spec:
+      containers:
+      - name: ts-station-service
+        image: 10.141.212.25:5555/istio-error-config-ts-station-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12345
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-ticketinfo-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-ticketinfo-service
+    spec:
+      containers:
+      - name: ts-ticketinfo-service
+        image: 10.141.212.25:5555/istio-error-config-ts-ticketinfo-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 15681
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-train-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-train-service
+    spec:
+      containers:
+      - name: ts-train-service
+        image: 10.141.212.25:5555/istio-error-config-ts-train-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 14567
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-travel2-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-travel2-service
+    spec:
+      containers:
+      - name: ts-travel2-service
+        image: 10.141.212.25:5555/istio-error-config-ts-travel2-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16346
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-travel-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-travel-service
+    spec:
+      containers:
+      - name: ts-travel-service
+        image: 10.141.212.25:5555/istio-error-config-ts-travel-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12346
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-basic-service
+spec:
+  ports:
+    - name: http
+      port: 15680
+  selector:
+   app: ts-basic-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-config-service
+spec:
+  ports:
+    - name: http
+      port: 15679
+  selector:
+   app: ts-config-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-other-service
+spec:
+  ports:
+    - name: http
+      port: 12032
+  selector:
+   app: ts-order-other-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-order-service
+spec:
+  ports:
+    - name: http
+      port: 12031
+  selector:
+   app: ts-order-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-price-service
+spec:
+  ports:
+    - name: http
+      port: 16579
+  selector:
+   app: ts-price-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-route-service
+spec:
+  ports:
+    - name: http
+      port: 11178
+  selector:
+   app: ts-route-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-seat-service
+spec:
+  ports:
+    - name: http
+      port: 18898
+  selector:
+   app: ts-seat-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-station-service
+spec:
+  ports:
+    - name: http
+      port: 12345
+  selector:
+   app: ts-station-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-ticketinfo-service
+spec:
+  ports:
+    - name: http
+      port: 15681
+  selector:
+   app: ts-ticketinfo-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-train-service
+spec:
+  ports:
+    - name: http
+      port: 14567
+  selector:
+   app: ts-train-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-travel2-service
+spec:
+  ports:
+    - name: http
+      port: 16346
+  selector:
+   app: ts-travel2-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-travel-service
+spec:
+  ports:
+    - name: http
+      port: 12346
+  selector:
+   app: ts-travel-service
+
+
+---
