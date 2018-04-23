@@ -17,9 +17,9 @@ public class OrderOtherServiceImpl implements OrderOtherService{
     @Autowired
     private OrderOtherRepository orderOtherRepository;
 
-    public String fromId;
+    public String fromId = "";
 
-    public String toId;
+    public String toId = "";
 
     //    @Autowired
 //    private StringRedisTemplate redisTemplate;
@@ -546,12 +546,13 @@ public class OrderOtherServiceImpl implements OrderOtherService{
 
 
     private boolean checkOrderIsSuspend(String fromStationId, String toStationId){
-        if(fromStationId.equals(fromId) || fromStationId.equals(toId)
-                || toStationId.equals(fromId) || toStationId.equals(toId)){
-            return false;
-        }else{
-            return true;
-        }
+        return true;
+//        if(fromStationId.equals(fromId) || fromStationId.equals(toId)
+//                || toStationId.equals(fromId) || toStationId.equals(toId)){
+//            return false;
+//        }else{
+//            return true;
+//        }
     }
 
 }

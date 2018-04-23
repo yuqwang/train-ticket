@@ -32,6 +32,17 @@ public class OrderOtherController {
         return "[From]" + orderService.getFromId() + " [To]" + orderService.getToId();
     }
 
+    @RequestMapping(value = "/orderOther/getSuspendFrom", method = RequestMethod.GET)
+    public String getSuspendStationFrom(){
+        return orderService.getFromId();
+    }
+
+
+    @RequestMapping(value = "/orderOther/getSuspendTo", method = RequestMethod.GET)
+    public String getSuspendStationTo(){
+        return orderService.getToId();
+    }
+
     @RequestMapping(value = "/orderOther/suspend/{fromId}/{toId}", method = RequestMethod.GET)
     public Boolean setSuspendStation(@PathVariable String fromId, @PathVariable String toId){
         return new Boolean(orderService.suspend(fromId,toId));

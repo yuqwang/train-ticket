@@ -101,8 +101,16 @@ public class CancelServiceImpl implements CancelService{
             GetOrderResult orderOtherResult = getOrderByIdFromOrderOther(getFromOtherOrderInfo, headers);
             if(orderOtherResult.isStatus() == true){
                 System.out.println("[Cancel Order Service][Cancel Order] Order found Z|K|Other");
-
                 Order order = orderOtherResult.getOrder();
+
+                //获取20次锁定的id，检查结果
+                if(true == checkStationLock(order.getFrom(),order.getTo())){
+                    System.out.println("[=====] CancelService检查到车站被锁定");
+                    throw new RuntimeException("[Error] The order is suspending by admin.");
+                }
+
+
+
                 if(order.getStatus() == OrderStatus.NOTPAID.getCode()
                         || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()){
 
@@ -245,6 +253,30 @@ public class CancelServiceImpl implements CancelService{
 //        );
         return result;
     }
+
+    private boolean checkStationLock(String fromStationId,String toStationId){
+
+        for(int i = 0;i < 20; i++){
+            String fromId = restTemplate.getForObject(
+                    "http://ts-order-other-service:12032/orderOther/getSuspendFrom",
+                    String.class);
+            String toId = restTemplate.getForObject(
+                    "http://ts-order-other-service:12032/orderOther/getSuspendTo",
+                    String.class);
+            System.out.println("======================");
+            System.out.println("======第" + i + "次检查========");
+            System.out.println(fromId + ":" + fromStationId + "    " + toId + ":" + toStationId);
+            if(fromId != null && toId != null &&
+                    (fromStationId.equals(fromId) || fromStationId.equals(toId)
+                    || toStationId.equals(fromId) || toStationId.equals(toId))){
+                return true;
+            }
+        }
+        return false;
+
+
+    }
+
 
     @Override
     public CalculateRefundResult calculateRefund(CancelOrderInfo info, HttpHeaders headers){
