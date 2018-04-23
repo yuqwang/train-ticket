@@ -16,6 +16,16 @@ public class ConsignController {
     @Autowired
     ConsignService service;
 
+    @RequestMapping(value = "/consign/drawback/{orderId}", method= RequestMethod.GET)
+    public boolean drawbackConsign(@PathVariable String orderId, @RequestHeader HttpHeaders headers) throws Exception {
+
+        System.out.println("[Consign Service] Drawback Consign: OrderId " + orderId);
+        Thread.sleep(8000);
+
+        return true;
+    }
+
+
     @RequestMapping(value = "/consign/insertConsign", method= RequestMethod.POST)
     public InsertConsignRecordResult insertConsign(@RequestBody ConsignRequest request, @RequestHeader HttpHeaders headers){
         return service.insertConsignRecord(request, headers);

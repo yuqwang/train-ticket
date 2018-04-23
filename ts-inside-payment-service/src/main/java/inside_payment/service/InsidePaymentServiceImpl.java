@@ -11,10 +11,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.Future;
 
 @Service
 public class InsidePaymentServiceImpl implements InsidePaymentService{
@@ -27,6 +29,9 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 
     @Autowired
     public RestTemplate restTemplate;
+
+    @Autowired
+    public AsyncTask asyncTask;
 
     @Override
     public boolean pay(PaymentInfo info, HttpServletRequest request, HttpHeaders headers){
@@ -276,23 +281,38 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
                 GetOrderResult.class);
         GetOrderResult cor = taskGetOrder.getBody();
         Order order = cor.getOrder();
-        //3.Change order status to cancelling
+        //3.1Change order status to cancelling
         order.setStatus(OrderStatus.Canceling.getCode());
         ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
         changeOrderInfo.setOrder(order);
         changeOrderInfo.setLoginToken(loginToken);
-        HttpEntity cancelOrderEntity = new HttpEntity(changeOrderInfo,httpHeaders);
-        ResponseEntity<ChangeOrderResult> taskCancelOrder = restTemplate.exchange(
-                "http://ts-order-other-service:12032/orderOther/update",
-                HttpMethod.POST,
-                cancelOrderEntity,
-                ChangeOrderResult.class);
-        ChangeOrderResult changeOrderResult = taskCancelOrder.getBody();
+        ChangeOrderResult changeOrderResult = null;
 
-
-        if(changeOrderResult.isStatus() == false){
-            System.out.println("[Cancel Order Service]Unexpected error");
+        try{
+            Future<ChangeOrderResult> taskChangeOrder = asyncTask.sendAsyncCallToChangeOrder(changeOrderInfo, httpHeaders);
+            Future<Boolean> cancelConsign = asyncTask.sendAsyncCallConsignDrawback(orderId,httpHeaders);
+            while(!cancelConsign.isDone() && !taskChangeOrder.isDone()){
+                if(!cancelConsign.isDone() && taskChangeOrder.isDone()){
+                    return false;
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
+
+//        HttpEntity cancelOrderEntity = new HttpEntity(changeOrderInfo,httpHeaders);
+//        ResponseEntity<ChangeOrderResult> taskCancelOrder = restTemplate.exchange(
+//                "http://ts-order-other-service:12032/orderOther/update",
+//                HttpMethod.POST,
+//                cancelOrderEntity,
+//                ChangeOrderResult.class);
+//        ChangeOrderResult changeOrderResult = taskCancelOrder.getBody();
+
+
+//        if(changeOrderResult.isStatus() == false){
+//            System.out.println("[Cancel Order Service]Unexpected error");
+//        }
 
         if(addMoneyRepository.findByUserId(info.getUserId()) != null){
             AddMoney addMoney = new AddMoney();
