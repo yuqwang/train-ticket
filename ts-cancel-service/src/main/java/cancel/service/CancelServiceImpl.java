@@ -48,11 +48,15 @@ public class CancelServiceImpl implements CancelService{
             System.out.println("3.异步调用order-service");
             Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
             System.out.println("4.异步调用assurance-service");
-            asyncTask.cancelAssuranceOrder(orderId,headers);
+            Future<DeleteAssuranceResult> assuranceTask = asyncTask.cancelAssuranceOrder(orderId,headers);
             System.out.println("5.异步调用food-service");
-            asyncTask.cancelFoodOrder(orderId,headers);
+            Future<CancelFoodOrderResult> foodAsync = asyncTask.cancelFoodOrder(orderId,headers);
 
-            while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()) {
+            while(!taskOrderUpdate.isDone() ||
+                    !taskOrderOtherUpdate.isDone() ||
+                    !taskDrawBackMoney.isDone() ||
+                    !assuranceTask.isDone() ||
+                    !foodAsync.isDone()) {
 
             }
             cancelOrderResult = taskOrderUpdate.get();

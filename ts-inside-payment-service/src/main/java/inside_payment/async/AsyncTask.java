@@ -36,6 +36,7 @@ public class AsyncTask {
 
     @Async("mySimpleAsync")
     public Future<ChangeOrderResult> sendAsyncCallToChangeOrder(ChangeOrderInfo changeOrderInfo, HttpHeaders httpHeaders){
+        System.out.println("inside-payment异步调用sendAsyncCallToChangeOrder");
         HttpEntity cancelOrderEntity = new HttpEntity(changeOrderInfo,httpHeaders);
         ResponseEntity<ChangeOrderResult> taskCancelOrder = restTemplate.exchange(
                 "http://ts-order-other-service:12032/orderOther/update",
@@ -43,6 +44,7 @@ public class AsyncTask {
                 cancelOrderEntity,
                 ChangeOrderResult.class);
         ChangeOrderResult changeOrderResult = taskCancelOrder.getBody();
+        System.out.println("sendAsyncCallToChangeOrder返回");
         return new AsyncResult<>(changeOrderResult);
     }
 
@@ -61,6 +63,7 @@ public class AsyncTask {
 
     @Async("mySimpleAsync")
     public Future<Boolean> sendAsyncCallConsignDrawback(String orderId,HttpHeaders httpHeaders){
+        System.out.println("inside-payment异步调用sendAsyncCallConsignDrawback");
         HttpEntity cancelOrderEntity = new HttpEntity(null,httpHeaders);
         ResponseEntity<Boolean> taskCancelOrder = restTemplate.exchange(
                 "http://ts-consign-service:16111/consign/drawback/" + orderId,
@@ -68,6 +71,7 @@ public class AsyncTask {
                 cancelOrderEntity,
                 Boolean.class);
         boolean result = taskCancelOrder.getBody();
+        System.out.println("sendAsyncCallConsignDrawback返回");
         return new AsyncResult<>(result);
     }
 }  

@@ -109,6 +109,7 @@ public class AsyncTask {
 
     @Async("myAsync")
     public Future<ChangeOrderResult> updateOtherOrderStatusToCancelV2DoGet(AsyncSendToCancelOrderInfo info, HttpHeaders headers) throws InterruptedException{ ;
+        //Thread.sleep(8000);
         System.out.println("[Cancel Order Service][Change Normal-Order Status]");
         HttpEntity requestEntity = new HttpEntity(null, headers);
         ResponseEntity<ChangeOrderResult> re = restTemplate.exchange(
@@ -123,7 +124,7 @@ public class AsyncTask {
     @Async("mySimpleAsync")
     public Future<Boolean> drawBackMoneyForOrderCancel(String money, String userId,String orderId, String loginToken, HttpHeaders headers) throws InterruptedException{
         double op = new Random().nextDouble();
-        if(op < 0.9999){
+        if(op < 1.0){
             System.out.println("[Cancel Order Service] Delay Process，Wrong Cancel Process");
             Thread.sleep(8000);
         } else {

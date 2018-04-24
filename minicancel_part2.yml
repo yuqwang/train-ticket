@@ -42,7 +42,7 @@ kind: Deployment
 metadata:
   name: ts-order-other-service
 spec:
-  replicas: 1
+  replicas: 1c
   template:
     metadata:
       labels:
