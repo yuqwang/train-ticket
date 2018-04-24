@@ -292,10 +292,10 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             Future<ChangeOrderResult> taskChangeOrder = asyncTask.sendAsyncCallToChangeOrder(changeOrderInfo, httpHeaders);
             Future<Boolean> cancelConsign = asyncTask.sendAsyncCallConsignDrawback(orderId,httpHeaders);
             while(!cancelConsign.isDone() || !taskChangeOrder.isDone()){
-                if(!cancelConsign.isDone() && taskChangeOrder.isDone()){
-                    System.out.println("[=====] Inside-payment 内部顺序错误");
-                    return false;
-                }
+//                if(!cancelConsign.isDone() && taskChangeOrder.isDone()){
+//                    System.out.println("[=====] Inside-payment 内部顺序错误");
+//                    return false;
+//                }
             }
 
             ChangeOrderResult resultChangeOrder = taskChangeOrder.get();
