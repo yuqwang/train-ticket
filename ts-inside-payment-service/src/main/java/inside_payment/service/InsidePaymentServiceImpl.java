@@ -286,38 +286,38 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
         changeOrderInfo.setOrder(order);
         changeOrderInfo.setLoginToken(loginToken);
-        ChangeOrderResult changeOrderResult = null;
+//        ChangeOrderResult changeOrderResult = null;
 
-        try{
-            Future<ChangeOrderResult> taskChangeOrder = asyncTask.sendAsyncCallToChangeOrder(changeOrderInfo, httpHeaders);
-            Future<Boolean> cancelConsign = asyncTask.sendAsyncCallConsignDrawback(orderId,httpHeaders);
-            while(!cancelConsign.isDone() || !taskChangeOrder.isDone()){
-//                if(!cancelConsign.isDone() && taskChangeOrder.isDone()){
-//                    System.out.println("[=====] Inside-payment 内部顺序错误");
-//                    return false;
-//                }
-            }
-
-            ChangeOrderResult resultChangeOrder = taskChangeOrder.get();
-            boolean resultConsign = cancelConsign.get();
-            System.out.println("[=====] Inside-payment 内部顺序正常");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
-//        HttpEntity cancelOrderEntity = new HttpEntity(changeOrderInfo,httpHeaders);
-//        ResponseEntity<ChangeOrderResult> taskCancelOrder = restTemplate.exchange(
-//                "http://ts-order-other-service:12032/orderOther/update",
-//                HttpMethod.POST,
-//                cancelOrderEntity,
-//                ChangeOrderResult.class);
-//        ChangeOrderResult changeOrderResult = taskCancelOrder.getBody();
-
-
-//        if(changeOrderResult.isStatus() == false){
-//            System.out.println("[Cancel Order Service]Unexpected error");
+//        try{
+//            Future<ChangeOrderResult> taskChangeOrder = asyncTask.sendAsyncCallToChangeOrder(changeOrderInfo, httpHeaders);
+//            Future<Boolean> cancelConsign = asyncTask.sendAsyncCallConsignDrawback(orderId,httpHeaders);
+//            while(!cancelConsign.isDone() || !taskChangeOrder.isDone()){
+////                if(!cancelConsign.isDone() && taskChangeOrder.isDone()){
+////                    System.out.println("[=====] Inside-payment 内部顺序错误");
+////                    return false;
+////                }
+//            }
+//
+//            ChangeOrderResult resultChangeOrder = taskChangeOrder.get();
+//            boolean resultConsign = cancelConsign.get();
+//            System.out.println("[=====] Inside-payment 内部顺序正常");
+//        }catch (Exception e){
+//            e.printStackTrace();
 //        }
+
+
+        HttpEntity cancelOrderEntity = new HttpEntity(changeOrderInfo,httpHeaders);
+        ResponseEntity<ChangeOrderResult> taskCancelOrder = restTemplate.exchange(
+                "http://ts-order-other-service:12032/orderOther/update",
+                HttpMethod.POST,
+                cancelOrderEntity,
+                ChangeOrderResult.class);
+        ChangeOrderResult changeOrderResult = taskCancelOrder.getBody();
+
+
+        if(changeOrderResult.isStatus() == false){
+            System.out.println("[Cancel Order Service]Unexpected error");
+        }
 
         if(addMoneyRepository.findByUserId(info.getUserId()) != null){
             AddMoney addMoney = new AddMoney();

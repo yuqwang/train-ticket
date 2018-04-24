@@ -44,6 +44,8 @@ public class FoodController {
     @CrossOrigin("*")
     @RequestMapping(path = "/food/cancelFoodOrder/doGet/{orderId}", method = RequestMethod.GET)
     public CancelFoodOrderResult cancelFoodOrderDoGet(@PathVariable String orderId, @RequestHeader HttpHeaders headers){
+        System.out.println("[====/food/cancelFoodOrder/doGet/{orderId}====]");
+        System.out.println("[==================]Cookie:" + headers.get("Cookie"));
         CancelFoodOrderInfo info = new CancelFoodOrderInfo();
         info.setOrderId(orderId);
         return foodService.cancelFoodOrder(info, headers);

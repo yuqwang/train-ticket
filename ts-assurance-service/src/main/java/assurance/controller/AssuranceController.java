@@ -54,6 +54,8 @@ public class AssuranceController {
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/assurance/deleteAssuranceByOrderIdDoGet/{orderId}", method = RequestMethod.GET)
     public DeleteAssuranceResult deleteAssuranceByOrderIdDoGet(@PathVariable String orderId, @RequestHeader HttpHeaders headers){
+        System.out.println("[====/inside_payment/drawBackAndCancel====]");
+        System.out.println("[==================]Cookie:" + headers.get("Cookie"));
         System.out.println("[Assurances Service][Delete Assurance by orderId] Do Get");
         return assuranceService.deleteByOrderId(UUID.fromString(orderId), headers);
     }
