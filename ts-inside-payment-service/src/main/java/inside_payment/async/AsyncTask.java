@@ -35,12 +35,12 @@ public class AsyncTask {
 
 
     @Async("mySimpleAsync")
-    public Future<ChangeOrderResult> sendAsyncCallToChangeOrder(ChangeOrderInfo changeOrderInfo, HttpHeaders httpHeaders){
+    public Future<ChangeOrderResult> sendAsyncCallToChangeOrder(String orderId, HttpHeaders httpHeaders){
         System.out.println("inside-payment异步调用sendAsyncCallToChangeOrder");
-        HttpEntity cancelOrderEntity = new HttpEntity(changeOrderInfo,httpHeaders);
+        HttpEntity cancelOrderEntity = new HttpEntity(null,httpHeaders);
         ResponseEntity<ChangeOrderResult> taskCancelOrder = restTemplate.exchange(
-                "http://ts-order-other-service:12032/orderOther/update",
-                HttpMethod.POST,
+                "http://ts-order-other-service:12032/orderOther/cancelling/" + orderId,
+                HttpMethod.GET,
                 cancelOrderEntity,
                 ChangeOrderResult.class);
         ChangeOrderResult changeOrderResult = taskCancelOrder.getBody();

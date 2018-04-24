@@ -196,6 +196,19 @@ public class OrderOtherServiceImpl implements OrderOtherService{
     }
 
     @Override
+    public ChangeOrderResult cancellingOrder(String orderId, HttpHeaders headers){
+        Order oldOrder = orderOtherRepository.findById(UUID.fromString(orderId));
+        oldOrder.setStatus(OrderStatus.Canceling.getCode());
+        orderOtherRepository.save(oldOrder);
+        System.out.println("[Order Other Service][CancelLING Order] Success.");
+        ChangeOrderResult cor = new ChangeOrderResult();
+        cor.setStatus(true);
+        cor.setMessage("Success");
+        cor.setOrder(oldOrder);
+        return cor;
+    }
+
+    @Override
     public CancelOrderResult cancelOrder(CancelOrderInfo coi, HttpHeaders headers){
         UUID orderId = coi.getOrderId();
         Order oldOrder = orderOtherRepository.findById(orderId);

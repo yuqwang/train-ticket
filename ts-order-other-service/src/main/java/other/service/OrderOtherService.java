@@ -44,4 +44,7 @@ public interface OrderOtherService {
     UpdateOrderResult updateOrder(Order order, HttpHeaders headers);
 
     ChangeOrderResult cancelOrder(AsyncSendToCancelOrderInfo info, HttpHeaders headers);
+
+    ChangeOrderResult cancellingOrder(String orderId, HttpHeaders headers);
+
 }

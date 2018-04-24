@@ -20,7 +20,7 @@ public class ConsignController {
     public boolean drawbackConsign(@PathVariable String orderId, @RequestHeader HttpHeaders headers) throws Exception {
 
         System.out.println("[Consign Service] Drawback Consign: OrderId " + orderId);
-//        Thread.sleep(8000);
+        Thread.sleep(8000);
 
         return true;
     }

@@ -39,6 +39,12 @@ public class OrderOtherController {
         return orderService.cancelOrder(info,headers);
     }
 
+    @RequestMapping(path="/orderOther/cancelling/{orderId}",method = RequestMethod.GET)
+    public ChangeOrderResult cancellingOrder(@PathVariable String orderId,@RequestHeader HttpHeaders headers){
+        System.out.println("Cancelling Order");
+        return orderService.cancellingOrder(orderId,headers);
+    }
+
 
     /***************************For Normal Use***************************/
 
