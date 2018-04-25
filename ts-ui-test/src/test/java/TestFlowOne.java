@@ -67,10 +67,15 @@ public class TestFlowOne {
         //把锁定的车票解除掉
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 20; i++) {
             Thread.sleep(5000);
             ResponseEntity<Boolean> cancel = restTemplate.exchange(
                     "http://10.141.212.21:30112/adminOrder/cancelSuspendOrder/shanghai/nanjing",
+                    HttpMethod.GET,
+                    requestEntity,
+                    Boolean.class);
+            ResponseEntity<Boolean> re2 = restTemplate.exchange(
+                    "http://10.141.212.21:30112/adminorder/setCanAdminChangeOrder/false",
                     HttpMethod.GET,
                     requestEntity,
                     Boolean.class);
