@@ -178,7 +178,9 @@ public class CancelServiceImpl implements CancelService{
         //获取锁定的id，检查结果
         if(true == checkStationLock(orderBegin.getFrom(),orderBegin.getTo()) && checkCanAdminChangeOrder()){
             System.out.println("[=====] CancelService检查到车站被锁定 && 管理员权限锁定有效");
-            throw new RuntimeException("[Error] The order is suspending by admin.");
+            result = new CancelOrderResult();
+            result.setStatus(false);
+            result.setMessage("Fail.");
         }
 
         String price = calculateRefund(orderBegin);
