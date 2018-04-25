@@ -104,8 +104,8 @@ public class CancelServiceImpl implements CancelService{
                 Order order = orderOtherResult.getOrder();
 
                 //获取锁定的id，检查结果
-                if(true == checkStationLock(order.getFrom(),order.getTo())){
-                    System.out.println("[=====] CancelService检查到车站被锁定");
+                if(true == checkStationLock(order.getFrom(),order.getTo()) && checkCanAdminChangeOrder()){
+                    System.out.println("[=====] CancelService检查到车站被锁定 && 管理员权限锁定有效");
                     throw new RuntimeException("[Error] The order is suspending by admin.");
                 }
 
@@ -255,33 +255,27 @@ public class CancelServiceImpl implements CancelService{
     }
 
     private boolean checkStationLock(String fromStationId,String toStationId){
-
-        for(int i = 0;i < 1; i++){
-            try{
-                Thread.sleep(50);
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-            String fromId = restTemplate.getForObject(
-                    "http://ts-order-other-service:12032/orderOther/getSuspendFrom",
-                    String.class);
-            String toId = restTemplate.getForObject(
-                    "http://ts-order-other-service:12032/orderOther/getSuspendTo",
-                    String.class);
-            System.out.println("======================");
-            System.out.println("======第" + i + "次检查========");
-            System.out.println(fromId + ":" + fromStationId + "    " + toId + ":" + toStationId);
-            if(fromId != null && toId != null &&
-                    (fromStationId.equals(fromId) || fromStationId.equals(toId)
-                    || toStationId.equals(fromId) || toStationId.equals(toId))){
-                return true;
-            }
+        String fromId = restTemplate.getForObject(
+                "http://ts-order-other-service:12032/orderOther/getSuspendFrom",
+                String.class);
+        String toId = restTemplate.getForObject(
+                "http://ts-order-other-service:12032/orderOther/getSuspendTo",
+                String.class);
+        System.out.println(fromId + ":" + fromStationId + "    " + toId + ":" + toStationId);
+        if(fromId != null && toId != null &&
+                (fromStationId.equals(fromId) || fromStationId.equals(toId)
+                        || toStationId.equals(fromId) || toStationId.equals(toId))){
+            return true;
         }
         return false;
-
-
     }
 
+    private boolean checkCanAdminChangeOrder(){
+        boolean checkCanAdminChangeOrder = restTemplate.getForObject(
+                "http://ts-admin-order-service:16112/adminorder/getCanAdminChangeOrder",
+                Boolean.class);
+        return checkCanAdminChangeOrder;
+    }
 
     @Override
     public CalculateRefundResult calculateRefund(CancelOrderInfo info, HttpHeaders headers){

@@ -19,6 +19,26 @@ public class AdminOrderController {
     AdminOrderService adminOrderService;
 
     @CrossOrigin(origins = "*")
+    @RequestMapping(path = "/adminorder/getCanAdminChangeOrder", method = RequestMethod.GET)
+    public boolean getCanAdminChangeOrder(@RequestHeader HttpHeaders headers){
+        System.out.println("getCanAdminChangeOrder获取管理员是否有权操作订单："
+                + adminOrderService.getCanAdminChangeOrder());
+        return adminOrderService.getCanAdminChangeOrder();
+    }
+
+    @CrossOrigin(origins = "*")
+    @RequestMapping(path = "/adminorder/setCanAdminChangeOrder/{status}", method = RequestMethod.GET)
+    public void setCanAdminChangeOrder(@PathVariable String status, @RequestHeader HttpHeaders headers){
+        System.out.println("setCanAdminChangeOrder设置管理员是否有权操作订单：" + status);
+        if(status.equals("true")){
+            adminOrderService.setCanAdminChangeOrder(true);
+        }else{
+            adminOrderService.setCanAdminChangeOrder(false);
+        }
+    }
+
+
+    @CrossOrigin(origins = "*")
     @RequestMapping(path = "/adminorder/findAll/{id}", method = RequestMethod.GET)
     public GetAllOrderResult getAllOrders(@PathVariable String id, @RequestHeader HttpHeaders headers){
         return adminOrderService.getAllOrders(id, headers);

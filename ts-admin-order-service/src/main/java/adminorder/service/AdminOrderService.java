@@ -17,4 +17,8 @@ public interface AdminOrderService {
     boolean suspendOrder(String fromStationId, String toStationId, HttpHeaders headers);
 
     boolean cancelSuspenOrder(String fromStationId, String toStationId, HttpHeaders headers);
+
+    boolean getCanAdminChangeOrder();
+    void setCanAdminChangeOrder(boolean status);
+
 }

@@ -18,8 +18,22 @@ import java.util.ArrayList;
 
 @Service
 public class AdminOrderServiceImpl implements AdminOrderService {
+
+    private boolean canAdminChangeOrder = false;
+
     @Autowired
     private RestTemplate restTemplate;
+
+    @Override
+    public boolean getCanAdminChangeOrder(){
+        return canAdminChangeOrder;
+    }
+
+    @Override
+    public void setCanAdminChangeOrder(boolean status){
+        canAdminChangeOrder = status;
+    }
+
 
     @Override
     public boolean suspendOrder(String fromStationId,String toStationId, HttpHeaders headers){
