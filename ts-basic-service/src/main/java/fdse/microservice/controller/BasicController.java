@@ -1,9 +1,6 @@
 package fdse.microservice.controller;
 
-import fdse.microservice.domain.QueryForStationId;
-import fdse.microservice.domain.QueryForTravel;
-import fdse.microservice.domain.QueryStation;
-import fdse.microservice.domain.ResultForTravel;
+import fdse.microservice.domain.*;
 import fdse.microservice.service.BasicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -26,5 +23,10 @@ public class BasicController {
     @RequestMapping(value="/basic/queryForStationId", method= RequestMethod.POST)
     public String queryForStationId(@RequestBody QueryStation info, @RequestHeader HttpHeaders headers){
         return service.queryForStationId(info, headers);
+    }
+
+    @RequestMapping(value="/basic/getOrderFromMultiSource", method = RequestMethod.POST)
+    public GetOrderResult getOrderFromMultiSource(@RequestBody GetOrderByIdInfo info, @RequestHeader HttpHeaders headers){
+        return service.getOrderFromMultiResources(info,headers);
     }
 }
