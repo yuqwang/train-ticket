@@ -1,3 +1,7 @@
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -17,21 +21,32 @@ public class TestFlowOne {
     public void testLogin()throws Exception{
 
         RestTemplate restTemplate = new RestTemplate();
-
-        //注意把这里换成你的集群的ip
-        CancelOrderResult result = restTemplate.getForObject(
+        //然后向AdminOrderService发送请求，给与权限
+        HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
+        ResponseEntity<Boolean> re = restTemplate.exchange(
                 "http://10.141.212.21:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
-                CancelOrderResult.class);
+                HttpMethod.GET,
+                requestEntity,
+                Boolean.class);
 
-        System.out.println("[Message]" + result.getMessage());
-        System.out.println("[Status]" + result.isStatus());
+        if(re.getStatusCodeValue() == 200){
+            //这是抛出OOM的情况
+        }else{
+            //这是service被kill的情况
+        }
 
-        //[Error Process Seq] - 返回500 exception
-        //Success.Processes Seq. - 顺序控制好了返回这个 status为true
-        //Something Wrong - 其他不知道什么意外乱七八糟的情况返回这个,status为false
 
-        Assert.assertEquals(result.isStatus() && result.getMessage().contains("Success.Processes Seq"),true);
+
+
+
+
+
+
     }
+
+
+
+
 
 
     @AfterClass
