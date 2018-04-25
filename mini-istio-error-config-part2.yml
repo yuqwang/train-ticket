@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: 10.141.212.25:5555/istio-error-config-ts-basic-service
+        image: 10.141.212.25:5555/f3/cluster-ts-basic-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15680
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: ts-config-service
-        image: 10.141.212.25:5555/istio-error-config-ts-config-service
+        image: 10.141.212.25:5555/f3/cluster-ts-config-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15679
@@ -65,7 +65,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: 10.141.212.25:5555/istio-error-config-ts-order-other-service
+        image: 10.141.212.25:5555/f3/cluster-ts-order-other-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12032
@@ -92,7 +92,7 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: 10.141.212.25:5555/istio-error-config-ts-order-service
+        image: 10.141.212.25:5555/f3/cluster-ts-order-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12031
@@ -119,7 +119,7 @@ spec:
     spec:
       containers:
       - name: ts-price-service
-        image: 10.141.212.25:5555/istio-error-config-ts-price-service
+        image: 10.141.212.25:5555/f3/cluster-ts-price-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16579
@@ -146,7 +146,7 @@ spec:
     spec:
       containers:
       - name: ts-route-service
-        image: 10.141.212.25:5555/istio-error-config-ts-route-service
+        image: 10.141.212.25:5555/f3/cluster-ts-route-service
         imagePullPolicy: Always
         ports:
         - containerPort: 11178
@@ -173,7 +173,7 @@ spec:
     spec:
       containers:
       - name: ts-seat-service
-        image: 10.141.212.25:5555/istio-error-config-ts-seat-service
+        image: 10.141.212.25:5555/f3/cluster-ts-seat-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18898
@@ -200,7 +200,7 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: 10.141.212.25:5555/istio-error-config-ts-station-service
+        image: 10.141.212.25:5555/f3/cluster-ts-station-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12345
@@ -227,7 +227,7 @@ spec:
     spec:
       containers:
       - name: ts-ticketinfo-service
-        image: 10.141.212.25:5555/istio-error-config-ts-ticketinfo-service
+        image: 10.141.212.25:5555/f3/cluster-ts-ticketinfo-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15681
@@ -254,7 +254,7 @@ spec:
     spec:
       containers:
       - name: ts-train-service
-        image: 10.141.212.25:5555/istio-error-config-ts-train-service
+        image: 10.141.212.25:5555/f3/cluster-ts-train-service
         imagePullPolicy: Always
         ports:
         - containerPort: 14567
@@ -274,7 +274,7 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: 10.141.212.25:5555/istio-error-config-ts-travel2-service
+        image: 10.141.212.25:5555/f3/cluster-ts-travel2-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16346
@@ -294,7 +294,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: 10.141.212.25:5555/istio-error-config-ts-travel-service
+        image: 10.141.212.25:5555/f3/cluster-ts-travel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12346
