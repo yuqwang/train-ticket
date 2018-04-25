@@ -1,6 +1,276 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
+  name: ts-admin-basic-info-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-basic-info-service
+    spec:
+      containers:
+      - name: ts-admin-basic-info-service
+        image: 10.141.212.25:5555/f3/cluster-ts-food-map-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18767
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-admin-route-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-route-service
+    spec:
+      containers:
+      - name: ts-admin-route-service
+        image: 10.141.212.25:5555/f3/cluster-ts-admin-route-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16113
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-admin-travel-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-travel-service
+    spec:
+      containers:
+      - name: ts-admin-travel-service
+        image: 10.141.212.25:5555/f3/cluster-ts-admin-travel-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16114
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-admin-user-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-user-service
+    spec:
+      containers:
+      - name: ts-admin-user-service
+        image: 10.141.212.25:5555/f3/cluster-ts-admin-user-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16115
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-contacts-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-contacts-service
+    spec:
+      containers:
+      - name: ts-contacts-service
+        image: 10.141.212.25:5555/f3/cluster-ts-contacts-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12347
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-execute-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-execute-service
+    spec:
+      containers:
+      - name: ts-execute-service
+        image: 10.141.212.25:5555/f3/cluster-ts-execute-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12386
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-food-map-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-food-map-service
+    spec:
+      containers:
+      - name: ts-food-map-service
+        image: 10.141.212.25:5555/f3/cluster-ts-food-map-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 18855
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-register-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-register-service
+    spec:
+      containers:
+      - name: ts-register-service
+        image: 10.141.212.25:5555/f3/cluster-ts-register-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12344
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-travel-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-travel-service
+    spec:
+      containers:
+      - name: ts-travel-service
+        image: 10.141.212.25:5555/f3/cluster-ts-travel-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 12346
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-travel2-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-travel2-service
+    spec:
+      containers:
+      - name: ts-travel2-service
+        image: 10.141.212.25:5555/f3/cluster-ts-travel2-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16346
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
   name: ts-cancel-service
 spec:
   replicas: 1
@@ -11,10 +281,17 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: 10.141.212.25:5555/f11/cluster-ts-cancel-service
+        image: 10.141.212.25:5555/f3/cluster-ts-cancel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18885
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -31,12 +308,20 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: 10.141.212.25:5555/f11/cluster-ts-inside-payment-service
+        image: 10.141.212.25:5555/f3/cluster-ts-inside-payment-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18673
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
+
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -50,10 +335,17 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: 10.141.212.25:5555/f11/cluster-ts-order-other-service
+        image: 10.141.212.25:5555/f3/cluster-ts-order-other-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12032
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -70,10 +362,17 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: 10.141.212.25:5555/f11/cluster-ts-basic-service
+        image: 10.141.212.25:5555/f3/cluster-ts-basic-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15680
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -90,50 +389,17 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: 10.141.212.25:5555/f11/cluster-ts-order-service
+        image: 10.141.212.25:5555/f3/cluster-ts-order-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12031
-
----
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: ts-login-service
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ts-login-service
-    spec:
-      containers:
-      - name: ts-login-service
-        image: 10.141.212.25:5555/f11/cluster-ts-login-service
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 12342
-
----
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: ts-verification-code-service
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ts-verification-code-service
-    spec:
-      containers:
-      - name: ts-verification-code-service
-        image: 10.141.212.25:5555/f11/cluster-ts-verification-code-service
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 15678
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -150,30 +416,17 @@ spec:
     spec:
       containers:
       - name: ts-sso-service
-        image: 10.141.212.25:5555/f11/cluster-ts-sso-service
+        image: 10.141.212.25:5555/f3/cluster-ts-sso-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12349
-
----
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: ts-station-service
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: ts-station-service
-    spec:
-      containers:
-      - name: ts-station-service
-        image: 10.141.212.25:5555/f11/cluster-ts-station-service
-        imagePullPolicy: Always
-        ports:
-        - containerPort: 12345
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -190,11 +443,17 @@ spec:
     spec:
       containers:
       - name: ts-assurance-service
-        image: 10.141.212.25:5555/f11/cluster-ts-assurance-service
+        image: 10.141.212.25:5555/f3/cluster-ts-assurance-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18888
-
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 ---
 
 apiVersion: extensions/v1beta1
@@ -210,10 +469,71 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: 10.141.212.25:5555/f11/cluster-ts-food-service
+        image: 10.141.212.25:5555/f3/cluster-ts-food-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18856
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-consign-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-consign-service
+    spec:
+      containers:
+      - name: ts-consign-service
+        image: 10.141.212.25:5555/f3/cluster-ts-consign-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16111
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-consign-price-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-consign-price-service
+    spec:
+      containers:
+      - name: ts-consign-price-service
+        image: 10.141.212.25:5555/f3/cluster-ts-consign-price-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16110
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -287,32 +607,6 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-login-service
-spec:
-  ports:
-    - name: http
-      port: 12342
-  selector:
-   app: ts-login-service
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: ts-verification-code-service
-spec:
-  ports:
-    - name: http
-      port: 15678
-  selector:
-   app: ts-verification-code-service
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
   name: ts-sso-service
 spec:
   ports:
@@ -346,6 +640,163 @@ spec:
       port: 18856
   selector:
    app: ts-food-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-service
+spec:
+  ports:
+    - name: http
+      port: 16111
+  selector:
+   app: ts-consign-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-consign-price-service
+spec:
+  ports:
+    - name: http
+      port: 16110
+  selector:
+   app: ts-consign-price-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-basic-info-service
+spec:
+  ports:
+    - name: http
+      port: 18767
+  selector:
+   app: ts-admin-basic-info-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-route-service
+spec:
+  ports:
+    - name: http
+      port: 16113
+  selector:
+   app: ts-admin-route-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-travel-service
+spec:
+  ports:
+    - name: http
+      port: 16114
+  selector:
+   app: ts-admin-travel-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-user-service
+spec:
+  ports:
+    - name: http
+      port: 16115
+  selector:
+   app: ts-admin-user-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-contacts-service
+spec:
+  ports:
+    - name: http
+      port: 12347
+  selector:
+   app: ts-contacts-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-execute-service
+spec:
+  ports:
+    - name: http
+      port: 12386
+  selector:
+   app: ts-execute-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-food-map-service
+spec:
+  ports:
+    - name: http
+      port: 18855
+  selector:
+   app: ts-food-map-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-register-service
+spec:
+  ports:
+    - name: http
+      port: 12344
+  selector:
+   app: ts-register-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-travel-service
+spec:
+  ports:
+    - name: http
+      port: 12346
+  selector:
+   app: ts-travel-service
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-travel2-service
+spec:
+  ports:
+    - name: http
+      port: 16346
+  selector:
+   app: ts-travel2-service
 
 ---
 
