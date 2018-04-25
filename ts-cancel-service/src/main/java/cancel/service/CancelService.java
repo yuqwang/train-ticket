@@ -12,4 +12,7 @@ public interface CancelService {
     CancelOrderResult cancelOrderVersion2(CancelOrderInfo info, String loginToken,
                                           String loginId, HttpHeaders headers) throws Exception;
 
+    void setAutoCheck(boolean status);
+
+    boolean getAutoCheck();
 }

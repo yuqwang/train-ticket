@@ -26,16 +26,33 @@ public class CancelController {
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
-    public String calculate(@RequestHeader HttpHeaders headers) throws Exception{
-        headers.add("Cookie","jichao=dododo");
-        Future<String> task1 = asyncTask.helloOrderService(headers);
-        Future<String> task2 = asyncTask.helloOrderOtherService(headers);
-        Future<String> task3 = asyncTask.helloInsidePaymentService(headers);
-        while(!(task1.isDone() && task2.isDone() && task3.isDone())){
-            //wait until all do
-        }
-        return "complete";
+    public String welcome(@RequestHeader HttpHeaders headers) throws Exception{
+//        headers.add("Cookie","jichao=dododo");
+//        Future<String> task1 = asyncTask.helloOrderService(headers);
+//        Future<String> task2 = asyncTask.helloOrderOtherService(headers);
+//        Future<String> task3 = asyncTask.helloInsidePaymentService(headers);
+//        while(!(task1.isDone() && task2.isDone() && task3.isDone())){
+//            //wait until all do
+//        }
+        return "Welcome to [Order Cancel Service]";
     }
+
+
+    @RequestMapping(value="/cancelOrder/setRecheck/{status}", method = RequestMethod.GET)
+    public boolean openRecheck(@PathVariable String status){
+        if(status.equals("true")){
+            cancelService.setAutoCheck(true);
+        }else{
+            cancelService.setAutoCheck(false);
+        }
+        return true;
+    }
+
+    @RequestMapping(value="/cancelOrder/getRecheck", method = RequestMethod.GET)
+    public boolean getRecheck(){
+        return cancelService.getAutoCheck();
+    }
+
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/cancelCalculateRefund", method = RequestMethod.POST)

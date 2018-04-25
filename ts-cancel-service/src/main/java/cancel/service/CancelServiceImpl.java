@@ -28,6 +28,18 @@ public class CancelServiceImpl implements CancelService{
 
     private Random random = new Random();
 
+    private boolean enableAutoCheck = false;
+
+    @Override
+    public void setAutoCheck(boolean status){
+        enableAutoCheck = status;
+    }
+
+    @Override
+    public boolean getAutoCheck(){
+        return enableAutoCheck;
+    }
+
     @Override
     public CancelOrderResult cancelOrderVersion2(CancelOrderInfo info, String loginToken,
                                                  String loginId, HttpHeaders headers) throws Exception{
@@ -52,12 +64,12 @@ public class CancelServiceImpl implements CancelService{
             System.out.println("3.异步调用order-service");
             Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
             System.out.println("4.异步调用assurance-service");
-            Future<DeleteAssuranceResult> taaskAssurance = asyncTask.cancelAssuranceOrder(orderId,headers);
+            Future<DeleteAssuranceResult> taskAssurance = asyncTask.cancelAssuranceOrder(orderId,headers);
             System.out.println("5.异步调用food-service");
             Future<CancelFoodOrderResult> taskFood = asyncTask.cancelFoodOrder(orderId,headers);
 
             while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()
-                    || !taaskAssurance.isDone() || !taskFood.isDone()) {
+                    || !taskAssurance.isDone() || !taskFood.isDone()) {
 
             }
             cancelOrderResult = taskOrderUpdate.get();
@@ -70,10 +82,27 @@ public class CancelServiceImpl implements CancelService{
             Order orderFinal = getOrderFromBasicInfo(orderId,headers);
             //检查订单的状态，对的话返回正确，不对的话返回错误
             if(orderFinal.getStatus() != OrderStatus.CANCEL.getCode()){
-                CancelOrderResult finalResult = new CancelOrderResult();
-                finalResult.setStatus(false);
-                finalResult.setMessage("[Error Process Seq]");
-                return finalResult;
+
+
+                //Check enableAutoCheck
+                if(enableAutoCheck == false){
+                    CancelOrderResult finalResult = new CancelOrderResult();
+                    finalResult.setStatus(false);
+                    finalResult.setMessage("[Error Process Seq]");
+                    return finalResult;
+                }else{
+                    HttpEntity requestEntity = new HttpEntity(null, headers);
+                    ResponseEntity<ChangeOrderResult> re = restTemplate.exchange(
+                            "http://ts-order-other-service:12032/orderOther/cancelOrder/" +
+                                    info.getOrderId() + "/" + loginToken,
+                            HttpMethod.GET,
+                            requestEntity,
+                            ChangeOrderResult.class);
+                    CancelOrderResult finalResult = new CancelOrderResult();
+                    finalResult.setStatus(true);
+                    finalResult.setMessage("Success.Processes Seq.");
+                    return finalResult;
+                }
                 //throw new Exception("[Error Process Seq]");
             }else{
                 CancelOrderResult finalResult = new CancelOrderResult();

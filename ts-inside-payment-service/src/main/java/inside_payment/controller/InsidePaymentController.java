@@ -25,18 +25,6 @@ public class InsidePaymentController {
         return "Welcome to [ Inside Payment Service ] !";
     }
 
-    @RequestMapping(value="/inside_payment/openRecheck", method = RequestMethod.GET)
-    public boolean openRecheck(){
-        serviceImpl.enableAutoCheck = true;
-        return true;
-    }
-
-    @RequestMapping(value="/inside_payment/closeRecheck", method = RequestMethod.GET)
-    public boolean closeRecheck(){
-        serviceImpl.enableAutoCheck = false;
-        return true;
-    }
-
     @RequestMapping(value="/inside_payment/drawBackAndCancel/{userId}/{money}/{orderId}/{loginToken}", method = RequestMethod.GET)
     public boolean drawBackAndCancel(@PathVariable String userId, @PathVariable String money,
             @PathVariable String orderId, @PathVariable String loginToken, @RequestHeader HttpHeaders headers){

@@ -36,8 +36,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 
     private Random random = new Random();
 
-    public boolean enableAutoCheck = true;
-
     public final AtomicLong equal = new AtomicLong();
 
     @Override
@@ -313,18 +311,16 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             addMoney.setType(AddMoneyType.D);
             addMoneyRepository.save(addMoney);
             //Recalcute the money to
-            if(enableAutoCheck == false){
-                //If do not recheck do nothing
-            }else {
-                reCalculateRefundMoney(order, info.getOrderId(), info.getMoney(), info.getLoginToken(), httpHeaders);
-            }
+//            if(enableAutoCheck == false){
+//                //If do not recheck do nothing
+//            }else {
+//                reCalculateRefundMoney(order, info.getOrderId(), info.getMoney(), info.getLoginToken(), httpHeaders);
+//            }
             return true;
         }else{
             return false;
         }
     }
-
-
 
     public ChangeOrderResult reCalculateRefundMoney(Order order, String orderId, String money, String loginToken, HttpHeaders headers) {
 
@@ -410,8 +406,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         return changeOrderResult;
     }
 
-
-
     private String calculateRefund(Order order){
         double totalPrice = Double.parseDouble(order.getPrice());
         double price;
@@ -473,7 +467,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 //            return str;
 //        }
     }
-
 
     @Override
     public boolean payDifference(PaymentDifferenceInfo info, HttpServletRequest request, HttpHeaders headers){
