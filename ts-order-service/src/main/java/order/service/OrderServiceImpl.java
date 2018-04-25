@@ -13,6 +13,28 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     private OrderRepository orderRepository;
 
+
+    @Override
+    public ChangeOrderResult cancelOrder(AsyncSendToCancelOrderInfo info, HttpHeaders headers){
+        Order order = orderRepository.findById(UUID.fromString(info.getOrderId()));
+        ChangeOrderResult result = new ChangeOrderResult();
+        if(order == null){
+            result.setStatus(false);
+            result.setMessage("Order Not Found");
+            result.setOrder(null);
+            System.out.println("取消订单失败");
+        }else{
+            System.out.println("订单取消：" + order.getFrom());
+            order.setStatus(OrderStatus.CANCEL.getCode());
+            orderRepository.save(order);
+            result.setStatus(true);
+            result.setMessage("Success");
+            result.setOrder(order);
+            System.out.println("取消订单成功");
+        }
+        return result;
+    }
+
     @Override
     public LeftTicketInfo getSoldTickets(SeatRequest seatRequest, HttpHeaders headers){
         ArrayList<Order> list = orderRepository.findByTravelDateAndTrainNumber(seatRequest.getTravelDate(),

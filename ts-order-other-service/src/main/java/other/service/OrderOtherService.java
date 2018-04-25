@@ -52,4 +52,6 @@ public interface OrderOtherService {
     String getFromId();
 
     String getToId();
+
+    ChangeOrderResult cancelOrder(AsyncSendToCancelOrderInfo info, HttpHeaders headers);
 }

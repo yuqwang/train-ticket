@@ -14,6 +14,20 @@ public class InsidePaymentController {
     @Autowired
     public InsidePaymentService service;
 
+    @RequestMapping(value="/inside_payment/drawBackAndCancel/{userId}/{money}/{orderId}/{loginToken}", method = RequestMethod.GET)
+    public boolean drawBackAndCancel(@PathVariable String userId, @PathVariable String money,
+                                     @PathVariable String orderId, @PathVariable String loginToken, @RequestHeader HttpHeaders headers){
+        System.out.println("[====/inside_payment/drawBackAndCancel====]");
+        System.out.println("[==================]Cookie:" + headers.get("Cookie"));
+        DrawbackAndCancel info = new DrawbackAndCancel();
+        info.setLoginToken(loginToken);
+        info.setMoney(money);
+        info.setOrderId(orderId);
+        info.setUserId(userId);
+//        return true;
+        return service.drawBackAndCancel(info, headers);
+    }
+
     @RequestMapping(value="/inside_payment/pay", method = RequestMethod.POST)
     public boolean pay(@RequestBody PaymentInfo info, HttpServletRequest request, @RequestHeader HttpHeaders headers){
         System.out.println("[Inside Payment Service][Pay] Pay for:" + info.getOrderId());

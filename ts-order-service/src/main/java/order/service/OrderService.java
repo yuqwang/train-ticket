@@ -43,4 +43,6 @@ public interface OrderService {
     AddOrderResult addNewOrder(Order order, HttpHeaders headers);
 
     UpdateOrderResult updateOrder(Order order, HttpHeaders headers);
+
+    ChangeOrderResult cancelOrder(AsyncSendToCancelOrderInfo info, HttpHeaders headers);
 }

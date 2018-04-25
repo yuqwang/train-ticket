@@ -29,4 +29,6 @@ public interface InsidePaymentService {
 
     void initPayment(Payment payment, HttpHeaders headers);
 
+    boolean drawBackAndCancel(DrawbackAndCancel info, HttpHeaders httpHeaders);
+
 }

@@ -23,6 +23,14 @@ public class FoodController {
         return "Welcome to [ Food Service ] !";
     }
 
+    @CrossOrigin("*")
+    @RequestMapping(path = "/food/cancelFoodOrder/doGet/{orderId}", method = RequestMethod.GET)
+    public CancelFoodOrderResult cancelFoodOrderDoGet(@PathVariable String orderId, @RequestHeader HttpHeaders headers){
+        CancelFoodOrderInfo info = new CancelFoodOrderInfo();
+        info.setOrderId(orderId);
+        return foodService.cancelFoodOrder(info, headers);
+    }
+
     @RequestMapping(path = "/food/getFood", method = RequestMethod.POST)
     public GetAllFoodOfTripResult getFood(@RequestBody GetAllFoodOfTripInfo gati, @RequestHeader HttpHeaders headers){
         System.out.println("[Food Service]Get the Get Food Request!");

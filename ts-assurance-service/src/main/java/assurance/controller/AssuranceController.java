@@ -24,6 +24,14 @@ public class AssuranceController {
     }
 
     @CrossOrigin(origins = "*")
+    @RequestMapping(path = "/assurance/deleteAssuranceByOrderIdDoGet/{orderId}", method = RequestMethod.GET)
+    public DeleteAssuranceResult deleteAssuranceByOrderIdDoGet(@PathVariable String orderId, @RequestHeader HttpHeaders headers){
+        System.out.println("[Assurances Service][Delete Assurance by orderId] Do Get");
+        return assuranceService.deleteByOrderId(UUID.fromString(orderId), headers);
+    }
+
+
+    @CrossOrigin(origins = "*")
     @RequestMapping(path = "/assurance/findAll", method = RequestMethod.GET)
     public GetAllAssuranceResult getAllAssurances(@RequestHeader HttpHeaders headers){
         System.out.println("[Assurances Service][Get All Assurances]");

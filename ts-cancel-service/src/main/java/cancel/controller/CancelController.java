@@ -26,44 +26,56 @@ public class CancelController {
         return cancelService.calculateRefund(info, headers);
     }
 
+//    @CrossOrigin(origins = "*")
+//    @RequestMapping(path = "/cancelOrder/{orderId}", method = RequestMethod.GET)
+//    public CancelOrderResult cancelTicket(@PathVariable String orderId, @RequestHeader HttpHeaders headers){
+//
+//        CancelOrderInfo info = new CancelOrderInfo();
+//        info.setOrderId(orderId);
+//
+//        String loginId = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f";
+//        String loginToken = "admin";
+//        System.out.println("[Cancel Order Service][Cancel Ticket] info:" + info.getOrderId());
+//        if(loginToken == null ){
+//            loginToken = "admin";
+//        }
+//        System.out.println("[Cancel Order Service][Cancel Order] order ID:" + info.getOrderId() + "  loginToken:" + loginToken);
+//        if(loginToken == null){
+//            System.out.println("[Cancel Order Service][Cancel Order] Not receive any login token");
+//            CancelOrderResult result = new CancelOrderResult();
+//            result.setStatus(false);
+//            result.setMessage("No Login Token");
+//            return result;
+//        }
+//        VerifyResult verifyResult = verifySsoLogin(loginToken);
+//        if(verifyResult.isStatus() == false){
+//            System.out.println("[Cancel Order Service][Cancel Order] Do not login.");
+//            CancelOrderResult result = new CancelOrderResult();
+//            result.setStatus(false);
+//            result.setMessage("Not Login");
+//            return result;
+//        }else{
+//            System.out.println("[Cancel Order Service][Cancel Ticket] Verify Success");
+//            try{
+//                return cancelService.cancelOrder(info,loginToken,loginId, headers);
+//            }catch(Exception e){
+//                e.printStackTrace();
+//                return null;
+//            }
+//
+//        }
+//    }
+
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/cancelOrder/{orderId}", method = RequestMethod.GET)
-    public CancelOrderResult cancelTicket(@PathVariable String orderId, @RequestHeader HttpHeaders headers){
+    public CancelOrderResult cancelTicketDoGet(@PathVariable String orderId, @RequestHeader HttpHeaders headers) throws Exception{
+        String loginToken = "admin";
+        String loginId = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f";
 
         CancelOrderInfo info = new CancelOrderInfo();
         info.setOrderId(orderId);
 
-        String loginId = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f";
-        String loginToken = "admin";
-        System.out.println("[Cancel Order Service][Cancel Ticket] info:" + info.getOrderId());
-        if(loginToken == null ){
-            loginToken = "admin";
-        }
-        System.out.println("[Cancel Order Service][Cancel Order] order ID:" + info.getOrderId() + "  loginToken:" + loginToken);
-        if(loginToken == null){
-            System.out.println("[Cancel Order Service][Cancel Order] Not receive any login token");
-            CancelOrderResult result = new CancelOrderResult();
-            result.setStatus(false);
-            result.setMessage("No Login Token");
-            return result;
-        }
-        VerifyResult verifyResult = verifySsoLogin(loginToken);
-        if(verifyResult.isStatus() == false){
-            System.out.println("[Cancel Order Service][Cancel Order] Do not login.");
-            CancelOrderResult result = new CancelOrderResult();
-            result.setStatus(false);
-            result.setMessage("Not Login");
-            return result;
-        }else{
-            System.out.println("[Cancel Order Service][Cancel Ticket] Verify Success");
-            try{
-                return cancelService.cancelOrder(info,loginToken,loginId, headers);
-            }catch(Exception e){
-                e.printStackTrace();
-                return null;
-            }
-
-        }
+        return cancelService.cancelOrderVersion2(info,loginToken,loginId,headers);
     }
 
     private VerifyResult verifySsoLogin(String loginToken){

@@ -8,6 +8,10 @@ public class GetOrderByIdInfo {
         //Default Constructor
     }
 
+    public GetOrderByIdInfo(String orderId) {
+        this.orderId = orderId;
+    }
+
     public String getOrderId() {
         return orderId;
     }

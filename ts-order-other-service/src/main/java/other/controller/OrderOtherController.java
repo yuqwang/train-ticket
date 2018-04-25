@@ -22,6 +22,19 @@ public class OrderOtherController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @RequestMapping(path="/orderOther/cancelOrder/{orderId}/{loginToken}",method = RequestMethod.GET)
+    public ChangeOrderResult cancelOrder(@PathVariable String orderId,@PathVariable String loginToken, @RequestHeader HttpHeaders headers){
+        //System.out.println("[====/orderOther/cancelOrder====]Id:" + info.getOrderId());
+        System.out.println("[====/orderOther/cancelOrder====] Cookie:" + headers.get("Cookie"));
+        AsyncSendToCancelOrderInfo info = new AsyncSendToCancelOrderInfo();
+        info.setLoginToken(loginToken);
+        info.setOrderId(orderId);
+//        ChangeOrderResult result = new ChangeOrderResult();
+//        result.setStatus(true);
+//        return result;
+        return orderService.cancelOrder(info,headers);
+    }
+
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home() {
         return "Welcome to [ Order Other Service ] !";

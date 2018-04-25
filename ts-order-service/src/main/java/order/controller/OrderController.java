@@ -25,6 +25,18 @@ public class OrderController {
         return "Welcome to [ Order Service ] !";
     }
 
+    @RequestMapping(path="/order/cancelOrder/{orderId}/{loginToken}",method = RequestMethod.GET)
+    public ChangeOrderResult cancelOrder(@PathVariable String orderId,@PathVariable String loginToken,  @RequestHeader HttpHeaders headers){
+        //System.out.println("[====/orderOther/cancelOrder====]Id:" + info.getOrderId());
+        System.out.println("[====/orderOther/cancelOrder====] Cookie:" + headers.get("Cookie"));
+//        ChangeOrderResult result = new ChangeOrderResult();
+//        result.setStatus(false);
+//        return result;
+        AsyncSendToCancelOrderInfo info = new AsyncSendToCancelOrderInfo();
+        info.setLoginToken(loginToken);
+        info.setOrderId(orderId);
+        return orderService.cancelOrder(info,headers);
+    }
     /***************************For Normal Use***************************/
 
     @RequestMapping(value="/order/getTicketListByDateAndTripId", method = RequestMethod.POST)

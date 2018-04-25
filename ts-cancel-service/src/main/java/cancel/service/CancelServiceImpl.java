@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.Future;
 
 @Service
 public class CancelServiceImpl implements CancelService{
@@ -122,83 +123,6 @@ public class CancelServiceImpl implements CancelService{
                     changeOrderInfo.setOrder(order);
                     ChangeOrderResult changeOrderResult = cancelFromOtherOrder(changeOrderInfo, headers);
 
-
-//                    /***********************Error Process Seq - Correct Part*************************/
-//                    /**
-//                     * 提示：这是正常的流程！
-//                     */
-//                    //1.首先退还订单金额
-//                    String money = calculateRefund(order);
-//                    Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCan(money,loginId,order.getId().toString());
-//                    //2.然后修改订单的状态至【已取消】
-//                    Future<ChangeOrderResult> taskCancelOrder = asyncTask.updateOtherOrderStatusToCancel(changeOrderInfo);
-//
-//                    ChangeOrderResult changeOrderResult = null;
-//                    boolean drawBackMoneyStatus = false;
-//                    while(!taskCancelOrder.isDone() || !taskDrawBackMoney.isDone()){}
-//                    System.out.println("[Cancel Order Service][Cancel Order] Two Process Done");
-//                    drawBackMoneyStatus = taskDrawBackMoney.get();
-//                    changeOrderResult = taskCancelOrder.get();
-//
-//
-//                    /********************************************************************************/
-
-//                    if(changeOrderResult.isStatus() == true && drawBackMoneyStatus == true){
-//                        CancelOrderResult finalResult = new CancelOrderResult();
-//                        finalResult.setStatus(true);
-//                        finalResult.setMessage("Success.");
-//                        System.out.println("[Cancel Order Service][Cancel Order] Success.");
-//                        System.out.println("[Cancel Order Service][Draw Back Money] Success.");
-//
-//                        GetAccountByIdInfo getAccountByIdInfo = new GetAccountByIdInfo();
-//                        getAccountByIdInfo.setAccountId(order.getAccountId().toString());
-//                        GetAccountByIdResult result = getAccount(getAccountByIdInfo);
-//                        if(result.isStatus() == false){
-//                            return null;
-//                        }
-//
-//                        NotifyInfo notifyInfo = new NotifyInfo();
-//                        notifyInfo.setDate(new Date().toString());
-//
-//
-//                        notifyInfo.setEmail(result.getAccount().getEmail());
-//                        notifyInfo.setStartingPlace(order.getFrom());
-//                        notifyInfo.setEndPlace(order.getTo());
-//                        notifyInfo.setUsername(result.getAccount().getName());
-//                        notifyInfo.setSeatNumber(order.getSeatNumber());
-//                        notifyInfo.setOrderNumber(order.getId().toString());
-//                        notifyInfo.setPrice(order.getPrice());
-//                        notifyInfo.setSeatClass(SeatClass.getNameByCode(order.getSeatClass()));
-//                        notifyInfo.setStartingTime(order.getTravelTime().toString());
-//
-//                        sendEmail(notifyInfo);
-//
-//
-//                        return finalResult;
-//                    }else if(changeOrderResult.isStatus() == true && drawBackMoneyStatus == false){
-//                        CancelOrderResult finalResult = new CancelOrderResult();
-//                        finalResult.setStatus(false);
-//                        finalResult.setMessage("Fail.");
-//                        System.out.println("[Cancel Order Service][Cancel Order] Success.");
-//                        System.out.println("[Cancel Order Service][Draw Back Money] Fail.");
-//                        return finalResult;
-//                    }else if(changeOrderResult.isStatus() == false && drawBackMoneyStatus == true){
-//                        CancelOrderResult finalResult = new CancelOrderResult();
-//                        finalResult.setStatus(false);
-//                        finalResult.setMessage("Fail.");
-//                        System.out.println("[Cancel Order Service][Cancel Order] Fail.");
-//                        System.out.println("[Cancel Order Service][Draw Back Money] Success.");
-//                        return finalResult;
-//                    }else{
-//                        CancelOrderResult finalResult = new CancelOrderResult();
-//                        finalResult.setStatus(false);
-//                        finalResult.setMessage("Fail.");
-//                        System.out.println("[Cancel Order Service][Cancel Order] Fail.");
-//                        System.out.println("[Cancel Order Service][Draw Back Money] Fail.");
-//                        return finalResult;
-//                    }
-
-//
                     if(changeOrderResult.isStatus() == true){
                         CancelOrderResult finalResult = new CancelOrderResult();
                         finalResult.setStatus(true);
@@ -235,6 +159,58 @@ public class CancelServiceImpl implements CancelService{
                 return result;
             }
         }
+    }
+
+    @Override
+    public CancelOrderResult cancelOrderVersion2(CancelOrderInfo info, String loginToken,
+                                                 String loginId, HttpHeaders headers) throws Exception{
+        CancelOrderResult result;
+        String orderId = info.getOrderId();
+        AsyncSendToCancelOrderInfo cancelOrderInfo = new AsyncSendToCancelOrderInfo();
+        cancelOrderInfo.setLoginToken(loginToken);
+        cancelOrderInfo.setOrderId(orderId);
+        ChangeOrderResult cancelOrderResult = null;
+        ChangeOrderResult cancelOrderOtherResult = null;
+        boolean drawBackMoneyResult = false;
+
+        Order orderBegin = getOrderFromBasicInfo(orderId,headers);
+
+        //获取锁定的id，检查结果
+        if(true == checkStationLock(orderBegin.getFrom(),orderBegin.getTo()) && checkCanAdminChangeOrder()){
+            System.out.println("[=====] CancelService检查到车站被锁定 && 管理员权限锁定有效");
+            throw new RuntimeException("[Error] The order is suspending by admin.");
+        }
+
+        String price = calculateRefund(orderBegin);
+
+        try{
+            headers.add("Cookie","jichao=dododo");
+            System.out.println("1.异步调用inside-payment-service");
+            Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancelDoGet(price,loginId,orderId,loginToken,headers);
+            System.out.println("2.异步调用order-other-serivce");
+            Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
+            System.out.println("3.异步调用order-service");
+            Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
+            System.out.println("4.异步调用assurance-service");
+            Future<DeleteAssuranceResult> taskAssurance = asyncTask.cancelAssuranceOrder(orderId,headers);
+            System.out.println("5.异步调用food-service");
+            Future<CancelFoodOrderResult> taskFood = asyncTask.cancelFoodOrder(orderId,headers);
+
+            while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()
+                    || !taskAssurance.isDone() || !taskFood.isDone()) {
+
+            }
+            result = new CancelOrderResult();
+            result.setStatus(true);
+            result.setMessage("Success.");
+        }catch(Exception e){
+            e.printStackTrace();
+            result = new CancelOrderResult();
+            result.setStatus(false);
+            result.setMessage("Fail.");
+        }
+
+        return result;
     }
 
     public boolean sendEmail(NotifyInfo notifyInfo, HttpHeaders headers ){
@@ -475,5 +451,26 @@ public class CancelServiceImpl implements CancelService{
 //                ,info,GetOrderResult.class);
         return cor;
     }
+
+    private Order getOrderFromBasicInfo(String orderId, HttpHeaders headers){
+
+        GetOrderByIdInfo info = new GetOrderByIdInfo(orderId);
+
+        System.out.println("[Cancel Order Service][getOrderFromBasicInfo] Getting....");
+        HttpEntity requestEntity = new HttpEntity(info, headers);
+        ResponseEntity<GetOrderResult> re = restTemplate.exchange(
+                "http://ts-basic-service:15680/basic/getOrderFromMultiSource",
+                HttpMethod.POST,
+                requestEntity,
+                GetOrderResult.class);
+        GetOrderResult cor = re.getBody();
+        if(cor.isStatus()){
+            System.out.println("[=======]getOrderFromBasicInfo OK");
+            return cor.getOrder();
+        }else{
+            return null;
+        }
+    }
+
 
 }

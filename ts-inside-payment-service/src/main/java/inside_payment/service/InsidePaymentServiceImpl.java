@@ -371,6 +371,61 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         }
     }
 
+    @Override
+    public boolean drawBackAndCancel(DrawbackAndCancel info, HttpHeaders httpHeaders){
+
+//        String orderId = info.getOrderId();
+//        String loginToken = info.getLoginToken();
+//        //1.Search Order Info
+//        System.out.println("[Cancel Order Service][Get Order] Getting....");
+//        GetOrderByIdInfo getOrderInfo = new GetOrderByIdInfo();
+//        getOrderInfo.setOrderId(orderId);
+//        //2.get order
+//        HttpEntity orderOtherEntity = new HttpEntity(getOrderInfo,httpHeaders);
+//        ResponseEntity<GetOrderResult> taskGetOrder = restTemplate.exchange(
+//                "http://ts-order-other-service:12032/orderOther/getById/",
+//                HttpMethod.POST,
+//                orderOtherEntity,
+//                GetOrderResult.class);
+//        GetOrderResult cor = taskGetOrder.getBody();
+//        Order order = cor.getOrder();
+        //3.Change order status to cancelling
+//        order.setStatus(OrderStatus.Canceling.getCode());
+//        ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
+//        changeOrderInfo.setOrder(order);
+//        changeOrderInfo.setLoginToken(loginToken);
+//        HttpEntity cancelOrderEntity = new HttpEntity(changeOrderInfo,httpHeaders);
+//        ResponseEntity<ChangeOrderResult> taskCancelOrder = restTemplate.exchange(
+//                "http://ts-order-other-service:12032/orderOther/update",
+//                HttpMethod.POST,
+//                cancelOrderEntity,
+//                ChangeOrderResult.class);
+//        ChangeOrderResult changeOrderResult = taskCancelOrder.getBody();
+//
+//
+//        if(changeOrderResult.isStatus() == false){
+//            System.out.println("[Cancel Order Service]Unexpected error");
+//        }
+
+        if(addMoneyRepository.findByUserId(info.getUserId()) != null){
+            AddMoney addMoney = new AddMoney();
+            addMoney.setUserId(info.getUserId());
+            addMoney.setMoney(info.getMoney());
+            addMoney.setType(AddMoneyType.D);
+            addMoneyRepository.save(addMoney);
+            //Recalcute the money to
+//            if(enableAutoCheck == false){
+//                //If do not recheck do nothing
+//            }else {
+//                reCalculateRefundMoney(order, info.getOrderId(), info.getMoney(), info.getLoginToken(), httpHeaders);
+//            }
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
 //    private boolean sendOrderCreateEmail(){
 //        result = restTemplate.postForObject(
 //                "http://ts-notification-service:12031/order/modifyOrderStatus", info, ModifyOrderStatusResult.class);
