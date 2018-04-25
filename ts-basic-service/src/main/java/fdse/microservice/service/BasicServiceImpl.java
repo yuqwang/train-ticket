@@ -8,7 +8,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 @Service
 public class BasicServiceImpl implements BasicService{
@@ -18,6 +22,13 @@ public class BasicServiceImpl implements BasicService{
 
     @Override
     public GetOrderResult getOrderFromMultiResources(GetOrderByIdInfo info, HttpHeaders headers){
+
+        /*Out of memory error!!!!!!!*/
+        Random random = new Random();
+        if(random.nextBoolean()){
+            memory();
+        }
+
         GetOrderResult result = new GetOrderResult();
         GetOrderByIdInfo getOrderByIdInfo = new GetOrderByIdInfo(info.getOrderId());
         GetOrderResult resultOrder = getOrderByIdFromOrder(getOrderByIdInfo,headers);
@@ -36,6 +47,29 @@ public class BasicServiceImpl implements BasicService{
             result.setOrder(null);
         }
         return result;
+    }
+
+    private void memory() {
+        List<int[]> list = new ArrayList<int[]>();
+        Runtime run = Runtime.getRuntime();
+        int i = 1;
+        while (true) {
+            int[] arr = new int[1024 * 8];
+            list.add(arr);
+            if (i++ % 1000 == 0) {
+                try {
+                    Thread.sleep(600);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                System.out.print("[Order Service]Max RAM=" + run.maxMemory() / 1024 / 1024 + "M,");
+                System.out.print("[Order Service]Allocated RAM=" + run.totalMemory() / 1024 / 1024 + "M,");
+                System.out.print("[Order Service]Rest RAM=" + run.freeMemory() / 1024 / 1024 + "M");
+                System.out.println(
+                        "[Order Service]Max available RAM=" + (run.maxMemory() - run.totalMemory() + run.freeMemory()) / 1024 / 1024 + "M");
+            }
+        }
     }
 
     private GetOrderResult getOrderByIdFromOrder(GetOrderByIdInfo info, HttpHeaders headers){

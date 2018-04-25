@@ -35,8 +35,42 @@ public class CancelServiceImpl implements CancelService{
         ChangeOrderResult cancelOrderResult = null;
         ChangeOrderResult cancelOrderOtherResult = null;
         boolean drawBackMoneyResult = false;
+        Order orderBegin = null;
 
-        Order orderBegin = getOrderFromBasicInfo(orderId,headers);
+        try{
+            orderBegin = getOrderFromBasicInfo(orderId,headers);
+        }catch (Exception e){
+            HttpEntity requestEntity = new HttpEntity(info,headers);
+            ResponseEntity<String> sayHello = restTemplate.exchange(
+                    "http://ts-basic-service:15680/welcome",
+                    HttpMethod.GET,
+                    requestEntity,
+                    String.class);
+
+            ResponseEntity<String> sayHelloPrice = restTemplate.exchange(
+                    "http://ts-order-service:12031/welcome",
+                    HttpMethod.GET,
+                    requestEntity,
+                    String.class);
+
+            if(sayHello.getStatusCodeValue() == 200 && sayHelloPrice.getStatusCodeValue() == 200){
+                result = new CancelOrderResult();
+                result.setStatus(false);
+                result.setMessage("OOM");
+                System.out.println("basic-welcome 200状态码但是basic-queryForTravel 500状态码");
+                System.out.println("order-welcome 200状态码但是order-query 500状态码");
+                return result;
+            }else{
+                System.out.println("不知道发生了什么，状态码：" + sayHello.getStatusCodeValue());
+                result = new CancelOrderResult();
+                result.setStatus(false);
+                result.setMessage(sayHello.getBody());
+                return null;
+            }
+
+        }
+
+
         String price = calculateRefund(orderBegin);
 
         try{

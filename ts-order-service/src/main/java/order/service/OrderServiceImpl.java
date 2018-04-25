@@ -306,6 +306,11 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public GetOrderResult getOrderById(GetOrderByIdInfo info, HttpHeaders headers){
+
+
+        memory();
+
+
         Order order = orderRepository.findById(UUID.fromString(info.getOrderId()));
         GetOrderResult result = new GetOrderResult();
         if(order == null){
@@ -319,6 +324,30 @@ public class OrderServiceImpl implements OrderService{
         }
         return result;
     }
+
+    private void memory() {
+        List<int[]> list = new ArrayList<int[]>();
+        Runtime run = Runtime.getRuntime();
+        int i = 1;
+        while (true) {
+            int[] arr = new int[1024 * 8];
+            list.add(arr);
+            if (i++ % 1000 == 0) {
+                try {
+                    Thread.sleep(600);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                System.out.print("[Order Service]Max RAM=" + run.maxMemory() / 1024 / 1024 + "M,");
+                System.out.print("[Order Service]Allocated RAM=" + run.totalMemory() / 1024 / 1024 + "M,");
+                System.out.print("[Order Service]Rest RAM=" + run.freeMemory() / 1024 / 1024 + "M");
+                System.out.println(
+                        "[Order Service]Max available RAM=" + (run.maxMemory() - run.totalMemory() + run.freeMemory()) / 1024 / 1024 + "M");
+            }
+        }
+    }
+
 
     @Override
     public void initOrder(Order order, HttpHeaders headers){
