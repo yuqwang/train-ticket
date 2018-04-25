@@ -106,8 +106,12 @@ public class CancelServiceImpl implements CancelService{
 
                 //获取锁定的id，检查结果
                 if(true == checkStationLock(order.getFrom(),order.getTo()) && checkCanAdminChangeOrder()){
-                    System.out.println("[=====] CancelService检查到车站被锁定 && 管理员权限锁定有效");
-                    throw new RuntimeException("[Error] The order is suspending by admin.");
+                    System.out.println("[=============] CancelService检查到车站被锁定 && 管理员权限锁定有效");
+                    CancelOrderResult result;
+                    result = new CancelOrderResult();
+                    result.setStatus(false);
+                    result.setMessage("Fail.Lock");
+                    return result;
                 }
 
 
@@ -181,6 +185,7 @@ public class CancelServiceImpl implements CancelService{
             result = new CancelOrderResult();
             result.setStatus(false);
             result.setMessage("Fail.Lock");
+            return result;
         }
 
         String price = calculateRefund(orderBegin);
