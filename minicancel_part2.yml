@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-basic-info-service
-        image: 10.141.212.25:5555/f3/cluster-ts-food-map-service
+        image: 10.141.212.25:5555/f12/cluster-ts-food-map-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18767
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-route-service
-        image: 10.141.212.25:5555/f3/cluster-ts-admin-route-service
+        image: 10.141.212.25:5555/f12/cluster-ts-admin-route-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16113
@@ -65,7 +65,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-travel-service
-        image: 10.141.212.25:5555/f3/cluster-ts-admin-travel-service
+        image: 10.141.212.25:5555/f12/cluster-ts-admin-travel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16114
@@ -92,7 +92,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-user-service
-        image: 10.141.212.25:5555/f3/cluster-ts-admin-user-service
+        image: 10.141.212.25:5555/f12/cluster-ts-admin-user-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16115
@@ -119,7 +119,7 @@ spec:
     spec:
       containers:
       - name: ts-contacts-service
-        image: 10.141.212.25:5555/f3/cluster-ts-contacts-service
+        image: 10.141.212.25:5555/f12/cluster-ts-contacts-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12347
@@ -146,8 +146,9 @@ spec:
     spec:
       containers:
       - name: ts-execute-service
-        image: 10.141.212.25:5555/f3/cluster-ts-execute-service
+        image: 10.141.212.25:5555/f12/cluster-ts-execute-service
         imagePullPolicy: Always
+        ports:
         ports:
         - containerPort: 12386
         resources:
@@ -173,7 +174,7 @@ spec:
     spec:
       containers:
       - name: ts-food-map-service
-        image: 10.141.212.25:5555/f3/cluster-ts-food-map-service
+        image: 10.141.212.25:5555/f12/cluster-ts-food-map-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18855
@@ -200,7 +201,7 @@ spec:
     spec:
       containers:
       - name: ts-register-service
-        image: 10.141.212.25:5555/f3/cluster-ts-register-service
+        image: 10.141.212.25:5555/f12/cluster-ts-register-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12344
@@ -227,7 +228,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: 10.141.212.25:5555/f3/cluster-ts-travel-service
+        image: 10.141.212.25:5555/f12/cluster-ts-travel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12346
@@ -254,7 +255,7 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: 10.141.212.25:5555/f3/cluster-ts-travel2-service
+        image: 10.141.212.25:5555/f12/cluster-ts-travel2-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16346
@@ -281,7 +282,7 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: 10.141.212.25:5555/f3/cluster-ts-cancel-service
+        image: 10.141.212.25:5555/f12/cluster-ts-cancel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18885
@@ -308,7 +309,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: 10.141.212.25:5555/f3/cluster-ts-inside-payment-service
+        image: 10.141.212.25:5555/f12/cluster-ts-inside-payment-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18673
@@ -335,7 +336,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: 10.141.212.25:5555/f3/cluster-ts-order-other-service
+        image: 10.141.212.25:5555/f12/cluster-ts-order-other-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12032
@@ -362,7 +363,7 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: 10.141.212.25:5555/f3/cluster-ts-basic-service
+        image: 10.141.212.25:5555/f12/cluster-ts-basic-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15680
@@ -389,7 +390,7 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: 10.141.212.25:5555/f3/cluster-ts-order-service
+        image: 10.141.212.25:5555/f12/cluster-ts-order-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12031
@@ -416,7 +417,7 @@ spec:
     spec:
       containers:
       - name: ts-sso-service
-        image: 10.141.212.25:5555/f3/cluster-ts-sso-service
+        image: 10.141.212.25:5555/f12/cluster-ts-sso-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12349
@@ -443,7 +444,7 @@ spec:
     spec:
       containers:
       - name: ts-assurance-service
-        image: 10.141.212.25:5555/f3/cluster-ts-assurance-service
+        image: 10.141.212.25:5555/f12/cluster-ts-assurance-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18888
@@ -469,7 +470,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: 10.141.212.25:5555/f3/cluster-ts-food-service
+        image: 10.141.212.25:5555/f12/cluster-ts-food-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18856
@@ -496,7 +497,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: 10.141.212.25:5555/f3/cluster-ts-consign-service
+        image: 10.141.212.25:5555/f12/cluster-ts-consign-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16111
@@ -523,7 +524,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: 10.141.212.25:5555/f3/cluster-ts-consign-price-service
+        image: 10.141.212.25:5555/f12/cluster-ts-consign-price-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16110
