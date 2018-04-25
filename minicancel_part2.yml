@@ -237,7 +237,7 @@ kind: Deployment
 metadata:
   name: ts-admin-order-service
 spec:
-  replicas: 1
+  replicas: 4
   template:
     metadata:
       labels:

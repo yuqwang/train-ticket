@@ -34,6 +34,17 @@ public class TestFlowOne {
         //确保请求被执行完毕
         System.out.println("锁定车站结果：" + re.getBody().booleanValue());
         Assert.assertEquals(re.getBody().booleanValue(), true);
+        //然后向AdminOrderService发送请求，给与权限
+        HttpEntity requestEntity2 = new HttpEntity(null, new HttpHeaders());
+        ResponseEntity<Boolean> re2 = restTemplate.exchange(
+                "http://10.141.212.21:30112/adminorder/setCanAdminChangeOrder/true",
+                HttpMethod.GET,
+                requestEntity2,
+                Boolean.class);
+
+        //确保请求被执行完毕
+        System.out.println("授权结果：" + re2.getBody().booleanValue());
+        Assert.assertEquals(re2.getBody().booleanValue(), true);
 
         //发出十个退票请求，每次间隔十秒
         for (int i = 0; i < 10; i++) {
