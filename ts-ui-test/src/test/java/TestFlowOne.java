@@ -1,3 +1,8 @@
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -14,35 +19,50 @@ public class TestFlowOne {
     }
 
     @Test
-    public void testLogin()throws Exception{
+    public void testLogin()throws Exception {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        //注意把这里换成你的集群的ip
-        CancelOrderResult result = restTemplate.getForObject(
-                "http://10.141.212.21:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
-                CancelOrderResult.class);
+        //默认不进行自动检查，现在打开自动检查
+        HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
+        ResponseEntity<Boolean> re = restTemplate.exchange(
+                "http://10.141.212.21:30085/cancelOrder/setRecheck/true",
+                HttpMethod.GET,
+                requestEntity,
+                Boolean.class);
 
-        System.out.println("[Message]" + result.getMessage());
-        System.out.println("[Status]" + result.isStatus());
+        //确保请求被执行完毕
+        System.out.println("：" + re.getBody().booleanValue());
+        Assert.assertEquals(re.getBody().booleanValue(), true);
 
-        //错误返回：
-        // {
-        //    "status": false,
-        //    "message": "[Error Process Seq]"
-        //}
-        //正常返回：
-        //{
-        //    "status": true,
-        //    "message": "Success.Processes Seq."
-        //}
-        //其他返回均不合法
+        //发出十个退票请求，每次间隔十秒
+        for (int i = 0; i < 10; i++) {
+            //停顿十秒，给这个辣鸡负载均衡一些反应时间
+            Thread.sleep(10000);
+            ResponseEntity<CancelOrderResult> cancel = restTemplate.exchange(
+                    "http://10.141.212.21:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
+                    HttpMethod.GET,
+                    requestEntity,
+                    CancelOrderResult.class);
+            System.out.println("退订车票：" + cancel.getBody());
+            Assert.assertEquals(cancel.getBody() == null || cancel.getBody().getMessage().length() < 2, true);
+        }
 
-        Assert.assertEquals(result.isStatus() && result.getMessage().contains("Success.Processes Seq"),true);
     }
 
 
     @AfterClass
     public void tearDown() throws Exception {
+        //关闭自动检查
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
+        for (int i = 0; i < 20; i++) {
+            Thread.sleep(5000);
+            ResponseEntity<Boolean> cancel = restTemplate.exchange(
+                    "http://10.141.212.21:30085/cancelOrder/setRecheck/false",
+                    HttpMethod.GET,
+                    requestEntity,
+                    Boolean.class);
+        }
     }
 }
