@@ -15,6 +15,14 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 18885
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
 
 ---
 
@@ -35,6 +43,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 18673
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -55,6 +70,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 12032
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -75,6 +97,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 15680
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -95,6 +124,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 12031
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -115,6 +151,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 12349
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -135,6 +178,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 18888
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -155,6 +205,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 18856
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -175,6 +232,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 16111
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -195,6 +259,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 16110
+        resources:
+          requests:
+            memory: "200Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
