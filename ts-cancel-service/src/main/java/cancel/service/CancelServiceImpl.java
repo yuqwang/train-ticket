@@ -35,43 +35,13 @@ public class CancelServiceImpl implements CancelService{
         ChangeOrderResult cancelOrderResult = null;
         ChangeOrderResult cancelOrderOtherResult = null;
         boolean drawBackMoneyResult = false;
-        Order orderBegin = null;
-
-        try{
-            orderBegin = getOrderFromBasicInfo(orderId,headers);
-        }catch (Exception e){
-            HttpEntity requestEntity = new HttpEntity(info,headers);
-            ResponseEntity<String> sayHello = restTemplate.exchange(
-                    "http://ts-basic-service:15680/welcome",
-                    HttpMethod.GET,
-                    requestEntity,
-                    String.class);
-
-            ResponseEntity<String> sayHelloPrice = restTemplate.exchange(
-                    "http://ts-order-service:12031/welcome",
-                    HttpMethod.GET,
-                    requestEntity,
-                    String.class);
-
-            if(sayHello.getStatusCodeValue() == 200 && sayHelloPrice.getStatusCodeValue() == 200){
-                result = new CancelOrderResult();
-                result.setStatus(false);
-                result.setMessage("OOM");
-                System.out.println("basic-welcome 200状态码但是basic-queryForTravel 500状态码");
-                System.out.println("order-welcome 200状态码但是order-query 500状态码");
-                return result;
-            }else{
-                System.out.println("不知道发生了什么，状态码：" + sayHello.getStatusCodeValue());
-                result = new CancelOrderResult();
-                result.setStatus(false);
-                result.setMessage(sayHello.getBody());
-                return null;
-            }
-
-        }
+        //Order orderBegin = null;
 
 
-        String price = calculateRefund(orderBegin);
+
+
+        //String price = calculateRefund(orderBegin);
+        String price = "0";
 
         try{
             headers.add("Cookie","jichao=dododo");
@@ -99,8 +69,46 @@ public class CancelServiceImpl implements CancelService{
         }catch(Exception e){
             e.printStackTrace();
         }
-        if((cancelOrderResult.isStatus() ^ cancelOrderOtherResult.isStatus()) && drawBackMoneyResult){
-            Order orderFinal = getOrderFromBasicInfo(orderId,headers);
+        if(true){
+            Order orderFinal;
+
+
+
+            try{
+                orderFinal = getOrderFromBasicInfo(orderId,headers);
+            }catch (Exception e){
+                HttpEntity requestEntity = new HttpEntity(info,headers);
+                ResponseEntity<String> sayHello = restTemplate.exchange(
+                        "http://ts-basic-service:15680/welcome",
+                        HttpMethod.GET,
+                        requestEntity,
+                        String.class);
+
+                ResponseEntity<String> sayHelloPrice = restTemplate.exchange(
+                        "http://ts-order-service:12031/welcome",
+                        HttpMethod.GET,
+                        requestEntity,
+                        String.class);
+
+                if(sayHello.getStatusCodeValue() == 200 && sayHelloPrice.getStatusCodeValue() == 200){
+                    result = new CancelOrderResult();
+                    result.setStatus(false);
+                    result.setMessage("OOM");
+                    System.out.println("basic-welcome 200状态码但是basic-queryForTravel 500状态码");
+                    System.out.println("order-welcome 200状态码但是order-query 500状态码");
+                    return result;
+                }else{
+                    System.out.println("不知道发生了什么，状态码：" + sayHello.getStatusCodeValue());
+                    result = new CancelOrderResult();
+                    result.setStatus(false);
+                    result.setMessage(sayHello.getBody());
+                    return null;
+                }
+
+            }
+
+
+
             //检查订单的状态，对的话返回正确，不对的话返回错误
             if(orderFinal.getStatus() != OrderStatus.CANCEL.getCode()){
                 CancelOrderResult finalResult = new CancelOrderResult();
