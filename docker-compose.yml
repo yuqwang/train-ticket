@@ -267,6 +267,8 @@ services:
           - 16579:16579
         networks:
           - my-network
+        mem_limit: 200M
+        memswap_limit: 500M
 
   ts-price-mongo:
         image: mongo

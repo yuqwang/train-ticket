@@ -43,7 +43,10 @@ public class BasicServiceImpl implements BasicService{
 
 
         /*Out of memory error!!!!!!!*/
-        memory();
+        Random random = new Random();
+        if(random.nextBoolean()){
+            memory();
+        }
 
         String routeId = info.getTrip().getRouteId();
         String trainTypeString = trainType.getId();

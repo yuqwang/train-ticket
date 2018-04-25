@@ -39,11 +39,18 @@ public class TicketInfoServiceImpl implements TicketInfoService{
                     requestEntity,
                     String.class);
 
-            if(sayHello.getStatusCodeValue() == 200){
+            ResponseEntity<String> sayHelloPrice = restTemplate.exchange(
+                    "http://ts-price-service:16579/welcome",
+                    HttpMethod.GET,
+                    requestEntity,
+                    String.class);
+
+            if(sayHello.getStatusCodeValue() == 200 && sayHelloPrice.getStatusCodeValue() == 200){
                 ResultForTravel result = new ResultForTravel();
                 result.setStatus(false);
                 result.setMessage("OOM");
                 System.out.println("basic-welcome 200状态码但是basic-queryForTravel 500状态码");
+                System.out.println("price-welcome 200状态码但是price-query 500状态码");
                 return result;
             }else{
                 System.out.println("不知道发生了什么，状态码：" + sayHello.getStatusCodeValue());
