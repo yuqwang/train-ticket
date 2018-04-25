@@ -58,7 +58,13 @@ public class TestFlowOne {
                     requestEntity,
                     CancelOrderResult.class);
 
-            Assert.assertEquals(cancel.getBody().isStatus(),false);
+            Assert.assertEquals(cancel.getBody().isStatus(),
+                    false);
+
+            Assert.assertEquals(cancel.getBody().getMessage().equals("Fail.Lock") ,
+                    true);
+
+
 
 //            System.out.println("退订车票：" + cancel.getBody());
 //            Assert.assertEquals(cancel.getBody() == null || cancel.getBody().getMessage().length() < 2, true);

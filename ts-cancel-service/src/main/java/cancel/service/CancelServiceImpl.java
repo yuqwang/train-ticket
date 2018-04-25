@@ -180,7 +180,7 @@ public class CancelServiceImpl implements CancelService{
             System.out.println("[=====] CancelService检查到车站被锁定 && 管理员权限锁定有效");
             result = new CancelOrderResult();
             result.setStatus(false);
-            result.setMessage("Fail.");
+            result.setMessage("Fail.Lock");
         }
 
         String price = calculateRefund(orderBegin);
