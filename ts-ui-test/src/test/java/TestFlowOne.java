@@ -45,7 +45,7 @@ public class TestFlowOne {
                     requestEntity,
                     CancelOrderResult.class);
             System.out.println("退订车票：" + cancel.getBody());
-            Assert.assertEquals(cancel.getBody() == null || cancel.getBody().getMessage().length() < 2, true);
+            Assert.assertEquals(cancel.getBody().isStatus(), true);
         }
 
     }
