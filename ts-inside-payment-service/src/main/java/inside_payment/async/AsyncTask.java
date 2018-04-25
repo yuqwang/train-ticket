@@ -74,4 +74,16 @@ public class AsyncTask {
         System.out.println("sendAsyncCallConsignDrawback返回");
         return new AsyncResult<>(result);
     }
+
+    @Async("mySimpleAsync")
+    public Future<String> checkConsignPriceService(HttpHeaders httpHeaders){
+        System.out.println("checkConsignPriceService");
+        HttpEntity cancelOrderEntity = new HttpEntity(null,httpHeaders);
+        ResponseEntity<String> taskCheckConsignPrice = restTemplate.exchange(
+                "http://ts-consign-price-service:16110/consignPrice/welcome",
+                HttpMethod.GET,
+                cancelOrderEntity,
+                String.class);
+        return new AsyncResult<>(taskCheckConsignPrice.getBody());
+    }
 }  

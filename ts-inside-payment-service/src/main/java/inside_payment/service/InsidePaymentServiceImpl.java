@@ -292,6 +292,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             httpHeaders.add("Cookie","jichao=dododo");
             Future<ChangeOrderResult> taskChangeOrder = asyncTask.sendAsyncCallToChangeOrder(orderId, httpHeaders);
             Future<Boolean> cancelConsign = asyncTask.sendAsyncCallConsignDrawback(orderId,httpHeaders);
+            Future<String> checkConsignPrice = asyncTask.checkConsignPriceService(httpHeaders);
             while(!cancelConsign.isDone() || !taskChangeOrder.isDone()){
                 if(!cancelConsign.isDone() && taskChangeOrder.isDone()){
                     System.out.println("[=====] Inside-payment 内部顺序错误");
@@ -301,6 +302,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 
             ChangeOrderResult resultChangeOrder = taskChangeOrder.get();
             boolean resultConsign = cancelConsign.get();
+            System.out.println("Check Consign Price:" + checkConsignPrice.get());
             System.out.println("[=====] Inside-payment 内部顺序正常");
         }catch (Exception e){
             e.printStackTrace();

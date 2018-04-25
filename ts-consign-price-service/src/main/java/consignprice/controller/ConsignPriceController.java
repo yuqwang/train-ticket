@@ -13,6 +13,11 @@ public class ConsignPriceController {
     @Autowired
     ConsignPriceService service;
 
+    @RequestMapping(value = "/consignPrice/welcome", method = RequestMethod.GET)
+    public String welcome(){
+        return "Welcome to [Consign Price Service]";
+    }
+
     @RequestMapping(value = "/consignPrice/getPrice", method= RequestMethod.POST)
     public double getPriceByWeightAndRegion(@RequestBody GetPriceDomain info, @RequestHeader HttpHeaders headers){
         return service.getPriceByWeightAndRegion(info, headers);
