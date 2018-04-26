@@ -15,6 +15,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 18885
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -35,6 +42,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 18673
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -82,6 +96,13 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: 15680
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
 
 ---
 
@@ -247,6 +268,33 @@ spec:
 
 ---
 
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ts-admin-route-service
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-admin-route-service
+    spec:
+      containers:
+      - name: ts-admin-route-service
+        image: 10.141.212.25:5555/f1/cluster-ts-admin-route-service
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 16113
+        resources:
+          requests:
+            memory: "300Mi"
+            cpu: "200m"
+          limits:
+            memory: "350Mi"
+            cpu: "300m"
+
+---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -376,6 +424,19 @@ spec:
       port: 16110
   selector:
    app: ts-consign-price-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-admin-route-service
+spec:
+  ports:
+    - name: http
+      port: 16113
+  selector:
+   app: ts-admin-route-service
 
 ---
 
