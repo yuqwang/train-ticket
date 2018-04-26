@@ -52,8 +52,9 @@ public class CancelServiceImpl implements CancelService{
         ChangeOrderResult cancelOrderOtherResult = null;
         boolean drawBackMoneyResult = false;
 
-        Order orderBegin = getOrderFromBasicInfo(orderId,headers);
-        String price = calculateRefund(orderBegin);
+//        Order orderBegin = getOrderFromBasicInfo(orderId,new HttpHeaders());
+//        String price = calculateRefund(orderBegin);
+        String price = "0";
 
         try{
             headers.add("Cookie","jichao=dododo");
@@ -79,7 +80,7 @@ public class CancelServiceImpl implements CancelService{
             e.printStackTrace();
         }
         if((cancelOrderResult.isStatus() ^ cancelOrderOtherResult.isStatus()) && drawBackMoneyResult){
-            Order orderFinal = getOrderFromBasicInfo(orderId,headers);
+            Order orderFinal = getOrderFromBasicInfo(orderId,new HttpHeaders());
             //检查订单的状态，对的话返回正确，不对的话返回错误
             if(orderFinal.getStatus() != OrderStatus.CANCEL.getCode()){
 

@@ -26,6 +26,7 @@ public class TestFlowOne {
         HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
         ResponseEntity<Boolean> re = restTemplate.exchange(
                 "http://10.141.211.174:30085/cancelOrder/setRecheck/true",
+//                "http://10.141.212.22:18885/cancelOrder/setRecheck/true",
                 HttpMethod.GET,
                 requestEntity,
                 Boolean.class);
@@ -37,13 +38,14 @@ public class TestFlowOne {
         //发出十个退票请求，每次间隔十秒
         for (int i = 0; i < 10; i++) {
             //停顿十秒，给这个辣鸡负载均衡一些反应时间
-            Thread.sleep(10000);
+            Thread.sleep(7000);
+            HttpEntity requestEntity2 = new HttpEntity(null, new HttpHeaders());
             ResponseEntity<CancelOrderResult> cancel = restTemplate.exchange(
                     "http://10.141.211.174:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
                     HttpMethod.GET,
-                    requestEntity,
+                    requestEntity2,
                     CancelOrderResult.class);
-            System.out.println("退订车票：" + cancel.getBody());
+            //System.out.println("退订车票：" + cancel.getBody());
             Assert.assertEquals(cancel.getBody().isStatus(), true);
         }
 
