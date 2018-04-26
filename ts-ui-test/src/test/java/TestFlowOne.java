@@ -1,4 +1,3 @@
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,7 +25,7 @@ public class TestFlowOne {
         //默认不进行自动检查，现在打开自动检查
         HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
         ResponseEntity<Boolean> re = restTemplate.exchange(
-                "http://10.141.212.21:30085/cancelOrder/setRecheck/true",
+                "http://10.141.211.174:30085/cancelOrder/setRecheck/true",
                 HttpMethod.GET,
                 requestEntity,
                 Boolean.class);
@@ -40,7 +39,7 @@ public class TestFlowOne {
             //停顿十秒，给这个辣鸡负载均衡一些反应时间
             Thread.sleep(10000);
             ResponseEntity<CancelOrderResult> cancel = restTemplate.exchange(
-                    "http://10.141.212.21:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
+                    "http://10.141.211.174:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
                     HttpMethod.GET,
                     requestEntity,
                     CancelOrderResult.class);
@@ -59,7 +58,7 @@ public class TestFlowOne {
         for (int i = 0; i < 20; i++) {
             Thread.sleep(5000);
             ResponseEntity<Boolean> cancel = restTemplate.exchange(
-                    "http://10.141.212.21:30085/cancelOrder/setRecheck/false",
+                    "http://10.141.211.174:30085/cancelOrder/setRecheck/false",
                     HttpMethod.GET,
                     requestEntity,
                     Boolean.class);
