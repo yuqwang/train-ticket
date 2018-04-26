@@ -45,6 +45,7 @@ public class TestFlowOne {
                     HttpMethod.GET,
                     requestEntity2,
                     CancelOrderResult.class);
+            System.out.println(cancel.getBody().getMessage());
             //System.out.println("退订车票：" + cancel.getBody());
             Assert.assertEquals(cancel.getBody().isStatus(), true);
         }
