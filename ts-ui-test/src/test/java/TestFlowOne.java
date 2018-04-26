@@ -22,17 +22,17 @@ public class TestFlowOne {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        //默认进行自动检查，现在关闭自动检查
+        //默认不进行自动检查，现在打开自动检查
         HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
         ResponseEntity<Boolean> re = restTemplate.exchange(
-                "http://10.141.211.174:30085/cancelOrder/setRecheck/false",
+                "http://10.141.211.174:30085/cancelOrder/setRecheck/true",
 //                "http://10.141.212.22:18885/cancelOrder/setRecheck/true",
                 HttpMethod.GET,
                 requestEntity,
                 Boolean.class);
 
         //确保请求被执行完毕
-        System.out.println("" + re.getBody().booleanValue());
+        System.out.println("：" + re.getBody().booleanValue());
         Assert.assertEquals(re.getBody().booleanValue(), true);
 
         //发出十个退票请求，每次间隔十秒
@@ -47,7 +47,7 @@ public class TestFlowOne {
                     CancelOrderResult.class);
             System.out.println(cancel.getBody().getMessage());
             //System.out.println("退订车票：" + cancel.getBody());
-            Assert.assertEquals(cancel.getBody().isStatus(), false);
+            Assert.assertEquals(cancel.getBody().isStatus(), true);
         }
 
     }
@@ -61,7 +61,7 @@ public class TestFlowOne {
         for (int i = 0; i < 20; i++) {
             Thread.sleep(5000);
             ResponseEntity<Boolean> cancel = restTemplate.exchange(
-                    "http://10.141.211.174:30085/cancelOrder/setRecheck/true",
+                    "http://10.141.211.174:30085/cancelOrder/setRecheck/false",
                     HttpMethod.GET,
                     requestEntity,
                     Boolean.class);
