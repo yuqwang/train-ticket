@@ -11,11 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.client.RestTemplate;
 import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 public class CancelServiceImpl implements CancelService{
@@ -28,7 +25,7 @@ public class CancelServiceImpl implements CancelService{
 
     private Random random = new Random();
 
-    private boolean enableAutoCheck = false;
+    private boolean enableAutoCheck = true;
 
     @Override
     public void setAutoCheck(boolean status){
@@ -92,7 +89,7 @@ public class CancelServiceImpl implements CancelService{
                     finalResult.setMessage("[Error Process Seq]");
                     return finalResult;
                 }else{
-                    HttpEntity requestEntity = new HttpEntity(null, headers);
+                    HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
                     ResponseEntity<ChangeOrderResult> re = restTemplate.exchange(
                             "http://ts-order-other-service:12032/orderOther/cancelOrder/" +
                                     info.getOrderId() + "/" + loginToken,
