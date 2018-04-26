@@ -84,7 +84,7 @@ kind: Deployment
 metadata:
   name: ts-order-other-service
 spec:
-  replicas: 1
+  replicas: 3
   template:
     metadata:
       labels:

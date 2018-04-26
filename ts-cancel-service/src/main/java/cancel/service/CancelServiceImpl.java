@@ -105,8 +105,9 @@ public class CancelServiceImpl implements CancelService{
                 Order order = orderOtherResult.getOrder();
 
                 //获取锁定的id，检查结果
-                if(true == checkStationLock(order.getFrom(),order.getTo()) && checkCanAdminChangeOrder()){
-                    System.out.println("[=============] CancelService检查到车站被锁定 && 管理员权限锁定有效");
+                if(true == checkStationLock(order.getFrom(),order.getTo())){
+//                if(true == checkStationLock(order.getFrom(),order.getTo()) && checkCanAdminChangeOrder()){
+                    System.out.println("[=============] CancelService检查到车站被锁定");
                     CancelOrderResult result;
                     result = new CancelOrderResult();
                     result.setStatus(false);
@@ -180,12 +181,15 @@ public class CancelServiceImpl implements CancelService{
         Order orderBegin = getOrderFromBasicInfo(orderId,headers);
 
         //获取锁定的id，检查结果
-        if(true == checkStationLock(orderBegin.getFrom(),orderBegin.getTo()) && checkCanAdminChangeOrder()){
-            System.out.println("[=====] CancelService检查到车站被锁定 && 管理员权限锁定有效");
+//        if(true == checkStationLock(orderBegin.getFrom(),orderBegin.getTo()) && checkCanAdminChangeOrder()){
+        if(true == checkStationLock(orderBegin.getFrom(),orderBegin.getTo())){
+            System.out.println("[=====] CancelService检查到车站被锁");
             result = new CancelOrderResult();
             result.setStatus(false);
             result.setMessage("Fail.Lock");
             return result;
+        }else{
+            System.out.println("[=====] CancelService检查到车站未被锁");
         }
 
         String price = calculateRefund(orderBegin);
