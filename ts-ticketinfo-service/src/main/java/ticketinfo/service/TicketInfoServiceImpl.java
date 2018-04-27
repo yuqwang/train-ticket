@@ -43,10 +43,8 @@ public class TicketInfoServiceImpl implements TicketInfoService{
                 ResultForTravel result = new ResultForTravel();
                 result.setStatus(false);
                 result.setMessage("OOM");
-                System.out.println("basic-welcome 200状态码但是basic-queryForTravel 500状态码");
                 return result;
             }else{
-                System.out.println("不知道发生了什么，状态码：" + sayHello.getStatusCodeValue());
                 ResultForTravel result = new ResultForTravel();
                 result.setStatus(false);
                 result.setMessage(sayHello.getBody());

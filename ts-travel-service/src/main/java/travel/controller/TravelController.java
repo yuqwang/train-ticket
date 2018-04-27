@@ -90,7 +90,7 @@ public class TravelController {
         return new QueryTripResponsePackage(true,"Success.",responses);
     }
 
-    //返回某一个Trip以及剩余票数
+
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/travel/getTripAllDetailInfo", method= RequestMethod.POST)
     public GetTripAllDetailResult getTripAllDetailInfo(@RequestBody GetTripAllDetailInfo gtdi,@RequestHeader HttpHeaders headers){
