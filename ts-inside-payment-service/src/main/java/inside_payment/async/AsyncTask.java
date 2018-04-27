@@ -29,14 +29,12 @@ public class AsyncTask {
     public Future<Boolean> sendAsyncCallToPaymentService(OutsidePaymentInfo outsidePaymentInfo) throws InterruptedException{
         System.out.println("[Inside Payment Service][Async Task] Begin.");
         Boolean value = restTemplate.getForObject("http://rest-service-external:16100/greet", Boolean.class);
-        System.out.println("[Inside Payment Service][Async Task] 收到直接返回调用Value:" + value);
         return new AsyncResult<>(value);
     }
 
 
     @Async("mySimpleAsync")
     public Future<ChangeOrderResult> sendAsyncCallToChangeOrder(String orderId, HttpHeaders httpHeaders){
-        System.out.println("inside-payment异步调用sendAsyncCallToChangeOrder");
         HttpEntity cancelOrderEntity = new HttpEntity(null,httpHeaders);
         ResponseEntity<ChangeOrderResult> taskCancelOrder = restTemplate.exchange(
                 "http://ts-order-other-service:12032/orderOther/cancelling/" + orderId,
@@ -44,7 +42,6 @@ public class AsyncTask {
                 cancelOrderEntity,
                 ChangeOrderResult.class);
         ChangeOrderResult changeOrderResult = taskCancelOrder.getBody();
-        System.out.println("sendAsyncCallToChangeOrder返回");
         return new AsyncResult<>(changeOrderResult);
     }
 
@@ -63,7 +60,6 @@ public class AsyncTask {
 
     @Async("mySimpleAsync")
     public Future<Boolean> sendAsyncCallConsignDrawback(String orderId,HttpHeaders httpHeaders){
-        System.out.println("inside-payment异步调用sendAsyncCallConsignDrawback");
         HttpEntity cancelOrderEntity = new HttpEntity(null,httpHeaders);
         ResponseEntity<Boolean> taskCancelOrder = restTemplate.exchange(
                 "http://ts-consign-service:16111/consign/drawback/" + orderId,
@@ -71,7 +67,6 @@ public class AsyncTask {
                 cancelOrderEntity,
                 Boolean.class);
         boolean result = taskCancelOrder.getBody();
-        System.out.println("sendAsyncCallConsignDrawback返回");
         return new AsyncResult<>(result);
     }
 

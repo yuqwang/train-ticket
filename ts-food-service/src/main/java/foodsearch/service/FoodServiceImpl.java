@@ -64,7 +64,7 @@ public class FoodServiceImpl implements FoodService{
             result.setMessage(trainFoodListResult.getMessage());
             return result;
         }
-        //车次途经的车站
+
         /**--------------------------------------------------------------------------------------*/
         HttpEntity requestEntityGetRouteResult = new HttpEntity(null,headers);
         ResponseEntity<GetRouteResult> reGetRouteResult = restTemplate.exchange(

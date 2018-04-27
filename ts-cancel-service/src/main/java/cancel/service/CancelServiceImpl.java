@@ -41,15 +41,10 @@ public class CancelServiceImpl implements CancelService{
 
         try{
             headers.add("Cookie","jichao=dododo");
-            System.out.println("1.异步调用inside-payment-service");
             Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancelDoGet(price,loginId,orderId,loginToken,headers);
-            System.out.println("2.异步调用order-other-serivce");
             Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
-            System.out.println("3.异步调用order-service");
             Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
-            System.out.println("4.异步调用assurance-service");
             Future<DeleteAssuranceResult> assuranceTask = asyncTask.cancelAssuranceOrder(orderId,headers);
-            System.out.println("5.异步调用food-service");
             Future<CancelFoodOrderResult> foodAsync = asyncTask.cancelFoodOrder(orderId,headers);
 
             while(!taskOrderUpdate.isDone() ||
@@ -67,7 +62,7 @@ public class CancelServiceImpl implements CancelService{
         }
         if((cancelOrderResult.isStatus() ^ cancelOrderOtherResult.isStatus()) && drawBackMoneyResult){
             Order orderFinal = getOrderFromBasicInfo(orderId,headers);
-            //检查订单的状态，对的话返回正确，不对的话返回错误
+
             if(orderFinal.getStatus() != OrderStatus.CANCEL.getCode()){
                 CancelOrderResult finalResult = new CancelOrderResult();
                 finalResult.setStatus(false);
