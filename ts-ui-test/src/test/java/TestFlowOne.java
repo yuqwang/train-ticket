@@ -4,9 +4,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-/**
- * Created by ZDH on 2017/7/19.
- */
 public class TestFlowOne {
     @BeforeClass
     public void setUp() throws Exception {
