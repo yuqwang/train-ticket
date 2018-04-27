@@ -81,7 +81,7 @@ public class FoodServiceImpl implements FoodService{
         if( stationResult.isStatus() ){
             Route route = stationResult.getRoute();
             List<String> stations = route.getStations();
-            //去除不经过的站，如果起点终点有的话
+
             if(null != startStation && !"".equals(startStation)){
                 QueryForId q1=new QueryForId();
                 q1.setName(startStation);

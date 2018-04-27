@@ -199,10 +199,6 @@ public class OrderOtherServiceImpl implements OrderOtherService{
     @Override
     public ChangeOrderResult saveChanges(Order order, HttpHeaders headers){
 
-
-        System.out.println("[服务池子] " + asyncTask.count);
-        System.out.println("[锁定区域] " + fromId + " || " + toId);
-        System.out.println("[正在修改] " + order.getFrom() + " || " + order.getTo());
         boolean checkSuspendOrder = checkOrderIsSuspend(order.getFrom(),order.getTo());
 
         if(checkSuspendOrder == false) {
@@ -372,9 +368,6 @@ public class OrderOtherServiceImpl implements OrderOtherService{
 
         boolean checkSuspendOrder = checkOrderIsSuspend(order.getFrom(),order.getTo());
 
-        System.out.println("[服务池子] " + AsyncTask.count);
-        System.out.println("[已被锁定区域] " + fromId + " || " + toId);
-        System.out.println("[系统试图修改] " + order.getFrom() + " || " + order.getTo());
 
         if(checkSuspendOrder == false) {
             throw new RuntimeException("[Error] The order is suspending by admin.");
@@ -552,15 +545,12 @@ public class OrderOtherServiceImpl implements OrderOtherService{
             result.setStatus(false);
             result.setMessage("Order Not Found");
             result.setOrder(null);
-            System.out.println("取消订单失败");
         }else{
-            System.out.println("订单取消：" + order.getFrom());
             order.setStatus(OrderStatus.CANCEL.getCode());
             orderOtherRepository.save(order);
             result.setStatus(true);
             result.setMessage("Success");
             result.setOrder(order);
-            System.out.println("取消订单成功");
         }
         return result;
     }

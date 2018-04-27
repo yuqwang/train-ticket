@@ -104,10 +104,8 @@ public class CancelServiceImpl implements CancelService{
                 System.out.println("[Cancel Order Service][Cancel Order] Order found Z|K|Other");
                 Order order = orderOtherResult.getOrder();
 
-                //获取锁定的id，检查结果
                 if(true == checkStationLock(order.getFrom(),order.getTo())){
 //                if(true == checkStationLock(order.getFrom(),order.getTo()) && checkCanAdminChangeOrder()){
-                    System.out.println("[=============] CancelService检查到车站被锁定");
                     CancelOrderResult result;
                     result = new CancelOrderResult();
                     result.setStatus(false);
@@ -183,28 +181,21 @@ public class CancelServiceImpl implements CancelService{
         //获取锁定的id，检查结果
 //        if(true == checkStationLock(orderBegin.getFrom(),orderBegin.getTo()) && checkCanAdminChangeOrder()){
         if(true == checkStationLock(orderBegin.getFrom(),orderBegin.getTo())){
-            System.out.println("[=====] CancelService检查到车站被锁");
             result = new CancelOrderResult();
             result.setStatus(false);
             result.setMessage("Fail.Lock");
             return result;
         }else{
-            System.out.println("[=====] CancelService检查到车站未被锁");
         }
 
         String price = calculateRefund(orderBegin);
 
         try{
             headers.add("Cookie","jichao=dododo");
-            System.out.println("1.异步调用inside-payment-service");
             Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancelDoGet(price,loginId,orderId,loginToken,headers);
-            System.out.println("2.异步调用order-other-serivce");
             Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
-            System.out.println("3.异步调用order-service");
             Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
-            System.out.println("4.异步调用assurance-service");
             Future<DeleteAssuranceResult> taskAssurance = asyncTask.cancelAssuranceOrder(orderId,headers);
-            System.out.println("5.异步调用food-service");
             Future<CancelFoodOrderResult> taskFood = asyncTask.cancelFoodOrder(orderId,headers);
 
             while(!taskOrderUpdate.isDone() || !taskOrderOtherUpdate.isDone() || !taskDrawBackMoney.isDone()

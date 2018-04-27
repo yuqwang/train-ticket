@@ -55,20 +55,6 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 
     @Override
     public boolean cancelSuspenOrder(String fromStationId,String toStationId, HttpHeaders headers){
-//        if(redisTemplate.hasKey("adminOrderSuspendFromStationId")){
-//            ValueOperations<String, String> ops = redisTemplate.opsForValue();
-//            ops.set("adminOrderSuspendFromStationId", "");
-//            System.out.println("adminOrderSuspendFromStationId 已清空");
-//        }else{
-//            System.out.println("adminOrderSuspendFromStationId 不存在");
-//        }
-//        if(redisTemplate.hasKey("adminOrderSuspendToStationId")){
-//            ValueOperations<String, String> ops = redisTemplate.opsForValue();
-//            ops.set("adminOrderSuspendToStationId", "");
-//            System.out.println("adminOrderSuspendToStationId 已清空");
-//        }else{
-//            System.out.println("adminOrderSuspendToStationId 不存在");
-//        }
         System.out.println(fromStationId + " " + toStationId);
 //        restTemplate.getForObject("http://ts-order-other-service:12032//orderOther/cancelSuspend/" + fromStationId + "/" + toStationId, Boolean.class);
 

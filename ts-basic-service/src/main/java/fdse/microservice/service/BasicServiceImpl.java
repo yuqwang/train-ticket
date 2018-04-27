@@ -67,11 +67,7 @@ public class BasicServiceImpl implements BasicService{
 
         ResultForTravel result = new ResultForTravel();
         result.setStatus(true);
-        //车站站名服务
-//        boolean startingPlaceExist = restTemplate.postForObject(
-//                "http://ts-station-service:12345/station/exist", new QueryStation(info.getStartingPlace()), Boolean.class);
-//        boolean endPlaceExist = restTemplate.postForObject(
-//                "http://ts-station-service:12345/station/exist", new QueryStation(info.getEndPlace()),  Boolean.class);
+
         boolean startingPlaceExist = checkStationExists(info.getStartingPlace(), headers);
         boolean endPlaceExist = checkStationExists(info.getEndPlace(), headers);
         if(!startingPlaceExist || !endPlaceExist){
@@ -85,25 +81,7 @@ public class BasicServiceImpl implements BasicService{
 
 
 
-        //配置
-        //查询车票配比，以车站ABC为例，A是始发站，B是途径的车站，C是终点站，分配AC 50%，如果总票数100，那么AC有50张票，AB和BC也各有
-        //50张票，因为AB和AC拼起来正好是一张AC。
-//        String proportion = restTemplate.postForObject("http://ts-config-service:15679/config/query",
-//                new QueryConfig("DirectTicketAllocationProportion"), String.class
-//        );
-//        double percent = 1.0;
-//        if(proportion.contains("%")) {
-//            proportion = proportion.replaceAll("%", "");
-//            percent = Double.valueOf(proportion)/100;
-//            result.setPercent(percent);
-//        }else{
-//            result.setStatus(false);
-//        }
 
-        //车服务
-//        TrainType trainType = restTemplate.postForObject(
-//                "http://ts-train-service:14567/train/retrieve", new QueryTrainType(info.getTrip().getTrainTypeId()), TrainType.class
-//        );
         TrainType trainType = queryTrainType(info.getTrip().getTrainTypeId(), headers);
         if(trainType == null){
             System.out.println("traintype doesn't exist");
@@ -112,20 +90,6 @@ public class BasicServiceImpl implements BasicService{
             result.setTrainType(trainType);
         }
 
-        //票价服务
-//        QueryPriceInfo queryPriceInfo = new QueryPriceInfo();
-//        queryPriceInfo.setStartingPlaceId(startingPlaceId);
-//        queryPriceInfo.setEndPlaceId(endPlaceId);
-//        queryPriceInfo.setTrainTypeId(trainType.getId());
-//        queryPriceInfo.setSeatClass("economyClass");
-//        String priceForEconomyClass = restTemplate.postForObject(
-//                "http://ts-price-service:16579/price/query",queryPriceInfo , String.class
-//        );
-//
-//        queryPriceInfo.setSeatClass("confortClass");
-//        String priceForConfortClass = restTemplate.postForObject(
-//                "http://ts-price-service:16579/price/query", queryPriceInfo, String.class
-//        );
 
         String routeId = info.getTrip().getRouteId();
         String trainTypeString = trainType.getId();
