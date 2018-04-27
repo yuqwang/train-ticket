@@ -88,7 +88,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             payment.setPrice(result.getOrder().getPrice());
             payment.setUserId(userId);
 
-            //判断一下账户余额够不够，不够要去站外支付
             List<Payment> payments = paymentRepository.findByUserId(userId);
             List<AddMoney> addMonies = addMoneyRepository.findByUserId(userId);
             Iterator<Payment> paymentsIterator = payments.iterator();
@@ -115,7 +114,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
                 outsidePaymentInfo.setPrice(result.getOrder().getPrice());
 
 
-                /****这里异步调用第三方支付***/
 
                 HttpEntity requestEntityOutsidePaySuccess = new HttpEntity(outsidePaymentInfo,headers);
                 ResponseEntity<Boolean> reOutsidePaySuccess = restTemplate.exchange(
@@ -342,7 +340,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             addMoney.setMoney(result);
             addMoney.setType(AddMoneyType.D);
             addMoneyRepository.save(addMoney);
-            //设置订单状态为已退款
 //            GetOrderByIdInfo getOrderInfo = new GetOrderByIdInfo();
 //            getOrderInfo.setOrderId(orderId);
 //            GetOrderResult cor = restTemplate.postForObject(
@@ -355,7 +352,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             changeOrderInfo.setLoginToken(loginToken);
             System.out.println();
             System.out.println("orderOther/update before");
-            System.out.println("---重新修改过程---");
 
 //            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",
 //                  changeOrderInfo,ChangeOrderResult.class);
@@ -383,7 +379,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
             changeOrderInfo.setLoginToken(loginToken);
             System.out.println();
             System.out.println("orderOther/update before");
-            System.out.println("---一般过程---");
 //            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",changeOrderInfo,ChangeOrderResult.class);
 
             //            changeOrderResult = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",
@@ -478,7 +473,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         payment.setPrice(info.getPrice());
         payment.setUserId(info.getUserId());
 
-        //判断一下账户余额够不够，不够要去站外支付
         List<Payment> payments = paymentRepository.findByUserId(userId);
         List<AddMoney> addMonies = addMoneyRepository.findByUserId(userId);
         Iterator<Payment> paymentsIterator = payments.iterator();
@@ -498,7 +492,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         }
 
         if(totalExpand.compareTo(money) > 0){
-            //站外支付
+
             OutsidePaymentInfo outsidePaymentInfo = new OutsidePaymentInfo();
             outsidePaymentInfo.setOrderId(info.getOrderId());
             outsidePaymentInfo.setUserId(userId);

@@ -73,8 +73,6 @@ public class CancelController {
     @RequestMapping(path = "/cancelOrder/{orderId}", method = RequestMethod.GET)
     public CancelOrderResult cancelTicketDoGet(@PathVariable String orderId, @RequestHeader HttpHeaders headers) throws Exception{
 
-        System.out.println("[=====进入CancelService=====] OrderId" + orderId);
-
         String loginToken = "admin";
         String loginId = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f";
 

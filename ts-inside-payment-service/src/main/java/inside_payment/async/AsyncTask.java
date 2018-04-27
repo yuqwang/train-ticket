@@ -38,7 +38,6 @@ public class AsyncTask {
                 Boolean.class);
         Boolean value = taskUpdateOrder.getBody();
 
-        System.out.println("[Inside Payment Service][Async Task] 收到直接返回调用Value:" + value);
         return new AsyncResult<>(value);
     }
     
