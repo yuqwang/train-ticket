@@ -25,14 +25,12 @@ public class BasicServiceImpl implements BasicService{
 
         ResultForTravel result = new ResultForTravel();
         result.setStatus(true);
-        //车站站名服务
         boolean startingPlaceExist = checkStationExists(info.getStartingPlace(), headers);
         boolean endPlaceExist = checkStationExists(info.getEndPlace(), headers);
         if(!startingPlaceExist || !endPlaceExist){
             result.setStatus(false);
         }
 
-        //车服务
         TrainType trainType = queryTrainType(info.getTrip().getTrainTypeId(), headers);
         if(trainType == null){
             System.out.println("traintype doesn't exist");
