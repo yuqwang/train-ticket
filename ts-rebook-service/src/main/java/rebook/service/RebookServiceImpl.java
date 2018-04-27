@@ -214,7 +214,6 @@ public class RebookServiceImpl implements RebookService{
 
     private RebookResult updateOrder(Order order, RebookInfo info, GetTripAllDetailResult gtdr, String ticketPrice, String loginId, String loginToken, HttpHeaders httpHeaders){
         RebookResult rebookResult = new RebookResult();
-        //4.修改原有订单 设置order的各个信息
         Trip trip = gtdr.getTrip();
         String oldTripId = order.getTrainNumber();
         order.setTrainNumber(info.getTripId());
@@ -250,8 +249,6 @@ public class RebookServiceImpl implements RebookService{
 //        }
 
 
-        //更新订单信息
-        //原订单和新订单如果分别位于高铁动车和其他订单，应该删掉原订单，在另一边新建，用新的id
         if((tripGD(oldTripId) && tripGD(info.getTripId())) || (!tripGD(oldTripId) && !tripGD(info.getTripId()))){
             ChangeOrderInfo changeOrderInfo = new ChangeOrderInfo();
             changeOrderInfo.setLoginToken(loginToken);
@@ -269,13 +266,11 @@ public class RebookServiceImpl implements RebookService{
                 return rebookResult;
             }
         }else{
-            //删掉原有订单
             deleteOrder(order.getId().toString(), oldTripId, httpHeaders);
-            //在另一边创建新订单
             createOrder(order,loginToken,order.getTrainNumber(), httpHeaders);
             rebookResult.setStatus(true);
             rebookResult.setMessage("Success!");
-            rebookResult.setOrder(order); //order id是不对的，因为新创建的时候，会创建新的order id
+            rebookResult.setOrder(order);
             return rebookResult;
         }
     }

@@ -36,7 +36,6 @@ public class Travel2Controller {
         return service.create(info);
     }
 
-    //只返回Trip，不会返回票数信息
     @RequestMapping(value="/travel2/retrieve", method= RequestMethod.POST)
     public Trip retrieve(@RequestBody Information2 info){
         return service.retrieve(info);
@@ -52,7 +51,6 @@ public class Travel2Controller {
         return service.delete(info);
     }
 
-    //返回Trip以及剩余票数
     @RequestMapping(value="/travel2/query", method= RequestMethod.POST)
     public ArrayList<TripResponse> query(@RequestBody QueryInfo info,@RequestHeader HttpHeaders headers){
         if(info.getStartingPlace() == null || info.getStartingPlace().length() == 0 ||
@@ -81,7 +79,7 @@ public class Travel2Controller {
         return new QueryTripResponsePackage(true,"Success.",responses);
     }
 
-    //返回Trip以及剩余票数
+
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/travel2/getTripAllDetailInfo", method= RequestMethod.POST)
     public GetTripAllDetailResult getTripAllDetailInfo(@RequestBody GetTripAllDetailInfo gtdi,@RequestHeader HttpHeaders headers){

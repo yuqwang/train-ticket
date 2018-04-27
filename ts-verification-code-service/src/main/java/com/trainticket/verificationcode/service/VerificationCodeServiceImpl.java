@@ -29,13 +29,9 @@ public class VerificationCodeServiceImpl implements VerificationCodeService{
             'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
 
     //web登录相关：
-    /** 验证码，Hash类型， 后面跟着cookie Id */
     public static final String CAPTCHA = "captcha:";
-    /** 验证码，field，验证码内容*/
     public static final String CAPTCHA_CODE = "code";
-    /** 验证码，field，验证码是否已经验证过 */
     public static final String CAPTCHA_CHECKED = "checked";
-    /** 验证码失效时间，秒 */
     public static final int CAPTCHA_EXPIRED = 1000;
 
     @Override
