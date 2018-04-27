@@ -45,15 +45,10 @@ public class CancelServiceImpl implements CancelService{
 
         try{
             headers.add("Cookie","jichao=dododo");
-            System.out.println("1.异步调用inside-payment-service");
             Future<Boolean> taskDrawBackMoney = asyncTask.drawBackMoneyForOrderCancelDoGet(price,loginId,orderId,loginToken,headers);
-            System.out.println("2.异步调用order-other-serivce");
             Future<ChangeOrderResult> taskOrderOtherUpdate = asyncTask.updateOtherOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
-            System.out.println("3.异步调用order-service");
             Future<ChangeOrderResult> taskOrderUpdate = asyncTask.updateOrderStatusToCancelV2DoGet(cancelOrderInfo,headers);
-            System.out.println("4.异步调用assurance-service");
             Future<DeleteAssuranceResult> assuranceTask = asyncTask.cancelAssuranceOrder(orderId,headers);
-            System.out.println("5.异步调用food-service");
             Future<CancelFoodOrderResult> foodAsync = asyncTask.cancelFoodOrder(orderId,headers);
 
             while(!taskOrderUpdate.isDone() ||
@@ -94,11 +89,8 @@ public class CancelServiceImpl implements CancelService{
                     result = new CancelOrderResult();
                     result.setStatus(false);
                     result.setMessage("OOM");
-                    System.out.println("basic-welcome 200状态码但是basic-queryForTravel 500状态码");
-                    System.out.println("order-welcome 200状态码但是order-query 500状态码");
                     return result;
                 }else{
-                    System.out.println("不知道发生了什么，状态码：" + sayHello.getStatusCodeValue());
                     result = new CancelOrderResult();
                     result.setStatus(false);
                     result.setMessage(sayHello.getBody());
@@ -108,8 +100,6 @@ public class CancelServiceImpl implements CancelService{
             }
 
 
-
-            //检查订单的状态，对的话返回正确，不对的话返回错误
             if(orderFinal.getStatus() != OrderStatus.CANCEL.getCode()){
                 CancelOrderResult finalResult = new CancelOrderResult();
                 finalResult.setStatus(false);

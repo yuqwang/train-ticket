@@ -67,7 +67,6 @@ public class AsyncTask {
                 HttpMethod.POST,
                 requestEntity,
                 ChangeOrderResult.class);
-        System.out.println("ts-order-service返回");
         return new AsyncResult<>(re.getBody());
     }
 
@@ -79,7 +78,6 @@ public class AsyncTask {
                 HttpMethod.GET,
                 requestEntity,
                 ChangeOrderResult.class);
-        System.out.println("ts-order-service返回");
         return new AsyncResult<>(re.getBody());
     }
 
@@ -103,7 +101,6 @@ public class AsyncTask {
                 HttpMethod.POST,
                 requestEntity,
                 ChangeOrderResult.class);
-        System.out.println("ts-order-other-service返回");
         return new AsyncResult<>(re.getBody());
     }
 
@@ -117,7 +114,6 @@ public class AsyncTask {
                 HttpMethod.GET,
                 requestEntity,
                 ChangeOrderResult.class);
-        System.out.println("ts-order-other-service返回");
         return new AsyncResult<>(re.getBody());
     }
 
@@ -139,7 +135,6 @@ public class AsyncTask {
                 requestEntity,
                 String.class);
         String result = re.getBody();
-        System.out.println("ts-inside-payment-service返回");
         return new AsyncResult<>(result.equals("true"));
     }
 
@@ -161,7 +156,6 @@ public class AsyncTask {
                 requestEntity,
                 String.class);
         String result = re.getBody();
-        System.out.println("ts-inside-payment-service返回");
         return new AsyncResult<>(result.equals("true"));
     }
 
@@ -173,7 +167,6 @@ public class AsyncTask {
                 HttpMethod.GET,
                 requestEntity,
                 CancelFoodOrderResult.class);
-        System.out.println("ts-food-service返回");
         return new AsyncResult<>(re.getBody());
     }
 
@@ -185,7 +178,6 @@ public class AsyncTask {
                 HttpMethod.GET,
                 requestEntity,
                 DeleteAssuranceResult.class);
-        System.out.println("ts-assurance-service返回");
         return new AsyncResult<>(re.getBody());
     }
 
