@@ -1,26 +1,6 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: redis
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: redis
-    spec:
-      containers:
-      - name: redis
-        image: redis
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 6379
-
----
-
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
   name: ts-account-mongo
 spec:
   replicas: 1
@@ -352,7 +332,7 @@ spec:
     spec:
       containers:
       - name: ts-voucher-mysql
-        image: 10.141.212.25:5555/cluster-ts-mysql
+        image: mysql:5.6.35
         imagePullPolicy: IfNotPresent
         env:
         # Use secret in real usage
@@ -443,15 +423,23 @@ spec:
 
 ---
 
-apiVersion: v1
-kind: Service
+apiVersion: extensions/v1beta1
+kind: Deployment
 metadata:
-  name: redis
+  name: ts-verification-code-mongo
 spec:
-  ports:
-    - port: 6379
-  selector:
-   app: redis
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-verification-code-mongo
+    spec:
+      containers:
+      - name: ts-verification-code-mongo
+        image: mongo
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 27017
 
 ---
 
@@ -704,5 +692,17 @@ spec:
     - port: 27017
   selector:
    app: ts-food-mongo
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-verification-code-mongo
+spec:
+  ports:
+    - port: 27017
+  selector:
+   app: ts-verification-code-mongo
 
 ---
