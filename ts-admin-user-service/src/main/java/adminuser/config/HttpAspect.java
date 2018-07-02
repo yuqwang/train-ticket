@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
 
 @Aspect
 @Component
@@ -34,23 +35,32 @@ public class HttpAspect {
         String ip = request.getRemoteAddr();
         String remoteHost = request.getRemoteHost();
         String requestArgs  = "";
+
+        Enumeration<String> headers = request.getHeaderNames();
+        StringBuilder sb = new StringBuilder();
+        sb.append("[Headers:");
+        while(headers.hasMoreElements()){
+            String headerName = headers.nextElement();
+            String headerMap = String.format("[%s:%s]", headerName, request.getHeader(headerName));
+            sb.append(headerMap);
+        }
+        sb.append("]");
+
         if(joinPoint.getArgs() != null && joinPoint.getArgs().length > 0){
             for(Object c:  joinPoint.getArgs()) {
                 if( !(c instanceof HttpServletResponse) && !(c instanceof HttpServletRequest)) {
-                    System.out.println("c=" + c);
                     requestArgs += new Gson().toJson(c);
-                    System.out.println("requestArgs=" + requestArgs);
                 }
             }
         }
 
-
-        logger.info("[Service:" + thisServiceName + "]" +
-                    "[URI:" + thisServiceName + url + "]" +
-                    "[Method:" + method + "]" +
-                    "[Request:" + requestArgs + "]" +
-                    "[RemoteHost:" + remoteHost + "]" +
-                    "[IP:" + ip + "]");
+        logger.info(sb.toString() +
+                "[Service:" + thisServiceName + "]" +
+                "[URI:" + thisServiceName + url + "]" +
+                "[Method:" + method + "]" +
+                "[Request:" + requestArgs + "]" +
+                "[RemoteHost:" + remoteHost + "]" +
+                "[IP:" + ip + "]");
 
     }
 
