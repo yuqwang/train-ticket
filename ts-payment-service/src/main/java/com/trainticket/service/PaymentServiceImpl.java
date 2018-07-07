@@ -1,5 +1,6 @@
 package com.trainticket.service;
 
+import com.trainticket.config.MockLog;
 import com.trainticket.domain.AddMoney;
 import com.trainticket.domain.AddMoneyInfo;
 import com.trainticket.domain.Payment;
@@ -23,6 +24,9 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Autowired
     AddMoneyRepository addMoneyRepository;
+
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public boolean pay(PaymentInfo info, HttpHeaders headers){
@@ -58,7 +62,7 @@ public class PaymentServiceImpl implements PaymentService{
         if(paymentTemp == null){
             paymentRepository.save(payment);
         }else{
-            System.out.println("[Payment Service][Init Payment] Already Exists:" + payment.getId());
+            mockLog.printLog("[Payment Service][Init Payment] Already Exists:" + payment.getId());
         }
     }
 }

@@ -1,5 +1,6 @@
 package fdse.microservice.controller;
 
+import fdse.microservice.config.MockLog;
 import fdse.microservice.domain.*;
 import fdse.microservice.service.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class StationController {
 
     @Autowired
     private StationService stationService;
+    @Autowired
+    MockLog mockLog;
 
     @RequestMapping(value="/station/create",method= RequestMethod.POST)
     public boolean create(@RequestBody Information info){
@@ -51,14 +54,14 @@ public class StationController {
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/station/queryById",method = RequestMethod.POST)
     public QueryStation queryById(@RequestBody QueryById queryById){
-        System.out.println("[Station Service] Query By Id:" + queryById.getStationId());
+        mockLog.printLog("[Station Service] Query By Id:" + queryById.getStationId());
         return stationService.queryById(queryById.getStationId());
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(value = "/station/queryByIdForName",method = RequestMethod.POST)
     public String queryByIdForName(@RequestBody QueryById queryById){
-        System.out.println("[Station Service] Query By Id For Name:" + queryById.getStationId());
+        mockLog.printLog("[Station Service] Query By Id For Name:" + queryById.getStationId());
         return stationService.queryById(queryById.getStationId()).getName();
     }
 }

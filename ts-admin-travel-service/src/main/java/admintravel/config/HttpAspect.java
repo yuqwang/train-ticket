@@ -2,16 +2,14 @@ package admintravel.config;
 
 import com.google.gson.Gson;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Enumeration;
 
 @Aspect
@@ -20,32 +18,64 @@ public class HttpAspect {
 
     private final static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(HttpAspect.class);
 
-    @Pointcut("execution(public * admintravel.controller.AdminTravelController.*(..))")
-    public void webLog(){}
+    ThreadLocal<String> requestType = new ThreadLocal<String>();
+    ThreadLocal<String> parentSpanId = new ThreadLocal<String>();
+    ThreadLocal<String> requestId = new ThreadLocal<String>();
+    ThreadLocal<String> traceId = new ThreadLocal<String>();
+    ThreadLocal<String> spanId = new ThreadLocal<String>();
+
+    ////////////////////////////////// 拦截API调用 //////////////////////////////////////////
+
+    @Pointcut("execution(public * admintravel.controller.*.*(..))")
+    public void webLog(){
+    }
 
     @Before("webLog()")
-    public void doBefore(JoinPoint joinPoint){
+    public void doBeforeWeb(JoinPoint joinPoint){
+        requestId.set("");
+        parentSpanId.set("");
+        requestId.set("");
+        traceId.set("");
+        spanId.set("");
 
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
-
         String url = request.getRequestURI();
-        String thisServiceName = request.getServerName();
         String method = request.getMethod();
         String ip = request.getRemoteAddr();
         String remoteHost = request.getRemoteHost();
-        String requestArgs  = "";
 
         Enumeration<String> headers = request.getHeaderNames();
         StringBuilder sb = new StringBuilder();
-        sb.append("[Headers:");
         while(headers.hasMoreElements()){
             String headerName = headers.nextElement();
             String headerMap = String.format("[%s:%s]", headerName, request.getHeader(headerName));
+            switch (headerName){
+                case("[x-request-id"):{
+                    requestId.set(request.getHeader(headerName));
+                    break;
+                }
+                case("x-b3-traceid"):{
+                    traceId.set(request.getHeader(headerName));
+                    break;
+                }
+                case("x-b3-spanid"):{
+                    spanId.set(request.getHeader(headerName));
+                    break;
+                }
+                case("x-b3-parentspanid"):{
+                    parentSpanId.set(request.getHeader(headerName));
+                    break;
+                }
+                case("RequestType"):{
+                    requestType.set(request.getHeader(headerName));
+                    break;
+                }
+            }
             sb.append(headerMap);
         }
-        sb.append("]");
 
+        String requestArgs  = "";
         if(joinPoint.getArgs() != null && joinPoint.getArgs().length > 0){
             for(Object c:  joinPoint.getArgs()) {
                 if( !(c instanceof HttpServletResponse) && !(c instanceof HttpServletRequest)) {
@@ -55,26 +85,65 @@ public class HttpAspect {
         }
 
         logger.info(sb.toString() +
-                "[Service:" + thisServiceName + "]" +
-                "[URI:" + thisServiceName + url + "]" +
+                "[URI:" + url + "]" +
                 "[Method:" + method + "]" +
-                "[Request:" + requestArgs + "]" +
                 "[RemoteHost:" + remoteHost + "]" +
-                "[IP:" + ip + "]");
-
+                "[IP:" + ip + "]" +
+                "[LogType:InvocationRequest]" +
+                "[Request:" + requestArgs + "]" );
     }
 
     @AfterReturning(returning = "ret", pointcut = "webLog()")
-    public void doAfterReturning(Object ret) throws Throwable {
+    public void doAfterReturningWeb(Object ret) throws Throwable {
 
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        String thisServiceName = request.getServerName();
+        String traceInfo = "[ParentSpanId:" + parentSpanId.get() + "]" +
+                "[RequestId:" + requestId.get() + "]" +
+                "[TraceId:" + traceId.get() + "]" +
+                "[SpanId:" + spanId.get() + "]" +
+                "[LogType:InvocationResponse]";
 
         if(ret != null){
-            logger.info("[Service:" + thisServiceName + "]" + "[Response:" + new Gson().toJson(ret) + "]");
+            logger.info(traceInfo + "[Response:" + new Gson().toJson(ret) + "]");
         }else{
-            logger.info("[Service:" + thisServiceName + "]" + "[Response:void]");
+            logger.info(traceInfo + "[Response:void]");
         }
     }
+
+    /////////////////////////////////// 打印异常日志 //////////////////////////////////////////////
+
+    @AfterThrowing(value = "execution(public * admintravel.controller.*.*(..))", throwing = "e")
+    private void doAfterThrow(Throwable e) {
+
+        logger.info("[ParentSpanId:" + parentSpanId.get() + "]" +
+                "[RequestId:" + requestId.get() + "]" +
+                "[TraceId:" + traceId.get() + "]" +
+                "[SpanId:" + spanId.get() + "]" +
+                "[LogType:InternalMethod]" +
+                "[ExceptionMessage:" + e.toString() + "]" +
+                "[ExceptionCause:" + e.getCause() + "]" +
+                "[ExceptionStack:" + Arrays.toString(e.getStackTrace()) + "]");
+
+    }
+
+    ///////////////////////////////////// 拦截方法内部日志 //////////////////////////////////////////////////
+
+    @Pointcut("execution(public * admintravel.config.MockLog.printLog(..))")
+    public void methodLog(){
+    }
+
+    @Before("methodLog()")
+    public void doBeforeMethod(JoinPoint joinPoint){
+        String content = "";
+        if(joinPoint.getArgs() != null && joinPoint.getArgs().length == 1){
+            content = (String)joinPoint.getArgs()[0];
+        }
+        logger.info("[ParentSpanId:" + parentSpanId.get() + "]" +
+                "[RequestId:" + requestId.get() + "]" +
+                "[TraceId:" + traceId.get() + "]" +
+                "[SpanId:" + spanId.get() + "]" +
+                "[LogType:InternalMethod]" +
+                "[Content:" + content + "]");
+    }
+
+
 }

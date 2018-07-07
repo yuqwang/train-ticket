@@ -1,5 +1,6 @@
 package fdse.microservice.service;
 
+import fdse.microservice.config.MockLog;
 import fdse.microservice.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -15,6 +16,9 @@ public class BasicServiceImpl implements BasicService{
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public ResultForTravel queryForTravel(QueryForTravel info, HttpHeaders headers){
@@ -60,7 +64,7 @@ public class BasicServiceImpl implements BasicService{
 //        );
         TrainType trainType = queryTrainType(info.getTrip().getTrainTypeId(), headers);
         if(trainType == null){
-            System.out.println("traintype doesn't exist");
+            mockLog.printLog("traintype doesn't exist");
             result.setStatus(false);
         }else{
             result.setTrainType(trainType);
@@ -108,7 +112,7 @@ public class BasicServiceImpl implements BasicService{
 
     @Override
     public String queryForStationId(QueryStation info, HttpHeaders headers){
-        System.out.println("[Basic Information Service][Query For Station Id] Station Id:" + info.getName());
+        mockLog.printLog("[Basic Information Service][Query For Station Id] Station Id:" + info.getName());
         HttpEntity requestEntity = new HttpEntity(info, headers);
         ResponseEntity<String> re = restTemplate.exchange(
                 "http://ts-station-service:12345/station/queryForId",
@@ -122,7 +126,7 @@ public class BasicServiceImpl implements BasicService{
     }
 
     public boolean checkStationExists(String stationName, HttpHeaders headers){
-        System.out.println("[Basic Information Service][Check Station Exists] Station Name:" + stationName);
+        mockLog.printLog("[Basic Information Service][Check Station Exists] Station Name:" + stationName);
         HttpEntity requestEntity = new HttpEntity(new QueryStation(stationName), headers);
         ResponseEntity<Boolean> re = restTemplate.exchange(
                 "http://ts-station-service:12345/station/exist",
@@ -136,7 +140,7 @@ public class BasicServiceImpl implements BasicService{
     }
 
     public TrainType queryTrainType(String trainTypeId, HttpHeaders headers){
-        System.out.println("[Basic Information Service][Query Train Type] Train Type:" + trainTypeId);
+        mockLog.printLog("[Basic Information Service][Query Train Type] Train Type:" + trainTypeId);
         HttpEntity requestEntity = new HttpEntity(new QueryTrainType(trainTypeId), headers);
         ResponseEntity<TrainType> re = restTemplate.exchange(
                 "http://ts-train-service:14567/train/retrieve",
@@ -151,7 +155,7 @@ public class BasicServiceImpl implements BasicService{
     }
 
     private Route getRouteByRouteId(String routeId, HttpHeaders headers){
-        System.out.println("[Basic Information Service][Get Route By Id] Route ID：" + routeId);
+        mockLog.printLog("[Basic Information Service][Get Route By Id] Route ID：" + routeId);
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<GetRouteByIdResult> re = restTemplate.exchange(
                 "http://ts-route-service:11178/route/queryById/"+ routeId,
@@ -163,16 +167,16 @@ public class BasicServiceImpl implements BasicService{
 //                "http://ts-route-service:11178/route/queryById/" + routeId,
 //                GetRouteByIdResult.class);
         if(result.isStatus() == false){
-            System.out.println("[Basic Information Service][Get Route By Id] Fail." + result.getMessage());
+            mockLog.printLog("[Basic Information Service][Get Route By Id] Fail." + result.getMessage());
             return null;
         }else{
-            System.out.println("[Basic Information Service][Get Route By Id] Success.");
+            mockLog.printLog("[Basic Information Service][Get Route By Id] Success.");
             return result.getRoute();
         }
     }
 
     private PriceConfig queryPriceConfigByRouteIdAndTrainType(String routeId,String trainType, HttpHeaders headers){
-        System.out.println("[Basic Information Service][Query For Price Config] RouteId:"
+        mockLog.printLog("[Basic Information Service][Query For Price Config] RouteId:"
                 + routeId + "TrainType:" + trainType);
         QueryPriceConfigByTrainAndRoute info = new QueryPriceConfigByTrainAndRoute();
         info.setRouteId(routeId);

@@ -1,5 +1,6 @@
 package adminroute.service;
 
+import adminroute.config.MockLog;
 import adminroute.domain.bean.CreateAndModifyRouteInfo;
 import adminroute.domain.bean.DeleteRouteInfo;
 import adminroute.domain.request.CreateAndModifyRouteRequest;
@@ -20,6 +21,9 @@ public class AdminRouteServiceImpl implements AdminRouteService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    MockLog mockLog;
+
     @Override
     public GetRoutesListlResult getAllRoutes(String id, HttpHeaders headers) {
         if(checkId(id)){
@@ -35,7 +39,7 @@ public class AdminRouteServiceImpl implements AdminRouteService {
 //                    GetRoutesListlResult.class);
             return result;
         }else {
-            System.out.println("[Admin Route Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin Route Service][Wrong Admin ID]");
             GetRoutesListlResult result = new GetRoutesListlResult();
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + id);
@@ -65,7 +69,7 @@ public class AdminRouteServiceImpl implements AdminRouteService {
             return result;
         }
         else {
-            System.out.println("[Admin Route Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin Route Service][Wrong Admin ID]");
             CreateAndModifyRouteResult result = new CreateAndModifyRouteResult();
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + request.getLoginId());
@@ -91,7 +95,7 @@ public class AdminRouteServiceImpl implements AdminRouteService {
             return result;
         }
         else {
-            System.out.println("[Admin Route Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin Route Service][Wrong Admin ID]");
             DeleteRouteResult result = new DeleteRouteResult();
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + request.getLoginId());

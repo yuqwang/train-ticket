@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import plan.config.MockLog;
 import plan.domain.*;
 import java.util.ArrayList;
 
@@ -15,6 +16,8 @@ public class RoutePlanServiceImpl implements RoutePlanService{
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public RoutePlanResults searchCheapestResult(GetRoutePlanInfo info,HttpHeaders headers) {
@@ -150,7 +153,7 @@ public class RoutePlanServiceImpl implements RoutePlanService{
     public RoutePlanResults searchMinStopStations(GetRoutePlanInfo info,HttpHeaders headers) {
         String fromStationId = queryForStationId(info.getFormStationName(),headers);
         String toStationId = queryForStationId(info.getToStationName(),headers);
-        System.out.println("From Id:" + fromStationId + " To:" + toStationId);
+        mockLog.printLog("From Id:" + fromStationId + " To:" + toStationId);
         //1.获取这个经过这两个车站的路线
         GetRouteByStartAndTerminalInfo searchRouteInfo =
                 new GetRouteByStartAndTerminalInfo(fromStationId,toStationId);
@@ -166,7 +169,7 @@ public class RoutePlanServiceImpl implements RoutePlanService{
 //                "http://ts-route-service:11178/route/queryByStartAndTerminal",
 //                searchRouteInfo, GetRoutesListlResult.class);
         ArrayList<Route> routeList = routeResult.getRoutes();
-        System.out.println("[Route Plan Service] Candidate Route Number:" + routeList.size());
+        mockLog.printLog("[Route Plan Service] Candidate Route Number:" + routeList.size());
         //2.计算这两个车站之间有多少停靠站
         ArrayList<Integer> gapList = new ArrayList<>();
         for(int i = 0; i < routeList.size(); i++){
@@ -223,7 +226,7 @@ public class RoutePlanServiceImpl implements RoutePlanService{
             tempList.addAll(travelTrips.get(i));
             finalTripResult.add(tempList);
         }
-        System.out.println("[Route Plan Service] Trips Num:" + finalTripResult.size());
+        mockLog.printLog("[Route Plan Service] Trips Num:" + finalTripResult.size());
         //5.再根据这些车次信息获取其价格和停靠站信息
         ArrayList<Trip> trips = new ArrayList<>();
         for(ArrayList<Trip> tempTrips : finalTripResult){
@@ -286,7 +289,7 @@ public class RoutePlanServiceImpl implements RoutePlanService{
             tripResponses.add(unit);
         }
 
-        System.out.println("[Route Plan Service] Trips Response Unit Num:" + tripResponses.size());
+        mockLog.printLog("[Route Plan Service] Trips Response Unit Num:" + tripResponses.size());
         RoutePlanResults finalResults = new RoutePlanResults();
 
         finalResults.setStatus(true);
@@ -297,7 +300,7 @@ public class RoutePlanServiceImpl implements RoutePlanService{
     }
 
     private String queryForStationId(String stationName, HttpHeaders headers){
-        System.out.println("[Preserve Service][Get Station Name]");
+        mockLog.printLog("[Preserve Service][Get Station Name]");
         QueryForStationId queryForId = new QueryForStationId();
         queryForId.setName(stationName);
 
@@ -313,7 +316,7 @@ public class RoutePlanServiceImpl implements RoutePlanService{
     }
 
     private Route getRouteByRouteId(String routeId, HttpHeaders headers){
-        System.out.println("[Route Plan Service][Get Route By Id] Route ID：" + routeId);
+        mockLog.printLog("[Route Plan Service][Get Route By Id] Route ID：" + routeId);
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<GetRouteResult> re = restTemplate.exchange(
                 "http://ts-route-service:11178/route/queryById/" + routeId,
@@ -326,10 +329,10 @@ public class RoutePlanServiceImpl implements RoutePlanService{
 //                "http://ts-route-service:11178/route/queryById/" + routeId,
 //                GetRouteResult.class);
         if(result.isStatus() == false){
-            System.out.println("[Travel Service][Get Route By Id] Fail." + result.getMessage());
+            mockLog.printLog("[Travel Service][Get Route By Id] Fail." + result.getMessage());
             return null;
         }else{
-            System.out.println("[Travel Service][Get Route By Id] Success.");
+            mockLog.printLog("[Travel Service][Get Route By Id] Success.");
             return result.getRoute();
         }
     }
@@ -346,7 +349,7 @@ public class RoutePlanServiceImpl implements RoutePlanService{
 //                "http://ts-travel-service:12346/travel/queryWithPackage",
 //                info,  QueryTripResponsePackage.class);
 
-        System.out.println("[Route Plan Get Trip][Size]" + list.getResponses().size());
+        mockLog.printLog("[Route Plan Get Trip][Size]" + list.getResponses().size());
 
         return list.getResponses();
     }
@@ -363,7 +366,7 @@ public class RoutePlanServiceImpl implements RoutePlanService{
 //                "http://ts-travel2-service:16346/travel2/queryWithPackage",
 //                info,  QueryTripResponsePackage.class);
 
-        System.out.println("[Route Plan Get TripOther][Size]" + list.getResponses().size());
+        mockLog.printLog("[Route Plan Get TripOther][Size]" + list.getResponses().size());
 
         return list.getResponses();
     }

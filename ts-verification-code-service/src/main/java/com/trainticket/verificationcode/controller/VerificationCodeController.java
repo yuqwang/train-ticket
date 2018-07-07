@@ -45,7 +45,7 @@ public class VerificationCodeController {
 	public boolean verifyCode(HttpServletRequest request, HttpServletResponse response ) {
 		return true;
 //		String receivedCode = request.getParameter("verificationCode");
-//		System.out.println("receivedCode"+receivedCode);
+//		mockLog.printLog("receivedCode"+receivedCode);
 //		boolean result = verificationCodeService.verifyCode(request, response, receivedCode);
 //		return result;
 

@@ -1,5 +1,6 @@
 package admintravel.service;
 
+import admintravel.config.MockLog;
 import admintravel.domain.bean.AdminTrip;
 import admintravel.domain.request.AddAndModifyTravelRequest;
 import admintravel.domain.request.DeleteTravelRequest;
@@ -20,12 +21,15 @@ public class AdminTravelServiceImpl implements AdminTravelService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    MockLog mockLog;
+
     @Override
     public AdminFindAllResult getAllTravels(String id, HttpHeaders headers) {
         AdminFindAllResult result = new AdminFindAllResult();
         ArrayList<AdminTrip> trips = new ArrayList<AdminTrip>();
         if(checkId(id)){
-            System.out.println("[Admin Travel Service][Get All Travels]");
+            mockLog.printLog("[Admin Travel Service][Get All Travels]");
             HttpEntity requestEntity = new HttpEntity(headers);
             ResponseEntity<AdminFindAllResult> re = restTemplate.exchange(
                     "http://ts-travel-service:12346/travel/adminQueryAll",
@@ -37,11 +41,11 @@ public class AdminTravelServiceImpl implements AdminTravelService {
 //                    "http://ts-travel-service:12346/travel/adminQueryAll",
 //                    AdminFindAllResult.class);
             if(result.isStatus()){
-                System.out.println("[Admin Travel Service][Get Travel From ts-travel-service successfully!]");
+                mockLog.printLog("[Admin Travel Service][Get Travel From ts-travel-service successfully!]");
                 trips.addAll(result.getTrips());
             }
             else
-                System.out.println("[Admin Travel Service][Get Travel From ts-travel-service fail!]");
+                mockLog.printLog("[Admin Travel Service][Get Travel From ts-travel-service fail!]");
 
             HttpEntity requestEntity2 = new HttpEntity(headers);
             ResponseEntity<AdminFindAllResult> re2 = restTemplate.exchange(
@@ -54,11 +58,11 @@ public class AdminTravelServiceImpl implements AdminTravelService {
 //                    "http://ts-travel2-service:16346/travel2/adminQueryAll",
 //                    AdminFindAllResult.class);
             if(result.isStatus()){
-                System.out.println("[Admin Travel Service][Get Travel From ts-travel2-service successfully!]");
+                mockLog.printLog("[Admin Travel Service][Get Travel From ts-travel2-service successfully!]");
                 trips.addAll(result.getTrips());
             }
             else
-                System.out.println("[Admin Travel Service][Get Travel From ts-travel2-service fail!]");
+                mockLog.printLog("[Admin Travel Service][Get Travel From ts-travel2-service fail!]");
             result.setTrips(trips);
         }
         else{
@@ -96,11 +100,11 @@ public class AdminTravelServiceImpl implements AdminTravelService {
 //                        "http://ts-travel2-service:16346/travel2/create", request ,String.class);
 
             }
-            System.out.println("[Admin Travel Service][Admin add new travel]");
+            mockLog.printLog("[Admin Travel Service][Admin add new travel]");
             responseBean.setStatus(true);
         }else{
             result = "Admin add new travel fail: wrong login id";
-            System.out.println("[Admin Travel Service][Admin add new travel fail]");
+            mockLog.printLog("[Admin Travel Service][Admin add new travel fail]");
             responseBean.setStatus(false);
         }
         responseBean.setMessage(result);
@@ -134,11 +138,11 @@ public class AdminTravelServiceImpl implements AdminTravelService {
 //                        "http://ts-travel2-service:16346/travel2/update", request ,String.class);
 
             }
-            System.out.println("[Admin Travel Service][Admin update travel]");
+            mockLog.printLog("[Admin Travel Service][Admin update travel]");
             responseBean.setStatus(true);
         }else{
             result = "Admin update travel fail: wrong login id";
-            System.out.println("[Admin Travel Service][Admin update travel fail]");
+            mockLog.printLog("[Admin Travel Service][Admin update travel fail]");
             responseBean.setStatus(false);
         }
         responseBean.setMessage(result);
@@ -172,11 +176,11 @@ public class AdminTravelServiceImpl implements AdminTravelService {
 //                        "http://ts-travel2-service:16346/travel2/delete", request ,String.class);
 
             }
-            System.out.println("[Admin Travel Service][Admin delete travel]");
+            mockLog.printLog("[Admin Travel Service][Admin delete travel]");
             responseBean.setStatus(true);
         }else{
             result = "Admin delete travel fail: wrong login id";
-            System.out.println("[Admin Travel Service][Admin delete travel fail]");
+            mockLog.printLog("[Admin Travel Service][Admin delete travel fail]");
             responseBean.setStatus(false);
         }
         responseBean.setMessage(result);

@@ -1,5 +1,6 @@
 package assurance.service;
 
+import assurance.config.MockLog;
 import assurance.domain.*;
 import assurance.repository.AssuranceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +18,14 @@ public class AssuranceServiceImpl implements AssuranceService {
     @Autowired
     private AssuranceRepository assuranceRepository;
 
+    @Autowired
+    MockLog mockLog;
+
 //    @Override
 //    public Assurance createAssurance(Assurance assurance) {
 //        Assurance assuranceTemp = assuranceRepository.findById(assurance.getId());
 //        if(assuranceTemp != null){
-//            System.out.println("[Assurance Service][Init Assurance] Already Exists Id:" + assurance.getId());
+//            mockLog.printLog("[Assurance Service][Init Assurance] Already Exists Id:" + assurance.getId());
 //        } else {
 //            assuranceRepository.save(assurance);
 //        }
@@ -44,19 +48,19 @@ public class AssuranceServiceImpl implements AssuranceService {
         AddAssuranceResult aar = new AddAssuranceResult();
         AssuranceType at = AssuranceType.getTypeByIndex(aai.getTypeIndex());
         if(a != null){
-            System.out.println("[Assurance-Add&Delete-Service][AddAssurance] Fail.Assurance already exists");
+            mockLog.printLog("[Assurance-Add&Delete-Service][AddAssurance] Fail.Assurance already exists");
             aar.setStatus(false);
             aar.setMessage("Assurance Already Exists");
             aar.setAssurance(null);
         } else if(at == null){
-            System.out.println("[Assurance-Add&Delete-Service][AddAssurance] Fail.Assurance type doesn't exist");
+            mockLog.printLog("[Assurance-Add&Delete-Service][AddAssurance] Fail.Assurance type doesn't exist");
             aar.setStatus(false);
             aar.setMessage("Assurance type doesn't exist");
             aar.setAssurance(null);
         } else{
             Assurance assurance = new Assurance(UUID.randomUUID(), UUID.fromString(aai.getOrderId()), at);
             assuranceRepository.save(assurance);
-            System.out.println("[Assurance-Add&Delete-Service][AddAssurance] Success.");
+            mockLog.printLog("[Assurance-Add&Delete-Service][AddAssurance] Success.");
             aar.setStatus(true);
             aar.setMessage("Success");
             aar.setAssurance(assurance);
@@ -70,11 +74,11 @@ public class AssuranceServiceImpl implements AssuranceService {
         Assurance a = assuranceRepository.findById(assuranceId);
         DeleteAssuranceResult dar = new DeleteAssuranceResult();
         if(a == null){
-            System.out.println("[Assurance-Add&Delete-Service][DeleteAssurance] Success.");
+            mockLog.printLog("[Assurance-Add&Delete-Service][DeleteAssurance] Success.");
             dar.setStatus(true);
             dar.setMessage("Success");
         } else {
-            System.out.println("[Assurance-Add&Delete-Service][DeleteAssurance] Fail.Assurance not clear.");
+            mockLog.printLog("[Assurance-Add&Delete-Service][DeleteAssurance] Fail.Assurance not clear.");
             dar.setStatus(false);
             dar.setMessage("Reason Not clear");
         }
@@ -87,11 +91,11 @@ public class AssuranceServiceImpl implements AssuranceService {
         Assurance a = assuranceRepository.findByOrderId(orderId);
         DeleteAssuranceResult dar = new DeleteAssuranceResult();
         if(a == null){
-            System.out.println("[Assurance-Add&Delete-Service][DeleteAssurance] Success.");
+            mockLog.printLog("[Assurance-Add&Delete-Service][DeleteAssurance] Success.");
             dar.setStatus(true);
             dar.setMessage("Success");
         } else {
-            System.out.println("[Assurance-Add&Delete-Service][DeleteAssurance] Fail.Assurance not clear.");
+            mockLog.printLog("[Assurance-Add&Delete-Service][DeleteAssurance] Fail.Assurance not clear.");
             dar.setStatus(false);
             dar.setMessage("Reason Not clear");
         }
@@ -103,7 +107,7 @@ public class AssuranceServiceImpl implements AssuranceService {
         Assurance oldAssurance = findAssuranceById(UUID.fromString(info.getAssuranceId()), headers);
         ModifyAssuranceResult mcr = new ModifyAssuranceResult();
         if(oldAssurance == null){
-            System.out.println("[Assurance-Modify-Service][ModifyAssurance] Fail.Assurance not found.");
+            mockLog.printLog("[Assurance-Modify-Service][ModifyAssurance] Fail.Assurance not found.");
             mcr.setStatus(false);
             mcr.setMessage("Contacts not found");
             mcr.setAssurance(null);
@@ -112,12 +116,12 @@ public class AssuranceServiceImpl implements AssuranceService {
             if(at != null){
                 oldAssurance.setType(at);
                 assuranceRepository.save(oldAssurance);
-                System.out.println("[Assurance-Modify-Service][ModifyAssurance] Success.");
+                mockLog.printLog("[Assurance-Modify-Service][ModifyAssurance] Success.");
                 mcr.setStatus(true);
                 mcr.setMessage("Success");
                 mcr.setAssurance(oldAssurance);
             } else {
-                System.out.println("[Assurance-Modify-Service][ModifyAssurance] Fail.Assurance Type not exist.");
+                mockLog.printLog("[Assurance-Modify-Service][ModifyAssurance] Fail.Assurance Type not exist.");
                 mcr.setStatus(false);
                 mcr.setMessage("Assurance Type not exist");
                 mcr.setAssurance(null);

@@ -1,5 +1,6 @@
 package login.service;
 
+import login.config.MockLog;
 import login.domain.LoginInfo;
 import login.domain.LoginResult;
 import login.domain.LogoutInfo;
@@ -26,6 +27,9 @@ public class AccountLoginServiceImpl implements AccountLoginService {
     //cookie失效时间，秒为单位
     public static final int COOKIE_EXPIRED = 21600;
 
+    @Autowired
+    MockLog mockLog;
+
     @Override
     public LoginResult login(LoginInfo li,String YsbCaptcha, HttpServletResponse response, HttpHeaders headers){
         headers.add("Cookie","YsbCaptcha=" + YsbCaptcha);
@@ -39,7 +43,7 @@ public class AccountLoginServiceImpl implements AccountLoginService {
                 String.class
         );
         String verifyResult = (String)rssResponse.getBody();
-        System.out.println("[Login Service][Login] Verification Result:" + verifyResult);
+        mockLog.printLog("[Login Service][Login] Verification Result:" + verifyResult);
         if(!verifyResult.contains("true")){
             LoginResult verifyCodeLr = new LoginResult();
             verifyCodeLr.setAccount(null);
@@ -59,11 +63,11 @@ public class AccountLoginServiceImpl implements AccountLoginService {
                 LoginResult.class);
         LoginResult lr = re.getBody();
         //将cookie放到response中
-        System.out.println("[Login Service] Status:" + lr.getStatus());
+        mockLog.printLog("[Login Service] Status:" + lr.getStatus());
         if(lr.getStatus() == false){
-            System.out.println("[Login Service] Status: false. Cookie wrong.");
+            mockLog.printLog("[Login Service] Status: false. Cookie wrong.");
         }else{
-            System.out.println("[Login Service] Status: true. Put Cookie.");
+            mockLog.printLog("[Login Service] Status: true. Put Cookie.");
             CookieUtil.addCookie(response, "loginId", lr.getAccount().getId().toString(), COOKIE_EXPIRED);
             CookieUtil.addCookie(response, "loginToken", lr.getToken(), COOKIE_EXPIRED);
         }
@@ -81,9 +85,9 @@ public class AccountLoginServiceImpl implements AccountLoginService {
                 LogoutResult.class);
         LogoutResult lr = re.getBody();
         if(lr.isStatus()){
-            System.out.println("[Login Service][Logout] Success");
+            mockLog.printLog("[Login Service][Logout] Success");
         }else{
-            System.out.println("[Login Service][Logout] Fail.Reason:" + lr.getMessage());
+            mockLog.printLog("[Login Service][Logout] Fail.Reason:" + lr.getMessage());
         }
         handleLogOutResponse(request, response);
         return lr;

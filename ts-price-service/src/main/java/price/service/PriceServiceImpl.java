@@ -3,6 +3,7 @@ package price.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import price.config.MockLog;
 import price.domain.CreateAndModifyPriceConfig;
 import price.domain.PriceConfig;
 import price.domain.ReturnManyPriceConfigResult;
@@ -16,10 +17,12 @@ public class PriceServiceImpl implements PriceService{
 
     @Autowired
     private PriceConfigRepository priceConfigRepository;
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public ReturnSinglePriceConfigResult createNewPriceConfig(CreateAndModifyPriceConfig createAndModifyPriceConfig, HttpHeaders headers) {
-        System.out.println("[Price Service][Create New Price Config]");
+        mockLog.printLog("[Price Service][Create New Price Config]");
         ReturnSinglePriceConfigResult result = new ReturnSinglePriceConfigResult();
         if(createAndModifyPriceConfig.getId() == null || createAndModifyPriceConfig.getId().length() < 10){
             PriceConfig priceConfig = new PriceConfig();
@@ -52,7 +55,7 @@ public class PriceServiceImpl implements PriceService{
 
     @Override
     public ReturnSinglePriceConfigResult findById(String id, HttpHeaders headers) {
-        System.out.println("[Price Service][Find By Id] ID:" + id);
+        mockLog.printLog("[Price Service][Find By Id] ID:" + id);
         PriceConfig priceConfig = priceConfigRepository.findById(UUID.fromString(id));
         ReturnSinglePriceConfigResult result = new ReturnSinglePriceConfigResult();
         if(priceConfig == null){
@@ -69,20 +72,20 @@ public class PriceServiceImpl implements PriceService{
 
     @Override
     public ReturnSinglePriceConfigResult findByRouteIdAndTrainType(String routeId, String trainType, HttpHeaders headers) {
-        System.out.println("[Price Service][Find By Route And Train Type] Rote:" + routeId + "Train Type:" + trainType);
+        mockLog.printLog("[Price Service][Find By Route And Train Type] Rote:" + routeId + "Train Type:" + trainType);
         PriceConfig priceConfig = priceConfigRepository.findByRouteIdAndTrainType(routeId,trainType);
         ReturnSinglePriceConfigResult result = new ReturnSinglePriceConfigResult();
         if(priceConfig == null){
             result.setStatus(false);
             result.setMessage("Price Config Not Found");
             result.setPriceConfig(null);
-            System.out.println("[Price Service][Find By Route Id And Train Type] Fail");
+            mockLog.printLog("[Price Service][Find By Route Id And Train Type] Fail");
 
         }else{
             result.setStatus(true);
             result.setMessage("Success");
             result.setPriceConfig(priceConfig);
-            System.out.println("[Price Service][Find By Route Id And Train Type] Success");
+            mockLog.printLog("[Price Service][Find By Route Id And Train Type] Success");
         }
         return result;
     }

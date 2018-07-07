@@ -1,6 +1,7 @@
 package other.service;
 
 import org.springframework.http.HttpHeaders;
+import other.config.MockLog;
 import other.domain.*;
 import other.repository.OrderOtherRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,9 @@ public class OrderOtherServiceImpl implements OrderOtherService{
 
     @Autowired
     private OrderOtherRepository orderOtherRepository;
+
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public LeftTicketInfo getSoldTickets(SeatRequest seatRequest, HttpHeaders headers){
@@ -36,19 +40,19 @@ public class OrderOtherServiceImpl implements OrderOtherService{
 
     @Override
     public CreateOrderResult create(Order order, HttpHeaders headers){
-        System.out.println("[Order Other Service][Create Order] Ready Create Order");
+        mockLog.printLog("[Order Other Service][Create Order] Ready Create Order");
         ArrayList<Order> accountOrders = orderOtherRepository.findByAccountId(order.getAccountId());
         CreateOrderResult cor = new CreateOrderResult();
         if(accountOrders.contains(order)){
-            System.out.println("[Order Other Service][Order Create] Fail.Order already exists.");
+            mockLog.printLog("[Order Other Service][Order Create] Fail.Order already exists.");
             cor.setStatus(false);
             cor.setMessage("Order already exist");
             cor.setOrder(null);
         }else{
             order.setId(UUID.randomUUID());
             orderOtherRepository.save(order);
-            System.out.println("[Order Other Service][Order Create] Success.");
-            System.out.println("[Order Other Service][Order Create] Price:" + order.getPrice());
+            mockLog.printLog("[Order Other Service][Order Create] Success.");
+            mockLog.printLog("[Order Other Service][Order Create] Price:" + order.getPrice());
             cor.setStatus(true);
             cor.setMessage("Success");
             cor.setOrder(order);
@@ -62,7 +66,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         if(orderTemp == null){
             orderOtherRepository.save(order);
         }else{
-            System.out.println("[Order Other Service][Init Order] Order Already Exists ID:" + order.getId());
+            mockLog.printLog("[Order Other Service][Init Order] Order Already Exists ID:" + order.getId());
         }
     }
 
@@ -73,7 +77,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         UUID oldOrderId = oai.getPreviousOrderId();
         Order oldOrder = findOrderById(oldOrderId, headers);
         if(oldOrder == null){
-            System.out.println("[Order Other Service][Alter Order] Fail.Order do not exist.");
+            mockLog.printLog("[Order Other Service][Alter Order] Fail.Order do not exist.");
             oar.setStatus(false);
             oar.setMessage("Old Order Does Not Exists");
             oar.setOldOrder(null);
@@ -90,7 +94,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
             oar.setMessage("Success");
             oar.setOldOrder(oldOrder);
             oar.setNewOrder(newOrder);
-            System.out.println("[Order Other Service][Alter Order] Success.");
+            mockLog.printLog("[Order Other Service][Alter Order] Success.");
         }else{
             oar.setStatus(false);
             oar.setMessage(cor.getMessage());
@@ -104,7 +108,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
     public ArrayList<Order> queryOrders(QueryInfo qi,String accountId, HttpHeaders headers){
         //1.Get all orders of the user
         ArrayList<Order> list = orderOtherRepository.findByAccountId(UUID.fromString(accountId));
-        System.out.println("[Order Other Service][Query Order][Step 1] Get Orders Number of Account:" + list.size());
+        mockLog.printLog("[Order Other Service][Query Order][Step 1] Get Orders Number of Account:" + list.size());
         //2.Check is these orders fit the requirement/
         if(qi.isEnableStateQuery() || qi.isEnableBoughtDateQuery() || qi.isEnableTravelDateQuery()){
             ArrayList<Order> finalList = new ArrayList<>();
@@ -122,7 +126,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
                 }else{
                     statePassFlag = true;
                 }
-                System.out.println("[Order Other Service][Query Order][Step 2][Check Status Fits End]");
+                mockLog.printLog("[Order Other Service][Query Order][Step 2][Check Status Fits End]");
                 //4.Check order travel date requirement.
                 if(qi.isEnableTravelDateQuery()){
                     if(tempOrder.getTravelDate().before(qi.getTravelDateEnd()) &&
@@ -134,7 +138,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
                 }else{
                     travelDatePassFlag = true;
                 }
-                System.out.println("[Order Other Service][Query Order][Step 2][Check Travel Date End]");
+                mockLog.printLog("[Order Other Service][Query Order][Step 2][Check Travel Date End]");
                 //5.Check order bought date requirement.
                 if(qi.isEnableBoughtDateQuery()){
                     if(tempOrder.getBoughtDate().before(qi.getBoughtDateEnd()) &&
@@ -146,17 +150,17 @@ public class OrderOtherServiceImpl implements OrderOtherService{
                 }else{
                     boughtDatePassFlag = true;
                 }
-                System.out.println("[Order Other Service][Query Order][Step 2][Check Bought Date End]");
+                mockLog.printLog("[Order Other Service][Query Order][Step 2][Check Bought Date End]");
                 //6.check if all requirement fits.
                 if(statePassFlag && boughtDatePassFlag && travelDatePassFlag){
                     finalList.add(tempOrder);
                 }
-                System.out.println("[Order Other Service][Query Order][Step 2][Check All Requirement End]");
+                mockLog.printLog("[Order Other Service][Query Order][Step 2][Check All Requirement End]");
             }
-            System.out.println("[Order Other Service][Query Order] Get order num:" + finalList.size());
+            mockLog.printLog("[Order Other Service][Query Order] Get order num:" + finalList.size());
             return finalList;
         }else{
-            System.out.println("[Order Other Service][Query Order] Get order num:" + list.size());
+            mockLog.printLog("[Order Other Service][Query Order] Get order num:" + list.size());
             return list;
         }
     }
@@ -166,7 +170,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         Order oldOrder = findOrderById(order.getId(), headers);
         ChangeOrderResult cor = new ChangeOrderResult();
         if(oldOrder == null){
-            System.out.println("[Order Other Service][Modify Order] Fail.Order not found.");
+            mockLog.printLog("[Order Other Service][Modify Order] Fail.Order not found.");
             cor.setStatus(false);
             cor.setMessage("Order Not Found");
             cor.setOrder(null);
@@ -187,7 +191,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
             oldOrder.setContactsDocumentNumber(order.getContactsDocumentNumber());
             oldOrder.setDocumentType(order.getDocumentType());
             orderOtherRepository.save(oldOrder);
-            System.out.println("[Order Other Service] Success.");
+            mockLog.printLog("[Order Other Service] Success.");
             cor.setOrder(oldOrder);
             cor.setStatus(true);
             cor.setMessage("Success");
@@ -201,7 +205,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         Order oldOrder = orderOtherRepository.findById(orderId);
         CancelOrderResult cor = new CancelOrderResult();
         if(oldOrder == null){
-            System.out.println("[Order Other Service][Cancel Order] Fail.Order not found.");
+            mockLog.printLog("[Order Other Service][Cancel Order] Fail.Order not found.");
             cor.setStatus(false);
             cor.setMessage("Order Not Found");
             cor.setOrder(null);
@@ -209,7 +213,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         }else{
             oldOrder.setStatus(OrderStatus.CANCEL.getCode());
             orderOtherRepository.save(oldOrder);
-            System.out.println("[Order Other Service][Cancel Order] Success.");
+            mockLog.printLog("[Order Other Service][Cancel Order] Success.");
             cor.setStatus(true);
             cor.setMessage("Success");
             cor.setOrder(oldOrder);
@@ -223,7 +227,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         CalculateSoldTicketResult cstr = new CalculateSoldTicketResult();
         cstr.setTravelDate(csti.getTravelDate());
         cstr.setTrainNumber(csti.getTrainNumber());
-        System.out.println("[Order Other Service][Calculate Sold Ticket] Get Orders Number:" + orders.size());
+        mockLog.printLog("[Order Other Service][Calculate Sold Ticket] Get Orders Number:" + orders.size());
         for(Order order : orders){
             if(order.getStatus() >= OrderStatus.CHANGE.getCode()){
                 continue;
@@ -247,7 +251,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
             }else if(order.getSeatClass() == SeatClass.HIGHSOFTBED.getCode()){
                 cstr.setHighSoftBed(cstr.getHighSoftBed() + 1);
             }else{
-                System.out.println("[Order Other Service][Calculate Sold Tickets] Seat class not exists. Order ID:" + order.getId());
+                mockLog.printLog("[Order Other Service][Calculate Sold Tickets] Seat class not exists. Order ID:" + order.getId());
             }
         }
         return cstr;
@@ -289,7 +293,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         }else{
             result.setStatus(true);
             result.setMessage("Success");
-            System.out.println("[Order Other Service][Get Order Price] Price:" + order.getPrice());
+            mockLog.printLog("[Order Other Service][Get Order Price] Price:" + order.getPrice());
             result.setPrice(order.getPrice());
         }
         return result;
@@ -373,19 +377,19 @@ public class OrderOtherServiceImpl implements OrderOtherService{
 
     @Override
     public AddOrderResult addNewOrder(Order order, HttpHeaders headers) {
-        System.out.println("[Order Service][Admin Add Order] Ready Add Order.");
+        mockLog.printLog("[Order Service][Admin Add Order] Ready Add Order.");
         ArrayList<Order> accountOrders = orderOtherRepository.findByAccountId(order.getAccountId());
         AddOrderResult result = new AddOrderResult();
         if(accountOrders.contains(order)){
-            System.out.println("[Order Service][Admin Add Order] Fail.Order already exists.");
+            mockLog.printLog("[Order Service][Admin Add Order] Fail.Order already exists.");
             result.setStatus(false);
             result.setMessage("Order already exist");
             result.setOrder(null);
         }else{
             order.setId(UUID.randomUUID());
             orderOtherRepository.save(order);
-            System.out.println("[Order Service][Admin Add Order] Success.");
-            System.out.println("[Order Service][Admin Add Order] Price:" + order.getPrice());
+            mockLog.printLog("[Order Service][Admin Add Order] Success.");
+            mockLog.printLog("[Order Service][Admin Add Order] Price:" + order.getPrice());
             result.setStatus(true);
             result.setMessage("Success");
             result.setOrder(order);
@@ -398,7 +402,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         Order oldOrder = findOrderById(order.getId(), headers);
         UpdateOrderResult result = new UpdateOrderResult();
         if(oldOrder == null){
-            System.out.println("[Order Service][Admin Update Order] Fail.Order not found.");
+            mockLog.printLog("[Order Service][Admin Update Order] Fail.Order not found.");
             result.setStatus(false);
             result.setMessage("Order Not Found");
             result.setOrder(null);
@@ -419,7 +423,7 @@ public class OrderOtherServiceImpl implements OrderOtherService{
             oldOrder.setContactsDocumentNumber(order.getContactsDocumentNumber());
             oldOrder.setDocumentType(order.getDocumentType());
             orderOtherRepository.save(oldOrder);
-            System.out.println("[Order Service] [Admin Update Order] Success.");
+            mockLog.printLog("[Order Service] [Admin Update Order] Success.");
             result.setOrder(oldOrder);
             result.setStatus(true);
             result.setMessage("Success");

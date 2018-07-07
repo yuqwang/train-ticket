@@ -1,5 +1,6 @@
 package adminorder.service;
 
+import adminorder.config.MockLog;
 import adminorder.domain.bean.DeleteOrderInfo;
 import adminorder.domain.bean.Order;
 import adminorder.domain.request.AddOrderRequest;
@@ -21,10 +22,13 @@ public class AdminOrderServiceImpl implements AdminOrderService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    MockLog mockLog;
+
     @Override
     public GetAllOrderResult getAllOrders(String id, HttpHeaders headers) {
         if(checkId(id)){
-            System.out.println("[Admin Order Service][Get All Orders]");
+            mockLog.printLog("[Admin Order Service][Get All Orders]");
             //Get all of the orders
             ArrayList<Order> orders = new ArrayList<Order>();
             //From ts-order-service
@@ -39,11 +43,11 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 //                    "http://ts-order-service:12031/order/findAll",
 //                    QueryOrderResult.class);
             if(result.isStatus()){
-                System.out.println("[Admin Order Service][Get Orders From ts-order-service successfully!]");
+                mockLog.printLog("[Admin Order Service][Get Orders From ts-order-service successfully!]");
                 orders.addAll(result.getOrders());
             }
             else
-                System.out.println("[Admin Order Service][Get Orders From ts-order-service fail!]");
+                mockLog.printLog("[Admin Order Service][Get Orders From ts-order-service fail!]");
             //From ts-order-other-service
             HttpEntity requestEntity2 = new HttpEntity(headers);
             ResponseEntity<QueryOrderResult> re2 = restTemplate.exchange(
@@ -56,11 +60,11 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 //                    "http://ts-order-other-service:12032/orderOther/findAll",
 //                    QueryOrderResult.class);
             if(result.isStatus()){
-                System.out.println("[Admin Order Service][Get Orders From ts-order-other-service successfully!]");
+                mockLog.printLog("[Admin Order Service][Get Orders From ts-order-other-service successfully!]");
                 orders.addAll(result.getOrders());
             }
             else
-                System.out.println("[Admin Order Service][Get Orders From ts-order-other-service fail!]");
+                mockLog.printLog("[Admin Order Service][Get Orders From ts-order-other-service fail!]");
             //Return orders
             GetAllOrderResult getAllOrderResult = new GetAllOrderResult();
             getAllOrderResult.setStatus(true);
@@ -69,7 +73,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
             return getAllOrderResult;
         }
         else{
-            System.out.println("[Admin Order Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin Order Service][Wrong Admin ID]");
             GetAllOrderResult result = new GetAllOrderResult();
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + id);
@@ -86,7 +90,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
             deleteOrderInfo.setOrderId(request.getOrderId());
 
             if(request.getTrainNumber().startsWith("G") || request.getTrainNumber().startsWith("D") ){
-                System.out.println("[Admin Order Service][Delete Order]");
+                mockLog.printLog("[Admin Order Service][Delete Order]");
                 HttpEntity requestEntity = new HttpEntity(deleteOrderInfo, headers);
                 ResponseEntity<DeleteOrderResult> re = restTemplate.exchange(
                         "http://ts-order-service:12031/order/delete",
@@ -98,7 +102,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 //                        "http://ts-order-service:12031/order/delete", deleteOrderInfo,DeleteOrderResult.class);
             }
             else{
-                System.out.println("[Admin Order Service][Delete Order Other]");
+                mockLog.printLog("[Admin Order Service][Delete Order Other]");
                 HttpEntity requestEntity = new HttpEntity(deleteOrderInfo, headers);
                 ResponseEntity<DeleteOrderResult> re = restTemplate.exchange(
                         "http://ts-order-other-service:12032/orderOther/delete",
@@ -112,7 +116,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
             return deleteOrderResult;
         }
         else{
-            System.out.println("[Admin Order Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin Order Service][Wrong Admin ID]");
             DeleteOrderResult result = new DeleteOrderResult();
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + request.getLoginid());
@@ -125,7 +129,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         if(checkId(request.getLoginid())){
             UpdateOrderResult updateOrderResult ;
             if(request.getOrder().getTrainNumber().startsWith("G") || request.getOrder().getTrainNumber().startsWith("D") ){
-                System.out.println("[Admin Order Service][Update Order]");
+                mockLog.printLog("[Admin Order Service][Update Order]");
                 HttpEntity requestEntity = new HttpEntity(request.getOrder(), headers);
                 ResponseEntity<UpdateOrderResult> re = restTemplate.exchange(
                         "http://ts-order-service:12031/order/adminUpdate",
@@ -137,7 +141,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 //                        "http://ts-order-service:12031/order/adminUpdate", request.getOrder() ,UpdateOrderResult.class);
             }
             else{
-                System.out.println("[Admin Order Service][Add New Order Other]");
+                mockLog.printLog("[Admin Order Service][Add New Order Other]");
                 HttpEntity requestEntity = new HttpEntity(request.getOrder(), headers);
                 ResponseEntity<UpdateOrderResult> re = restTemplate.exchange(
                         "http://ts-order-other-service:12032/orderOther/adminUpdate",
@@ -151,7 +155,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
             return updateOrderResult;
         }
         else{
-            System.out.println("[Admin Order Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin Order Service][Wrong Admin ID]");
             UpdateOrderResult result = new UpdateOrderResult();
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + request.getLoginid());
@@ -164,7 +168,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         if(checkId(request.getLoginid())){
             AddOrderResult addOrderResult;
             if(request.getOrder().getTrainNumber().startsWith("G") || request.getOrder().getTrainNumber().startsWith("D") ){
-                System.out.println("[Admin Order Service][Add New Order]");
+                mockLog.printLog("[Admin Order Service][Add New Order]");
                 HttpEntity requestEntity = new HttpEntity(request.getOrder(), headers);
                 ResponseEntity< AddOrderResult> re = restTemplate.exchange(
                         "http://ts-order-service:12031/order/adminAddOrder",
@@ -176,7 +180,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 //                        "http://ts-order-service:12031/order/adminAddOrder", request.getOrder() ,AddOrderResult.class);
             }
             else{
-                System.out.println("[Admin Order Service][Add New Order Other]");
+                mockLog.printLog("[Admin Order Service][Add New Order Other]");
                 HttpEntity requestEntity = new HttpEntity(request.getOrder(), headers);
                 ResponseEntity< AddOrderResult> re = restTemplate.exchange(
                         "http://ts-order-other-service:12032/orderOther/adminAddOrder",
@@ -190,7 +194,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
             return addOrderResult;
         }
         else{
-            System.out.println("[Admin Order Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin Order Service][Wrong Admin ID]");
             AddOrderResult result = new AddOrderResult();
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + request.getLoginid());

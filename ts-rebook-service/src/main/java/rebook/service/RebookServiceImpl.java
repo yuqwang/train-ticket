@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.integration.dsl.http.Http;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import rebook.config.MockLog;
 import rebook.domain.*;
 import rebook.domain.RebookInfo;
 import rebook.domain.RebookResult;
@@ -20,6 +21,9 @@ public class RebookServiceImpl implements RebookService{
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public RebookResult rebook(RebookInfo info, String loginId, String loginToken, HttpHeaders httpHeaders){
@@ -350,7 +354,7 @@ public class RebookServiceImpl implements RebookService{
     }
 
     private GetTripAllDetailResult getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Other Service][Get Trip All Detail Information] Getting....");
+        mockLog.printLog("[Preserve Other Service][Get Trip All Detail Information] Getting....");
 
         HttpEntity requestGetTripAllDetailResult = new HttpEntity(gtdi, httpHeaders);
         ResponseEntity<GetTripAllDetailResult> reGetTripAllDetailResult = restTemplate.exchange(

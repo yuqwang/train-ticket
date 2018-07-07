@@ -3,6 +3,7 @@ package sso.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+import sso.config.MockLog;
 import sso.domain.*;
 import sso.service.AccountSsoService;
 
@@ -13,6 +14,8 @@ public class AccountSsoController {
 
     @Autowired
     private AccountSsoService ssoService;
+    @Autowired
+    MockLog mockLog;
 
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
@@ -53,22 +56,22 @@ public class AccountSsoController {
 
     @RequestMapping(path = "/account/login", method = RequestMethod.POST)
     public LoginResult login(@RequestBody LoginInfo li, @RequestHeader HttpHeaders headers) {
-        System.out.println(String.format("The headers in sso service is %s", headers.toString()));
+        mockLog.printLog(String.format("The headers in sso service is %s", headers.toString()));
         LoginResult lr = ssoService.login(li);
         if(lr.getStatus() == false){
-            System.out.println("[SSO Service][Login] Login Fail. No token generate.");
+            mockLog.printLog("[SSO Service][Login] Login Fail. No token generate.");
             return lr;
         }else{
             //Post token to the sso
-            System.out.println("[SSO Service][Login] Password Right. Put token to sso.");
+            mockLog.printLog("[SSO Service][Login] Password Right. Put token to sso.");
             PutLoginResult tokenResult = loginPutToken(lr.getAccount().getId().toString());
-            System.out.println("[SSO Service] PutLoginResult Status: " + tokenResult.isStatus());
+            mockLog.printLog("[SSO Service] PutLoginResult Status: " + tokenResult.isStatus());
             if(tokenResult.isStatus() == true){
-                System.out.println("[SSO Service][Login] Post to sso:" + tokenResult.getToken());
+                mockLog.printLog("[SSO Service][Login] Post to sso:" + tokenResult.getToken());
                 lr.setToken(tokenResult.getToken());
                 lr.setMessage(tokenResult.getMsg());
             }else{
-                System.out.println("[SSO Service][Login] Token Result Fail.");
+                mockLog.printLog("[SSO Service][Login] Token Result Fail.");
                 lr.setToken(null);
                 lr.setStatus(false);
                 lr.setMessage(tokenResult.getMsg());
@@ -80,13 +83,13 @@ public class AccountSsoController {
 
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public LogoutResult logoutDeleteToken(@RequestBody LogoutInfo li){
-        System.out.println("[SSO Service][Logout Delete Token] ID:" + li.getId() + "Token:" + li.getToken());
+        mockLog.printLog("[SSO Service][Logout Delete Token] ID:" + li.getId() + "Token:" + li.getToken());
         return ssoService.logoutDeleteToken(li);
     }
 
     @RequestMapping(path = "/account/findById", method = RequestMethod.POST)
     public GetAccountByIdResult getAccountById(@RequestBody GetAccountByIdInfo info){
-        System.out.println("[SSO Service][Find Account By Id] Account Id:" + info.getAccountId());
+        mockLog.printLog("[SSO Service][Find Account By Id] Account Id:" + info.getAccountId());
         return ssoService.getAccountById(info);
     }
 
@@ -103,14 +106,14 @@ public class AccountSsoController {
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/account/adminlogin", method = RequestMethod.POST)
     public Contacts adminLogin(@RequestBody AdminLoginInfo ali){
-        System.out.println("[SSO Service][Admin Login]");
+        mockLog.printLog("[SSO Service][Admin Login]");
         return ssoService.adminLogin(ali.getName(), ali.getPassword());
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/account/admindelete", method = RequestMethod.POST)
     public DeleteAccountResult adminDelete(@RequestBody AdminDeleteAccountRequest request){
-        System.out.println("[SSO Service][Admin Delete Account]");
+        mockLog.printLog("[SSO Service][Admin Delete Account]");
         return ssoService.deleteAccount(request.getAccountId());
     }
 

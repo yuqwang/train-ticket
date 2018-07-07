@@ -1,5 +1,6 @@
 package login.controller;
 
+import login.config.MockLog;
 import login.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +15,9 @@ public class AccountLoginController {
     @Autowired
     private AccountLoginService accountService;
 
+    @Autowired
+    MockLog mockLog;
+
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home() {
         return "Welcome to [ Accounts Login Service ] !";
@@ -21,7 +25,7 @@ public class AccountLoginController {
 
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public LoginResult login(@RequestBody LoginInfo li, @CookieValue String YsbCaptcha,  HttpServletResponse response,@RequestHeader HttpHeaders headers){
-        System.out.println(String.format("The headers in login service is %s", headers.toString()));
+        mockLog.printLog(String.format("The headers in login service is %s", headers.toString()));
         if(YsbCaptcha == null || YsbCaptcha.length() == 0 ||
                 li.getEmail() == null || li.getEmail().length() == 0 ||
                 li.getPassword() == null || li.getPassword().length() == 0 ||
@@ -33,14 +37,14 @@ public class AccountLoginController {
             errorResult.setToken(null);
             return errorResult;
         }
-        System.out.println("[Login Service][Login] Verification Code:" + li.getVerificationCode() +
+        mockLog.printLog("[Login Service][Login] Verification Code:" + li.getVerificationCode() +
                 " VerifyCookie:" + YsbCaptcha);
         return accountService.login(li,YsbCaptcha, response,headers);
     }
 
     @RequestMapping(path = "/logout", method = RequestMethod.POST)
     public LogoutResult logout(@RequestBody LogoutInfo li, HttpServletRequest request, HttpServletResponse response, @RequestHeader HttpHeaders headers){
-        System.out.println("[Login Service][Logout] Logout ID:" + li.getId() + " Token:" + li.getToken());
+        mockLog.printLog("[Login Service][Logout] Logout ID:" + li.getId() + " Token:" + li.getToken());
         return accountService.logout(li,request,response,headers);
     }
 

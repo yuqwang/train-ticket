@@ -1,5 +1,6 @@
 package execute.controller;
 
+import execute.config.MockLog;
 import execute.domain.TicketExecuteInfo;
 import execute.domain.TicketExecuteResult;
 import execute.serivce.ExecuteService;
@@ -12,6 +13,8 @@ public class ExecuteControlller {
 
     @Autowired
     private ExecuteService executeService;
+    @Autowired
+    MockLog mockLog;
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home(@RequestHeader HttpHeaders headers) {
@@ -21,14 +24,14 @@ public class ExecuteControlller {
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/execute/execute", method = RequestMethod.POST)
     public TicketExecuteResult executeTicket(@RequestBody TicketExecuteInfo info, @RequestHeader HttpHeaders headers){
-        System.out.println("[Execute Service][Execute] Id:" + info.getOrderId());
+        mockLog.printLog("[Execute Service][Execute] Id:" + info.getOrderId());
         return executeService.ticketExecute(info, headers);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/execute/collected", method = RequestMethod.POST)
     public TicketExecuteResult collectTicket(@RequestBody TicketExecuteInfo info, @RequestHeader HttpHeaders headers){
-        System.out.println("[Execute Service][Collect] Id:" + info.getOrderId());
+        mockLog.printLog("[Execute Service][Collect] Id:" + info.getOrderId());
         return executeService.ticketCollect(info, headers);
     }
 }

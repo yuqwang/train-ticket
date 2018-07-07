@@ -19,7 +19,7 @@ docker run -p 12347:12347 --name ts-contacts-service --link contacts-mongo:conta
 
     private VerifyResult verifySsoLogin(String loginToken){
         restTemplate = new RestTemplate();
-        System.out.println("[ContactsService][VerifyLogin] Verifying....");
+        mockLog.printLog("[ContactsService][VerifyLogin] Verifying....");
         VerifyResult tokenResult = restTemplate.getForObject(
                 "http://ts-sso-travel.service:12349/verifyLoginToken/" + loginToken,
                      VerifyResult.class);

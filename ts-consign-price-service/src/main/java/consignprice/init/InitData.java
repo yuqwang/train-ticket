@@ -1,5 +1,6 @@
 package consignprice.init;
 
+import consignprice.config.MockLog;
 import consignprice.domain.PriceConfig;
 import consignprice.service.ConsignPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,12 @@ import java.util.UUID;
 public class InitData implements CommandLineRunner {
     @Autowired
     ConsignPriceService service;
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public void run(String... strings) throws Exception {
-        System.out.println("[Consign price service] [Init data operation]");
+        mockLog.printLog("[Consign price service] [Init data operation]");
         PriceConfig config = new PriceConfig();
         config.setId(UUID.randomUUID());
         config.setIndex(0);

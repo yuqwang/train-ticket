@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import register.config.MockLog;
 import register.domain.CreateAccountInfo;
 import register.domain.RegisterInfo;
 import register.domain.RegisterResult;
@@ -18,6 +19,8 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public RegisterResult create(RegisterInfo ri,String YsbCaptcha, HttpHeaders headers){
@@ -38,7 +41,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 
         String verifyResult = (String)rssResponse.getBody();
-        System.out.println("[Register Service][Register] Verification Result:" + verifyResult);
+        mockLog.printLog("[Register Service][Register] Verification Result:" + verifyResult);
         if(!verifyResult.contains("true")){
             RegisterResult verifyCodeLr = new RegisterResult();
             verifyCodeLr.setAccount(null);
@@ -60,12 +63,12 @@ public class RegisterServiceImpl implements RegisterService {
 
 
         if(rr.isStatus() == true){
-            System.out.println("[Register Service] Register Success.");
-            System.out.println("[Register Service] Get Price Account.");
+            mockLog.printLog("[Register Service] Register Success.");
+            mockLog.printLog("[Register Service] Get Price Account.");
             CreateAccountInfo createAccountInfo = new CreateAccountInfo();
             createAccountInfo.setUserId(rr.getAccount().getId().toString());
             createAccountInfo.setMoney("10000");
-            System.out.println("[Register Service] Get Price Account.");
+            mockLog.printLog("[Register Service] Get Price Account.");
 
 
             HttpEntity requestCreateAccountSuccess = new HttpEntity(createAccountInfo,headers);

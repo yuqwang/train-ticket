@@ -1,6 +1,8 @@
 package cancel.async;
 
 import java.util.concurrent.Future;
+
+import cancel.config.MockLog;
 import cancel.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,12 +25,15 @@ public class AsyncTask {
     @Autowired
 	private RestTemplate restTemplate;
 
+    @Autowired
+    MockLog mockLog;
+
     @Async("myAsync")
     public Future<ChangeOrderResult> updateOtherOrderStatusToCancel(ChangeOrderInfo info) throws InterruptedException{
 
         Thread.sleep(2000);
 
-        System.out.println("[Cancel Order Service][Change Order Status] Getting....");
+        mockLog.printLog("[Cancel Order Service][Change Order Status] Getting....");
         ChangeOrderResult result = restTemplate.postForObject("http://ts-order-other-service:12032/orderOther/update",info,ChangeOrderResult.class);
         return new AsyncResult<>(result);
     }
@@ -36,7 +41,7 @@ public class AsyncTask {
     @Async("mySimpleAsync")
     public Future<Boolean> drawBackMoneyForOrderCan(String money, String userId,String orderId) throws InterruptedException{
 
-        System.out.println("[Cancel Order Service][Get Order] Getting....");
+        mockLog.printLog("[Cancel Order Service][Get Order] Getting....");
         GetOrderByIdInfo getOrderInfo = new GetOrderByIdInfo();
         getOrderInfo.setOrderId(orderId);
         GetOrderResult cor = restTemplate.postForObject(
@@ -46,7 +51,7 @@ public class AsyncTask {
         if(order.getStatus() == OrderStatus.NOTPAID.getCode()
                 || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()){
 
-            System.out.println("[Cancel Order Service][Draw Back Money] Draw back money...");
+            mockLog.printLog("[Cancel Order Service][Draw Back Money] Draw back money...");
             DrawBackInfo info = new DrawBackInfo();
             info.setMoney(money);
             info.setUserId(userId);
@@ -58,7 +63,7 @@ public class AsyncTask {
             }
         }else{
 
-            System.out.println("[Cancel Order Service][Drawback Money] Fail. Status Not Permitted");
+            mockLog.printLog("[Cancel Order Service][Drawback Money] Fail. Status Not Permitted");
             return new AsyncResult<>(false);
 
         }

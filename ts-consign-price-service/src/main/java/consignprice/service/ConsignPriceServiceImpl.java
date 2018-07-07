@@ -1,5 +1,6 @@
 package consignprice.service;
 
+import consignprice.config.MockLog;
 import consignprice.domain.GetPriceDomain;
 import consignprice.domain.PriceConfig;
 import consignprice.repository.ConsignPriceConfigRepository;
@@ -13,6 +14,8 @@ import java.util.UUID;
 public class ConsignPriceServiceImpl implements ConsignPriceService {
     @Autowired
     private ConsignPriceConfigRepository repository;
+    @Autowired
+    MockLog mockLog;
 
     //计价
     @Override
@@ -51,7 +54,7 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
     //创建价格
     @Override
     public boolean createAndModifyPrice(PriceConfig config, HttpHeaders headers) {
-        System.out.println("[Consign Price Service][Create New Price Config]");
+        mockLog.printLog("[Consign Price Service][Create New Price Config]");
         //更新price
         PriceConfig originalConfig;
         if(repository.findByIndex(0) != null)

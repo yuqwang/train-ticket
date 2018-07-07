@@ -16,7 +16,7 @@ public class InsidePaymentController {
 
     @RequestMapping(value="/inside_payment/pay", method = RequestMethod.POST)
     public boolean pay(@RequestBody PaymentInfo info, HttpServletRequest request, @RequestHeader HttpHeaders headers){
-        System.out.println("[Inside Payment Service][Pay] Pay for:" + info.getOrderId());
+        mockLog.printLog("[Inside Payment Service][Pay] Pay for:" + info.getOrderId());
         return service.pay(info, request, headers);
     }
 
@@ -58,8 +58,8 @@ public class InsidePaymentController {
     @RequestMapping("/hello1_callback")
     public String hello1_callback(@RequestParam(value="result", defaultValue="satan") String cal_back, @RequestHeader HttpHeaders headers) {
 
-        System.out.println("Call Back Result:" + cal_back);
-        System.out.println("-------------external call back-------------");
+        mockLog.printLog("Call Back Result:" + cal_back);
+        mockLog.printLog("-------------external call back-------------");
         return "-------call back end-------";
 
     }

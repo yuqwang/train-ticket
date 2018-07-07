@@ -1,5 +1,6 @@
 package consign.service;
 
+import consign.config.MockLog;
 import consign.domain.ConsignRecord;
 import consign.domain.ConsignRequest;
 import consign.domain.GetPriceDomain;
@@ -22,10 +23,12 @@ public class ConsignServiceImpl implements ConsignService {
     ConsignRepository repository;
     @Autowired
     RestTemplate restTemplate;
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public InsertConsignRecordResult insertConsignRecord(ConsignRequest consignRequest, HttpHeaders headers){
-        System.out.println("[Consign servie] [ Insert new consign record]");
+        mockLog.printLog("[Consign servie] [ Insert new consign record]");
 
         ConsignRecord consignRecord = new ConsignRecord();
         //设置record属性
@@ -71,7 +74,7 @@ public class ConsignServiceImpl implements ConsignService {
 
     @Override
     public boolean updateConsignRecord(ConsignRequest consignRequest, HttpHeaders headers){
-        System.out.println("[Consign servie] [ Update consign record]");
+        mockLog.printLog("[Consign servie] [ Update consign record]");
 
         ConsignRecord originalRecord = repository.findById(consignRequest.getId());
         if(originalRecord == null)

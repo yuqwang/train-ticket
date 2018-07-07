@@ -2,6 +2,7 @@ package route.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import route.config.MockLog;
 import route.domain.*;
 import route.repository.RouteRepository;
 import java.util.ArrayList;
@@ -12,10 +13,12 @@ public class RouteServiceImpl implements RouteService {
 
     @Autowired
     private RouteRepository routeRepository;
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public CreateAndModifyRouteResult createAndModify(CreateAndModifyRouteInfo info){
-        System.out.println("[Route Service] Create And Modify Start:" + info.getStartStation() + " End:" + info.getEndStation());
+        mockLog.printLog("[Route Service] Create And Modify Start:" + info.getStartStation() + " End:" + info.getEndStation());
         CreateAndModifyRouteResult result;
         String[] stations = info.getStationList().split(",");
         String[] distances = info.getDistanceList().split(",");
@@ -90,7 +93,7 @@ public class RouteServiceImpl implements RouteService {
     public GetRoutesListlResult getRouteByStartAndTerminal(GetRouteByStartAndTerminalInfo info){
 //        ArrayList<Route> routes = routeRepository.findByStartStationIdAndTerminalStationId(info.getStartId(),info.getTerminalId());
         ArrayList<Route> routes = routeRepository.findAll();
-        System.out.println("[Route Service] Find All:" + routes.size());
+        mockLog.printLog("[Route Service] Find All:" + routes.size());
         ArrayList<Route> resultList = new ArrayList<>();
         for(Route route : routes){
             if(route.getStations().contains(info.getStartId()) &&

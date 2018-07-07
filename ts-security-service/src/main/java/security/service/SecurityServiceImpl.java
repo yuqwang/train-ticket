@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import security.config.MockLog;
 import security.domain.*;
 import security.repository.SecurityRepository;
 
@@ -19,6 +20,8 @@ public class SecurityServiceImpl implements SecurityService{
 
     @Autowired
     private SecurityRepository securityRepository;
+    @Autowired
+    MockLog mockLog;
 
     @Autowired
     RestTemplate restTemplate;
@@ -93,7 +96,7 @@ public class SecurityServiceImpl implements SecurityService{
     public CheckResult check(CheckInfo info,HttpHeaders headers){
         CheckResult result = new CheckResult();
         //1.获取自己过去一小时的订单数和总有效票数
-        System.out.println("[Security Service][Get Order Num Info]");
+        mockLog.printLog("[Security Service][Get Order Num Info]");
         GetOrderInfoForSecurity infoOrder = new GetOrderInfoForSecurity();
         infoOrder.setAccountId(info.getAccountId());
         infoOrder.setCheckDate(new Date());
@@ -102,10 +105,10 @@ public class SecurityServiceImpl implements SecurityService{
         int orderInOneHour = orderOtherResult.getOrderNumInLastOneHour() + orderResult.getOrderNumInLastOneHour();
         int totalValidOrder = orderOtherResult.getOrderNumOfValidOrder() + orderOtherResult.getOrderNumOfValidOrder();
         //2.获取关键配置信息
-        System.out.println("[Security Service][Get Security Config Info]");
+        mockLog.printLog("[Security Service][Get Security Config Info]");
         SecurityConfig configMaxInHour = securityRepository.findByName("max_order_1_hour");
         SecurityConfig configMaxNotUse = securityRepository.findByName("max_order_not_use");
-        System.out.println("[Security Service] Max In One Hour:" + configMaxInHour.getValue() + " Max Not Use:" + configMaxNotUse.getValue());
+        mockLog.printLog("[Security Service] Max In One Hour:" + configMaxInHour.getValue() + " Max Not Use:" + configMaxNotUse.getValue());
         int oneHourLine = Integer.parseInt(configMaxInHour.getValue());
         int totalValidLine = Integer.parseInt(configMaxNotUse.getValue());
         if(orderInOneHour > oneHourLine || totalValidOrder > totalValidLine){
@@ -121,7 +124,7 @@ public class SecurityServiceImpl implements SecurityService{
     }
 
     private GetOrderInfoForSecurityResult getSecurityOrderInfoFromOrder(GetOrderInfoForSecurity info, HttpHeaders headers){
-        System.out.println("[Security Service][Get Order Info For Security] Getting....");
+        mockLog.printLog("[Security Service][Get Order Info For Security] Getting....");
         HttpEntity requestEntity = new HttpEntity(info,headers);
         ResponseEntity<GetOrderInfoForSecurityResult> re = restTemplate.exchange(
                 "http://ts-order-service:12031/getOrderInfoForSecurity",
@@ -132,13 +135,13 @@ public class SecurityServiceImpl implements SecurityService{
 //        GetOrderInfoForSecurityResult result = restTemplate.postForObject(
 //                "http://ts-order-service:12031/getOrderInfoForSecurity",info,
 //                GetOrderInfoForSecurityResult.class);
-        System.out.println("[Security Service][Get Order Info For Security] Last One Hour:" + result.getOrderNumInLastOneHour()
+        mockLog.printLog("[Security Service][Get Order Info For Security] Last One Hour:" + result.getOrderNumInLastOneHour()
         + " Total Valid Order:" + result.getOrderNumOfValidOrder());
         return result;
     }
 
     private GetOrderInfoForSecurityResult getSecurityOrderOtherInfoFromOrder(GetOrderInfoForSecurity info, HttpHeaders headers){
-        System.out.println("[Security Service][Get Order Other Info For Security] Getting....");
+        mockLog.printLog("[Security Service][Get Order Other Info For Security] Getting....");
         HttpEntity requestEntity = new HttpEntity(info,headers);
         ResponseEntity<GetOrderInfoForSecurityResult> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/getOrderOtherInfoForSecurity",
@@ -149,7 +152,7 @@ public class SecurityServiceImpl implements SecurityService{
 //        GetOrderInfoForSecurityResult result = restTemplate.postForObject(
 //                "http://ts-order-other-service:12032/getOrderOtherInfoForSecurity",info,
 //                GetOrderInfoForSecurityResult.class);
-        System.out.println("[Security Service][Get Order Other Info For Security] Last One Hour:" + result.getOrderNumInLastOneHour()
+        mockLog.printLog("[Security Service][Get Order Other Info For Security] Last One Hour:" + result.getOrderNumInLastOneHour()
                 + " Total Valid Order:" + result.getOrderNumOfValidOrder());
         return result;
     }

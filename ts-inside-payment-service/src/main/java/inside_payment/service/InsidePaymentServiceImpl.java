@@ -1,6 +1,7 @@
 package inside_payment.service;
 
 import inside_payment.async.AsyncTask;
+import inside_payment.config.MockLog;
 import inside_payment.domain.*;
 import inside_payment.repository.AddMoneyRepository;
 import inside_payment.repository.PaymentRepository;
@@ -27,6 +28,9 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 
     @Autowired
     public RestTemplate restTemplate;
+
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public boolean pay(PaymentInfo info, HttpServletRequest request, HttpHeaders headers){
@@ -69,7 +73,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         if(result.isStatus()){
 
             if(result.getOrder().getStatus() != OrderStatus.NOTPAID.getCode()){
-                System.out.println("[Inside Payment Service][Pay] Error. Order status Not allowed to Pay.");
+                mockLog.printLog("[Inside Payment Service][Pay] Error. Order status Not allowed to Pay.");
                 return false;
             }
 
@@ -119,12 +123,12 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 //                        "http://ts-payment-service:19001/payment/pay", outsidePaymentInfo,Boolean.class);
 //                boolean outsidePaySuccess = false;
 //                try{
-//                    System.out.println("[Payment Service][Turn To Outside Patment] Async Task Begin");
+//                    mockLog.printLog("[Payment Service][Turn To Outside Patment] Async Task Begin");
 //                    Future<Boolean> task = asyncTask.sendAsyncCallToPaymentService(outsidePaymentInfo);
 //                    outsidePaySuccess = task.get(2000,TimeUnit.MILLISECONDS).booleanValue();
 //
 //                }catch (Exception e){
-//                    System.out.println("[Inside Payment][Turn to Outside Payment] Time Out.");
+//                    mockLog.printLog("[Inside Payment][Turn to Outside Payment] Time Out.");
 //                    //e.printStackTrace();
 //                    return false;
 //                }
@@ -367,7 +371,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         if(paymentTemp == null){
             paymentRepository.save(payment);
         }else{
-            System.out.println("[Inside Payment Service][Init Payment] Already Exists:" + payment.getId());
+            mockLog.printLog("[Inside Payment Service][Init Payment] Already Exists:" + payment.getId());
         }
     }
 

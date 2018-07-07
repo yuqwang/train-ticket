@@ -1,5 +1,6 @@
 package adminbasic.service;
 
+import adminbasic.config.MockLog;
 import adminbasic.domin.bean.*;
 import adminbasic.domin.info.*;
 import adminbasic.domin.reuslt.*;
@@ -20,6 +21,9 @@ public class AdminBasicInfoServiceImpl implements AdminBasicInfoService{
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    MockLog mockLog;
 
     private String adminID="1d1a11c1-11cb-1cf1-b1bb-b11111d1da1f";
 
@@ -362,7 +366,7 @@ public class AdminBasicInfoServiceImpl implements AdminBasicInfoService{
             result = re.getBody();
 
 //            result = restTemplate.getForObject("http://ts-price-service:16579/price/queryAll", GetAllPriceResult.class);
-            System.out.println("[!!!!GetAllPriceResult] " + result.getPriceConfig());
+            mockLog.printLog("[!!!!GetAllPriceResult] " + result.getPriceConfig());
             return result;
         } else {
             result.setStatus(false);

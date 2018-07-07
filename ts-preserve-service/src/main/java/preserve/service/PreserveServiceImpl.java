@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import preserve.config.MockLog;
 import preserve.domain.*;
 import java.util.Date;
 import java.util.UUID;
@@ -16,15 +17,17 @@ public class PreserveServiceImpl implements PreserveService{
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public OrderTicketsResult preserve(OrderTicketsInfo oti,String accountId,String loginToken, HttpHeaders headers){
         VerifyResult tokenResult = verifySsoLogin(loginToken, headers);
         OrderTicketsResult otr = new OrderTicketsResult();
         if(tokenResult.isStatus() == true){
-            System.out.println("[Preserve Service][Verify Login] Success");
+            mockLog.printLog("[Preserve Service][Verify Login] Success");
             //1.黄牛检测
-            System.out.println("[Preserve Service] [Step 1] Check Security");
+            mockLog.printLog("[Preserve Service] [Step 1] Check Security");
             CheckInfo checkInfo = new CheckInfo();
             checkInfo.setAccountId(accountId);
             CheckResult result = checkSecurity(checkInfo, headers);
@@ -34,24 +37,24 @@ public class PreserveServiceImpl implements PreserveService{
                 otr.setOrder(null);
                 return otr;
             }
-            System.out.println("[Preserve Service] [Step 1] Check Security Complete");
+            mockLog.printLog("[Preserve Service] [Step 1] Check Security Complete");
             //2.查询联系人信息 -- 修改，通过基础信息微服务作为中介
-            System.out.println("[Preserve Service] [Step 2] Find contacts");
+            mockLog.printLog("[Preserve Service] [Step 2] Find contacts");
             GetContactsInfo gci = new GetContactsInfo();
-            System.out.println("[Preserve Service] [Step 2] Contacts Id:" + oti.getContactsId());
+            mockLog.printLog("[Preserve Service] [Step 2] Contacts Id:" + oti.getContactsId());
             gci.setContactsId(oti.getContactsId());
             gci.setLoginToken(loginToken);
             GetContactsResult gcr = getContactsById(gci, headers);
             if(gcr.isStatus() == false){
-                System.out.println("[Preserve Service][Get Contacts] Fail." + gcr.getMessage());
+                mockLog.printLog("[Preserve Service][Get Contacts] Fail." + gcr.getMessage());
                 otr.setStatus(false);
                 otr.setMessage(gcr.getMessage());
                 otr.setOrder(null);
                 return otr;
             }
-            System.out.println("[Preserve Service][Step 2] Complete");
+            mockLog.printLog("[Preserve Service][Step 2] Complete");
             //3.查询座位余票信息和车次的详情
-            System.out.println("[Preserve Service] [Step 3] Check tickets num");
+            mockLog.printLog("[Preserve Service] [Step 3] Check tickets num");
             GetTripAllDetailInfo gtdi = new GetTripAllDetailInfo();
 
             gtdi.setFrom(oti.getFrom());//todo
@@ -59,10 +62,10 @@ public class PreserveServiceImpl implements PreserveService{
 
             gtdi.setTravelDate(oti.getDate());
             gtdi.setTripId(oti.getTripId());
-            System.out.println("[Preserve Service] [Step 3] TripId:" + oti.getTripId());
+            mockLog.printLog("[Preserve Service] [Step 3] TripId:" + oti.getTripId());
             GetTripAllDetailResult gtdr = getTripAllDetailInformation(gtdi, headers);
             if(gtdr.isStatus() == false){
-                System.out.println("[Preserve Service][Search For Trip Detail Information] " + gcr.getMessage());
+                mockLog.printLog("[Preserve Service][Search For Trip Detail Information] " + gcr.getMessage());
                 otr.setStatus(false);
                 otr.setMessage(gcr.getMessage());
                 otr.setOrder(null);
@@ -71,7 +74,7 @@ public class PreserveServiceImpl implements PreserveService{
                 TripResponse tripResponse = gtdr.getTripResponse();
                 if(oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()){
                     if(tripResponse.getConfortClass() == 0){
-                        System.out.println("[Preserve Service][Check seat is enough] " + gcr.getMessage());
+                        mockLog.printLog("[Preserve Service][Check seat is enough] " + gcr.getMessage());
                         otr.setStatus(false);
                         otr.setMessage("Seat Not Enough");
                         otr.setOrder(null);
@@ -80,7 +83,7 @@ public class PreserveServiceImpl implements PreserveService{
                 }else{
                     if(tripResponse.getEconomyClass() == SeatClass.SECONDCLASS.getCode()){
                         if(tripResponse.getConfortClass() == 0){
-                            System.out.println("[Preserve Service][Check seat is enough] " + gcr.getMessage());
+                            mockLog.printLog("[Preserve Service][Check seat is enough] " + gcr.getMessage());
                             otr.setStatus(false);
                             otr.setMessage("Seat Not Enough");
                             otr.setOrder(null);
@@ -90,9 +93,9 @@ public class PreserveServiceImpl implements PreserveService{
                 }
             }
             Trip trip = gtdr.getTrip();
-            System.out.println("[Preserve Service] [Step 3] Tickets Enough");
+            mockLog.printLog("[Preserve Service] [Step 3] Tickets Enough");
             //4.下达订单请求 设置order的各个信息
-            System.out.println("[Preserve Service] [Step 4] Do Order");
+            mockLog.printLog("[Preserve Service] [Step 4] Do Order");
             Contacts contacts = gcr.getContacts();
             Order order = new Order();
             order.setId(UUID.randomUUID());
@@ -127,7 +130,7 @@ public class PreserveServiceImpl implements PreserveService{
 //                    "http://ts-ticketinfo-service:15681/ticketinfo/queryForTravel", query ,ResultForTravel.class);
 
             order.setSeatClass(oti.getSeatType());
-            System.out.println("[Preserve Service][Order] Order Travel Date:" + oti.getDate().toString());
+            mockLog.printLog("[Preserve Service][Order] Order Travel Date:" + oti.getDate().toString());
             order.setTravelDate(oti.getDate());
             order.setTravelTime(gtdr.getTripResponse().getStartingTime());
 
@@ -153,39 +156,39 @@ public class PreserveServiceImpl implements PreserveService{
                 order.setPrice(resultForTravel.getPrices().get("economyClass"));
             }
 
-            System.out.println("[Preserve Service][Order Price] Price is: " + order.getPrice());
+            mockLog.printLog("[Preserve Service][Order Price] Price is: " + order.getPrice());
             CreateOrderInfo coi = new CreateOrderInfo();//Send info to create the order.
             coi.setLoginToken(loginToken);
             coi.setOrder(order);
             CreateOrderResult cor = createOrder(coi, headers);
             if(cor.isStatus() == false){
-                System.out.println("[Preserve Service][Create Order Fail] Create Order Fail." +
+                mockLog.printLog("[Preserve Service][Create Order Fail] Create Order Fail." +
                         "Reason:" + cor.getMessage());
                 otr.setStatus(false);
                 otr.setMessage(cor.getMessage());
                 otr.setOrder(null);
                 return otr;
             }
-            System.out.println("[Preserve Service] [Step 4] Do Order Complete");
+            mockLog.printLog("[Preserve Service] [Step 4] Do Order Complete");
             otr.setStatus(true);
             otr.setMessage("Success");
             otr.setOrder(cor.getOrder());
             //5.检查保险的选择
             if(oti.getAssurance() == 0){
-                System.out.println("[Preserve Service][Step 5] Do not need to buy assurance");
+                mockLog.printLog("[Preserve Service][Step 5] Do not need to buy assurance");
             }else{
                 AddAssuranceResult addAssuranceResult = addAssuranceForOrder(
                         oti.getAssurance(),cor.getOrder().getId().toString(), headers);
                 if(addAssuranceResult.isStatus() == true){
-                    System.out.println("[Preserve Service][Step 5] Buy Assurance Success");
+                    mockLog.printLog("[Preserve Service][Step 5] Buy Assurance Success");
                 }else{
-                    System.out.println("[Preserve Service][Step 5] Buy Assurance Fail.");
+                    mockLog.printLog("[Preserve Service][Step 5] Buy Assurance Fail.");
                     otr.setMessage("Success.But Buy Assurance Fail.");
                 }
             }
 
             //6.增加订餐
-//            System.out.println("[Food Service]!!!!!!!!!!!!!!!foodstorename=" + oti.getStationName()+"   "+oti.getStoreName());
+//            mockLog.printLog("[Food Service]!!!!!!!!!!!!!!!foodstorename=" + oti.getStationName()+"   "+oti.getStoreName());
             if(oti.getFoodType() != 0){
                 AddFoodOrderInfo afoi = new AddFoodOrderInfo();
                 afoi.setOrderId(cor.getOrder().getId().toString());
@@ -195,17 +198,17 @@ public class PreserveServiceImpl implements PreserveService{
                 if(oti.getFoodType() == 2){
                     afoi.setStationName(oti.getStationName());
                     afoi.setStoreName(oti.getStoreName());
-                    System.out.println("[Food Service]!!!!!!!!!!!!!!!foodstore=" + afoi.getFoodType() + "   " + afoi.getStationName()+"   "+afoi.getStoreName());
+                    mockLog.printLog("[Food Service]!!!!!!!!!!!!!!!foodstore=" + afoi.getFoodType() + "   " + afoi.getStationName()+"   "+afoi.getStoreName());
                 }
                 AddFoodOrderResult afor = createFoodOrder(afoi, headers);
                 if(afor.isStatus()){
-                    System.out.println("[Preserve Service][Step 6] Buy Food Success");
+                    mockLog.printLog("[Preserve Service][Step 6] Buy Food Success");
                 } else {
-                    System.out.println("[Preserve Service][Step 6] Buy Food Fail.");
+                    mockLog.printLog("[Preserve Service][Step 6] Buy Food Fail.");
                     otr.setMessage("Success.But Buy Food Fail.");
                 }
             } else {
-                System.out.println("[Preserve Service][Step 6] Do not need to buy food");
+                mockLog.printLog("[Preserve Service][Step 6] Do not need to buy food");
             }
 
             //7.增加托运
@@ -222,17 +225,17 @@ public class PreserveServiceImpl implements PreserveService{
                 consignRequest.setWithin(oti.isWithin());
                 InsertConsignRecordResult icresult = createConsign(consignRequest, headers);
                 if(icresult.isStatus()){
-                    System.out.println("[Preserve Service][Step 7] Consign Success");
+                    mockLog.printLog("[Preserve Service][Step 7] Consign Success");
                 } else {
-                    System.out.println("[Preserve Service][Step 7] Consign Fail.");
+                    mockLog.printLog("[Preserve Service][Step 7] Consign Fail.");
                     otr.setMessage("Consign Fail.");
                 }
             } else {
-                System.out.println("[Preserve Service][Step 7] Do not need to consign");
+                mockLog.printLog("[Preserve Service][Step 7] Do not need to consign");
             }
 
             //8.发送notification
-            System.out.println("[Preserve Service]");
+            mockLog.printLog("[Preserve Service]");
             GetAccountByIdInfo getAccountByIdInfo = new GetAccountByIdInfo();
             getAccountByIdInfo.setAccountId(order.getAccountId().toString());
             GetAccountByIdResult getAccountByIdResult = getAccount(getAccountByIdInfo, headers);
@@ -255,7 +258,7 @@ public class PreserveServiceImpl implements PreserveService{
 
             sendEmail(notifyInfo, headers);
         }else{
-            System.out.println("[Preserve Service][Verify Login] Fail");
+            mockLog.printLog("[Preserve Service][Verify Login] Fail");
             otr.setStatus(false);
             otr.setMessage("Not Login");
             otr.setOrder(null);
@@ -286,7 +289,7 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     public boolean sendEmail(NotifyInfo notifyInfo, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Service][Send Email]");
+        mockLog.printLog("[Preserve Service][Send Email]");
 
         HttpEntity requestEntitySendEmail = new HttpEntity(notifyInfo,httpHeaders);
         ResponseEntity<Boolean> reSendEmail = restTemplate.exchange(
@@ -304,7 +307,7 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     public GetAccountByIdResult getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders){
-        System.out.println("[Cancel Order Service][Get By Id]");
+        mockLog.printLog("[Cancel Order Service][Get By Id]");
 
         HttpEntity requestEntitySendEmail = new HttpEntity(info,httpHeaders);
         ResponseEntity<GetAccountByIdResult> reSendEmail = restTemplate.exchange(
@@ -322,7 +325,7 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     private AddAssuranceResult addAssuranceForOrder(int assuranceType,String orderId, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Service][Add Assurance For Order]");
+        mockLog.printLog("[Preserve Service][Add Assurance For Order]");
         AddAssuranceInfo info = new AddAssuranceInfo();
         info.setOrderId(orderId);
         info.setTypeIndex(assuranceType);
@@ -343,7 +346,7 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     private String queryForStationId(String stationName, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Other Service][Get Station Name]");
+        mockLog.printLog("[Preserve Other Service][Get Station Name]");
         QueryForId queryForId = new QueryForId();
         queryForId.setName(stationName);
 
@@ -360,7 +363,7 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     private CheckResult checkSecurity(CheckInfo info, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Other Service][Check Security] Checking....");
+        mockLog.printLog("[Preserve Other Service][Check Security] Checking....");
 
         HttpEntity requestCheckResult = new HttpEntity(info, httpHeaders);
         ResponseEntity<CheckResult> reCheckResult = restTemplate.exchange(
@@ -375,7 +378,7 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     private VerifyResult verifySsoLogin(String loginToken, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Other Service][Verify Login] Verifying....");
+        mockLog.printLog("[Preserve Other Service][Verify Login] Verifying....");
 
         HttpEntity requestCheckResult = new HttpEntity(null, httpHeaders);
         ResponseEntity<VerifyResult> reCheckResult = restTemplate.exchange(
@@ -392,7 +395,7 @@ public class PreserveServiceImpl implements PreserveService{
 
 
     private GetTripAllDetailResult getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Other Service][Get Trip All Detail Information] Getting....");
+        mockLog.printLog("[Preserve Other Service][Get Trip All Detail Information] Getting....");
 
         HttpEntity requestGetTripAllDetailResult = new HttpEntity(gtdi, httpHeaders);
         ResponseEntity<GetTripAllDetailResult> reGetTripAllDetailResult = restTemplate.exchange(
@@ -409,7 +412,7 @@ public class PreserveServiceImpl implements PreserveService{
 
 
     private GetContactsResult getContactsById(GetContactsInfo gci, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Other Service][Get Contacts By Id] Getting....");
+        mockLog.printLog("[Preserve Other Service][Get Contacts By Id] Getting....");
 
         HttpEntity requestGetContactsResult = new HttpEntity(gci, httpHeaders);
         ResponseEntity<GetContactsResult> reGetContactsResult= restTemplate.exchange(
@@ -425,7 +428,7 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     private CreateOrderResult createOrder(CreateOrderInfo coi, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Other Service][Get Contacts By Id] Creating....");
+        mockLog.printLog("[Preserve Other Service][Get Contacts By Id] Creating....");
 
         HttpEntity requestEntityCreateOrderResult = new HttpEntity(coi,httpHeaders);
         ResponseEntity<CreateOrderResult> reCreateOrderResult = restTemplate.exchange(
@@ -442,7 +445,7 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     private AddFoodOrderResult createFoodOrder(AddFoodOrderInfo afi, HttpHeaders httpHeaders) {
-        System.out.println("[Preserve Service][Add food Order] Creating....");
+        mockLog.printLog("[Preserve Service][Add food Order] Creating....");
 
         HttpEntity requestEntityAddFoodOrderResult = new HttpEntity(afi,httpHeaders);
         ResponseEntity<AddFoodOrderResult> reAddFoodOrderResult = restTemplate.exchange(
@@ -458,7 +461,7 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     private InsertConsignRecordResult createConsign(ConsignRequest cr, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Service][Add Condign] Creating....");
+        mockLog.printLog("[Preserve Service][Add Condign] Creating....");
 
         HttpEntity requestEntityResultForTravel = new HttpEntity(cr,httpHeaders);
         ResponseEntity<InsertConsignRecordResult> reResultForTravel = restTemplate.exchange(

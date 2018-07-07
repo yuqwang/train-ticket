@@ -1,5 +1,6 @@
 package food.service;
 
+import food.config.MockLog;
 import food.domain.FoodStore;
 import food.domain.GetFoodStoresListResult;
 import food.domain.GetTrainFoodListResult;
@@ -19,13 +20,15 @@ public class FoodMapServiceImpl implements FoodMapService{
     FoodStoreRepository foodStoreRepository;
     @Autowired
     TrainFoodRepository trainFoodRepository;
+    @Autowired
+    MockLog mockLog;
 
 
     @Override
     public FoodStore createFoodStore(FoodStore fs, HttpHeaders headers) {
         FoodStore fsTemp = foodStoreRepository.findById(fs.getId());
         if(fsTemp != null){
-            System.out.println("[Food Map Service][Init FoodStore] Already Exists Id:" + fs.getId());
+            mockLog.printLog("[Food Map Service][Init FoodStore] Already Exists Id:" + fs.getId());
         } else{
             foodStoreRepository.save(fs);
         }
@@ -36,7 +39,7 @@ public class FoodMapServiceImpl implements FoodMapService{
     public TrainFood createTrainFood(TrainFood tf, HttpHeaders headers) {
         TrainFood tfTemp = trainFoodRepository.findById(tf.getId());
         if(tfTemp != null){
-            System.out.println("[Food Map Service][Init TrainFood] Already Exists Id:" + tf.getId());
+            mockLog.printLog("[Food Map Service][Init TrainFood] Already Exists Id:" + tf.getId());
         } else {
             trainFoodRepository.save(tf);
         }

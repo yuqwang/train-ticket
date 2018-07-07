@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import travel2.config.MockLog;
 import travel2.domain.*;
 import travel2.repository.TripRepository;
 import java.util.*;
@@ -19,6 +20,8 @@ public class Travel2ServiceImpl implements Travel2Service{
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public GetRouteResult getRouteByTripId(String tripId, HttpHeaders headers){
@@ -28,19 +31,19 @@ public class Travel2ServiceImpl implements Travel2Service{
         if(trip == null){
             result.setStatus(false);
             result.setMessage("Trip Not Found");
-            System.out.println("[Get Route By Trip ID] Trip Not Found:" + tripId);
+            mockLog.printLog("[Get Route By Trip ID] Trip Not Found:" + tripId);
             result.setRoute(null);
         }else{
             Route route = getRouteByRouteId(trip.getRouteId(), headers);
             if(route == null){
                 result.setStatus(false);
                 result.setMessage("Route Not Found");
-                System.out.println("[Get Route By Trip ID] Route Not Found:" + trip.getRouteId());
+                mockLog.printLog("[Get Route By Trip ID] Route Not Found:" + trip.getRouteId());
                 result.setRoute(null);
             }else{
                 result.setStatus(true);
                 result.setMessage("Success");
-                System.out.println("[Get Route By Trip ID] Success");
+                mockLog.printLog("[Get Route By Trip ID] Success");
 
                 result.setRoute(route);
             }
@@ -173,7 +176,7 @@ public class Travel2ServiceImpl implements Travel2Service{
     @Override
     public GetTripAllDetailResult getTripAllDetailInfo(GetTripAllDetailInfo gtdi, HttpHeaders headers){
         GetTripAllDetailResult gtdr = new GetTripAllDetailResult();
-        System.out.println("[TravelService] [GetTripAllDetailInfo] TripId:" + gtdi.getTripId());
+        mockLog.printLog("[TravelService] [GetTripAllDetailInfo] TripId:" + gtdi.getTripId());
         Trip trip = repository.findByTripId(new TripId(gtdi.getTripId()));
         if(trip == null){
             gtdr.setStatus(false);
@@ -241,7 +244,7 @@ public class Travel2ServiceImpl implements Travel2Service{
 //        ResultSoldTicket result = restTemplate.postForObject(
 //                "http://ts-order-other-service:12032/orderOther/calculate", information ,ResultSoldTicket.class);
         if(result == null){
-            System.out.println("soldticket Info doesn't exist");
+            mockLog.printLog("soldticket Info doesn't exist");
             return null;
         }
         //设置返回的车票信息
@@ -280,13 +283,13 @@ public class Travel2ServiceImpl implements Travel2Service{
         calendarStart.setTime(trip.getStartingTime());
         calendarStart.add(Calendar.MINUTE,minutesStart);
         response.setStartingTime(calendarStart.getTime());
-        System.out.println("[Train Service]计算时间：" + minutesStart  + " 时间:" + calendarStart.getTime().toString());
+        mockLog.printLog("[Train Service]计算时间：" + minutesStart  + " 时间:" + calendarStart.getTime().toString());
 
         Calendar calendarEnd = Calendar.getInstance();
         calendarEnd.setTime(trip.getStartingTime());
         calendarEnd.add(Calendar.MINUTE,minutesEnd);
         response.setEndTime(calendarEnd.getTime());
-        System.out.println("[Train Service]计算时间：" + minutesEnd  + " 时间:" + calendarEnd.getTime().toString());
+        mockLog.printLog("[Train Service]计算时间：" + minutesEnd  + " 时间:" + calendarEnd.getTime().toString());
 
         response.setTripId(new TripId(result.getTrainNumber()));
         response.setTrainTypeId(trip.getTrainTypeId());
@@ -359,7 +362,7 @@ public class Travel2ServiceImpl implements Travel2Service{
     }
 
     private Route getRouteByRouteId(String routeId, HttpHeaders headers){
-        System.out.println("[Travel Service][Get Route By Id] Route ID：" + routeId);
+        mockLog.printLog("[Travel Service][Get Route By Id] Route ID：" + routeId);
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<GetRouteResult> re = restTemplate.exchange(
                 "http://ts-route-service:11178/route/queryById/" + routeId,
@@ -371,10 +374,10 @@ public class Travel2ServiceImpl implements Travel2Service{
 //                "http://ts-route-service:11178/route/queryById/" + routeId,
 //                GetRouteResult.class);
         if(result.isStatus() == false){
-            System.out.println("[Travel Other Service][Get Route By Id] Fail." + result.getMessage());
+            mockLog.printLog("[Travel Other Service][Get Route By Id] Fail." + result.getMessage());
             return null;
         }else{
-            System.out.println("[Travel Other Service][Get Route By Id] Success.");
+            mockLog.printLog("[Travel Other Service][Get Route By Id] Success.");
             return result.getRoute();
         }
     }

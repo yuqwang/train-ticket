@@ -1,5 +1,6 @@
 package adminuser.service;
 
+import adminuser.config.MockLog;
 import adminuser.domain.request.AddAccountRequest;
 import adminuser.domain.request.AdminDeleteAccountRequest;
 import adminuser.domain.request.DeleteAccountRequest;
@@ -21,11 +22,14 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    MockLog mockLog;
+
     @Override
     public FindAllAccountResult getAllUsers(String id, HttpHeaders headers) {
         FindAllAccountResult result = new FindAllAccountResult();
         if(checkId(id)){
-            System.out.println("[Admin User Service][Get All Users]");
+            mockLog.printLog("[Admin User Service][Get All Users]");
             HttpEntity requestEntity = new HttpEntity(headers);
             ResponseEntity<FindAllAccountResult> re = restTemplate.exchange(
                     "http://ts-sso-service:12349/account/findAll",
@@ -37,7 +41,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 //                    "http://ts-sso-service:12349/account/findAll",
 //                    FindAllAccountResult.class);
         }else{
-            System.out.println("[Admin User Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin User Service][Wrong Admin ID]");
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + id);
         }
@@ -61,7 +65,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 //                    "http://ts-sso-service:12349/account/admindelete", adminDeleteAccountRequest,DeleteAccountResult.class);
         }
         else{
-            System.out.println("[Admin User Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin User Service][Wrong Admin ID]");
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + request.getLoginId());
         }
@@ -83,7 +87,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 //                    "http://ts-sso-service:12349/account/modify", request.getModifyAccountInfo() ,ModifyAccountResult.class);
         }
         else{
-            System.out.println("[Admin User Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin User Service][Wrong Admin ID]");
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + request.getLoginId());
         }
@@ -105,7 +109,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 //                    "http://ts-sso-service:12349/account/register", request ,RegisterResult.class);
         }
         else{
-            System.out.println("[Admin User Service][Wrong Admin ID]");
+            mockLog.printLog("[Admin User Service][Wrong Admin ID]");
             result.setStatus(false);
             result.setMessage("The loginId is Wrong: " + request.getLoginId());
         }

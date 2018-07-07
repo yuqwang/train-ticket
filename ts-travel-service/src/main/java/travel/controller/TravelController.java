@@ -3,6 +3,7 @@ package travel.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+import travel.config.MockLog;
 import travel.domain.*;
 import travel.service.TravelService;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ public class TravelController {
 
     @Autowired
     private TravelService travelService;
+    @Autowired
+    MockLog mockLog;
 
     @RequestMapping(value="/travel/getTrainTypeByTripId/{tripId}", method = RequestMethod.GET)
     public GetTrainTypeResult getTrainTypeByTripId(@PathVariable String tripId,@RequestHeader HttpHeaders headers){
@@ -21,7 +24,7 @@ public class TravelController {
 
     @RequestMapping(value = "/travel/getRouteByTripId/{tripId}", method = RequestMethod.GET)
     public GetRouteResult getRouteByTripId(@PathVariable String tripId,@RequestHeader HttpHeaders headers){
-        System.out.println("[Get Route By Trip ID] TripId:" + tripId);
+        mockLog.printLog("[Get Route By Trip ID] TripId:" + tripId);
         return travelService.getRouteByTripId(tripId, headers);
     }
 
@@ -62,11 +65,11 @@ public class TravelController {
         if(info.getStartingPlace() == null || info.getStartingPlace().length() == 0 ||
                 info.getEndPlace() == null || info.getEndPlace().length() == 0 ||
                 info.getDepartureTime() == null){
-            System.out.println("[Travel Service][Travel Query] Fail.Something null.");
+            mockLog.printLog("[Travel Service][Travel Query] Fail.Something null.");
             ArrayList<TripResponse> errorList = new ArrayList<>();
             return errorList;
         }
-        System.out.println("[Travel Service] Query TripResponse");
+        mockLog.printLog("[Travel Service] Query TripResponse");
         return travelService.query(info, headers);
     }
 
@@ -76,11 +79,11 @@ public class TravelController {
         if(info.getStartingPlace() == null || info.getStartingPlace().length() == 0 ||
                 info.getEndPlace() == null || info.getEndPlace().length() == 0 ||
                 info.getDepartureTime() == null){
-            System.out.println("[Travel Service][Travel Query] Fail.Something null.");
+            mockLog.printLog("[Travel Service][Travel Query] Fail.Something null.");
             ArrayList<TripResponse> errorList = new ArrayList<>();
             return new QueryTripResponsePackage(false,"Fail.",errorList);
         }
-        System.out.println("[Travel Service] Query TripResponse");
+        mockLog.printLog("[Travel Service] Query TripResponse");
         ArrayList<TripResponse> responses = travelService.query(info,headers);
         return new QueryTripResponsePackage(true,"Success.",responses);
     }

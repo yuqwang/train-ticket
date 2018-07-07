@@ -1,6 +1,7 @@
 package register.controller;
 
 import org.springframework.http.HttpHeaders;
+import register.config.MockLog;
 import register.domain.RegisterInfo;
 import register.domain.RegisterResult;
 import register.service.RegisterService;
@@ -12,6 +13,8 @@ public class AccountRegisterController {
 
     @Autowired
     private RegisterService accountService;
+    @Autowired
+    MockLog mockLog;
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home() {
@@ -21,7 +24,7 @@ public class AccountRegisterController {
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public RegisterResult createNewAccount(@RequestBody RegisterInfo ri,@CookieValue String YsbCaptcha,
                                            @RequestHeader HttpHeaders headers){
-        System.out.println("[Register Service][Register] Verification Code:" + ri.getVerificationCode() +
+        mockLog.printLog("[Register Service][Register] Verification Code:" + ri.getVerificationCode() +
                 " VerifyCookie:" + YsbCaptcha);
         return accountService.create(ri,YsbCaptcha,headers);
     }

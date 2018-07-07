@@ -1,5 +1,6 @@
 package execute.serivce;
 
+import execute.config.MockLog;
 import execute.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -14,6 +15,9 @@ public class ExecuteServiceImpl implements ExecuteService{
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    MockLog mockLog;
 
     @Override
     public TicketExecuteResult ticketExecute(TicketExecuteInfo info, HttpHeaders headers){
@@ -141,7 +145,7 @@ public class ExecuteServiceImpl implements ExecuteService{
 
 
     private ModifyOrderStatusResult executeOrder(ModifyOrderStatusInfo info, HttpHeaders headers){
-        System.out.println("[Execute Service][Execute Order] Executing....");
+        mockLog.printLog("[Execute Service][Execute Order] Executing....");
         HttpEntity requestEntity = new HttpEntity(info, headers);
         ResponseEntity<ModifyOrderStatusResult> re = restTemplate.exchange(
                 "http://ts-order-service:12031/order/modifyOrderStatus",
@@ -156,7 +160,7 @@ public class ExecuteServiceImpl implements ExecuteService{
     }
 
     private ModifyOrderStatusResult executeOrderOther(ModifyOrderStatusInfo info, HttpHeaders headers){
-        System.out.println("[Execute Service][Execute Order] Executing....");
+        mockLog.printLog("[Execute Service][Execute Order] Executing....");
         HttpEntity requestEntity = new HttpEntity(info, headers);
         ResponseEntity<ModifyOrderStatusResult> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/order/modifyOrderStatus",
@@ -171,7 +175,7 @@ public class ExecuteServiceImpl implements ExecuteService{
     }
 
     private GetOrderResult getOrderByIdFromOrder(GetOrderByIdInfo info, HttpHeaders headers){
-        System.out.println("[Execute Service][Get Order] Getting....");
+        mockLog.printLog("[Execute Service][Get Order] Getting....");
         HttpEntity requestEntity = new HttpEntity(info, headers);
         ResponseEntity<GetOrderResult> re = restTemplate.exchange(
                 "http://ts-order-service:12031/order/getById/",
@@ -186,7 +190,7 @@ public class ExecuteServiceImpl implements ExecuteService{
     }
 
     private GetOrderResult getOrderByIdFromOrderOther(GetOrderByIdInfo info, HttpHeaders headers){
-        System.out.println("[Execute Service][Get Order] Getting....");
+        mockLog.printLog("[Execute Service][Get Order] Getting....");
         HttpEntity requestEntity = new HttpEntity(info, headers);
         ResponseEntity<GetOrderResult> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/orderOther/getById/",

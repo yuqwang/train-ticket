@@ -1,5 +1,6 @@
 package food.controller;
 
+import food.config.MockLog;
 import food.domain.GetFoodStoresListResult;
 import food.domain.GetTrainFoodListResult;
 import food.domain.QueryFoodStoresInfo;
@@ -19,6 +20,9 @@ public class FoodMapController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    MockLog mockLog;
+
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home() {
         return "Welcome to [ Food Map Service ] !";
@@ -27,28 +31,28 @@ public class FoodMapController {
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/foodmap/getAllFoodStores", method = RequestMethod.GET)
     public GetFoodStoresListResult getAllFoodStores(@RequestHeader HttpHeaders headers){
-        System.out.println("[Food Map Service][Get All FoodStores]");
+        mockLog.printLog("[Food Map Service][Get All FoodStores]");
         return foodMapService.listFoodStores(headers);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/foodmap/getAllTrainFood", method = RequestMethod.GET)
     public GetTrainFoodListResult getAllTrainFood(@RequestHeader HttpHeaders headers){
-        System.out.println("[Food Map Service][Get All TrainFoods]");
+        mockLog.printLog("[Food Map Service][Get All TrainFoods]");
         return foodMapService.listTrainFood(headers);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/foodmap/getFoodStoresOfStation", method = RequestMethod.POST)
     public GetFoodStoresListResult getFoodStoresOfStation(@RequestBody QueryFoodStoresInfo qfs, @RequestHeader HttpHeaders headers){
-        System.out.println("[Food Map Service][Get FoodStores By StationId]");
+        mockLog.printLog("[Food Map Service][Get FoodStores By StationId]");
         return foodMapService.listFoodStoresByStationId(qfs.getStationId(),headers);
     }
 
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/foodmap/getTrainFoodOfTrip", method = RequestMethod.POST)
     public GetTrainFoodListResult getTrainFoodOfTrip(@RequestBody QueryTrainFoodInfo qtf, @RequestHeader HttpHeaders headers){
-        System.out.println("[Food Map Service][Get TrainFoods By TripId]");
+        mockLog.printLog("[Food Map Service][Get TrainFoods By TripId]");
         return foodMapService.listTrainFoodByTripId(qtf.getTripId(),headers);
     }
 
