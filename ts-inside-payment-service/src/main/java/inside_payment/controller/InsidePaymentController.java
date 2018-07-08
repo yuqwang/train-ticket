@@ -1,5 +1,6 @@
 package inside_payment.controller;
 
+import inside_payment.config.MockLog;
 import inside_payment.domain.*;
 import inside_payment.service.InsidePaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,9 @@ public class InsidePaymentController {
 
     @Autowired
     public InsidePaymentService service;
+
+    @Autowired
+    MockLog mockLog;
 
     @RequestMapping(value="/inside_payment/pay", method = RequestMethod.POST)
     public boolean pay(@RequestBody PaymentInfo info, HttpServletRequest request, @RequestHeader HttpHeaders headers){

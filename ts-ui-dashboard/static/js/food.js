@@ -22,6 +22,9 @@ $("#query_food_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Food");
+        },
         success: function(result){
             console.log(result);
             if(result.status){
@@ -148,6 +151,9 @@ $("#query_food_order_button").click(function(){
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Food");
         },
         success: function(result){
             console.log(result);

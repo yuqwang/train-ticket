@@ -67,6 +67,9 @@ $("#notification_send_email_button").click(function(){
             xhrFields: {
                 withCredentials: true
             },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("request-type", "Notification");
+            },
             success: function (result) {
                 $("#notification_result").html(result);
                 $("#notification_status").text("true");
@@ -84,6 +87,9 @@ $("#notification_send_email_button").click(function(){
             xhrFields: {
                 withCredentials: true
             },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("request-type", "Notification");
+            },
             success: function (result) {
                 $("#notification_result").html(result);
                 $("#notification_status").text("true");
@@ -100,6 +106,9 @@ $("#notification_send_email_button").click(function(){
             data:data,
             xhrFields: {
                 withCredentials: true
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("request-type", "Notification");
             },
             success: function (result) {
                 $("#notification_result").html(result);

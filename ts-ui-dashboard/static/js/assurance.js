@@ -12,6 +12,9 @@ $("#refresh_assurance_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Assurance");
+        },
         success: function (obj) {
             var result = obj["assurances"];
             var size = result.length;
@@ -68,6 +71,9 @@ function addListenerToAllAssuranceTable(){
                 xhrFields: {
                     withCredentials: true
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "Assurance");
+                },
                 success: function(result){
                     var obj = result;
                     if(obj["status"] == true){
@@ -107,6 +113,9 @@ $("#create_assurance_button").click(function(){
         data: assuranceData,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Assurance");
         },
         success: function(result){
             var obj = result;

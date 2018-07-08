@@ -32,6 +32,9 @@ $("#station_update_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Station");
+        },
         success: function(result){
             if(result == "true"){
                 //
@@ -54,6 +57,9 @@ $("#station_query_button").click(function(){
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Station");
         },
         success: function(result){
             var size = result.length;

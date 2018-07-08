@@ -48,6 +48,9 @@ $("#flow_advance_reserve_login_button").click(function() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Login");
+        },
         success: function(result){
             var obj = result;
             if(obj["status"] == true){
@@ -101,6 +104,9 @@ function advanceSearchForCheapestInfo(data,path) {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "AdvanceSearch");
+        },
         success: function (result) {
             if (result.status = true) {
                 var obj = result["travelAdvanceResultUnits"];
@@ -149,6 +155,9 @@ function advanceSearchForQuickestInfo(data,path) {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "AdvanceSearch");
+        },
         success: function (result) {
             if (result.status = true) {
                 var obj = result["travelAdvanceResultUnits"];
@@ -196,6 +205,9 @@ function advanceSearchForMinStopInfo(data,path) {
         data: data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "AdvanceSearch");
         },
         success: function (result) {
             if (result.status = true) {
@@ -286,6 +298,9 @@ function flow_advance_refresh_booking_contacts() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "GetContact");
+        },
         success: function (result) {
             var obj = result;
             $("#flow_advance_reserve_contacts_booking_list_table").find("tbody").html("");
@@ -338,6 +353,9 @@ function flow_advance_getAssuranceType(){
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "GetAssurance");
         },
         success: function (result) {
             var obj = result;
@@ -460,6 +478,9 @@ function flow_advance_preserveCreateNewContacts(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "CreateContact");
+        },
         success: function(result){
             $("#flow_advance_reserve_ticket_confirm_contactsId").text(result["contacts"]["id"]);
             $("#flow_advance_reserve_ticket_confirm_contactsName").text(result["contacts"]["name"]);
@@ -516,6 +537,9 @@ function flow_advance_initFoodSelect(tripId){
         data:JSON.stringify(data),
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "GetFood");
         },
         success: function(result){
             console.log(result);
@@ -706,6 +730,9 @@ $("#flow_advance_reserve_ticket_confirm_confirm_btn").click(function () {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "PreserveTicket");
+        },
         success: function (result) {
             alert(result["message"]);
             if(result['status'] == true){
@@ -749,6 +776,9 @@ $("#flow_advance_reserve_pay_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Pay");
+        },
         success: function (result) {
             if(result == "true"){
                 $("#flow_advanced_reserve_collect_order_id").val(info.orderId);
@@ -783,6 +813,9 @@ $("#flow_advanced_reserve_collect_button").click(function() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Collect");
+        },
         success: function(result){
             var obj = result;
             if(obj["status"] == true){
@@ -815,6 +848,9 @@ $("#flow_advanced_reserve_execute_order_button").click(function() {
         data:data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Execute");
         },
         success: function(result){
             var obj = result;

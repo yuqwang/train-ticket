@@ -18,7 +18,7 @@ public class HttpAspect {
 
     private final static org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(HttpAspect.class);
 
-    ThreadLocal<String> requestType = new ThreadLocal<String>();
+
     ThreadLocal<String> parentSpanId = new ThreadLocal<String>();
     ThreadLocal<String> requestId = new ThreadLocal<String>();
     ThreadLocal<String> traceId = new ThreadLocal<String>();
@@ -67,10 +67,7 @@ public class HttpAspect {
                     parentSpanId.set(request.getHeader(headerName));
                     break;
                 }
-                case("RequestType"):{
-                    requestType.set(request.getHeader(headerName));
-                    break;
-                }
+
             }
             sb.append(headerMap);
         }

@@ -76,6 +76,9 @@ function getRegionList(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "TicketOffice");
+        },
         success: function (result) {
             regionList = result;
             var province = document.getElementById ("office_province");
@@ -117,6 +120,9 @@ $("#query_office_button").click(function(){
             data: JSON.stringify(data),
             xhrFields: {
                 withCredentials: true
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("request-type", "TicketOffice");
             },
             success: function (obj) {
                 // console.log(obj);
@@ -211,6 +217,9 @@ function addListenerToAllOfficeTable(){
                 xhrFields: {
                     withCredentials: true
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "TicketOffice");
+                },
                 success: function(result){
                     console.log(JSON.stringify(result));
                     if(result.ok){
@@ -246,6 +255,9 @@ function addListenerToAllOfficeTable(){
                 data:data,
                 xhrFields: {
                     withCredentials: true
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "TicketOffice");
                 },
                 success: function(result){
                     console.log(JSON.stringify(result));
@@ -290,6 +302,9 @@ function createOffice(){
             data: data,
             xhrFields: {
                 withCredentials: true
+            },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("request-type", "TicketOffice");
             },
             success: function(result){
                 // console.log(JSON.stringify(result));

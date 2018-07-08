@@ -68,6 +68,9 @@ $("#basic_information_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Basic");
+        },
         success: function (result) {
             $("#query_basic_information_list_table").find("tbody").html("");
             $("#query_basic_information_list_table").find("tbody").append(

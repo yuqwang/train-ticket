@@ -41,6 +41,9 @@ $("#rebook_pay_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "RebookPay");
+        },
         success: function (result) {
             $("#rebook_payment_result").text(result["status"].toString());
             $("#rebook_pay_status").text("true");
@@ -91,6 +94,9 @@ $("#single_rebook_button").click(function() {
         data: singleRebookInfoData,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "RebookTicket");
         },
         success: function (result) {
             if(result["status"] == true){

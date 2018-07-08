@@ -26,6 +26,9 @@ function queryForTransitTravelInfo(data,path) {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "TravelPlan");
+        },
         success: function (result) {
             if (result.status = true) {
                 var obj = result["firstSectionResult"];

@@ -30,6 +30,9 @@ function refresh_order(path){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Order");
+        },
         success: function(result){
             $("#order_list_status").text("true");
             if(result["status"] == true){
@@ -84,6 +87,9 @@ function addListenerToAllOrderTable(){
                 data:data,
                 xhrFields: {
                     withCredentials: true
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "Order");
                 },
                 success: function(result){
                     $("#order_list_status").text("true");

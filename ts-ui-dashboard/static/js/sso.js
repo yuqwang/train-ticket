@@ -18,6 +18,9 @@ function refresh_account() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Sso");
+        },
         success: function(result){
             $("#account_list_table").find("tbody").html("");
             var obj = result["accountArrayList"];
@@ -61,6 +64,9 @@ function addListenerToSsoAccountTable(){
                 xhrFields: {
                     withCredentials: true
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "Sso");
+                },
                 success: function(result){
                     $("#account_list_status").text("true");
                     if(result["status"] == true){
@@ -91,6 +97,9 @@ function refresh_login_account() {
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Sso");
         },
         success: function(result){
             $("#login_account_list_table").find("tbody").html("");
@@ -133,6 +142,9 @@ function addListenerToSsoLoginAccountTable(){
                 xhrFields: {
                     withCredentials: true
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "Logout");
+                },
                 success: function(result){
                     if(result["status"] == true){
                         refresh_login_account();
@@ -170,6 +182,9 @@ $("#logout_button").click(function() {
         data:data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Logout");
         },
         success: function(result){
             if(result["status"] == true){

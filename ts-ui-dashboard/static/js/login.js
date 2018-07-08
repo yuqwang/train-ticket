@@ -32,6 +32,9 @@ $("#login_button").click(function() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Login");
+        },
         success: function(result){
             var obj = result;
             $("#login_result_status").text("true");

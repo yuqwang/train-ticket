@@ -297,7 +297,7 @@ public class SeatServiceImpl implements SeatService {
         QueryConfig queryConfig = new QueryConfig("DirectTicketAllocationProportion");
         HttpEntity requestEntity = new HttpEntity(queryConfig,headers);
         ResponseEntity<String> re = restTemplate.exchange(
-                "http://ts-config-service:15679//config/query",
+                "http://ts-config-service:15679/config/query",
                 HttpMethod.POST,
                 requestEntity,
                 String.class);

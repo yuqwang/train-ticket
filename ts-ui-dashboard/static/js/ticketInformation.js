@@ -69,6 +69,9 @@ $("#ticketinfo_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "TicketInfo");
+        },
         success: function (result) {
             $("#query_ticketinfo_list_table").find("tbody").html("");
             $("#query_ticketinfo_list_table").find("tbody").append(

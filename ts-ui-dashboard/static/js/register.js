@@ -51,6 +51,9 @@ $("#register_button").click(function() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Register");
+        },
         success: function(result){
             if(result["status"] == true){
                 //

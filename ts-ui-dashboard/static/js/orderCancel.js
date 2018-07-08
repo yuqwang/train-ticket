@@ -22,6 +22,9 @@ $("#single_cancel_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "CancelOrder");
+        },
         success: function (result) {
             $("#single_cancel_order_result").text(result["message"]);
             if(result["status"] == true){
@@ -53,6 +56,9 @@ $("#single_cancel_refund_button").click(function(){
         data: cancelOrderInfoData,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "CancelRefund");
         },
         success: function (result) {
             $("#single_cancel_refund_result").text(result["refund"]);

@@ -36,6 +36,9 @@ $("#train_update_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Train");
+        },
         success: function(result){
             //$("#train_result").html(JSON.stringify(result));
             $("#single_update_train_status").text("true");
@@ -64,6 +67,9 @@ $("#train_query_button").click(function(){
         // data:data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Train");
         },
         success: function(result){
             var size = result.length;

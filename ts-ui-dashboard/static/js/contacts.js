@@ -37,6 +37,9 @@ $("#add_contacts_button").click(function() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Contact");
+        },
         success: function(result){
             if(obj["status"] == true){
                 //
@@ -78,6 +81,9 @@ function addListenerToAllContactsTable(){
                 xhrFields: {
                     withCredentials: true
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "Contact");
+                },
                 success: function(result){
                     if(result["status"] == true){
                         refresh_contacts();
@@ -109,6 +115,9 @@ function addListenerToAllContactsTable(){
                 xhrFields: {
                     withCredentials: true
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "Contact");
+                },
                 success: function(result){
                     if(result["status"] == true){
                         refresh_contacts();
@@ -135,6 +144,9 @@ function refresh_contacts(){
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Contact");
         },
         success: function(result){
             if(result["status"] == true){

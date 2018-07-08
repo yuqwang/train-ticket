@@ -9,6 +9,9 @@ $("#refresh_news_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "News");
+        },
         success: function(result){
             $("#news_div").html("");
             for(var i = 0;i < result.length;i++){

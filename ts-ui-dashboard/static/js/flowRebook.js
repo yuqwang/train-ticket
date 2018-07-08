@@ -53,6 +53,9 @@ function queryForMyOrder(path,data){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "QueryOrder");
+        },
         success: function(result){
             var size = result.length;
             for(var i = 0; i < size;i++){
@@ -263,6 +266,9 @@ function getStationNameById(stationId){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "QueryStation");
+        },
         success: function (result) {
             stationName = result["name"];
             //alert("AJAX Station Name:" + stationName);
@@ -285,6 +291,9 @@ function replaceStationId(stationIdOne,stationIdTwo){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "QueryStation");
+        },
         success: function (result) {
             $("#travel_rebook_startingPlace").val(result["name"]);
         },
@@ -300,6 +309,9 @@ function replaceStationId(stationIdOne,stationIdTwo){
         data:getStationInfoTwoData,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "QueryStation");
         },
         success: function (result) {
             $("#travel_rebook_terminalPlace").val(result["name"]);
@@ -349,6 +361,9 @@ function queryForRebookTravelInfo(data,path) {
         data: data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "QueryTravelInfo");
         },
         success: function(result){
             if(result[0] != null){
@@ -433,6 +448,9 @@ $("#ticket_rebook_confirm_confirm_btn").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "RebookTicket");
+        },
         success: function(result){
             if(result["status"] == true){
                 alert(result["message"]);
@@ -479,6 +497,9 @@ $("#ticket_rebook_pay_panel_confirm").click(function(){
         data: rebookPayInfoData,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "RebookPay");
         },
         success: function (result) {
             alert(result['message']);
@@ -533,6 +554,9 @@ $("#pay_for_not_paid_pay_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Pay");
+        },
         success: function (result) {
             if(result == "true"){
                 alert("Success");
@@ -572,6 +596,9 @@ function addListenerToOrderCancel(){
                 xhrFields: {
                     withCredentials: true
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "CancelRefund");
+                },
                 success: function (result) {
                     if(result["status"] == true){
                         $("#cancel_money_refund").text(result["refund"]);
@@ -607,6 +634,9 @@ $("#ticket_cancel_panel_confirm").click(function(){
         data: cancelOrderInfoData,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "CancelOrder");
         },
         success: function (result) {
             if(result["status"] == true){

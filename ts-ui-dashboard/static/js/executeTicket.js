@@ -22,6 +22,9 @@ $("#execute_order_button").click(function() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Execute");
+        },
         success: function(result){
             var obj = result;
             if(obj["status"] == true){
@@ -57,6 +60,9 @@ $("#single_collect_button").click(function() {
         data:data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Execute");
         },
         success: function(result){
             var obj = result;

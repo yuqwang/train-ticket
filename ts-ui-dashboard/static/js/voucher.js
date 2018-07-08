@@ -27,6 +27,9 @@ function onLoadBody(){
         contentType: "application/json",
         dataType: "json",
         data:data,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Voucher");
+        },
         success: function(result){
             document.getElementById("voucher_id").innerText = "10000" + result.voucher_id;
             document.getElementById("order_id").innerText = result.order_id;

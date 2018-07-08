@@ -31,6 +31,9 @@ $("#config_update_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Config");
+        },
         success: function(result){
             $("#config_result").html(result);
             $("#single_update_config_status").text("true");
@@ -55,6 +58,9 @@ $("#config_query_button").click(function(){
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Config");
         },
         success: function(result){
             var size = result.length;

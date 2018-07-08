@@ -46,6 +46,9 @@ $("#travel_queryAll_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Travel");
+        },
         success: function(result){
             var size = result.length;
             $("#query_travel_list_table").find("tbody").html("");
@@ -81,6 +84,9 @@ $("#travel2_queryAll_button").click(function(){
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Travel2");
         },
         success: function(result){
             var size = result.length;
@@ -162,6 +168,9 @@ $("#travel_update_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Travel");
+        },
         success: function(result){
             $("#travel_result").html(JSON.stringify(result));
             $("#single_travel_update_status").text("true");
@@ -225,6 +234,9 @@ $("#travel2_update_button").click(function(){
         data:data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Travel2");
         },
         success: function(result){
             $("#travel2_result").html(JSON.stringify(result));

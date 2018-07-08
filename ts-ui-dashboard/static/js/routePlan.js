@@ -24,6 +24,9 @@ function queryForMinStopInfo(data,path) {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "RoutePlan");
+        },
         success: function (result) {
             if (result.status = true) {
                 var obj = result["results"];
@@ -84,6 +87,9 @@ function queryForQuickestInfo(data,path) {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "RoutePlan");
+        },
         success: function (result) {
             if (result.status = true) {
                 var obj = result;
@@ -143,6 +149,9 @@ function queryForCheapestInfo(data,path) {
         data: data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "RoutePlan");
         },
         success: function (result) {
             if (result.status = true) {

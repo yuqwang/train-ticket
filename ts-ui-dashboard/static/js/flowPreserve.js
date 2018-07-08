@@ -48,6 +48,9 @@ $("#flow_preserve_login_button").click(function() {
         contentType: "application/json",
         dataType: "json",
         data:data,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Login");
+        },
         xhrFields: {
             withCredentials: true
         },
@@ -134,6 +137,9 @@ function queryForTravelInfo(data,path) {
         data: data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "QueryTravelInfo");
         },
         success: function (result) {
             if (result[0] != null) {
@@ -246,6 +252,9 @@ function initFoodSelect(tripId){
         data:JSON.stringify(data),
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "GetFood");
         },
         success: function(result){
             console.log(result);
@@ -379,6 +388,9 @@ function refresh_booking_contacts() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "GetContact");
+        },
         success: function (result) {
             var obj = result;
             $("#contacts_booking_list_table").find("tbody").html("");
@@ -431,6 +443,9 @@ function getAssuranceType(){
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "GetAssurance");
         },
         success: function (result) {
             var obj = result;
@@ -551,6 +566,9 @@ function preserveCreateNewContacts(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "CreateContact");
+        },
         success: function(result){
             $("#ticket_confirm_contactsId").text(result["contacts"]["id"]);
             $("#ticket_confirm_contactsName").text(result["contacts"]["name"]);
@@ -662,6 +680,9 @@ $("#ticket_confirm_confirm_btn").click(function () {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "PreserveTicket");
+        },
         success: function (result) {
             alert(result["message"]);
             if(result['status'] == true){
@@ -706,6 +727,9 @@ $("#preserve_pay_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Pay");
+        },
         success: function (result) {
             if(result == "true"){
                 $("#preserve_collect_order_id").val(info.orderId);
@@ -741,6 +765,9 @@ $("#preserve_collect_button").click(function() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Collect");
+        },
         success: function(result){
             var obj = result;
             if(obj["status"] == true){
@@ -774,6 +801,9 @@ $("#preserve_order_button").click(function() {
         data:data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Execute");
         },
         success: function(result){
             var obj = result;

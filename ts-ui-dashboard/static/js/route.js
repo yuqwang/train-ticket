@@ -12,6 +12,9 @@ $("#refresh_route_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Route");
+        },
         success: function (obj) {
             var result = obj["routes"];
             var size = result.length;
@@ -71,6 +74,9 @@ function addListenerToAllRouteTable(){
                 xhrFields: {
                     withCredentials: true
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "Route");
+                },
                 success: function(result){
                     var obj = result;
                     if(obj["status"] == true){
@@ -117,6 +123,9 @@ $("#create_route_button").click(function(){
         data:routeData,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Route");
         },
         success: function(result){
             var obj = result;

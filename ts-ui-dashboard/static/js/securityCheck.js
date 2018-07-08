@@ -22,6 +22,9 @@ $("#security_check_button").click(function() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Security");
+        },
         success: function(result){
             var obj = result;
             if(obj["status"] == true){
@@ -52,6 +55,9 @@ function refresh_security_config() {
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Security");
         },
         success: function(result){
             if(result["status"] == true){
@@ -100,6 +106,9 @@ function addListenerToAllSecurityConfigTable(){
                 xhrFields: {
                     withCredentials: true
                 },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "Security");
+                },
                 success: function(result){
                     if(result["status"] == true){
                         refresh_security_config();
@@ -129,6 +138,9 @@ function addListenerToAllSecurityConfigTable(){
                 data:data,
                 xhrFields: {
                     withCredentials: true
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("request-type", "Security");
                 },
                 success: function(result){
                     if(result["status"] == true){

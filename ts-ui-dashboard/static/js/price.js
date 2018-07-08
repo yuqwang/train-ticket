@@ -13,6 +13,9 @@ $("#price_queryAll_button").click(function() {
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Price");
+        },
         success: function (obj) {
             var result = obj["priceConfig"];
             var size = result.length;
@@ -72,6 +75,9 @@ $("#price_create_button").click(function(){
         dataType: "json",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Price");
         },
         success: function (result) {
             $("#single_create_price_status").text("true");

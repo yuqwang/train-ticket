@@ -11,6 +11,9 @@ $("#payment_query_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Payment");
+        },
         success: function (result) {
             var size = result.length;
             $("#query_payment_list_table").find("tbody").html("");
@@ -60,6 +63,9 @@ $("#payment_pay_button").click(function(){
         data:data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "Payment");
         },
         success: function (result) {
             $("#payment_result").html(result.toString());

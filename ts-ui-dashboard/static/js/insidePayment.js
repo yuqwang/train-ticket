@@ -11,6 +11,9 @@ $("#inside_payment_query_account_button").click(function(){
         xhrFields: {
             withCredentials: true
         },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "InsidePay");
+        },
         success: function (result) {
             var size = result.length;
             $("#query_inside_payment_account_list_table").find("tbody").html("");
@@ -39,6 +42,9 @@ $("#inside_payment_query_payment_button").click(function(){
         url: "/inside_payment/queryPayment",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "InsidePay");
         },
         success: function (result) {
             var size = result.length;
@@ -71,6 +77,9 @@ $("#inside_payment_query_add_money_button").click(function(){
         url: "/inside_payment/queryAddMoney",
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "InsidePay");
         },
         success: function (result) {
             var size = result.length;
@@ -116,6 +125,9 @@ $("#inside_payment_pay_button").click(function(){
         data:data,
         xhrFields: {
             withCredentials: true
+        },
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("request-type", "InsidePay");
         },
         success: function (result) {
             $("#inside_payment_result").html(result.toString());
