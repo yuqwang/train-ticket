@@ -51,7 +51,7 @@ public class HttpAspect {
             String headerName = headers.nextElement();
             String headerMap = String.format("[%s:%s]", headerName, request.getHeader(headerName));
             switch (headerName){
-                case("[x-request-id"):{
+                case("x-request-id"):{
                     requestId.set(request.getHeader(headerName));
                     break;
                 }
