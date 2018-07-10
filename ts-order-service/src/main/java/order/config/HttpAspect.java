@@ -3,6 +3,7 @@ package order.config;
 import com.google.gson.Gson;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -49,25 +50,31 @@ public class HttpAspect {
         StringBuilder sb = new StringBuilder();
         while(headers.hasMoreElements()){
             String headerName = headers.nextElement();
-            String headerMap = String.format("[%s:%s]", headerName, request.getHeader(headerName));
+            String headerMap;
             switch (headerName){
                 case("x-request-id"):{
                     requestId.set(request.getHeader(headerName));
+                    headerMap = String.format("[%s:%s]", "RequestId", request.getHeader(headerName));
                     break;
                 }
                 case("x-b3-traceid"):{
                     traceId.set(request.getHeader(headerName));
+                    headerMap = String.format("[%s:%s]", "TraceId", request.getHeader(headerName));
                     break;
                 }
                 case("x-b3-spanid"):{
                     spanId.set(request.getHeader(headerName));
+                    headerMap = String.format("[%s:%s]", "SpanId", request.getHeader(headerName));
                     break;
                 }
                 case("x-b3-parentspanid"):{
                     parentSpanId.set(request.getHeader(headerName));
+                    headerMap = String.format("[%s:%s]", "ParentSpanId", request.getHeader(headerName));
                     break;
                 }
-
+                default:{
+                    headerMap = String.format("[%s:%s]", headerName, request.getHeader(headerName));
+                }
             }
             sb.append(headerMap);
         }
@@ -75,7 +82,7 @@ public class HttpAspect {
         String requestArgs  = "";
         if(joinPoint.getArgs() != null && joinPoint.getArgs().length > 0){
             for(Object c:  joinPoint.getArgs()) {
-                if( !(c instanceof HttpServletResponse) && !(c instanceof HttpServletRequest)) {
+                if( !(c instanceof HttpServletResponse) && !(c instanceof HttpServletRequest) &&  !(c instanceof HttpHeaders)) {
                     requestArgs += new Gson().toJson(c);
                 }
             }
