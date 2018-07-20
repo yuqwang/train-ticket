@@ -291,17 +291,17 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         try{
             httpHeaders.add("Cookie","jichao=dododo");
             Future<ChangeOrderResult> taskChangeOrder = asyncTask.sendAsyncCallToChangeOrder(orderId, httpHeaders);
-            Future<Boolean> cancelConsign = asyncTask.sendAsyncCallConsignDrawback(orderId,httpHeaders);
-            Future<String> checkConsignPrice = asyncTask.checkConsignPriceService(httpHeaders);
-            while(!cancelConsign.isDone() || !taskChangeOrder.isDone()){
-                if(!cancelConsign.isDone() && taskChangeOrder.isDone()){
-                    return false;
-                }
-            }
+//            Future<Boolean> cancelConsign = asyncTask.sendAsyncCallConsignDrawback(orderId,httpHeaders);
+//            Future<String> checkConsignPrice = asyncTask.checkConsignPriceService(httpHeaders);
+//            while(!cancelConsign.isDone() || !taskChangeOrder.isDone()){
+//                if(!cancelConsign.isDone() && taskChangeOrder.isDone()){
+//                    return false;
+//                }
+//            }
 
             ChangeOrderResult resultChangeOrder = taskChangeOrder.get();
-            boolean resultConsign = cancelConsign.get();
-            System.out.println("Check Consign Price:" + checkConsignPrice.get());
+//            boolean resultConsign = cancelConsign.get();
+//            System.out.println("Check Consign Price:" + checkConsignPrice.get());
         }catch (Exception e){
             e.printStackTrace();
         }
