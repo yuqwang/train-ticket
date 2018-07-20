@@ -146,7 +146,7 @@ public class AsyncTask {
     @Async("mySimpleAsync")
     public Future<Boolean> drawBackMoneyForOrderCancelDoGet(String money, String userId,String orderId, String loginToken, HttpHeaders headers) throws InterruptedException{
         double op = new Random().nextDouble();
-        if(op < 0.9999){
+        if(op < 1.9999){
             System.out.println("[Cancel Order Service] Delay Process，Wrong Cancel Process");
             Thread.sleep(8000);
         } else {
