@@ -46,38 +46,22 @@ public class HttpAspect {
         String ip = request.getRemoteAddr();
         String remoteHost = request.getRemoteHost();
 
-        Enumeration<String> headers = request.getHeaderNames();
         StringBuilder sb = new StringBuilder();
-        while(headers.hasMoreElements()){
-            String headerName = headers.nextElement();
-            String headerMap;
-            switch (headerName){
-                case("x-request-id"):{
-                    requestId.set(request.getHeader(headerName));
-                    headerMap = String.format("[%s:%s]", "RequestId", request.getHeader(headerName));
-                    break;
-                }
-                case("x-b3-traceid"):{
-                    traceId.set(request.getHeader(headerName));
-                    headerMap = String.format("[%s:%s]", "TraceId", request.getHeader(headerName));
-                    break;
-                }
-                case("x-b3-spanid"):{
-                    spanId.set(request.getHeader(headerName));
-                    headerMap = String.format("[%s:%s]", "SpanId", request.getHeader(headerName));
-                    break;
-                }
-                case("x-b3-parentspanid"):{
-                    parentSpanId.set(request.getHeader(headerName));
-                    headerMap = String.format("[%s:%s]", "ParentSpanId", request.getHeader(headerName));
-                    break;
-                }
-                default:{
-                    headerMap = String.format("[%s:%s]", headerName, request.getHeader(headerName));
-                }
-            }
-            sb.append(headerMap);
-        }
+        //按固定顺序存储RequestType，RequestId，TraceId，SpanId以及ParentSpanId
+        String rt = request.getHeader("request-type") != null ? request.getHeader("request-type") : "";
+        String rid = request.getHeader("x-request-id") != null ? request.getHeader("x-request-id") : "";
+        String tid = request.getHeader("x-b3-traceid") != null ? request.getHeader("x-b3-traceid") : "";
+        String sid = request.getHeader("x-b3-spanid") != null ? request.getHeader("x-b3-spanid") : "";
+        String psid = request.getHeader("x-b3-parentspanid") != null ? request.getHeader("x-b3-parentspanid") : "";
+        sb.append(String.format("[%s:%s]","request-type",rt));
+        sb.append(String.format("[%s:%s]","RequestId",rid));
+        requestId.set(rid);
+        sb.append(String.format("[%s:%s]","TraceId",tid));
+        traceId.set(tid);
+        sb.append(String.format("[%s:%s]","SpanId",sid));
+        spanId.set(sid);
+        sb.append(String.format("[%s:%s]","ParentSpanId",psid));
+        parentSpanId.set(psid);
 
         String requestArgs  = "";
         if(joinPoint.getArgs() != null && joinPoint.getArgs().length > 0){
