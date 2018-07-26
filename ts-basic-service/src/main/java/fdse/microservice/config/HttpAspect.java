@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -24,6 +25,7 @@ public class HttpAspect {
     ThreadLocal<String> requestId = new ThreadLocal<String>();
     ThreadLocal<String> traceId = new ThreadLocal<String>();
     ThreadLocal<String> spanId = new ThreadLocal<String>();
+    ThreadLocal<String> uri = new ThreadLocal<String>();
 
     ////////////////////////////////// 拦截API调用 //////////////////////////////////////////
 
@@ -33,15 +35,16 @@ public class HttpAspect {
 
     @Before("webLog()")
     public void doBeforeWeb(JoinPoint joinPoint){
-        requestId.set("");
         parentSpanId.set("");
         requestId.set("");
         traceId.set("");
         spanId.set("");
+        uri.set("");
 
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String url = request.getRequestURI();
+        uri.set(url);
         String method = request.getMethod();
         String ip = request.getRemoteAddr();
         String remoteHost = request.getRemoteHost();
@@ -84,11 +87,16 @@ public class HttpAspect {
     @AfterReturning(returning = "ret", pointcut = "webLog()")
     public void doAfterReturningWeb(Object ret) throws Throwable {
 
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+
         String traceInfo = "[ParentSpanId:" + parentSpanId.get() + "]" +
                 "[RequestId:" + requestId.get() + "]" +
                 "[TraceId:" + traceId.get() + "]" +
                 "[SpanId:" + spanId.get() + "]" +
-                "[LogType:InvocationResponse]";
+                "[LogType:InvocationResponse]" +
+                "[URI:" + uri.get() + "]" +
+                "[ResponseCode:" + response.getStatus() + "]" +
+                "[CodeMessage:" + HttpStatus.valueOf(response.getStatus()).getReasonPhrase() + "]";
 
         if(ret != null){
             logger.info(traceInfo + "[Response:" + new Gson().toJson(ret) + "]");
@@ -107,6 +115,7 @@ public class HttpAspect {
                 "[TraceId:" + traceId.get() + "]" +
                 "[SpanId:" + spanId.get() + "]" +
                 "[LogType:InternalMethod]" +
+                "[URI:" + uri.get() + "]" +
                 "[ExceptionMessage:" + e.toString() + "]" +
                 "[ExceptionCause:" + e.getCause() + "]" +
                 "[ExceptionStack:" + Arrays.toString(e.getStackTrace()) + "]");
@@ -130,8 +139,8 @@ public class HttpAspect {
                 "[TraceId:" + traceId.get() + "]" +
                 "[SpanId:" + spanId.get() + "]" +
                 "[LogType:InternalMethod]" +
+                "[URI:" + uri.get() + "]" +
                 "[Content:" + content + "]");
     }
-
 
 }
