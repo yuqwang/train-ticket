@@ -383,7 +383,7 @@ kind: Deployment
 metadata:
   name: ts-order-other-service
 spec:
-  replicas: 5
+  replicas: 2
   template:
     metadata:
       labels:
@@ -443,7 +443,7 @@ kind: Deployment
 metadata:
   name: ts-preserve-other-service
 spec:
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels:
@@ -723,7 +723,7 @@ kind: Deployment
 metadata:
   name: ts-travel2-service
 spec:
-  replicas: 3
+  replicas: 2
   template:
     metadata:
       labels:
