@@ -21,7 +21,7 @@ public class TestFlowOne {
 
         HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
         ResponseEntity<Boolean> re = restTemplate.exchange(
-                "http://10.141.211.174:30112/adminOrder/suspendOrder/shanghai/nanjing",
+                "http://10.141.212.23:30112/adminOrder/suspendOrder/shanghai/nanjing",
                 HttpMethod.GET,
                 requestEntity,
                 Boolean.class);
@@ -35,7 +35,7 @@ public class TestFlowOne {
 
             HttpEntity requestEntity2 = new HttpEntity(null, new HttpHeaders());
             ResponseEntity<CancelOrderResult> cancel = restTemplate.exchange(
-                    "http://10.141.211.174:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
+                    "http://10.141.212.23:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
                     HttpMethod.GET,
                     requestEntity2,
                     CancelOrderResult.class);

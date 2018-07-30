@@ -836,9 +836,11 @@ kind: Service
 metadata:
   name: ts-admin-order-service
 spec:
+  type: NodePort
   ports:
     - name: http
       port: 16112
+      nodePort: 30112
   selector:
    app: ts-admin-order-service
 
@@ -914,9 +916,11 @@ kind: Service
 metadata:
   name: ts-cancel-service
 spec:
+  type: NodePort
   ports:
     - name: http
       port: 18885
+      nodePort: 30085
   selector:
    app: ts-cancel-service
 
