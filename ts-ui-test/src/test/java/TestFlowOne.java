@@ -22,7 +22,7 @@ public class TestFlowOne {
 
         HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
         ResponseEntity<Boolean> re = restTemplate.exchange(
-                "http://10.141.211.174:30085/cancelOrder/setRecheck/true",
+                "http://10.141.212.23:30085/cancelOrder/setRecheck/true",
 //                "http://10.141.212.22:18885/cancelOrder/setRecheck/true",
                 HttpMethod.GET,
                 requestEntity,
@@ -35,7 +35,7 @@ public class TestFlowOne {
             Thread.sleep(7000);
             HttpEntity requestEntity2 = new HttpEntity(null, new HttpHeaders());
             ResponseEntity<CancelOrderResult> cancel = restTemplate.exchange(
-                    "http://10.141.211.174:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
+                    "http://10.141.212.23:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
                     HttpMethod.GET,
                     requestEntity2,
                     CancelOrderResult.class);
@@ -53,7 +53,7 @@ public class TestFlowOne {
         for (int i = 0; i < 20; i++) {
             Thread.sleep(5000);
             ResponseEntity<Boolean> cancel = restTemplate.exchange(
-                    "http://10.141.211.174:30085/cancelOrder/setRecheck/false",
+                    "http://10.141.212.23:30085/cancelOrder/setRecheck/false",
                     HttpMethod.GET,
                     requestEntity,
                     Boolean.class);
