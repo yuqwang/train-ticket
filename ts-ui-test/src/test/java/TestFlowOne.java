@@ -21,7 +21,7 @@ public class TestFlowOne {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity requestEntity = new HttpEntity(null, new HttpHeaders());
         ResponseEntity<Boolean> re = restTemplate.exchange(
-                "http://10.141.212.21:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
+                "http://10.141.212.23:30085/cancelOrder/5ad7750b-a68b-49c0-a8c0-32776b067703",
                 HttpMethod.GET,
                 requestEntity,
                 Boolean.class);

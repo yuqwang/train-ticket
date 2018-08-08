@@ -11,7 +11,7 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: 10.141.212.25:5555/f3/cluster-ts-cancel-service
+        image: 10.141.211.160:5000/f3/cluster-ts-cancel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18885
@@ -38,7 +38,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: 10.141.212.25:5555/f3/cluster-ts-inside-payment-service
+        image: 10.141.211.160:5000/f3/cluster-ts-inside-payment-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18673
@@ -65,7 +65,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: 10.141.212.25:5555/f3/cluster-ts-order-other-service
+        image: 10.141.211.160:5000/f3/cluster-ts-order-other-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12032
@@ -92,7 +92,7 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: 10.141.212.25:5555/f3/cluster-ts-basic-service
+        image: 10.141.211.160:5000/f3/cluster-ts-basic-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15680
@@ -119,7 +119,7 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: 10.141.212.25:5555/f3/cluster-ts-order-service
+        image: 10.141.211.160:5000/f3/cluster-ts-order-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12031
@@ -146,7 +146,7 @@ spec:
     spec:
       containers:
       - name: ts-sso-service
-        image: 10.141.212.25:5555/f3/cluster-ts-sso-service
+        image: 10.141.211.160:5000/f3/cluster-ts-sso-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12349
@@ -173,7 +173,7 @@ spec:
     spec:
       containers:
       - name: ts-assurance-service
-        image: 10.141.212.25:5555/f3/cluster-ts-assurance-service
+        image: 10.141.211.160:5000/f3/cluster-ts-assurance-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18888
@@ -199,7 +199,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: 10.141.212.25:5555/f3/cluster-ts-food-service
+        image: 10.141.211.160:5000/f3/cluster-ts-food-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18856
@@ -226,7 +226,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: 10.141.212.25:5555/f3/cluster-ts-consign-service
+        image: 10.141.211.160:5000/f3/cluster-ts-consign-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16111
@@ -253,7 +253,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: 10.141.212.25:5555/f3/cluster-ts-consign-price-service
+        image: 10.141.211.160:5000/f3/cluster-ts-consign-price-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16110
