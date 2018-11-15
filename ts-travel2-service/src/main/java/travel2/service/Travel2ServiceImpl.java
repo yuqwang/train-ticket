@@ -25,6 +25,12 @@ public class Travel2ServiceImpl implements Travel2Service{
         TripId tripId1 = new TripId(tripId);
         GetRouteResult result = new GetRouteResult();
         Trip trip = repository.findByTripId(tripId1);
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect(1);
+
         if(trip == null){
             result.setStatus(false);
             result.setMessage("Trip Not Found");
@@ -367,6 +373,12 @@ public class Travel2ServiceImpl implements Travel2Service{
                 requestEntity,
                 GetRouteResult.class);
         GetRouteResult result = re.getBody();
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect(3);
+
 //        GetRouteResult result = restTemplate.getForObject(
 //                "http://ts-route-service:11178/route/queryById/" + routeId,
 //                GetRouteResult.class);
@@ -422,6 +434,45 @@ public class Travel2ServiceImpl implements Travel2Service{
         result.setMessage("Travel Service Admin Query All Travel Success");
         result.setTrips(adminTrips);
         return result;
+    }
+
+    private void injectMemoryDefect(int defectType) {
+        Set<Trip> trips = new HashSet<>();
+        Set<TripResponse> tripResponses = new HashSet<>();
+        Set<GetRouteResult> routeResults = new HashSet<>();
+
+        switch (defectType) {
+            case 1:
+                for (int i = 0; i < 10000000; i++) {
+                    Trip trip = new Trip();
+                    trip.setTripId(new TripId("Z"));
+                    trip.setEndTime(new Date());
+                    trip.setRouteId("Test");
+                    trip.setStartingTime(new Date());
+                    trips.add(trip);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 10000000; i++) {
+                    TripResponse tripResponse = new TripResponse();
+                    tripResponse.setTripId(new TripId("Z"));
+                    tripResponse.setConfortClass(1);
+                    tripResponse.setEconomyClass(1);
+                    tripResponses.add(tripResponse);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < 10000000; i++) {
+                    GetRouteResult getRouteResult = new GetRouteResult();
+                    getRouteResult.setMessage("Test");
+                    getRouteResult.setStatus(true);
+                    getRouteResult.setRoute(new Route());
+                    routeResults.add(getRouteResult);
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
 

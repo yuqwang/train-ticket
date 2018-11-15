@@ -1,5 +1,6 @@
 package rebook.service;
 
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,8 +14,7 @@ import rebook.domain.*;
 import rebook.domain.RebookInfo;
 import rebook.domain.RebookResult;
 import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class RebookServiceImpl implements RebookService{
@@ -36,6 +36,12 @@ public class RebookServiceImpl implements RebookService{
         }
 
         Order order = queryOrderResult.getOrder();
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect(1);
+
         int status = order.getStatus();
         if(status == OrderStatus.NOTPAID.getCode()){
             rebookResult.setStatus(false);
@@ -173,6 +179,11 @@ public class RebookServiceImpl implements RebookService{
         }
 
         Order order = queryOrderResult.getOrder();
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect(2);
 
         GetTripAllDetailInfo gtdi = new GetTripAllDetailInfo();
         gtdi.setFrom(queryForStationName(order.getFrom(), httpHeaders));
@@ -578,4 +589,34 @@ public class RebookServiceImpl implements RebookService{
         return result;
     }
 
+    private void injectMemoryDefect(int defectType) {
+        Set<Order> orders = new HashSet<>();
+        Set<GetTripAllDetailInfo> tripAllDetailInfos = new HashSet<>();
+
+        switch (defectType) {
+            case 1:
+                for (int i = 0; i < 10000000; i++) {
+                    Order order = new Order();
+                    order.setAccountId(new UUID(16, 16));
+                    order.setId(new UUID(16, 16));
+                    order.setBoughtDate(new Date());
+                    order.setCoachNumber(i);
+                    order.setPrice("111");
+                    orders.add(order);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 10000000; i++) {
+                    GetTripAllDetailInfo tripAllDetailInfo = new GetTripAllDetailInfo();
+                    tripAllDetailInfo.setFrom("Test1");
+                    tripAllDetailInfo.setTo("Test2");
+                    tripAllDetailInfo.setTravelDate(new Date());
+                    tripAllDetailInfo.setTripId(i + "");
+                    tripAllDetailInfos.add(tripAllDetailInfo);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }

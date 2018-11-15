@@ -11,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class CancelServiceImpl implements CancelService{
@@ -23,6 +25,7 @@ public class CancelServiceImpl implements CancelService{
         GetOrderByIdInfo getFromOrderInfo = new GetOrderByIdInfo();
         getFromOrderInfo.setOrderId(info.getOrderId());
         GetOrderResult orderResult = getOrderByIdFromOrder(getFromOrderInfo, headers);
+
         if(orderResult.isStatus() == true){
             System.out.println("[Cancel Order Service][Cancel Order] Order found G|H");
             Order order = orderResult.getOrder();
@@ -52,6 +55,11 @@ public class CancelServiceImpl implements CancelService{
                         if(result.isStatus() == false){
                             return null;
                         }
+
+                        /*----------------------
+                          ----- OOM Defect------
+                          ----------------------*/
+                        injectMemoryDefect(1);
 
                         NotifyInfo notifyInfo = new NotifyInfo();
                         notifyInfo.setDate(new Date().toString());
@@ -362,4 +370,31 @@ public class CancelServiceImpl implements CancelService{
         return cor;
     }
 
+    private void injectMemoryDefect(int defectType) {
+        Set<GetOrderResult> orderResults = new HashSet<>();
+        Set<NotifyInfo> notifyInfos = new HashSet<>();
+
+        switch (defectType) {
+            case 1:
+                for (int i = 0; i < 10000000; i++) {
+                    NotifyInfo notifyInfo = new NotifyInfo();
+                    notifyInfo.setDate("Test");
+                    notifyInfo.setEmail("TestEmail");
+                    notifyInfo.setUsername("TestUser");
+                    notifyInfos.add(notifyInfo);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 10000000; i++) {
+                    GetOrderResult orderResult = new GetOrderResult();
+                    orderResult.setMessage("Test");
+                    orderResult.setStatus(true);
+                    orderResult.setOrder(new Order());
+                    orderResults.add(orderResult);
+                }
+                break;
+            default:
+                break;
+        }
+    }
 }

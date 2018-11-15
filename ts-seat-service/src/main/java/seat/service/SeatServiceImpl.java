@@ -10,9 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import seat.domain.*;
 
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class SeatServiceImpl implements SeatService {
@@ -136,6 +134,12 @@ public class SeatServiceImpl implements SeatService {
                 return ticket;
             }
         }
+
+        /*---------------------
+         ----- OOM Defect------
+         -----------------------*/
+        memoryTest(1);
+
 
         //分配新的票
         Random rand = new Random();
@@ -272,6 +276,12 @@ public class SeatServiceImpl implements SeatService {
                 numOfLeftTicket++;
             }
         }
+
+        /*---------------------
+         ----- OOM Defect------
+         -----------------------*/
+        memoryTest(1);
+
         //统计未售出的票
 
         double direstPart = getDirectProportion(headers);
@@ -289,6 +299,59 @@ public class SeatServiceImpl implements SeatService {
         return numOfLeftTicket;
     }
 
+    @Override
+    public String test() {
+        LeftTicketInfo ticketInfo = new LeftTicketInfo();
+        Set<Ticket> tickets = new HashSet<>();
+        for (int i=0; i<5000000; i++) {
+            Ticket ticket = new Ticket();
+            ticket.setDestStation("Test1");
+            ticket.setStartStation("Test2");
+            ticket.setSeatNo(i);
+            tickets.add(ticket);
+        }
+
+        ticketInfo.setSoldTickets(tickets);
+        try {
+            Thread.sleep(30000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return "OK!";
+    }
+
+    private void memoryTest(int testType) {
+        LeftTicketInfo ticketInfo = new LeftTicketInfo();
+        Map<Integer, Ticket> ticketMap = new HashMap<>();
+        Set<Ticket> tickets = new HashSet<>();
+        switch (testType) {
+            case 1:
+                for (int i = 0; i < 10000000; i++) {
+                    Ticket ticket = new Ticket();
+                    ticket.setDestStation("Test1");
+                    ticket.setStartStation("Test2");
+                    ticket.setSeatNo(i);
+                    tickets.add(ticket);
+                }
+
+                break;
+            case 2:
+                for (int i = 0; i < 10000000; i++) {
+                    Ticket ticket = new Ticket();
+                    ticket.setDestStation("Test1");
+                    ticket.setStartStation("Test2");
+                    ticket.setSeatNo(i);
+                    ticketMap.put(i, ticket);
+                }
+                break;
+            default:
+                break;
+        }
+
+
+        ticketInfo.setSoldTickets(tickets);
+
+    }
     private double getDirectProportion(HttpHeaders headers){
 
         QueryConfig queryConfig = new QueryConfig("DirectTicketAllocationProportion");

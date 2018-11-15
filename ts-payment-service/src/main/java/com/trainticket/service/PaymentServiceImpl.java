@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Administrator on 2017/6/23.
@@ -41,6 +43,12 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public boolean addMoney(AddMoneyInfo info, HttpHeaders headers){
         AddMoney addMoney = new AddMoney();
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect(2);
+
         addMoney.setUserId(info.getUserId());
         addMoney.setMoney(info.getMoney());
         addMoneyRepository.save(addMoney);
@@ -59,6 +67,35 @@ public class PaymentServiceImpl implements PaymentService{
             paymentRepository.save(payment);
         }else{
             System.out.println("[Payment Service][Init Payment] Already Exists:" + payment.getId());
+        }
+    }
+
+    private void injectMemoryDefect(int defectType) {
+        Set<Payment> payments = new HashSet<>();
+        Set<AddMoney> addMonies = new HashSet<>();
+
+
+        switch (defectType) {
+            case 1:
+                for (int i = 0; i < 10000000; i++) {
+                    Payment payment = new Payment();
+                    payment.setId(i + "");
+                    payment.setOrderId(i + "");
+                    payment.setPrice("Test");
+                    payment.setUserId(i + "");
+                    payments.add(payment);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 10000000; i++) {
+                    AddMoney addMoney = new AddMoney();
+                    addMoney.setMoney(i + "");
+                    addMoney.setUserId(i + "");
+                    addMonies.add(addMoney);
+                }
+                break;
+            default:
+                break;
         }
     }
 }

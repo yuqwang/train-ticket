@@ -9,10 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class BasicServiceImpl implements BasicService{
@@ -38,6 +35,11 @@ public class BasicServiceImpl implements BasicService{
         }else{
             result.setTrainType(trainType);
         }
+
+        /*---------------------
+         ----- OOM Defect------
+         -----------------------*/
+        memoryTest(1);
 
         String routeId = info.getTrip().getRouteId();
         String trainTypeString = trainType.getId();
@@ -77,6 +79,12 @@ public class BasicServiceImpl implements BasicService{
                 requestEntity,
                 String.class);
         String id = re.getBody();
+
+        /*---------------------
+         ----- OOM Defect------
+         -----------------------*/
+        memoryTest(1);
+
 //        String id = restTemplate.postForObject(
 //                "http://ts-station-service:12345/station/queryForId", info, String.class);
         return id;
@@ -94,6 +102,32 @@ public class BasicServiceImpl implements BasicService{
 //        Boolean exist = restTemplate.postForObject(
 //                "http://ts-station-service:12345/station/exist", new QueryStation(stationName), Boolean.class);
         return exist.booleanValue();
+    }
+
+    private void memoryTest(int testType) {
+        Set<ResultForTravel> resultForTravels = new HashSet<>();
+        Set<TrainType> trainTypes = new HashSet<>();
+        switch (testType) {
+            case 1:
+                for (int i = 0; i < 10000000; i++) {
+                    ResultForTravel resultForTravel = new ResultForTravel();
+                    TrainType trainType = new TrainType(String.valueOf(i), 1,1 );
+                    resultForTravel.setPercent(0);
+                    resultForTravel.setStatus(true);
+                    resultForTravel.setPrices(new HashMap<>());
+                    resultForTravel.setTrainType(trainType);
+                    resultForTravels.add(resultForTravel);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 10000000; i++) {
+                    TrainType trainType = new TrainType(String.valueOf(i), 1,1 );
+                    trainTypes.add(trainType);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     public TrainType queryTrainType(String trainTypeId, HttpHeaders headers){

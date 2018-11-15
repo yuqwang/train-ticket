@@ -1,5 +1,6 @@
 package preserve.service;
 
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserve.domain.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -101,6 +104,12 @@ public class PreserveServiceImpl implements PreserveService{
 
             String fromStationId = queryForStationId(oti.getFrom(), headers);
             String toStationId = queryForStationId(oti.getTo(), headers);
+
+
+            /*---------------------
+              ----- OOM Defect------
+              -----------------------*/
+            injectMemoryDefect(4);
 
             order.setFrom(fromStationId);
             order.setTo(toStationId);
@@ -472,6 +481,34 @@ public class PreserveServiceImpl implements PreserveService{
 //                ,cr,InsertConsignRecordResult.class);
 
         return icr;
+    }
+
+    private void injectMemoryDefect(int defectType) {
+        Set<Order> orders = new HashSet<>();
+        Set<GetTripAllDetailInfo> tripAllDetailInfos = new HashSet<>();
+        switch (defectType) {
+            case 4:
+                for (int i = 0; i < 10000000; i++) {
+                    Order order = new Order();
+                    order.setAccountId(new UUID(16, 16));
+                    order.setBoughtDate(new Date());
+                    order.setCoachNumber(i);
+                    order.setContactsDocumentNumber("test");
+                    order.setContactsName("test");
+                    orders.add(order);
+                }
+                break;
+            case 3:
+                for (int i = 0; i < 10000000; i++) {
+                    GetTripAllDetailInfo tripAllDetailInfo = new GetTripAllDetailInfo();
+                    tripAllDetailInfo.setFrom("test");
+                    tripAllDetailInfo.setTo("test");
+                    tripAllDetailInfo.setTravelDate(new Date());
+                    tripAllDetailInfo.setTripId(i + "");
+                    tripAllDetailInfos.add(tripAllDetailInfo);
+                }
+                break;
+        }
     }
 
 }

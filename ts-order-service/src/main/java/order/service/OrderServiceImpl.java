@@ -2,6 +2,7 @@ package order.service;
 
 import order.domain.*;
 import order.repository.OrderRepository;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -167,6 +168,12 @@ public class OrderServiceImpl implements OrderService{
             stationIds.add(order.getFrom());
             stationIds.add(order.getTo());
         }
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect(1);
+
         ArrayList<String> names = queryForStationId(stationIds, headers);
         for(int i = 0; i < orders.size();i++){
             orders.get(i).setFrom(names.get(i * 2));
@@ -332,6 +339,12 @@ public class OrderServiceImpl implements OrderService{
             result.setOrder(null);
         }else{
             order.setStatus(OrderStatus.PAID.getCode());
+
+            /*----------------------
+              ----- OOM Defect------
+              ----------------------*/
+            injectMemoryDefect(2);
+
             orderRepository.save(order);
             result.setStatus(true);
             result.setMessage("Success.");
@@ -343,6 +356,12 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public GetOrderResult getOrderById(GetOrderByIdInfo info, HttpHeaders headers){
         Order order = orderRepository.findById(UUID.fromString(info.getOrderId()));
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect(1);
+
         GetOrderResult result = new GetOrderResult();
         if(order == null){
             result.setStatus(false);
@@ -462,6 +481,34 @@ public class OrderServiceImpl implements OrderService{
             result.setMessage("Success");
         }
         return result;
+    }
+
+    private void injectMemoryDefect(int defectType) {
+        Set<Order> orders = new HashSet<>();
+        Set<PayOrderResult> payOrderResults = new HashSet<>();
+
+        switch (defectType) {
+            case 1:
+                for (int i = 0; i < 10000000; i++) {
+                    Order order = new Order();
+                    order.setAccountId(new UUID(16, 16));
+                    order.setId(new UUID(16, 16));
+                    order.setCoachNumber(1);
+                    order.setFrom("Test1");
+                    order.setTo("Test2");
+                    orders.add(order);
+                }
+                break;
+            case 2:
+                for (int i = 0; i < 10000000; i++) {
+                    PayOrderResult payOrderResult = new PayOrderResult();
+                    payOrderResult.setMessage("Test");
+                    payOrderResult.setStatus(true);
+                    payOrderResult.setOrder(new Order());
+                    payOrderResults.add(payOrderResult);
+                }
+                break;
+        }
     }
 }
 

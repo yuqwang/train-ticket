@@ -15,17 +15,18 @@ public class SeatController {
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home() {
-        return "Welcome to [ Seat Service ] !";
+//        return "Welcome Welcometo [ Seat Service ] !";
+        return seatService.test();
     }
 
-    //分配座位
+    // assign seats
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/seat/getSeat", method= RequestMethod.POST)
     public Ticket create(@RequestBody SeatRequest seatRequest,@RequestHeader HttpHeaders headers){
         return seatService.distributeSeat(seatRequest,headers);
     }
 
-    //查询特定区间余票
+    // search the rest of tickets in the interval
     @CrossOrigin(origins = "*")
     @RequestMapping(value="/seat/getLeftTicketOfInterval", method= RequestMethod.POST)
     public int getLeftTicketOfInterval(@RequestBody SeatRequest seatRequest,@RequestHeader HttpHeaders headers){
