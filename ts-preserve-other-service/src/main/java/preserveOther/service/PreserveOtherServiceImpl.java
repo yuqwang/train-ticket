@@ -1,35 +1,69 @@
 package preserveOther.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.integration.dsl.http.Http;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserveOther.domain.*;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Service
-public class PreserveOtherServiceImpl implements PreserveOtherService{
+public class PreserveOtherServiceImpl implements PreserveOtherService {
 
     @Autowired
     private RestTemplate restTemplate;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
-    public OrderTicketsResult preserve(OrderTicketsInfo oti, String accountId, String loginToken, HttpHeaders httpHeaders){
+    public OrderTicketsResult preserve(OrderTicketsInfo oti, String accountId, String loginToken, HttpHeaders
+            httpHeaders) {
         VerifyResult tokenResult = verifySsoLogin(loginToken, httpHeaders);
         OrderTicketsResult otr = new OrderTicketsResult();
-        if(tokenResult.isStatus() == true){
+        if (tokenResult.isStatus() == true) {
             System.out.println("[Preserve Other Service][Verify Login] Success");
+
+            List<CheckResult> checkResults = new ArrayList<>();
+            List<GetContactsResult> getContactsResults = new ArrayList<>();
+
             //1.黄牛检测
             System.out.println("[Preserve Service] [Step 1] Check Security");
             CheckInfo checkInfo = new CheckInfo();
             checkInfo.setAccountId(accountId);
-            CheckResult result = checkSecurity(checkInfo, httpHeaders);
-            if(result.isStatus() == false){
+
+            //2.查询联系人信息 -- 修改，通过基础信息微服务作为中介
+            System.out.println("[Preserve Other Service] [Step 2] Find contacts");
+            GetContactsInfo gci = new GetContactsInfo();
+            System.out.println("[Preserve Other Service] [Step 2] Contacts Id:" + oti.getContactsId());
+            gci.setContactsId(oti.getContactsId());
+            gci.setLoginToken(loginToken);
+
+            List<CheckResult> results = new ArrayList<>();
+            List<GetContactsResult> gcrs = new ArrayList<>();
+
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+            checkSecurity(results, checkInfo, httpHeaders, futures);  // async rest
+            getContactsById(gcrs, gci, httpHeaders, futures, results); // async rest
+
+
+            futures.stream().forEach(x -> x.join());
+            CheckResult result = results.get(0);
+            GetContactsResult gcr = gcrs.get(0);
+
+
+            if (result.isStatus() == false) {
                 System.out.println("[Preserve Service] [Step 1] Check Security Fail. Return soon.");
                 otr.setStatus(false);
                 otr.setMessage(result.getMessage());
@@ -37,14 +71,8 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
                 return otr;
             }
             System.out.println("[Preserve Service] [Step 1] Check Security Complete. ");
-            //2.查询联系人信息 -- 修改，通过基础信息微服务作为中介
-            System.out.println("[Preserve Other Service] [Step 2] Find contacts");
-            GetContactsInfo gci = new GetContactsInfo();
-            System.out.println("[Preserve Other Service] [Step 2] Contacts Id:" + oti.getContactsId());
-            gci.setContactsId(oti.getContactsId());
-            gci.setLoginToken(loginToken);
-            GetContactsResult gcr = getContactsById(gci, httpHeaders);
-            if(gcr.isStatus() == false){
+
+            if (gcr.isStatus() == false) {
                 System.out.println("[Preserve Other Service][Get Contacts] Fail." + gcr.getMessage());
                 otr.setStatus(false);
                 otr.setMessage(gcr.getMessage());
@@ -63,25 +91,25 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             gtdi.setTripId(oti.getTripId());
             System.out.println("[Preserve Other Service] [Step 3] TripId:" + oti.getTripId());
             GetTripAllDetailResult gtdr = getTripAllDetailInformation(gtdi, httpHeaders);
-            if(gtdr.isStatus() == false){
+            if (gtdr.isStatus() == false) {
                 System.out.println("[Preserve Other Service][Search For Trip Detail Information] " + gcr.getMessage());
                 otr.setStatus(false);
                 otr.setMessage(gcr.getMessage());
                 otr.setOrder(null);
                 return otr;
-            }else{
+            } else {
                 TripResponse tripResponse = gtdr.getTripResponse();
-                if(oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()){
-                    if(tripResponse.getConfortClass() == 0){
+                if (oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
+                    if (tripResponse.getConfortClass() == 0) {
                         System.out.println("[Preserve Other Service][Check seat is enough] " + gcr.getMessage());
                         otr.setStatus(false);
                         otr.setMessage("Seat Not Enough");
                         otr.setOrder(null);
                         return otr;
                     }
-                }else{
-                    if(tripResponse.getEconomyClass() == SeatClass.SECONDCLASS.getCode()){
-                        if(tripResponse.getConfortClass() == 0){
+                } else {
+                    if (tripResponse.getEconomyClass() == SeatClass.SECONDCLASS.getCode()) {
+                        if (tripResponse.getConfortClass() == 0) {
                             System.out.println("[Preserve Other Service][Check seat is enough] " + gcr.getMessage());
                             otr.setStatus(false);
                             otr.setMessage("Seat Not Enough");
@@ -115,10 +143,10 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             QueryPriceInfo queryPriceInfo = new QueryPriceInfo();
             queryPriceInfo.setStartingPlaceId(fromStationId);
             queryPriceInfo.setEndPlaceId(toStationId);
-            if(oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()){
+            if (oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
                 queryPriceInfo.setSeatClass("confortClass");
                 System.out.println("[Preserve Other Service][Seat Class] Confort Class.");
-            }else if(oti.getSeatType() == SeatClass.SECONDCLASS.getCode()) {
+            } else if (oti.getSeatType() == SeatClass.SECONDCLASS.getCode()) {
                 queryPriceInfo.setSeatClass("economyClass");
                 System.out.println("[Preserve Other Service][Seat Class] Economy Class.");
             }
@@ -131,7 +159,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             query.setDepartureTime(new Date());
 
 
-            HttpEntity requestEntityResultForTravel = new HttpEntity(query,httpHeaders);
+            HttpEntity requestEntityResultForTravel = new HttpEntity(query, httpHeaders);
             ResponseEntity<ResultForTravel> reResultForTravel = restTemplate.exchange(
                     "http://ts-ticketinfo-service:15681/ticketinfo/queryForTravel",
                     HttpMethod.POST,
@@ -151,20 +179,20 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             order.setTravelDate(oti.getDate());
             order.setTravelTime(gtdr.getTripResponse().getStartingTime());
 
-            if(oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()){//Dispatch the seat
+            if (oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {//Dispatch the seat
                 Ticket ticket =
                         dipatchSeat(oti.getDate(),
-                                order.getTrainNumber(),fromStationId,toStationId,
+                                order.getTrainNumber(), fromStationId, toStationId,
                                 SeatClass.FIRSTCLASS.getCode(), httpHeaders);
                 order.setSeatClass(SeatClass.FIRSTCLASS.getCode());
                 order.setSeatNumber("" + ticket.getSeatNo());
 //                int firstClassRemainNum = gtdr.getTripResponse().getConfortClass();
 //                order.setSeatNumber("FirstClass-" + firstClassRemainNum);
                 order.setPrice(resultForTravel.getPrices().get("confortClass"));
-            }else{
+            } else {
                 Ticket ticket =
                         dipatchSeat(oti.getDate(),
-                                order.getTrainNumber(),fromStationId,toStationId,
+                                order.getTrainNumber(), fromStationId, toStationId,
                                 SeatClass.SECONDCLASS.getCode(), httpHeaders);
                 order.setSeatClass(SeatClass.SECONDCLASS.getCode());
                 order.setSeatNumber("" + ticket.getSeatNo());
@@ -177,7 +205,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             coi.setLoginToken(loginToken);
             coi.setOrder(order);
             CreateOrderResult cor = createOrder(coi, httpHeaders);
-            if(cor.isStatus() == false){
+            if (cor.isStatus() == false) {
                 System.out.println("[Preserve Other Service][Create Order Fail] Create Order Fail." +
                         "Reason:" + cor.getMessage());
                 otr.setStatus(false);
@@ -190,32 +218,32 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             otr.setMessage("Success");
             otr.setOrder(cor.getOrder());
             //5.检查保险的选择
-            if(oti.getAssurance() == 0){
+            if (oti.getAssurance() == 0) {
                 System.out.println("[Preserve Service][Step 5] Do not need to buy assurance");
-            }else{
+            } else {
                 AddAssuranceResult addAssuranceResult = addAssuranceForOrder(
-                        oti.getAssurance(),cor.getOrder().getId().toString(), httpHeaders);
-                if(addAssuranceResult.isStatus() == true){
+                        oti.getAssurance(), cor.getOrder().getId().toString(), httpHeaders);
+                if (addAssuranceResult.isStatus() == true) {
                     System.out.println("[Preserve Service][Step 5] Buy Assurance Success");
-                }else{
+                } else {
                     System.out.println("[Preserve Service][Step 5] Buy Assurance Fail.");
                     otr.setMessage("Success.But Buy Assurance Fail.");
                 }
             }
 
             //6.增加订餐
-            if(oti.getFoodType() != 0){
+            if (oti.getFoodType() != 0) {
                 AddFoodOrderInfo afoi = new AddFoodOrderInfo();
                 afoi.setOrderId(cor.getOrder().getId().toString());
                 afoi.setFoodType(oti.getFoodType());
                 afoi.setFoodName(oti.getFoodName());
                 afoi.setPrice(oti.getFoodPrice());
-                if(oti.getFoodType() == 2){
+                if (oti.getFoodType() == 2) {
                     afoi.setStationName(oti.getStationName());
                     afoi.setStoreName(oti.getStoreName());
                 }
                 AddFoodOrderResult afor = createFoodOrder(afoi, httpHeaders);
-                if(afor.isStatus()){
+                if (afor.isStatus()) {
                     System.out.println("[Preserve Service][Step 6] Buy Food Success");
                 } else {
                     System.out.println("[Preserve Service][Step 6] Buy Food Fail.");
@@ -226,7 +254,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             }
 
             //7.增加托运
-            if(null != oti.getConsigneeName() && !"".equals(oti.getConsigneeName())){
+            if (null != oti.getConsigneeName() && !"".equals(oti.getConsigneeName())) {
                 ConsignRequest consignRequest = new ConsignRequest();
                 consignRequest.setAccountId(cor.getOrder().getAccountId());
                 consignRequest.setHandleDate(oti.getHandleDate());
@@ -238,7 +266,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
                 consignRequest.setWeight(oti.getConsigneeWeight());
                 consignRequest.setWithin(oti.isWithin());
                 InsertConsignRecordResult icresult = createConsign(consignRequest, httpHeaders);
-                if(icresult.isStatus()){
+                if (icresult.isStatus()) {
                     System.out.println("[Preserve Service][Step 7] Consign Success");
                 } else {
                     System.out.println("[Preserve Service][Step 7] Consign Fail.");
@@ -253,7 +281,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             GetAccountByIdInfo getAccountByIdInfo = new GetAccountByIdInfo();
             getAccountByIdInfo.setAccountId(order.getAccountId().toString());
             GetAccountByIdResult getAccountByIdResult = getAccount(getAccountByIdInfo, httpHeaders);
-            if(result.isStatus() == false){
+            if (result.isStatus() == false) {
                 return null;
             }
 
@@ -271,7 +299,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             notifyInfo.setStartingTime(order.getTravelTime().toString());
 
             sendEmail(notifyInfo, httpHeaders);
-        }else{
+        } else {
             System.out.println("[Preserve Other Service][Verify Login] Fail");
             otr.setStatus(false);
             otr.setMessage("Not Login");
@@ -280,7 +308,8 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         return otr;
     }
 
-    public Ticket dipatchSeat(Date date,String tripId,String startStationId,String endStataionId,int seatType, HttpHeaders httpHeaders){
+    public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId, int seatType,
+                              HttpHeaders httpHeaders) {
         SeatRequest seatRequest = new SeatRequest();
         seatRequest.setTravelDate(date);
         seatRequest.setTrainNumber(tripId);
@@ -288,13 +317,13 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         seatRequest.setDestStation(endStataionId);
         seatRequest.setSeatType(seatType);
 
-        HttpEntity requestEntityTicket = new HttpEntity(seatRequest,httpHeaders);
+        HttpEntity requestEntityTicket = new HttpEntity(seatRequest, httpHeaders);
         ResponseEntity<Ticket> reTicket = restTemplate.exchange(
                 "http://ts-seat-service:18898/seat/getSeat",
                 HttpMethod.POST,
                 requestEntityTicket,
                 Ticket.class);
-        Ticket ticket  = reTicket.getBody();
+        Ticket ticket = reTicket.getBody();
 
 //        Ticket ticket = restTemplate.postForObject(
 //                "http://ts-seat-service:18898/seat/getSeat"
@@ -302,10 +331,10 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         return ticket;
     }
 
-    public boolean sendEmail(NotifyInfo notifyInfo, HttpHeaders httpHeaders){
+    public boolean sendEmail(NotifyInfo notifyInfo, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Service][Send Email]");
 
-        HttpEntity requestEntitySendEmail = new HttpEntity(notifyInfo,httpHeaders);
+        HttpEntity requestEntitySendEmail = new HttpEntity(notifyInfo, httpHeaders);
         ResponseEntity<Boolean> reSendEmail = restTemplate.exchange(
                 "http://ts-notification-service:17853/notification/order_cancel_success",
                 HttpMethod.POST,
@@ -320,10 +349,10 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         return result;
     }
 
-    public GetAccountByIdResult getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders){
+    public GetAccountByIdResult getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders) {
         System.out.println("[Cancel Order Service][Get By Id]");
 
-        HttpEntity requestEntitySendEmail = new HttpEntity(info,httpHeaders);
+        HttpEntity requestEntitySendEmail = new HttpEntity(info, httpHeaders);
         ResponseEntity<GetAccountByIdResult> reSendEmail = restTemplate.exchange(
                 "http://ts-sso-service:12349/account/findById",
                 HttpMethod.POST,
@@ -338,13 +367,13 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         return result;
     }
 
-    private AddAssuranceResult addAssuranceForOrder(int assuranceType,String orderId, HttpHeaders httpHeaders){
+    private AddAssuranceResult addAssuranceForOrder(int assuranceType, String orderId, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Service][Add Assurance For Order]");
         AddAssuranceInfo info = new AddAssuranceInfo();
         info.setOrderId(orderId);
         info.setTypeIndex(assuranceType);
 
-        HttpEntity requestAddAssuranceResult = new HttpEntity(info,httpHeaders);
+        HttpEntity requestAddAssuranceResult = new HttpEntity(info, httpHeaders);
         ResponseEntity<AddAssuranceResult> reAddAssuranceResult = restTemplate.exchange(
                 "http://ts-assurance-service:18888/assurance/create",
                 HttpMethod.POST,
@@ -360,7 +389,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
     }
 
 
-    private String queryForStationId(String stationName, HttpHeaders httpHeaders){
+    private String queryForStationId(String stationName, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Other Service][Get Station Name]");
         QueryForId queryForId = new QueryForId();
         queryForId.setName(stationName);
@@ -377,22 +406,31 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         return stationId;
     }
 
-    private CheckResult checkSecurity(CheckInfo info, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Other Service][Check Security] Checking....");
+    private void checkSecurity(List<CheckResult> results, CheckInfo info, HttpHeaders httpHeaders,
+                               List<CompletableFuture<Void>> futures) {
+        logger.info("[Preserve Other Service][Check Security] Checking....");
 
-        HttpEntity requestCheckResult = new HttpEntity(info, httpHeaders);
-        ResponseEntity<CheckResult> reCheckResult = restTemplate.exchange(
-                "http://ts-security-service:11188/security/check",
-                HttpMethod.POST,
-                requestCheckResult,
-                CheckResult.class);
-        CheckResult result = reCheckResult.getBody();
-//        CheckResult result = restTemplate.postForObject("http://ts-security-service:11188/security/check",
-//                info,CheckResult.class);
-        return result;
+        final HttpEntity<CheckInfo> requestCheckResult = new HttpEntity<>(info, httpHeaders);
+
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(4);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            ResponseEntity<CheckResult> reCheckResult = restTemplate.exchange(
+                    "http://ts-security-service:11188/security/check",
+                    HttpMethod.POST,
+                    requestCheckResult,
+                    CheckResult.class);
+            return reCheckResult.getBody();
+        }).thenAccept(results::add);
+
+        futures.add(future);
     }
 
-    private VerifyResult verifySsoLogin(String loginToken, HttpHeaders httpHeaders){
+    private VerifyResult verifySsoLogin(String loginToken, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Other Service][Verify Login] Verifying....");
 
         HttpEntity requestCheckResult = new HttpEntity(null, httpHeaders);
@@ -408,7 +446,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         return tokenResult;
     }
 
-    private GetTripAllDetailResult getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders){
+    private GetTripAllDetailResult getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Other Service][Get Trip All Detail Information] Getting....");
 
         HttpEntity requestGetTripAllDetailResult = new HttpEntity(gtdi, httpHeaders);
@@ -424,32 +462,39 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         return gtdr;
     }
 
-    private GetContactsResult getContactsById(GetContactsInfo gci, HttpHeaders httpHeaders){
-        System.out.println("[Preserve Other Service][Get Contacts By Id] Getting....");
+    private void getContactsById(List<GetContactsResult> gcrs, GetContactsInfo gci, HttpHeaders
+            httpHeaders, List<CompletableFuture<Void>> futures, List<CheckResult> results) {
+        logger.info("[Preserve Other Service][Get Contacts By Id] Getting....");
+        logger.info(results.get(0).toString());
 
-        HttpEntity requestGetContactsResult = new HttpEntity(gci, httpHeaders);
-        ResponseEntity<GetContactsResult> reGetContactsResult= restTemplate.exchange(
-                "http://ts-contacts-service:12347/contacts/getContactsById/",
-                HttpMethod.POST,
-                requestGetContactsResult,
-                GetContactsResult.class);
-        GetContactsResult gcr = reGetContactsResult.getBody();
-//        GetContactsResult gcr = restTemplate.postForObject(
-//                "http://ts-contacts-service:12347/contacts/getContactsById/"
-//                ,gci,GetContactsResult.class);
-        return gcr;
+        HttpEntity<GetContactsInfo> requestGetContactsResult = new HttpEntity<>(gci, httpHeaders);
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ResponseEntity<GetContactsResult> reGetContactsResult = restTemplate.exchange(
+                    "http://ts-contacts-service:12347/contacts/getContactsById/",
+                    HttpMethod.POST,
+                    requestGetContactsResult,
+                    GetContactsResult.class);
+            return reGetContactsResult.getBody();
+        }).thenAccept(gcrs::add);
+
+        futures.add(future);
     }
 
-    private CreateOrderResult createOrder(CreateOrderInfo coi, HttpHeaders httpHeaders){
+    private CreateOrderResult createOrder(CreateOrderInfo coi, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Other Service][Get Contacts By Id] Creating....");
 
-        HttpEntity requestEntityCreateOrderResult = new HttpEntity(coi,httpHeaders);
+        HttpEntity requestEntityCreateOrderResult = new HttpEntity(coi, httpHeaders);
         ResponseEntity<CreateOrderResult> reCreateOrderResult = restTemplate.exchange(
                 "http://ts-order-other-service:12032/orderOther/create",
                 HttpMethod.POST,
                 requestEntityCreateOrderResult,
                 CreateOrderResult.class);
-        CreateOrderResult cor = reCreateOrderResult .getBody();
+        CreateOrderResult cor = reCreateOrderResult.getBody();
 
 //        CreateOrderResult cor = restTemplate.postForObject(
 //                "http://ts-order-other-service:12032/orderOther/create"
@@ -460,7 +505,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
     private AddFoodOrderResult createFoodOrder(AddFoodOrderInfo afi, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Service][Add food Order] Creating....");
 
-        HttpEntity requestEntityAddFoodOrderResult = new HttpEntity(afi,httpHeaders);
+        HttpEntity requestEntityAddFoodOrderResult = new HttpEntity(afi, httpHeaders);
         ResponseEntity<AddFoodOrderResult> reAddFoodOrderResult = restTemplate.exchange(
                 "http://ts-food-service:18856/food/createFoodOrder",
                 HttpMethod.POST,
@@ -473,10 +518,10 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         return afr;
     }
 
-    private InsertConsignRecordResult createConsign(ConsignRequest cr, HttpHeaders httpHeaders){
+    private InsertConsignRecordResult createConsign(ConsignRequest cr, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Service][Add Condign] Creating....");
 
-        HttpEntity requestEntityResultForTravel = new HttpEntity(cr,httpHeaders);
+        HttpEntity requestEntityResultForTravel = new HttpEntity(cr, httpHeaders);
         ResponseEntity<InsertConsignRecordResult> reResultForTravel = restTemplate.exchange(
                 "http://ts-consign-service:16111/consign/insertConsign",
                 HttpMethod.POST,
