@@ -1,0 +1,97 @@
+version: '3'
+services:
+
+  ts-seat-service:
+    build: ts-seat-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-seat-service
+    restart: always
+    ports:
+    - 18898:18898
+    networks:
+    - my-network
+
+  ts-basic-service:
+    build: ts-basic-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-basic-service
+    restart: always
+    ports:
+    - 15680:15680
+    networks:
+    - my-network
+
+  ts-preserve-service:
+    build: ts-preserve-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-preserve-service
+    restart: always
+    ports:
+    - 14568:14568
+    networks:
+    - my-network
+
+  ts-travel-service:
+    build: ts-travel-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-travel-service
+    restart: always
+    ports:
+    - 12346:12346
+    networks:
+    - my-network
+
+  ts-cancel-service:
+    build: ts-cancel-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-cancel-service
+    restart: always
+    ports:
+    - 18885:18885
+    networks:
+    - my-network
+
+  ts-config-service:
+    build: ts-config-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-config-service
+    restart: always
+    ports:
+    - 15679:15679
+    networks:
+    - my-network
+
+  ts-order-service:
+    build: ts-order-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-order-service
+    restart: always
+    ports:
+    - 12031:12031
+    networks:
+    - my-network
+
+  ts-travel2-service:
+    build: ts-travel2-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-travel2-service
+    restart: always
+    ports:
+    - 16346:16346
+    networks:
+    - my-network
+
+  ts-rebook-service:
+    build: ts-rebook-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-rebook-service
+    restart: always
+    ports:
+    - 18886:18886
+    networks:
+    - my-network
+
+  ts-payment-service:
+    build: ts-payment-service
+    image: 10.141.211.160:5000/header/error-config-cpu-memory-ts-payment-service
+    restart: always
+    ports:
+    - 19001:19001
+    networks:
+    - my-network
+
+networks:
+  my-network:
+    # driver: overlay
+    driver: bridge
