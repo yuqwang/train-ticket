@@ -41,7 +41,7 @@ public class BasicServiceImpl implements BasicService{
         /*---------------------
          ----- OOM Defect------
          -----------------------*/
-        injectMemoryDefect(1);
+        //injectMemoryDefect(1);
 
         String routeId = info.getTrip().getRouteId();
         String trainTypeString = trainType.getId();

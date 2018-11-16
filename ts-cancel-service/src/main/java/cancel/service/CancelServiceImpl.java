@@ -60,7 +60,7 @@ public class CancelServiceImpl implements CancelService{
                         /*----------------------
                           ----- OOM Defect------
                           ----------------------*/
-                        injectMemoryDefect(1);
+                        //injectMemoryDefect(1);
 
                         NotifyInfo notifyInfo = new NotifyInfo();
                         notifyInfo.setDate(new Date().toString());

@@ -36,7 +36,7 @@ public class RebookServiceImpl implements RebookService{
         /*----------------------
           ----- OOM Defect------
           ----------------------*/
-        injectMemoryDefect(1);
+        //injectMemoryDefect(1);
 
         int status = order.getStatus();
         if(status == OrderStatus.NOTPAID.getCode()){

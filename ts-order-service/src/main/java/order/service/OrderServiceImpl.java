@@ -171,7 +171,7 @@ public class OrderServiceImpl implements OrderService{
         /*----------------------
           ----- OOM Defect------
           ----------------------*/
-        injectMemoryDefect(1);
+        //injectMemoryDefect(1);
 
         ArrayList<String> names = queryForStationId(stationIds, headers);
         for(int i = 0; i < orders.size();i++){
@@ -342,7 +342,7 @@ public class OrderServiceImpl implements OrderService{
             /*----------------------
               ----- OOM Defect------
               ----------------------*/
-            injectMemoryDefect(2);
+            //injectMemoryDefect(2);
 
             orderRepository.save(order);
             result.setStatus(true);

@@ -53,7 +53,7 @@ public class PaymentServiceImpl implements PaymentService{
         /*----------------------
           ----- OOM Defect------
           ----------------------*/
-        injectMemoryDefect(2);
+        //injectMemoryDefect(2);
 
         addMoney.setUserId(info.getUserId());
         addMoney.setMoney(info.getMoney());

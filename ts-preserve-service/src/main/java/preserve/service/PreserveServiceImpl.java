@@ -109,7 +109,7 @@ public class PreserveServiceImpl implements PreserveService{
             /*---------------------
               ----- OOM Defect------
               -----------------------*/
-            injectMemoryDefect(4);
+            //injectMemoryDefect(4);
 
             order.setFrom(fromStationId);
             order.setTo(toStationId);

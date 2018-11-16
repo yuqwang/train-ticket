@@ -30,7 +30,7 @@ public class Travel2ServiceImpl implements Travel2Service{
         /*----------------------
           ----- OOM Defect------
           ----------------------*/
-        injectMemoryDefect(1);
+        //injectMemoryDefect(1);
 
         if(trip == null){
             result.setStatus(false);

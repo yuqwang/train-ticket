@@ -140,7 +140,7 @@ public class SeatServiceImpl implements SeatService {
         /*---------------------
          ----- OOM Defect------
          -----------------------*/
-        injectMemoryDefect(1);
+        //injectMemoryDefect(1);
 
 
         //分配新的票

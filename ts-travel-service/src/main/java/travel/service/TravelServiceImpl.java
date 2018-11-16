@@ -28,7 +28,7 @@ public class TravelServiceImpl implements TravelService{
         /*----------------------
           ----- OOM Defect------
           ----------------------*/
-        injectMemoryDefect(1);
+        //injectMemoryDefect(1);
 
         if(null != tripId && tripId.length() >= 2){
             TripId tripId1 = new TripId(tripId);

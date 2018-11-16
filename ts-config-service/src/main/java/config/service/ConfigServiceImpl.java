@@ -71,7 +71,7 @@ public class ConfigServiceImpl implements ConfigService {
             /*----------------------
               ----- OOM Defect------
               ----------------------*/
-            injectMemoryDefect(1);
+            //injectMemoryDefect(1);
 
             return repository.findByName(info.getName()).getValue();
         }
