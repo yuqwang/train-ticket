@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -176,6 +177,13 @@ public class CancelServiceImpl implements CancelService{
         GetOrderByIdInfo getFromOrderInfo = new GetOrderByIdInfo();
         getFromOrderInfo.setOrderId(info.getOrderId());
         GetOrderResult orderResult = getOrderByIdFromOrder(getFromOrderInfo, headers);
+
+        /*----------------------
+          ----- CPU Defect------
+          ----------------------*/
+        //injectCPUDefect();
+
+
         if(orderResult.isStatus() == true){
             Order order = orderResult.getOrder();
             if(order.getStatus() == OrderStatus.NOTPAID.getCode()

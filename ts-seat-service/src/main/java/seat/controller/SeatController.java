@@ -15,8 +15,7 @@ public class SeatController {
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home() {
-//        return "Welcome Welcometo [ Seat Service ] !";
-        return seatService.test();
+        return "Welcome Welcometo [ Seat Service ] !";
     }
 
     // assign seats

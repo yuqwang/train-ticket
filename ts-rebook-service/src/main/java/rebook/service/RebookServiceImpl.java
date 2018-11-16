@@ -1,18 +1,14 @@
 package rebook.service;
 
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.integration.dsl.http.Http;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.client.RestTemplate;
 import rebook.domain.*;
-import rebook.domain.RebookInfo;
-import rebook.domain.RebookResult;
+
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -181,9 +177,9 @@ public class RebookServiceImpl implements RebookService{
         Order order = queryOrderResult.getOrder();
 
         /*----------------------
-          ----- OOM Defect------
+          ----- CPU Defect------
           ----------------------*/
-        injectMemoryDefect(2);
+        //injectCPUDefect();
 
         GetTripAllDetailInfo gtdi = new GetTripAllDetailInfo();
         gtdi.setFrom(queryForStationName(order.getFrom(), httpHeaders));

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import travel2.domain.*;
 import travel2.repository.TripRepository;
+
 import java.util.*;
 
 @Service
@@ -181,6 +182,12 @@ public class Travel2ServiceImpl implements Travel2Service{
         GetTripAllDetailResult gtdr = new GetTripAllDetailResult();
         System.out.println("[TravelService] [GetTripAllDetailInfo] TripId:" + gtdi.getTripId());
         Trip trip = repository.findByTripId(new TripId(gtdi.getTripId()));
+
+        /*----------------------
+          ----- CPU Defect------
+          ----------------------*/
+        //injectCPUDefect();
+
         if(trip == null){
             gtdr.setStatus(false);
             gtdr.setMessage("Trip Not Exist");
@@ -377,7 +384,7 @@ public class Travel2ServiceImpl implements Travel2Service{
         /*----------------------
           ----- OOM Defect------
           ----------------------*/
-        injectMemoryDefect(3);
+        //injectMemoryDefect(3);
 
 //        GetRouteResult result = restTemplate.getForObject(
 //                "http://ts-route-service:11178/route/queryById/" + routeId,

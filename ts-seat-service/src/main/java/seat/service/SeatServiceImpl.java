@@ -5,12 +5,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.integration.dsl.http.Http;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import seat.domain.*;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 @Service
 public class SeatServiceImpl implements SeatService {
@@ -138,7 +140,7 @@ public class SeatServiceImpl implements SeatService {
         /*---------------------
          ----- OOM Defect------
          -----------------------*/
-        memoryTest(1);
+        injectMemoryDefect(1);
 
 
         //分配新的票
@@ -278,9 +280,9 @@ public class SeatServiceImpl implements SeatService {
         }
 
         /*---------------------
-         ----- OOM Defect------
+         ----- CPU Defect------
          -----------------------*/
-        memoryTest(1);
+        //injectCPUDefect();
 
         //统计未售出的票
 
@@ -299,59 +301,6 @@ public class SeatServiceImpl implements SeatService {
         return numOfLeftTicket;
     }
 
-    @Override
-    public String test() {
-        LeftTicketInfo ticketInfo = new LeftTicketInfo();
-        Set<Ticket> tickets = new HashSet<>();
-        for (int i=0; i<5000000; i++) {
-            Ticket ticket = new Ticket();
-            ticket.setDestStation("Test1");
-            ticket.setStartStation("Test2");
-            ticket.setSeatNo(i);
-            tickets.add(ticket);
-        }
-
-        ticketInfo.setSoldTickets(tickets);
-        try {
-            Thread.sleep(30000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        return "OK!";
-    }
-
-    private void memoryTest(int testType) {
-        LeftTicketInfo ticketInfo = new LeftTicketInfo();
-        Map<Integer, Ticket> ticketMap = new HashMap<>();
-        Set<Ticket> tickets = new HashSet<>();
-        switch (testType) {
-            case 1:
-                for (int i = 0; i < 10000000; i++) {
-                    Ticket ticket = new Ticket();
-                    ticket.setDestStation("Test1");
-                    ticket.setStartStation("Test2");
-                    ticket.setSeatNo(i);
-                    tickets.add(ticket);
-                }
-
-                break;
-            case 2:
-                for (int i = 0; i < 10000000; i++) {
-                    Ticket ticket = new Ticket();
-                    ticket.setDestStation("Test1");
-                    ticket.setStartStation("Test2");
-                    ticket.setSeatNo(i);
-                    ticketMap.put(i, ticket);
-                }
-                break;
-            default:
-                break;
-        }
-
-
-        ticketInfo.setSoldTickets(tickets);
-
-    }
     private double getDirectProportion(HttpHeaders headers){
 
         QueryConfig queryConfig = new QueryConfig("DirectTicketAllocationProportion");
@@ -367,5 +316,28 @@ public class SeatServiceImpl implements SeatService {
 //                queryConfig,String.class);
 
         return Double.parseDouble(configValue);
+    }
+
+    private void injectMemoryDefect(int defectType) {
+        Set<String> stationList = new HashSet<>();
+        Set<Ticket> tickets = new HashSet<>();
+        switch (defectType) {
+            case 1:
+                for (int i = 0; i < 10000000; i++) {
+                    Ticket ticket = new Ticket();
+                    ticket.setDestStation("Test1");
+                    ticket.setStartStation("Test2");
+                    tickets.add(ticket);
+                }
+
+                break;
+            case 2:
+                for (int i = 0; i < 10000000; i++) {
+                    stationList.add(i + "");
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

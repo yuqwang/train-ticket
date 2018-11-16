@@ -8,5 +8,4 @@ public interface SeatService {
 
     Ticket distributeSeat(SeatRequest seatRequest,HttpHeaders headers);
     int getLeftTicketOfInterval(SeatRequest seatRequest,HttpHeaders headers);
-    String test();
 }

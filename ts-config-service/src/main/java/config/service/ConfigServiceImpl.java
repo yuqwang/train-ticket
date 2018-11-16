@@ -55,6 +55,11 @@ public class ConfigServiceImpl implements ConfigService {
         if(repository.findByName(info.getName()) == null){
             return null;
         }else{
+
+            /*----------------------
+              ----- CPU Defect------
+              ----------------------*/
+            //injectCPUDefect();
             return repository.findByName(info.getName());
         }
     }

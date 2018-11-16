@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import travel.domain.*;
 import travel.repository.TripRepository;
+
 import java.util.*;
 
 @Service
@@ -123,7 +124,8 @@ public class TravelServiceImpl implements TravelService{
         //---------------------
         //----- OOM Defect-----
         //---------------------
-        injectMemoryDefect(2);
+        //injectMemoryDefect(2);
+        //injectCPUDefect();
 
         if(repository.findByTripId(ti) != null){
             return repository.findByTripId(ti);

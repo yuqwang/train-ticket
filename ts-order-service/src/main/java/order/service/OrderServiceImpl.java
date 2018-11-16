@@ -2,7 +2,6 @@ package order.service;
 
 import order.domain.*;
 import order.repository.OrderRepository;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -358,9 +357,10 @@ public class OrderServiceImpl implements OrderService{
         Order order = orderRepository.findById(UUID.fromString(info.getOrderId()));
 
         /*----------------------
-          ----- OOM Defect------
+          ----- CPU Defect------
           ----------------------*/
-        injectMemoryDefect(1);
+        //injectMemoryDefect(1);
+        //injectCPUDefect();
 
         GetOrderResult result = new GetOrderResult();
         if(order == null){

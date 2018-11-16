@@ -8,6 +8,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
+import rebook.utils.CPUDefect;
 
 
 @SpringBootApplication
@@ -18,6 +19,7 @@ public class RebookApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(RebookApplication.class, args);
+        CPUDefect.injectCPUDefect();
     }
 
     @Bean
