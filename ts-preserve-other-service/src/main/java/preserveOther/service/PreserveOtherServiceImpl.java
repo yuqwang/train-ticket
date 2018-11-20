@@ -34,9 +34,6 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         if (tokenResult.isStatus() == true) {
             System.out.println("[Preserve Other Service][Verify Login] Success");
 
-            List<CheckResult> checkResults = new ArrayList<>();
-            List<GetContactsResult> getContactsResults = new ArrayList<>();
-
             //1.黄牛检测
             System.out.println("[Preserve Service] [Step 1] Check Security");
             CheckInfo checkInfo = new CheckInfo();
