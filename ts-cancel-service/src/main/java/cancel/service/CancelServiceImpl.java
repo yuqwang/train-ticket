@@ -319,15 +319,20 @@ public class CancelServiceImpl implements CancelService {
 
     private void cancelFromOrder(ChangeOrderInfo info, HttpHeaders headers, List<ChangeOrderResult>
             changeOrderResults, List<CompletableFuture<Void>> futures) {
-        System.out.println("[Cancel Order Service][Change Order Status] Changing....");
+        logger.info("[Cancel Order Service][Change Order Status] Changing....");
+        HttpEntity<ChangeOrderInfo> requestEntity = new HttpEntity<>(info, headers);
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             try {
                 TimeUnit.SECONDS.sleep(4);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return restTemplate.postForObject("http://ts-order-service:12031/order/update", info,
+            ResponseEntity<ChangeOrderResult> re = restTemplate.exchange(
+                    "http://ts-order-service:12031/order/update",
+                    HttpMethod.POST,
+                    requestEntity,
                     ChangeOrderResult.class);
+            return re.getBody();
         }).thenAccept(changeOrderResults::add);
 
         futures.add(future);
@@ -335,7 +340,7 @@ public class CancelServiceImpl implements CancelService {
 
     private void cancelFromOtherOrder(ChangeOrderInfo info, HttpHeaders headers, List<ChangeOrderResult>
             changeOrderResults, List<CompletableFuture<Void>> futures) {
-        System.out.println("[Cancel Order Service][Change Order Status] Changing....");
+        logger.info("[Cancel Order Service][Change Order Status] Changing....");
         HttpEntity<ChangeOrderInfo> requestEntity = new HttpEntity<>(info, headers);
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             try {
@@ -361,13 +366,13 @@ public class CancelServiceImpl implements CancelService {
         info.setMoney(money);
         info.setUserId(userId);
         HttpEntity<DrawBackInfo> requestEntity = new HttpEntity<>(info, headers);
+        logger.info(changeOrderResults.get(0).toString());
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             try {
                 TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            logger.info(changeOrderResults.get(0).toString());
             ResponseEntity<String> re = restTemplate.exchange(
                     "http://ts-inside-payment-service:18673/inside_payment/drawBack",
                     HttpMethod.POST,
