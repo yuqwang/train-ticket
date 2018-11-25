@@ -37,8 +37,7 @@ public class CancelController {
     @CrossOrigin(origins = "*")
     @RequestMapping(path = "/cancelOrder", method = RequestMethod.POST)
     public CancelOrderResult cancelTicket(@RequestBody CancelOrderInfo info, @CookieValue String loginToken,
-                                          @CookieValue String loginId, @RequestHeader HttpHeaders headers) throws
-            Exception {
+                                          @CookieValue String loginId, @RequestHeader HttpHeaders headers) {
         System.out.println("[Cancel Order Service][Cancel Ticket] info:" + info.getOrderId());
         if (loginToken == null) {
             loginToken = "admin";
@@ -61,8 +60,11 @@ public class CancelController {
             return result;
         } else {
             System.out.println("[Cancel Order Service][Cancel Ticket] Verify Success");
-
-            return cancelService.cancelOrder(info, loginToken, loginId, headers);
+            try {
+                return cancelService.cancelOrder(info, loginToken, loginId, headers);
+            } catch (Exception e) {
+                throw new RuntimeException("error");
+            }
 
         }
     }
