@@ -29,7 +29,7 @@ public class CancelServiceImpl implements CancelService {
 
     @Override
     public CancelOrderResult cancelOrder(CancelOrderInfo info, String loginToken, String loginId, HttpHeaders
-            headers) throws Exception {
+            headers) {
         GetOrderByIdInfo getFromOrderInfo = new GetOrderByIdInfo();
         getFromOrderInfo.setOrderId(info.getOrderId());
         GetOrderResult orderResult = getOrderByIdFromOrder(getFromOrderInfo, headers);

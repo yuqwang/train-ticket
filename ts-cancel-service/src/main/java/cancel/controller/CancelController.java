@@ -60,11 +60,9 @@ public class CancelController {
             return result;
         } else {
             System.out.println("[Cancel Order Service][Cancel Ticket] Verify Success");
-            try {
+
                 return cancelService.cancelOrder(info, loginToken, loginId, headers);
-            } catch (Exception e) {
-                throw new RuntimeException("error");
-            }
+
 
         }
     }
