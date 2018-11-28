@@ -51,7 +51,24 @@ public class ExecuteServiceImpl implements ExecuteService {
                 return result;
             }
         } else {
-            resultFromOrder = getOrderByIdFromOrderOther(getOrderByIdInfo, headers);
+            ModifyOrderStatusInfo executeInfo = new ModifyOrderStatusInfo();
+            executeInfo.setOrderId(info.getOrderId());
+            executeInfo.setStatus(OrderStatus.USED.getCode());
+
+            // seq fault
+            List<GetOrderResult> orderResults = new ArrayList<>();
+            List<ModifyOrderStatusResult> orderStatusResults = new ArrayList<>();
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+            getOrderByIdFromOrderOther(getOrderByIdInfo, headers, orderResults, futures);
+            executeOrderOther(executeInfo, headers, orderResults, orderStatusResults, futures);
+
+            futures.forEach(x -> x.join());
+
+            resultFromOrder = orderResults.get(0);
+            ModifyOrderStatusResult resultExecute = orderStatusResults.get(0);
+
+
             if (resultFromOrder.isStatus() == true) {
                 order = resultFromOrder.getOrder();
                 //2.检查订单是否可以进站
@@ -61,10 +78,7 @@ public class ExecuteServiceImpl implements ExecuteService {
                     return result;
                 }
                 //3.确认进站 请求修改订单信息
-                ModifyOrderStatusInfo executeInfo = new ModifyOrderStatusInfo();
-                executeInfo.setOrderId(info.getOrderId());
-                executeInfo.setStatus(OrderStatus.USED.getCode());
-                ModifyOrderStatusResult resultExecute = executeOrderOther(executeInfo, headers);
+
                 if (resultExecute.isStatus() == true) {
                     result.setStatus(true);
                     result.setMessage("Success.");
@@ -113,23 +127,7 @@ public class ExecuteServiceImpl implements ExecuteService {
                 return result;
             }
         } else {
-            ModifyOrderStatusInfo executeInfo = new ModifyOrderStatusInfo();
-            executeInfo.setOrderId(info.getOrderId());
-            executeInfo.setStatus(OrderStatus.USED.getCode());
-
-            // seq fault
-            List<GetOrderResult> orderResults = new ArrayList<>();
-            List<ModifyOrderStatusResult> orderStatusResults = new ArrayList<>();
-            List<CompletableFuture<Void>> futures = new ArrayList<>();
-
-            getOrderByIdFromOrderOther(getOrderByIdInfo, headers, orderResults, futures);
-            executeOrderOther(executeInfo, headers, orderResults, orderStatusResults, futures);
-
-            futures.forEach(x -> x.join());
-
-            resultFromOrder = orderResults.get(0);
-            ModifyOrderStatusResult resultExecute = orderStatusResults.get(0);
-
+            resultFromOrder = getOrderByIdFromOrderOther(getOrderByIdInfo, headers);
             if (resultFromOrder.isStatus() == true) {
                 order = resultFromOrder.getOrder();
                 //2.检查订单是否可以进站
@@ -139,6 +137,10 @@ public class ExecuteServiceImpl implements ExecuteService {
                     return result;
                 }
                 //3.确认进站 请求修改订单信息
+                ModifyOrderStatusInfo executeInfo = new ModifyOrderStatusInfo();
+                executeInfo.setOrderId(info.getOrderId());
+                executeInfo.setStatus(OrderStatus.COLLECTED.getCode());
+                ModifyOrderStatusResult resultExecute = executeOrderOther(executeInfo, headers);
                 if (resultExecute.isStatus() == true) {
                     result.setStatus(true);
                     result.setMessage("Success.");
@@ -217,6 +219,30 @@ public class ExecuteServiceImpl implements ExecuteService {
         return cor;
     }
 
+    private void executeOrderOther(ModifyOrderStatusInfo info, HttpHeaders headers,
+                                   List<GetOrderResult> orderResults, List<ModifyOrderStatusResult>
+                                           orderStatusResults, List<CompletableFuture<Void>> futures) {
+
+        System.out.println("[Execute Service][Execute Order] Executing....");
+        System.out.println(orderResults.get(0));
+        HttpEntity<ModifyOrderStatusInfo> requestEntity = new HttpEntity<>(info, headers);
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ResponseEntity<ModifyOrderStatusResult> re = restTemplate.exchange(
+                    "http://ts-order-other-service:12032/orderOther/modifyOrderStatus",
+                    HttpMethod.POST,
+                    requestEntity,
+                    ModifyOrderStatusResult.class);
+            return re.getBody();
+        }).thenAccept(orderStatusResults::add);
+
+        futures.add(future);
+    }
+
     private void getOrderByIdFromOrderOther(GetOrderByIdInfo info, HttpHeaders headers, List<GetOrderResult>
             orderResults, List<CompletableFuture<Void>> futures) {
         System.out.println("[Execute Service][Get Order] Getting....");
@@ -237,27 +263,6 @@ public class ExecuteServiceImpl implements ExecuteService {
         }).thenAccept(orderResults::add);
 
         futures.add(future);
-    }
-
-    private void executeOrderOther(ModifyOrderStatusInfo info, HttpHeaders headers,
-                                   List<GetOrderResult> orderResults, List<ModifyOrderStatusResult>
-                                           orderStatusResults, List<CompletableFuture<Void>> futures) {
-        System.out.println("[Execute Service][Execute Order] Executing....");
-        System.out.println(orderResults.get(0));
-        HttpEntity<ModifyOrderStatusInfo> requestEntity = new HttpEntity<>(info, headers);
-        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            ResponseEntity<ModifyOrderStatusResult> re = restTemplate.exchange(
-                    "http://ts-order-other-service:12032/orderOther/modifyOrderStatus",
-                    HttpMethod.POST,
-                    requestEntity,
-                    ModifyOrderStatusResult.class);
-            return re.getBody();
-        }).thenAccept(orderStatusResults::add);
     }
 
 }
