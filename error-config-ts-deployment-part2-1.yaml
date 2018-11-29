@@ -20,8 +20,15 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 18767
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
+
 
 ---
 
@@ -48,8 +55,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16112
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 
 ---
@@ -76,8 +89,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16113
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -106,8 +125,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16114
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -136,8 +161,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16115
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 
 ---
@@ -164,8 +195,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 18888
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -182,20 +219,26 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: 10.141.211.160:5000/header/error-config-ts-basic-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-basic-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15680
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 15680
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -212,20 +255,26 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: 10.141.211.160:5000/header/error-config-ts-cancel-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-cancel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18885
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 18885
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -242,20 +291,26 @@ spec:
     spec:
       containers:
       - name: ts-config-service
-        image: 10.141.211.160:5000/header/error-config-ts-config-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-config-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15679
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 15679
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -281,8 +336,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16110
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -308,8 +369,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16111
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -335,8 +402,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12347
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -362,8 +435,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12386
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -389,8 +468,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 18855
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -416,8 +501,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 18856
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -443,8 +534,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 18673
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -470,8 +567,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12342
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -497,8 +600,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12862
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -524,8 +633,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 17853
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -551,8 +666,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12032
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -569,20 +690,26 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: 10.141.211.160:5000/header/error-config-ts-order-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-order-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12031
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12031
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -599,20 +726,26 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: 10.141.211.160:5000/header/error-config-ts-payment-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-payment-service
         imagePullPolicy: Always
         ports:
         - containerPort: 19001
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 19001
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -638,8 +771,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 14569
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -656,20 +795,26 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: 10.141.211.160:5000/header/error-config-ts-preserve-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-preserve-service
         imagePullPolicy: Always
         ports:
         - containerPort: 14568
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 14568
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -695,8 +840,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16579
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -713,20 +864,26 @@ spec:
     spec:
       containers:
       - name: ts-rebook-service
-        image: 10.141.211.160:5000/header/error-config-ts-rebook-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-rebook-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18886
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 18886
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -752,8 +909,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12344
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -779,8 +942,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 14578
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -806,8 +975,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 11178
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -824,20 +999,26 @@ spec:
     spec:
       containers:
       - name: ts-seat-service
-        image: 10.141.211.160:5000/header/error-config-ts-seat-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-seat-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18898
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 18898
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -863,8 +1044,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 11188
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -890,8 +1077,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12349
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -917,8 +1110,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12345
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -944,8 +1143,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16108
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -971,8 +1176,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 15681
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -998,8 +1209,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 14567
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -1016,20 +1233,26 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: 10.141.211.160:5000/header/error-config-ts-travel2-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-travel2-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16346
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16346
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -1055,8 +1278,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 14322
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -1073,20 +1302,26 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: 10.141.211.160:5000/header/error-config-ts-travel-service
+        image: 10.141.211.160:5000/header/error-config-memory-ts-travel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12346
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx500m"
+          value: "-Xmx500m -Xms400m"
         resources:
           requests:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
-            memory: 300Mi
+            cpu: 400m
+            memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 12346
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -1112,8 +1347,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 15678
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -1139,8 +1380,14 @@ spec:
             cpu: 50m
             memory: 100Mi
           limits:
-            cpu: 200m
+            cpu: 400m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 16101
+          initialDelaySeconds: 200
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
