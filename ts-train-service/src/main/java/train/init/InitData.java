@@ -18,39 +18,39 @@ public class InitData implements CommandLineRunner {
         Information info = new Information();
 
         info.setId("GaoTieOne");
-        info.setConfortClass(Long.MAX_VALUE);
-        info.setEconomyClass(Long.MAX_VALUE);
-        info.setAverageSpeed(Long.MAX_VALUE);
+        info.setConfortClass(Integer.MAX_VALUE);
+        info.setEconomyClass(Integer.MAX_VALUE);
+        info.setAverageSpeed(Integer.MAX_VALUE);
         service.create(info, null);
 
         info.setId("GaoTieTwo");
-        info.setConfortClass(Long.MAX_VALUE);
-        info.setEconomyClass(Long.MAX_VALUE);
-        info.setAverageSpeed(Long.MAX_VALUE);
+        info.setConfortClass(Integer.MAX_VALUE);
+        info.setEconomyClass(Integer.MAX_VALUE);
+        info.setAverageSpeed(Integer.MAX_VALUE);
         service.create(info, null);
 
         info.setId("DongCheOne");
-        info.setConfortClass(Long.MAX_VALUE);
-        info.setEconomyClass(Long.MAX_VALUE);
-        info.setAverageSpeed(Long.MAX_VALUE);
+        info.setConfortClass(Integer.MAX_VALUE);
+        info.setEconomyClass(Integer.MAX_VALUE);
+        info.setAverageSpeed(Integer.MAX_VALUE);
         service.create(info, null);
 
         info.setId("ZhiDa");
-        info.setConfortClass(Long.MAX_VALUE);
-        info.setEconomyClass(Long.MAX_VALUE);
-        info.setAverageSpeed(Long.MAX_VALUE);
+        info.setConfortClass(Integer.MAX_VALUE);
+        info.setEconomyClass(Integer.MAX_VALUE);
+        info.setAverageSpeed(Integer.MAX_VALUE);
         service.create(info, null);
 
         info.setId("TeKuai");
-        info.setConfortClass(Long.MAX_VALUE);
-        info.setEconomyClass(Long.MAX_VALUE);
-        info.setAverageSpeed(Long.MAX_VALUE);
+        info.setConfortClass(Integer.MAX_VALUE);
+        info.setEconomyClass(Integer.MAX_VALUE);
+        info.setAverageSpeed(Integer.MAX_VALUE);
         service.create(info, null);
 
         info.setId("KuaiSu");
-        info.setConfortClass(Long.MAX_VALUE);
-        info.setEconomyClass(Long.MAX_VALUE);
-        info.setAverageSpeed(Long.MAX_VALUE);
+        info.setConfortClass(Integer.MAX_VALUE);
+        info.setEconomyClass(Integer.MAX_VALUE);
+        info.setAverageSpeed(Integer.MAX_VALUE);
         service.create(info, null);
     }
 }
