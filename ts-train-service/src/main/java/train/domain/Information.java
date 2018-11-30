@@ -31,7 +31,7 @@ public class Information {
         this.id = id;
     }
 
-    public long getEconomyClass() {
+    public int getEconomyClass() {
         return economyClass;
     }
 
