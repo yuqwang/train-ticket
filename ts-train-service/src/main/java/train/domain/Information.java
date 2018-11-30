@@ -12,14 +12,14 @@ public class Information {
     private String id;
 
     @Valid
-    private int economyClass;
+    private long economyClass;
 
     @Valid
-    private int confortClass;
+    private long confortClass;
 
-    private int averageSpeed;
+    private long averageSpeed;
 
-    public Information(){
+    public Information() {
         //Default Constructor
     }
 
@@ -31,27 +31,27 @@ public class Information {
         this.id = id;
     }
 
-    public int getEconomyClass() {
+    public long getEconomyClass() {
         return economyClass;
     }
 
-    public void setEconomyClass(int economyClass) {
+    public void setEconomyClass(long economyClass) {
         this.economyClass = economyClass;
     }
 
-    public int getConfortClass() {
+    public long getConfortClass() {
         return confortClass;
     }
 
-    public void setConfortClass(int confortClass) {
+    public void setConfortClass(long confortClass) {
         this.confortClass = confortClass;
     }
 
-    public int getAverageSpeed() {
+    public long getAverageSpeed() {
         return averageSpeed;
     }
 
-    public void setAverageSpeed(int averageSpeed) {
+    public void setAverageSpeed(long averageSpeed) {
         this.averageSpeed = averageSpeed;
     }
 }
