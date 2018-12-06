@@ -56,7 +56,7 @@ public class SeatServiceImpl implements SeatService {
             }).thenAccept(reList::add);
 
             //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
-            CompletableFuture<Void> futrue2 = CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<Void> futrue3 = CompletableFuture.supplyAsync(() -> {
                 HttpEntity<SeatRequest> requestEntity = new HttpEntity<>(seatRequest, headers);
                 try {
                     TimeUnit.SECONDS.sleep(1);
@@ -71,9 +71,10 @@ public class SeatServiceImpl implements SeatService {
                         LeftTicketInfo.class);
             }).thenAccept(re3List::add);
 
+            future.join();
+            futrue3.join();
             re = reList.get(0);
             routeResult = re.getBody();
-
             re3 = re3List.get(0);
             leftTicketInfo = re3.getBody();
 
