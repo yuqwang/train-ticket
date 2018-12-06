@@ -182,13 +182,13 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: 10.141.211.160:5000/header/error-config-ts-basic-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-basic-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15680
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
@@ -212,13 +212,13 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: 10.141.211.160:5000/header/error-config-ts-cancel-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-cancel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18885
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
@@ -242,13 +242,13 @@ spec:
     spec:
       containers:
       - name: ts-config-service
-        image: 10.141.211.160:5000/header/error-config-ts-config-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-config-service
         imagePullPolicy: Always
         ports:
         - containerPort: 15679
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
@@ -256,6 +256,12 @@ spec:
           limits:
             cpu: 200m
             memory: 500Mi
+        readinessProbe:
+          tcpSocket:
+            port: 14568
+          initialDelaySeconds: 250
+          periodSeconds: 5
+          timeoutSeconds: 5
 
 ---
 
@@ -569,13 +575,13 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: 10.141.211.160:5000/header/error-config-ts-order-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-order-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12031
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
@@ -599,13 +605,13 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: 10.141.211.160:5000/header/error-config-ts-payment-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-payment-service
         imagePullPolicy: Always
         ports:
         - containerPort: 19001
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
@@ -656,13 +662,13 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: 10.141.211.160:5000/header/error-config-ts-preserve-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-preserve-service
         imagePullPolicy: Always
         ports:
         - containerPort: 14568
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
@@ -713,13 +719,13 @@ spec:
     spec:
       containers:
       - name: ts-rebook-service
-        image: 10.141.211.160:5000/header/error-config-ts-rebook-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-rebook-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18886
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
@@ -824,13 +830,13 @@ spec:
     spec:
       containers:
       - name: ts-seat-service
-        image: 10.141.211.160:5000/header/error-config-ts-seat-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-seat-service
         imagePullPolicy: Always
         ports:
         - containerPort: 18898
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
@@ -1016,13 +1022,13 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: 10.141.211.160:5000/header/error-config-ts-travel2-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-travel2-service
         imagePullPolicy: Always
         ports:
         - containerPort: 16346
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
@@ -1073,13 +1079,13 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: 10.141.211.160:5000/header/error-config-ts-travel-service
+        image: 10.141.211.160:5000/header/error-config-cpu-ts-travel-service
         imagePullPolicy: Always
         ports:
         - containerPort: 12346
         env:
         - name: "JAVA_OPTIONS"
-          value: "-Xmx700m"
+          value: "-Xmx350m"
         resources:
           requests:
             cpu: 50m
