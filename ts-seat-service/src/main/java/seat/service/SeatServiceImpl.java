@@ -5,14 +5,16 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.integration.dsl.http.Http;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import seat.domain.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class SeatServiceImpl implements SeatService {
@@ -20,7 +22,7 @@ public class SeatServiceImpl implements SeatService {
     RestTemplate restTemplate;
 
     @Override
-    public Ticket distributeSeat(SeatRequest seatRequest,HttpHeaders headers){
+    public Ticket distributeSeat(SeatRequest seatRequest, HttpHeaders headers) {
         GetRouteResult routeResult;
         GetTrainTypeResult trainTypeResult;
         LeftTicketInfo leftTicketInfo;
@@ -29,48 +31,61 @@ public class SeatServiceImpl implements SeatService {
         ResponseEntity<GetTrainTypeResult> re2;
         ResponseEntity<LeftTicketInfo> re3;
 
+        List<ResponseEntity<GetRouteResult>> reList = new ArrayList<>();
+        List<ResponseEntity<GetTrainTypeResult>> re2List = new ArrayList<>();
+        List<ResponseEntity<LeftTicketInfo>> re3List = new ArrayList<>();
+
         //区分G\D开头和其它车次
         String trainNumber = seatRequest.getTrainNumber();
-        if(trainNumber.startsWith("G") || trainNumber.startsWith("D") ){
+        if (trainNumber.startsWith("G") || trainNumber.startsWith("D")) {
             System.out.println("[SeatService distributeSeat] TrainNumber start with G|D");
 
             //调用微服务，查询获得车次的所有站点信息
-            HttpEntity requestEntity = new HttpEntity(headers);
-            re = restTemplate.exchange(
-                    "http://ts-travel-service:12346/travel/getRouteByTripId/"+ seatRequest.getTrainNumber(),
-                    HttpMethod.GET,
-                    requestEntity,
-                    GetRouteResult.class);
-            routeResult = re.getBody();
-//            routeResult = restTemplate.getForObject(
-//                    "http://ts-travel-service:12346/travel/getRouteByTripId/"+ seatRequest.getTrainNumber() ,GetRouteResult.class);
-            System.out.println("[SeatService distributeSeat] The result of getRouteResult is " + routeResult.getMessage());
+            CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+                HttpEntity requestEntity = new HttpEntity(headers);
+                try {
+                    TimeUnit.SECONDS.sleep(4);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                return restTemplate.exchange(
+                        "http://ts-travel-service:12346/travel/getRouteByTripId/" + seatRequest.getTrainNumber(),
+                        HttpMethod.GET,
+                        requestEntity,
+                        GetRouteResult.class);
+            }).thenAccept(reList::add);
 
             //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
-            requestEntity = new HttpEntity(seatRequest,headers);
-            re3 = restTemplate.exchange(
-                    "http://ts-order-service:12031/order/getTicketListByDateAndTripId",
-                    HttpMethod.POST,
-                    requestEntity,
-                    LeftTicketInfo.class);
+            CompletableFuture<Void> futrue2 = CompletableFuture.supplyAsync(() -> {
+                HttpEntity<SeatRequest> requestEntity = new HttpEntity<>(seatRequest, headers);
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(reList.get(0).getBody().getMessage());
+                return restTemplate.exchange(
+                        "http://ts-order-service:12031/order/getTicketListByDateAndTripId",
+                        HttpMethod.POST,
+                        requestEntity,
+                        LeftTicketInfo.class);
+            }).thenAccept(re3List::add);
+
+            re = reList.get(0);
+            routeResult = re.getBody();
+
+            re3 = re3List.get(0);
             leftTicketInfo = re3.getBody();
-//            leftTicketInfo = restTemplate.postForObject(
-//                    "http://ts-order-service:12031/order/getTicketListByDateAndTripId", seatRequest ,LeftTicketInfo.class);
 
             //调用微服务，查询该车次指定座型总数量
-            requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(headers);
             re2 = restTemplate.exchange(
                     "http://ts-travel-service:12346/travel/getTrainTypeByTripId/" + seatRequest.getTrainNumber(),
                     HttpMethod.GET,
                     requestEntity,
                     GetTrainTypeResult.class);
             trainTypeResult = re2.getBody();
-
-//            trainTypeResult = restTemplate.getForObject(
-//                    "http://ts-travel-service:12346/travel/getTrainTypeByTripId/" + seatRequest.getTrainNumber() ,GetTrainTypeResult.class);
-            System.out.println("[SeatService distributeSeat] The result of getTrainTypeResult is " + trainTypeResult.getMessage());
-        }
-        else{
+        } else {
             System.out.println("[SeatService] TrainNumber start with other capital");
             //调用微服务，查询获得车次的所有站点信息
             HttpEntity requestEntity = new HttpEntity(headers);
@@ -85,7 +100,7 @@ public class SeatServiceImpl implements SeatService {
             System.out.println("[SeatService distributeSeat] The result of getRouteResult is " + routeResult.getMessage());
 
             //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
-            requestEntity = new HttpEntity(seatRequest,headers);
+            requestEntity = new HttpEntity(seatRequest, headers);
             re3 = restTemplate.exchange(
                     "http://ts-order-other-service:12032/orderOther/getTicketListByDateAndTripId",
                     HttpMethod.POST,
@@ -112,11 +127,10 @@ public class SeatServiceImpl implements SeatService {
         //分配座位
         List<String> stationList = routeResult.getRoute().getStations();
         int seatTotalNum;
-        if(seatRequest.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
+        if (seatRequest.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
             seatTotalNum = trainTypeResult.getTrainType().getConfortClass();
             System.out.println("[SeatService distributeSeat] The request seat type is confortClass and the total num is " + seatTotalNum);
-        }
-        else {
+        } else {
             seatTotalNum = trainTypeResult.getTrainType().getEconomyClass();
             System.out.println("[SeatService distributeSeat] The request seat type is economyClass and the total num is " + seatTotalNum);
         }
@@ -127,10 +141,10 @@ public class SeatServiceImpl implements SeatService {
         Set<Ticket> soldTickets = leftTicketInfo.getSoldTickets();
 
         //优先分配已经售出的票
-        for(Ticket soldTicket : soldTickets){
+        for (Ticket soldTicket : soldTickets) {
             String soldTicketDestStation = soldTicket.getDestStation();
             //售出的票的终点站在请求的起点之前，则可以分配出去
-            if(stationList.indexOf(soldTicketDestStation) < stationList.indexOf(startStation)){
+            if (stationList.indexOf(soldTicketDestStation) < stationList.indexOf(startStation)) {
                 ticket.setSeatNo(soldTicket.getSeatNo());
                 System.out.println("[SeatService distributeSeat] Use the previous distributed seat number!" + soldTicket.getSeatNo());
                 return ticket;
@@ -141,7 +155,7 @@ public class SeatServiceImpl implements SeatService {
         Random rand = new Random();
         int range = seatTotalNum;
         int seat = rand.nextInt(range) + 1;
-        while (isContained(soldTickets, seat)){
+        while (isContained(soldTickets, seat)) {
             seat = rand.nextInt(range) + 1;
         }
         ticket.setSeatNo(seat);
@@ -150,10 +164,10 @@ public class SeatServiceImpl implements SeatService {
     }
 
     //检查座位号是否已经被使用
-    private boolean isContained( Set<Ticket> soldTickets, int seat){
+    private boolean isContained(Set<Ticket> soldTickets, int seat) {
         boolean result = false;
-        for(Ticket soldTicket : soldTickets){
-            if(soldTicket.getSeatNo() == seat){
+        for (Ticket soldTicket : soldTickets) {
+            if (soldTicket.getSeatNo() == seat) {
                 return true;
             }
         }
@@ -161,7 +175,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public int getLeftTicketOfInterval(SeatRequest seatRequest,HttpHeaders headers){
+    public int getLeftTicketOfInterval(SeatRequest seatRequest, HttpHeaders headers) {
         int numOfLeftTicket = 0;
         GetRouteResult routeResult;
         GetTrainTypeResult trainTypeResult;
@@ -173,13 +187,13 @@ public class SeatServiceImpl implements SeatService {
 
         //区分G\D开头和其它车次
         String trainNumber = seatRequest.getTrainNumber();
-        if(trainNumber.startsWith("G") || trainNumber.startsWith("D") ){
+        if (trainNumber.startsWith("G") || trainNumber.startsWith("D")) {
             System.out.println("[SeatService getLeftTicketOfInterval] TrainNumber start with G|D");
 
             //调用微服务，查询获得车次的所有站点信息
             HttpEntity requestEntity = new HttpEntity(headers);
             re = restTemplate.exchange(
-                    "http://ts-travel-service:12346/travel/getRouteByTripId/"+ seatRequest.getTrainNumber(),
+                    "http://ts-travel-service:12346/travel/getRouteByTripId/" + seatRequest.getTrainNumber(),
                     HttpMethod.GET,
                     requestEntity,
                     GetRouteResult.class);
@@ -189,7 +203,7 @@ public class SeatServiceImpl implements SeatService {
             System.out.println("[SeatService getLeftTicketOfInterval] The result of getRouteResult is " + routeResult.getMessage());
 
             //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
-            requestEntity = new HttpEntity(seatRequest,headers);
+            requestEntity = new HttpEntity(seatRequest, headers);
             re3 = restTemplate.exchange(
                     "http://ts-order-service:12031/order/getTicketListByDateAndTripId",
                     HttpMethod.POST,
@@ -210,8 +224,7 @@ public class SeatServiceImpl implements SeatService {
 //            trainTypeResult = restTemplate.getForObject(
 //                    "http://ts-travel-service:12346/travel/getTrainTypeByTripId/" + seatRequest.getTrainNumber() ,GetTrainTypeResult.class);
             System.out.println("[SeatService getLeftTicketOfInterval] The result of getTrainTypeResult is " + trainTypeResult.getMessage());
-        }
-        else{
+        } else {
             System.out.println("[SeatService getLeftTicketOfInterval] TrainNumber start with other capital");
             //调用微服务，查询获得车次的所有站点信息
             HttpEntity requestEntity = new HttpEntity(headers);
@@ -226,7 +239,7 @@ public class SeatServiceImpl implements SeatService {
             System.out.println("[SeatService getLeftTicketOfInterval] The result of getRouteResult is " + routeResult.getMessage());
 
             //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
-            requestEntity = new HttpEntity(seatRequest,headers);
+            requestEntity = new HttpEntity(seatRequest, headers);
             re3 = restTemplate.exchange(
                     "http://ts-order-other-service:12032/orderOther/getTicketListByDateAndTripId",
                     HttpMethod.POST,
@@ -252,11 +265,10 @@ public class SeatServiceImpl implements SeatService {
         //统计特定区间座位余票
         List<String> stationList = routeResult.getRoute().getStations();
         int seatTotalNum;
-        if(seatRequest.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
+        if (seatRequest.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
             seatTotalNum = trainTypeResult.getTrainType().getConfortClass();
             System.out.println("[SeatService getLeftTicketOfInterval] The request seat type is confortClass and the total num is " + seatTotalNum);
-        }
-        else {
+        } else {
             seatTotalNum = trainTypeResult.getTrainType().getEconomyClass();
             System.out.println("[SeatService getLeftTicketOfInterval] The request seat type is economyClass and the total num is " + seatTotalNum);
         }
@@ -264,10 +276,10 @@ public class SeatServiceImpl implements SeatService {
         Set<Ticket> soldTickets = leftTicketInfo.getSoldTickets();
 
         //统计已经售出去的票是否可供使用
-        for(Ticket soldTicket : soldTickets){
+        for (Ticket soldTicket : soldTickets) {
             String soldTicketDestStation = soldTicket.getDestStation();
             //售出的票的终点站在请求的起点之前，则可以分配出去
-            if(stationList.indexOf(soldTicketDestStation) < stationList.indexOf(startStation)){
+            if (stationList.indexOf(soldTicketDestStation) < stationList.indexOf(startStation)) {
                 System.out.println("[SeatService getLeftTicketOfInterval] The previous distributed seat number is usable!" + soldTicket.getSeatNo());
                 numOfLeftTicket++;
             }
@@ -276,23 +288,23 @@ public class SeatServiceImpl implements SeatService {
 
         double direstPart = getDirectProportion(headers);
         Route route = routeResult.getRoute();
-        if(route.getStations().get(0).equals(seatRequest.getStartStation()) &&
-                route.getStations().get(route.getStations().size()-1).equals(seatRequest.getDestStation())){
+        if (route.getStations().get(0).equals(seatRequest.getStartStation()) &&
+                route.getStations().get(route.getStations().size() - 1).equals(seatRequest.getDestStation())) {
             //do nothing
-        }else{
+        } else {
             direstPart = 1.0 - direstPart;
         }
 
-        int unusedNum = (int)(seatTotalNum * direstPart) - soldTickets.size();
+        int unusedNum = (int) (seatTotalNum * direstPart) - soldTickets.size();
         numOfLeftTicket += unusedNum;
 
         return numOfLeftTicket;
     }
 
-    private double getDirectProportion(HttpHeaders headers){
+    private double getDirectProportion(HttpHeaders headers) {
 
         QueryConfig queryConfig = new QueryConfig("DirectTicketAllocationProportion");
-        HttpEntity requestEntity = new HttpEntity(queryConfig,headers);
+        HttpEntity requestEntity = new HttpEntity(queryConfig, headers);
         ResponseEntity<String> re = restTemplate.exchange(
                 "http://ts-config-service:15679//config/query",
                 HttpMethod.POST,
