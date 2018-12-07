@@ -1,5 +1,6 @@
 package seat.service;
 
+import ch.qos.logback.core.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class SeatServiceImpl implements SeatService {
@@ -52,6 +54,11 @@ public class SeatServiceImpl implements SeatService {
 
             //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
             CompletableFuture<Void> future3 = CompletableFuture.supplyAsync(() -> {
+                try {
+                    TimeUnit.SECONDS.sleep(4);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 HttpEntity<SeatRequest> requestEntity3 = new HttpEntity<>(seatRequest, headers);
                 return restTemplate.exchange(
                         "http://ts-order-service:12031/order/getTicketListByDateAndTripId",
@@ -62,6 +69,12 @@ public class SeatServiceImpl implements SeatService {
 
             //调用微服务，查询该车次指定座型总数量
             CompletableFuture<Void> future2 = CompletableFuture.supplyAsync(()->{
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println(re3List.get(0).getStatusCode());
                 HttpEntity requestEntity2 = new HttpEntity(headers);
                 return restTemplate.exchange(
                         "http://ts-travel-service:12346/travel/getTrainTypeByTripId/" + seatRequest.getTrainNumber(),
