@@ -122,7 +122,7 @@ public class SeatServiceImpl implements SeatService {
                 return restTemplate.exchange(
                         "http://ts-travel2-service:16346/travel2/getTrainTypeByTripId/" + seatRequest.getTrainNumber(),
                         HttpMethod.GET,
-                        requestEntity,
+                        requestEntity2,
                         GetTrainTypeResult.class);
             }).thenAccept(re2List::add);
 
