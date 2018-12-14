@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 docker tag ts/ts-ui-dashboard kylinxiang/ts-ui-dashboard:1.0
 docker tag ts/ts-login-service kylinxiang/ts-login-service:1.0
 docker tag ts/ts-register-service kylinxiang/ts-register-service:1.0
