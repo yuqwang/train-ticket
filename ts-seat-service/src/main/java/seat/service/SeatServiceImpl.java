@@ -31,7 +31,7 @@ public class SeatServiceImpl implements SeatService {
         ResponseEntity<GetTrainTypeResult> re2;
         ResponseEntity<LeftTicketInfo> re3;
 
-        List<ResponseEntity<GetTrainTypeResult>> re2List = new ArrayList<>();
+        List<ResponseEntity<GetRouteResult>> reList = new ArrayList<>();
         List<ResponseEntity<LeftTicketInfo>> re3List = new ArrayList<>();
 
         //区分G\D开头和其它车次
@@ -48,10 +48,8 @@ public class SeatServiceImpl implements SeatService {
                     GetRouteResult.class);
             routeResult = re.getBody();
 //            routeResult = restTemplate.getForObject(
-//                    "http://ts-travel-service:12346/travel/getRouteByTripId/"+ seatRequest.getTrainNumber() ,
-// GetRouteResult.class);
-            System.out.println("[SeatService distributeSeat] The result of getRouteResult is " + routeResult
-                    .getMessage());
+//                    "http://ts-travel-service:12346/travel/getRouteByTripId/"+ seatRequest.getTrainNumber() ,GetRouteResult.class);
+            System.out.println("[SeatService distributeSeat] The result of getRouteResult is " + routeResult.getMessage());
 
             //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
             requestEntity = new HttpEntity(seatRequest, headers);
@@ -62,8 +60,7 @@ public class SeatServiceImpl implements SeatService {
                     LeftTicketInfo.class);
             leftTicketInfo = re3.getBody();
 //            leftTicketInfo = restTemplate.postForObject(
-//                    "http://ts-order-service:12031/order/getTicketListByDateAndTripId", seatRequest ,LeftTicketInfo
-// .class);
+//                    "http://ts-order-service:12031/order/getTicketListByDateAndTripId", seatRequest ,LeftTicketInfo.class);
 
             //调用微服务，查询该车次指定座型总数量
             requestEntity = new HttpEntity(headers);
@@ -75,68 +72,62 @@ public class SeatServiceImpl implements SeatService {
             trainTypeResult = re2.getBody();
 
 //            trainTypeResult = restTemplate.getForObject(
-//                    "http://ts-travel-service:12346/travel/getTrainTypeByTripId/" + seatRequest.getTrainNumber() ,
-// GetTrainTypeResult.class);
-            System.out.println("[SeatService distributeSeat] The result of getTrainTypeResult is " + trainTypeResult
-                    .getMessage());
+//                    "http://ts-travel-service:12346/travel/getTrainTypeByTripId/" + seatRequest.getTrainNumber() ,GetTrainTypeResult.class);
+            System.out.println("[SeatService distributeSeat] The result of getTrainTypeResult is " + trainTypeResult.getMessage());
         } else {
             System.out.println("[SeatService] TrainNumber start with other capital");
             //调用微服务，查询获得车次的所有站点信息
-            HttpEntity requestEntity = new HttpEntity(headers);
-            re = restTemplate.exchange(
-                    "http://ts-travel2-service:16346/travel2/getRouteByTripId/" + seatRequest.getTrainNumber(),
-                    HttpMethod.GET,
-                    requestEntity,
-                    GetRouteResult.class);
-            routeResult = re.getBody();
-//            routeResult = restTemplate.getForObject(
-//                    "http://ts-travel2-service:16346/travel2/getRouteByTripId/" + seatRequest.getTrainNumber() ,
-// GetRouteResult.class);
-            System.out.println("[SeatService distributeSeat] The result of getRouteResult is " + routeResult
-                    .getMessage());
 
-            //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
             CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
                 try {
                     TimeUnit.SECONDS.sleep(4);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                HttpEntity<SeatRequest> requestEntity3 = new HttpEntity<>(seatRequest, headers);
+                HttpEntity requestEntity = new HttpEntity(headers);
                 return restTemplate.exchange(
-                        "http://ts-order-other-service:12032/orderOther/getTicketListByDateAndTripId",
-                        HttpMethod.POST,
-                        requestEntity3,
-                        LeftTicketInfo.class);
-            }).thenAccept(re3List::add);
+                        "http://ts-travel2-service:16346/travel2/getRouteByTripId/" + seatRequest.getTrainNumber(),
+                        HttpMethod.GET,
+                        requestEntity,
+                        GetRouteResult.class);
+            }).thenAccept(reList::add);
 
-            //调用微服务，查询该车次指定座型总数量
-            CompletableFuture<Void> future2 = CompletableFuture.supplyAsync(() -> {
+            //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
+            CompletableFuture<Void> future3 = CompletableFuture.supplyAsync(() -> {
                 try {
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println(re3List.get(0).getStatusCode());
-                HttpEntity requestEntity2 = new HttpEntity(headers);
+                System.out.println(reList.get(0).getStatusCode());
+                HttpEntity<SeatRequest> requestEntity = new HttpEntity<>(seatRequest, headers);
                 return restTemplate.exchange(
-                        "http://ts-travel2-service:16346/travel2/getTrainTypeByTripId/" + seatRequest.getTrainNumber(),
-                        HttpMethod.GET,
-                        requestEntity2,
-                        GetTrainTypeResult.class);
-            }).thenAccept(re2List::add);
+                        "http://ts-order-other-service:12032/orderOther/getTicketListByDateAndTripId",
+                        HttpMethod.POST,
+                        requestEntity,
+                        LeftTicketInfo.class);
+            }).thenAccept(re3List::add);
 
             future.join();
-            future2.join();
+            future3.join();
+
+            re = reList.get(0);
+            routeResult = re.getBody();
 
             re3 = re3List.get(0);
             leftTicketInfo = re3.getBody();
 
-            re2 = re2List.get(0);
+            //调用微服务，查询该车次指定座型总数量
+            HttpEntity requestEntity = new HttpEntity(headers);
+            re2 = restTemplate.exchange(
+                    "http://ts-travel2-service:16346/travel2/getTrainTypeByTripId/" + seatRequest.getTrainNumber(),
+                    HttpMethod.GET,
+                    requestEntity,
+                    GetTrainTypeResult.class);
             trainTypeResult = re2.getBody();
-
-            System.out.println("[SeatService distributeSeat] The result of getTrainTypeResult is " + trainTypeResult
-                    .getMessage());
+//            trainTypeResult = restTemplate.getForObject(
+//                    "http://ts-travel2-service:16346/travel2/getTrainTypeByTripId/" + seatRequest.getTrainNumber(), GetTrainTypeResult.class);
+            System.out.println("[SeatService distributeSeat] The result of getTrainTypeResult is " + trainTypeResult.getMessage());
         }
 
 
@@ -145,12 +136,10 @@ public class SeatServiceImpl implements SeatService {
         int seatTotalNum;
         if (seatRequest.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
             seatTotalNum = trainTypeResult.getTrainType().getConfortClass();
-            System.out.println("[SeatService distributeSeat] The request seat type is confortClass and the total num " +
-                    "is " + seatTotalNum);
+            System.out.println("[SeatService distributeSeat] The request seat type is confortClass and the total num is " + seatTotalNum);
         } else {
             seatTotalNum = trainTypeResult.getTrainType().getEconomyClass();
-            System.out.println("[SeatService distributeSeat] The request seat type is economyClass and the total num " +
-                    "is " + seatTotalNum);
+            System.out.println("[SeatService distributeSeat] The request seat type is economyClass and the total num is " + seatTotalNum);
         }
         String startStation = seatRequest.getStartStation();
         Ticket ticket = new Ticket();
@@ -164,8 +153,7 @@ public class SeatServiceImpl implements SeatService {
             //售出的票的终点站在请求的起点之前，则可以分配出去
             if (stationList.indexOf(soldTicketDestStation) < stationList.indexOf(startStation)) {
                 ticket.setSeatNo(soldTicket.getSeatNo());
-                System.out.println("[SeatService distributeSeat] Use the previous distributed seat number!" +
-                        soldTicket.getSeatNo());
+                System.out.println("[SeatService distributeSeat] Use the previous distributed seat number!" + soldTicket.getSeatNo());
                 return ticket;
             }
         }
@@ -218,10 +206,8 @@ public class SeatServiceImpl implements SeatService {
                     GetRouteResult.class);
             routeResult = re.getBody();
 //            routeResult = restTemplate.getForObject(
-//                    "http://ts-travel-service:12346/travel/getRouteByTripId/"+ seatRequest.getTrainNumber() ,
-// GetRouteResult.class);
-            System.out.println("[SeatService getLeftTicketOfInterval] The result of getRouteResult is " + routeResult
-                    .getMessage());
+//                    "http://ts-travel-service:12346/travel/getRouteByTripId/"+ seatRequest.getTrainNumber() ,GetRouteResult.class);
+            System.out.println("[SeatService getLeftTicketOfInterval] The result of getRouteResult is " + routeResult.getMessage());
 
             //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
             requestEntity = new HttpEntity(seatRequest, headers);
@@ -232,8 +218,7 @@ public class SeatServiceImpl implements SeatService {
                     LeftTicketInfo.class);
             leftTicketInfo = re3.getBody();
 //            leftTicketInfo = restTemplate.postForObject(
-//                    "http://ts-order-service:12031/order/getTicketListByDateAndTripId", seatRequest ,LeftTicketInfo
-// .class);
+//                    "http://ts-order-service:12031/order/getTicketListByDateAndTripId", seatRequest ,LeftTicketInfo.class);
 
             //调用微服务，查询该车次指定座型总数量
             requestEntity = new HttpEntity(headers);
@@ -244,10 +229,8 @@ public class SeatServiceImpl implements SeatService {
                     GetTrainTypeResult.class);
             trainTypeResult = re2.getBody();
 //            trainTypeResult = restTemplate.getForObject(
-//                    "http://ts-travel-service:12346/travel/getTrainTypeByTripId/" + seatRequest.getTrainNumber() ,
-// GetTrainTypeResult.class);
-            System.out.println("[SeatService getLeftTicketOfInterval] The result of getTrainTypeResult is " +
-                    trainTypeResult.getMessage());
+//                    "http://ts-travel-service:12346/travel/getTrainTypeByTripId/" + seatRequest.getTrainNumber() ,GetTrainTypeResult.class);
+            System.out.println("[SeatService getLeftTicketOfInterval] The result of getTrainTypeResult is " + trainTypeResult.getMessage());
         } else {
             System.out.println("[SeatService getLeftTicketOfInterval] TrainNumber start with other capital");
             //调用微服务，查询获得车次的所有站点信息
@@ -259,10 +242,8 @@ public class SeatServiceImpl implements SeatService {
                     GetRouteResult.class);
             routeResult = re.getBody();
 //            routeResult = restTemplate.getForObject(
-//                    "http://ts-travel2-service:16346/travel2/getRouteByTripId/" + seatRequest.getTrainNumber() ,
-// GetRouteResult.class);
-            System.out.println("[SeatService getLeftTicketOfInterval] The result of getRouteResult is " + routeResult
-                    .getMessage());
+//                    "http://ts-travel2-service:16346/travel2/getRouteByTripId/" + seatRequest.getTrainNumber() ,GetRouteResult.class);
+            System.out.println("[SeatService getLeftTicketOfInterval] The result of getRouteResult is " + routeResult.getMessage());
 
             //调用微服务，查询获得余票信息：该车次指定座型已售Ticket的set集合
             requestEntity = new HttpEntity(seatRequest, headers);
@@ -273,8 +254,7 @@ public class SeatServiceImpl implements SeatService {
                     LeftTicketInfo.class);
             leftTicketInfo = re3.getBody();
 //            leftTicketInfo = restTemplate.postForObject(
-//                    "http://ts-order-other-service:12032/orderOther/getTicketListByDateAndTripId", seatRequest ,
-// LeftTicketInfo.class);
+//                    "http://ts-order-other-service:12032/orderOther/getTicketListByDateAndTripId", seatRequest ,LeftTicketInfo.class);
 
             //调用微服务，查询该车次指定座型总数量
             requestEntity = new HttpEntity(headers);
@@ -285,10 +265,8 @@ public class SeatServiceImpl implements SeatService {
                     GetTrainTypeResult.class);
             trainTypeResult = re2.getBody();
 //            trainTypeResult = restTemplate.getForObject(
-//                    "http://ts-travel2-service:16346/travel2/getTrainTypeByTripId/" + seatRequest.getTrainNumber(),
-// GetTrainTypeResult.class);
-            System.out.println("[SeatService getLeftTicketOfInterval] The result of getTrainTypeResult is " +
-                    trainTypeResult.getMessage());
+//                    "http://ts-travel2-service:16346/travel2/getTrainTypeByTripId/" + seatRequest.getTrainNumber(), GetTrainTypeResult.class);
+            System.out.println("[SeatService getLeftTicketOfInterval] The result of getTrainTypeResult is " + trainTypeResult.getMessage());
         }
 
         //统计特定区间座位余票
@@ -296,12 +274,10 @@ public class SeatServiceImpl implements SeatService {
         int seatTotalNum;
         if (seatRequest.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
             seatTotalNum = trainTypeResult.getTrainType().getConfortClass();
-            System.out.println("[SeatService getLeftTicketOfInterval] The request seat type is confortClass and the " +
-                    "total num is " + seatTotalNum);
+            System.out.println("[SeatService getLeftTicketOfInterval] The request seat type is confortClass and the total num is " + seatTotalNum);
         } else {
             seatTotalNum = trainTypeResult.getTrainType().getEconomyClass();
-            System.out.println("[SeatService getLeftTicketOfInterval] The request seat type is economyClass and the " +
-                    "total num is " + seatTotalNum);
+            System.out.println("[SeatService getLeftTicketOfInterval] The request seat type is economyClass and the total num is " + seatTotalNum);
         }
         String startStation = seatRequest.getStartStation();
         Set<Ticket> soldTickets = leftTicketInfo.getSoldTickets();
@@ -311,8 +287,7 @@ public class SeatServiceImpl implements SeatService {
             String soldTicketDestStation = soldTicket.getDestStation();
             //售出的票的终点站在请求的起点之前，则可以分配出去
             if (stationList.indexOf(soldTicketDestStation) < stationList.indexOf(startStation)) {
-                System.out.println("[SeatService getLeftTicketOfInterval] The previous distributed seat number is " +
-                        "usable!" + soldTicket.getSeatNo());
+                System.out.println("[SeatService getLeftTicketOfInterval] The previous distributed seat number is usable!" + soldTicket.getSeatNo());
                 numOfLeftTicket++;
             }
         }
