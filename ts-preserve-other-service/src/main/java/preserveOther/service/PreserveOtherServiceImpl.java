@@ -1,7 +1,5 @@
 package preserveOther.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -24,42 +22,17 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Override
-    public OrderTicketsResult preserve(OrderTicketsInfo oti, String accountId, String loginToken, HttpHeaders
-            httpHeaders) {
+    public OrderTicketsResult preserve(OrderTicketsInfo oti, String accountId, String loginToken, HttpHeaders httpHeaders) {
         VerifyResult tokenResult = verifySsoLogin(loginToken, httpHeaders);
         OrderTicketsResult otr = new OrderTicketsResult();
         if (tokenResult.isStatus() == true) {
             System.out.println("[Preserve Other Service][Verify Login] Success");
-
             //1.黄牛检测
             System.out.println("[Preserve Service] [Step 1] Check Security");
             CheckInfo checkInfo = new CheckInfo();
             checkInfo.setAccountId(accountId);
-
-            //2.查询联系人信息 -- 修改，通过基础信息微服务作为中介
-            System.out.println("[Preserve Other Service] [Step 2] Find contacts");
-            GetContactsInfo gci = new GetContactsInfo();
-            System.out.println("[Preserve Other Service] [Step 2] Contacts Id:" + oti.getContactsId());
-            gci.setContactsId(oti.getContactsId());
-            gci.setLoginToken(loginToken);
-
-            List<CheckResult> results = new ArrayList<>();
-            List<GetContactsResult> gcrs = new ArrayList<>();
-
-            List<CompletableFuture<Void>> futures = new ArrayList<>();
-
-            checkSecurity(results, checkInfo, httpHeaders, futures);  // async rest
-            getContactsById(gcrs, gci, httpHeaders, futures, results); // async rest
-
-
-            futures.stream().forEach(x -> x.join());
-            CheckResult result = results.get(0);
-            GetContactsResult gcr = gcrs.get(0);
-
-
+            CheckResult result = checkSecurity(checkInfo, httpHeaders);
             if (result.isStatus() == false) {
                 System.out.println("[Preserve Service] [Step 1] Check Security Fail. Return soon.");
                 otr.setStatus(false);
@@ -69,6 +42,34 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
             }
             System.out.println("[Preserve Service] [Step 1] Check Security Complete. ");
 
+            //2.3 param
+            System.out.println("[Preserve Other Service] [Step 2] Find contacts");
+            GetContactsInfo gci = new GetContactsInfo();
+            System.out.println("[Preserve Other Service] [Step 2] Contacts Id:" + oti.getContactsId());
+            gci.setContactsId(oti.getContactsId());
+            gci.setLoginToken(loginToken);
+
+            System.out.println("[Preserve Other Service] [Step 3] Check tickets num");
+            GetTripAllDetailInfo gtdi = new GetTripAllDetailInfo();
+            gtdi.setFrom(oti.getFrom());
+            gtdi.setTo(oti.getTo());
+            gtdi.setTravelDate(oti.getDate());
+            gtdi.setTripId(oti.getTripId());
+            System.out.println("[Preserve Other Service] [Step 3] TripId:" + oti.getTripId());
+
+            // seq fault
+            List<GetContactsResult> r2List = new ArrayList<>();
+            List<GetTripAllDetailResult> r3List = new ArrayList<>();
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+            // async call
+            getContactsById(gci, httpHeaders, r2List, futures);
+            getTripAllDetailInformation(gtdi, httpHeaders, r2List, r3List, futures);
+
+            futures.forEach(x -> x.join());
+            GetContactsResult gcr = r2List.get(0);
+            GetTripAllDetailResult gtdr = r3List.get(0);
+
             if (gcr.isStatus() == false) {
                 System.out.println("[Preserve Other Service][Get Contacts] Fail." + gcr.getMessage());
                 otr.setStatus(false);
@@ -77,17 +78,9 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
                 return otr;
             }
             System.out.println("[Preserve Other Service][Step 2] Complete");
+
+
             //3.查询座位余票信息和车次的详情
-            System.out.println("[Preserve Other Service] [Step 3] Check tickets num");
-            GetTripAllDetailInfo gtdi = new GetTripAllDetailInfo();
-
-            gtdi.setFrom(oti.getFrom());
-            gtdi.setTo(oti.getTo());
-
-            gtdi.setTravelDate(oti.getDate());
-            gtdi.setTripId(oti.getTripId());
-            System.out.println("[Preserve Other Service] [Step 3] TripId:" + oti.getTripId());
-            GetTripAllDetailResult gtdr = getTripAllDetailInformation(gtdi, httpHeaders);
             if (gtdr.isStatus() == false) {
                 System.out.println("[Preserve Other Service][Search For Trip Detail Information] " + gcr.getMessage());
                 otr.setStatus(false);
@@ -305,8 +298,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         return otr;
     }
 
-    public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId, int seatType,
-                              HttpHeaders httpHeaders) {
+    public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId, int seatType, HttpHeaders httpHeaders) {
         SeatRequest seatRequest = new SeatRequest();
         seatRequest.setTravelDate(date);
         seatRequest.setTrainNumber(tripId);
@@ -403,28 +395,19 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         return stationId;
     }
 
-    private void checkSecurity(List<CheckResult> results, CheckInfo info, HttpHeaders httpHeaders,
-                               List<CompletableFuture<Void>> futures) {
-        logger.info("[Preserve Other Service][Check Security] Checking....");
+    private CheckResult checkSecurity(CheckInfo info, HttpHeaders httpHeaders) {
+        System.out.println("[Preserve Other Service][Check Security] Checking....");
 
-        final HttpEntity<CheckInfo> requestCheckResult = new HttpEntity<>(info, httpHeaders);
-
-        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(4);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            ResponseEntity<CheckResult> reCheckResult = restTemplate.exchange(
-                    "http://ts-security-service:11188/security/check",
-                    HttpMethod.POST,
-                    requestCheckResult,
-                    CheckResult.class);
-            return reCheckResult.getBody();
-        }).thenAccept(results::add);
-
-        futures.add(future);
+        HttpEntity requestCheckResult = new HttpEntity(info, httpHeaders);
+        ResponseEntity<CheckResult> reCheckResult = restTemplate.exchange(
+                "http://ts-security-service:11188/security/check",
+                HttpMethod.POST,
+                requestCheckResult,
+                CheckResult.class);
+        CheckResult result = reCheckResult.getBody();
+//        CheckResult result = restTemplate.postForObject("http://ts-security-service:11188/security/check",
+//                info,CheckResult.class);
+        return result;
     }
 
     private VerifyResult verifySsoLogin(String loginToken, HttpHeaders httpHeaders) {
@@ -443,41 +426,44 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         return tokenResult;
     }
 
-    private GetTripAllDetailResult getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders) {
+    private void getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders,
+                                             List<GetContactsResult> r2List,
+                                             List<GetTripAllDetailResult> r3List,
+                                             List<CompletableFuture<Void>> futures) {
         System.out.println("[Preserve Other Service][Get Trip All Detail Information] Getting....");
 
-        HttpEntity requestGetTripAllDetailResult = new HttpEntity(gtdi, httpHeaders);
-        ResponseEntity<GetTripAllDetailResult> reGetTripAllDetailResult = restTemplate.exchange(
-                "http://ts-travel2-service:16346/travel2/getTripAllDetailInfo/",
-                HttpMethod.POST,
-                requestGetTripAllDetailResult,
-                GetTripAllDetailResult.class);
-        GetTripAllDetailResult gtdr = reGetTripAllDetailResult.getBody();
-//        GetTripAllDetailResult gtdr = restTemplate.postForObject(
-//                "http://ts-travel2-service:16346/travel2/getTripAllDetailInfo/"
-//                ,gtdi,GetTripAllDetailResult.class);
-        return gtdr;
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            HttpEntity<GetTripAllDetailInfo> requestGetTripAllDetailResult = new HttpEntity<>(gtdi, httpHeaders);
+            System.out.println(r2List.get(0).getMessage());
+            ResponseEntity<GetTripAllDetailResult> reGetTripAllDetailResult = restTemplate.exchange(
+                    "http://ts-travel2-service:16346/travel2/getTripAllDetailInfo/",
+                    HttpMethod.POST,
+                    requestGetTripAllDetailResult,
+                    GetTripAllDetailResult.class);
+            return reGetTripAllDetailResult.getBody();
+        }).thenAccept(r3List::add);
+
+        futures.add(future);
     }
 
-    private void getContactsById(List<GetContactsResult> gcrs, GetContactsInfo gci, HttpHeaders
-            httpHeaders, List<CompletableFuture<Void>> futures, List<CheckResult> results) {
-        logger.info("[Preserve Other Service][Get Contacts By Id] Getting....");
-        logger.info(results.get(0).toString());
+    private void getContactsById(GetContactsInfo gci, HttpHeaders httpHeaders, List<GetContactsResult> r2List,
+                                 List<CompletableFuture<Void>> futures) {
+        System.out.println("[Preserve Other Service][Get Contacts By Id] Getting....");
 
-        HttpEntity<GetContactsInfo> requestGetContactsResult = new HttpEntity<>(gci, httpHeaders);
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(4);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            HttpEntity<GetContactsInfo> requestGetContactsResult = new HttpEntity<>(gci, httpHeaders);
             ResponseEntity<GetContactsResult> reGetContactsResult = restTemplate.exchange(
                     "http://ts-contacts-service:12347/contacts/getContactsById/",
                     HttpMethod.POST,
                     requestGetContactsResult,
                     GetContactsResult.class);
             return reGetContactsResult.getBody();
-        }).thenAccept(gcrs::add);
+        }).thenAccept(r2List::add);
 
         futures.add(future);
     }
