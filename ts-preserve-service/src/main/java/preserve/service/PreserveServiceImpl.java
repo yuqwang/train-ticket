@@ -1,7 +1,5 @@
 package preserve.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserve.domain.*;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,40 +23,17 @@ public class PreserveServiceImpl implements PreserveService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
     @Override
     public OrderTicketsResult preserve(OrderTicketsInfo oti, String accountId, String loginToken, HttpHeaders headers) {
         VerifyResult tokenResult = verifySsoLogin(loginToken, headers);
         OrderTicketsResult otr = new OrderTicketsResult();
         if (tokenResult.isStatus() == true) {
             System.out.println("[Preserve Service][Verify Login] Success");
-
             //1.黄牛检测
             System.out.println("[Preserve Service] [Step 1] Check Security");
             CheckInfo checkInfo = new CheckInfo();
             checkInfo.setAccountId(accountId);
-
-            //2.查询联系人信息 -- 修改，通过基础信息微服务作为中介
-            System.out.println("[Preserve Service] [Step 2] Find contacts");
-            GetContactsInfo gci = new GetContactsInfo();
-            System.out.println("[Preserve Service] [Step 2] Contacts Id:" + oti.getContactsId());
-            gci.setContactsId(oti.getContactsId());
-            gci.setLoginToken(loginToken);
-
-            List<CheckResult> results = new ArrayList<>();
-            List<GetContactsResult> gcrs = new ArrayList<>();
-
-            List<CompletableFuture<Void>> futures = new ArrayList<>();
-
-            checkSecurity(checkInfo, headers, results, futures);
-            getContactsById(gci, headers, results, gcrs, futures);
-
-            futures.forEach(x -> x.join());
-
-            CheckResult result = results.get(0);
-            GetContactsResult gcr = gcrs.get(0);
-
+            CheckResult result = checkSecurity(checkInfo, headers);
             if (result.isStatus() == false) {
                 otr.setStatus(false);
                 otr.setMessage(result.getMessage());
@@ -65,6 +41,35 @@ public class PreserveServiceImpl implements PreserveService {
                 return otr;
             }
             System.out.println("[Preserve Service] [Step 1] Check Security Complete");
+
+            // seq fault
+            List<GetContactsResult> r2List = new ArrayList<>();
+            List<GetTripAllDetailResult> re3List = new ArrayList<>();
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+            //2. 3. request param
+            System.out.println("[Preserve Service] [Step 2] Find contacts");
+            GetContactsInfo gci = new GetContactsInfo();
+            System.out.println("[Preserve Service] [Step 2] Contacts Id:" + oti.getContactsId());
+            gci.setContactsId(oti.getContactsId());
+            gci.setLoginToken(loginToken);
+            System.out.println("[Preserve Service] [Step 3] Check tickets num");
+            GetTripAllDetailInfo gtdi = new GetTripAllDetailInfo();
+            gtdi.setFrom(oti.getFrom());//todo
+            gtdi.setTo(oti.getTo());
+            gtdi.setTravelDate(oti.getDate());
+            gtdi.setTripId(oti.getTripId());
+            System.out.println("[Preserve Service] [Step 3] TripId:" + oti.getTripId());
+
+            // sync call
+            getContactsById(gci, headers, r2List, futures);
+            getTripAllDetailInformation(gtdi, headers, r2List, re3List, futures);
+
+            // wait
+            futures.forEach(x -> x.join());
+
+            GetContactsResult gcr = r2List.get(0);
+            GetTripAllDetailResult gtdr = re3List.get(0);
 
             if (gcr.isStatus() == false) {
                 System.out.println("[Preserve Service][Get Contacts] Fail." + gcr.getMessage());
@@ -75,20 +80,10 @@ public class PreserveServiceImpl implements PreserveService {
             }
             System.out.println("[Preserve Service][Step 2] Complete");
             //3.查询座位余票信息和车次的详情
-            System.out.println("[Preserve Service] [Step 3] Check tickets num");
-            GetTripAllDetailInfo gtdi = new GetTripAllDetailInfo();
-
-            gtdi.setFrom(oti.getFrom());//todo
-            gtdi.setTo(oti.getTo());
-
-            gtdi.setTravelDate(oti.getDate());
-            gtdi.setTripId(oti.getTripId());
-            System.out.println("[Preserve Service] [Step 3] TripId:" + oti.getTripId());
-            GetTripAllDetailResult gtdr = getTripAllDetailInformation(gtdi, headers);
             if (gtdr.isStatus() == false) {
                 System.out.println("[Preserve Service][Search For Trip Detail Information] " + gcr.getMessage());
                 otr.setStatus(false);
-                otr.setMessage(gcr.getMessage());
+                otr.setMessage(gtdr.getMessage());
                 otr.setOrder(null);
                 return otr;
             } else {
@@ -209,8 +204,7 @@ public class PreserveServiceImpl implements PreserveService {
             }
 
             //6.增加订餐
-//            System.out.println("[Food Service]!!!!!!!!!!!!!!!foodstorename=" + oti.getStationName()+"   "+oti
-// .getStoreName());
+//            System.out.println("[Food Service]!!!!!!!!!!!!!!!foodstorename=" + oti.getStationName()+"   "+oti.getStoreName());
             if (oti.getFoodType() != 0) {
                 AddFoodOrderInfo afoi = new AddFoodOrderInfo();
                 afoi.setOrderId(cor.getOrder().getId().toString());
@@ -220,8 +214,7 @@ public class PreserveServiceImpl implements PreserveService {
                 if (oti.getFoodType() == 2) {
                     afoi.setStationName(oti.getStationName());
                     afoi.setStoreName(oti.getStoreName());
-                    System.out.println("[Food Service]!!!!!!!!!!!!!!!foodstore=" + afoi.getFoodType() + "   " + afoi
-                            .getStationName() + "   " + afoi.getStoreName());
+                    System.out.println("[Food Service]!!!!!!!!!!!!!!!foodstore=" + afoi.getFoodType() + "   " + afoi.getStationName() + "   " + afoi.getStoreName());
                 }
                 AddFoodOrderResult afor = createFoodOrder(afoi, headers);
                 if (afor.isStatus()) {
@@ -289,8 +282,7 @@ public class PreserveServiceImpl implements PreserveService {
         return otr;
     }
 
-    public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId, int seatType,
-                              HttpHeaders httpHeaders) {
+    public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId, int seatType, HttpHeaders httpHeaders) {
         SeatRequest seatRequest = new SeatRequest();
         seatRequest.setTravelDate(date);
         seatRequest.setTrainNumber(tripId);
@@ -386,28 +378,19 @@ public class PreserveServiceImpl implements PreserveService {
         return stationId;
     }
 
-    private void checkSecurity(CheckInfo info, HttpHeaders httpHeaders, List<CheckResult> results,
-                               List<CompletableFuture<Void>> futures) {
+    private CheckResult checkSecurity(CheckInfo info, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Other Service][Check Security] Checking....");
 
-        final HttpEntity<CheckInfo> requestCheckResult = new HttpEntity<>(info, httpHeaders);
-
-        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(4);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            ResponseEntity<CheckResult> reCheckResult = restTemplate.exchange(
-                    "http://ts-security-service:11188/security/check",
-                    HttpMethod.POST,
-                    requestCheckResult,
-                    CheckResult.class);
-            return reCheckResult.getBody();
-        }).thenAccept(results::add);
-
-        futures.add(future);
+        HttpEntity requestCheckResult = new HttpEntity(info, httpHeaders);
+        ResponseEntity<CheckResult> reCheckResult = restTemplate.exchange(
+                "http://ts-security-service:11188/security/check",
+                HttpMethod.POST,
+                requestCheckResult,
+                CheckResult.class);
+        CheckResult result = reCheckResult.getBody();
+//        CheckResult result = restTemplate.postForObject("http://ts-security-service:11188/security/check",
+//                info,CheckResult.class);
+        return result;
     }
 
     private VerifyResult verifySsoLogin(String loginToken, HttpHeaders httpHeaders) {
@@ -426,43 +409,42 @@ public class PreserveServiceImpl implements PreserveService {
         return tokenResult;
     }
 
-
-    private GetTripAllDetailResult getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders) {
+    private void getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders,
+                                             List<GetContactsResult> r2List,
+                                             List<GetTripAllDetailResult> re3List,
+                                             List<CompletableFuture<Void>> futures) {
         System.out.println("[Preserve Other Service][Get Trip All Detail Information] Getting....");
-
-        HttpEntity requestGetTripAllDetailResult = new HttpEntity(gtdi, httpHeaders);
-        ResponseEntity<GetTripAllDetailResult> reGetTripAllDetailResult = restTemplate.exchange(
-                "http://ts-travel-service:12346/travel/getTripAllDetailInfo/",
-                HttpMethod.POST,
-                requestGetTripAllDetailResult,
-                GetTripAllDetailResult.class);
-        GetTripAllDetailResult gtdr = reGetTripAllDetailResult.getBody();
-//        GetTripAllDetailResult gtdr = restTemplate.postForObject(
-//                "http://ts-travel-service:12346/travel/getTripAllDetailInfo/"
-//                ,gtdi,GetTripAllDetailResult.class);
-        return gtdr;
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            System.out.println(r2List.get(0).getMessage());
+            HttpEntity<GetTripAllDetailInfo> requestGetTripAllDetailResult = new HttpEntity<>(gtdi, httpHeaders);
+            ResponseEntity<GetTripAllDetailResult> reGetTripAllDetailResult = restTemplate.exchange(
+                    "http://ts-travel-service:12346/travel/getTripAllDetailInfo/",
+                    HttpMethod.POST,
+                    requestGetTripAllDetailResult,
+                    GetTripAllDetailResult.class);
+            return reGetTripAllDetailResult.getBody();
+        }).thenAccept(re3List::add);
+        futures.add(future);
     }
 
 
-    private void getContactsById(GetContactsInfo gci, HttpHeaders httpHeaders, List<CheckResult>
-            results, List<GetContactsResult> gcrs, List<CompletableFuture<Void>> futures) {
-        logger.info("[Preserve Other Service][Get Contacts By Id] Getting....");
-        logger.info(results.get(0).toString());
+    private void getContactsById(GetContactsInfo gci, HttpHeaders httpHeaders, List<GetContactsResult> r2List, List<CompletableFuture<Void>> futures) {
+        System.out.println("[Preserve Other Service][Get Contacts By Id] Getting....");
 
-        HttpEntity<GetContactsInfo> requestGetContactsResult = new HttpEntity<>(gci, httpHeaders);
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.SECONDS.sleep(4);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            HttpEntity<GetContactsInfo> requestGetContactsResult = new HttpEntity<>(gci, httpHeaders);
             ResponseEntity<GetContactsResult> reGetContactsResult = restTemplate.exchange(
                     "http://ts-contacts-service:12347/contacts/getContactsById/",
                     HttpMethod.POST,
                     requestGetContactsResult,
                     GetContactsResult.class);
             return reGetContactsResult.getBody();
-        }).thenAccept(gcrs::add);
+        }).thenAccept(r2List::add);
 
         futures.add(future);
     }
