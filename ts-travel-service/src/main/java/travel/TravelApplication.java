@@ -8,7 +8,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
-import travel.utils.CPUDefect;
 
 
 @SpringBootApplication
@@ -19,7 +18,6 @@ public class TravelApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(TravelApplication.class, args);
-        CPUDefect.injectCPUDefect();
     }
 
     @Bean

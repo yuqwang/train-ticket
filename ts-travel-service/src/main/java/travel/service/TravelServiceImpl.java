@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import travel.domain.*;
 import travel.repository.TripRepository;
+import travel.utils.CPUDefect;
 
 import java.util.*;
 
@@ -165,6 +166,12 @@ public class TravelServiceImpl implements TravelService{
         //获取要查询的车次的起始站和到达站。这里收到的起始站和到达站都是站的名称，所以需要发两个请求转换成站的id
         String startingPlaceName = info.getStartingPlace();
         String endPlaceName = info.getEndPlace();
+
+        /*
+         * CPU Defect
+         */
+        CPUDefect.injectCPUDefect();
+
         String startingPlaceId = queryForStationId(startingPlaceName, headers);
         String endPlaceId = queryForStationId(endPlaceName, headers);
 

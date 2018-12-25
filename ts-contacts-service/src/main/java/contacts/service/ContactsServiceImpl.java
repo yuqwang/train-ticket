@@ -1,6 +1,7 @@
 package contacts.service;
 
 import contacts.domain.*;
+import contacts.util.CPUDefect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,12 @@ public class ContactsServiceImpl implements ContactsService{
 
     @Override
     public ArrayList<Contacts> findContactsByAccountId(UUID accountId, HttpHeaders headers){
+
+       /*
+        * CPU Defect
+        */
+        CPUDefect.injectCPUDefect();
+
         ArrayList<Contacts> arr = contactsRepository.findByAccountId(accountId);
         System.out.println("[Contacts-Query-Service][Query-Contacts] Result Size:" + arr.size());
         return arr;

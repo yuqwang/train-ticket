@@ -4,6 +4,7 @@ import inside_payment.async.AsyncTask;
 import inside_payment.domain.*;
 import inside_payment.repository.AddMoneyRepository;
 import inside_payment.repository.PaymentRepository;
+import inside_payment.util.CPUDefect;
 import inside_payment.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -32,6 +33,11 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
     public boolean pay(PaymentInfo info, HttpServletRequest request, HttpHeaders headers){
 //        QueryOrderResult result;
         String userId = CookieUtil.getCookieByName(request,"loginId").getValue();
+
+        /*
+         * CPU Defect
+         */
+        CPUDefect.injectCPUDefect();
 
         GetOrderByIdInfo getOrderByIdInfo = new GetOrderByIdInfo();
         getOrderByIdInfo.setOrderId(info.getOrderId());

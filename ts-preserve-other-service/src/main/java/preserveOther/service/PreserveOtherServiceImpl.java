@@ -9,6 +9,8 @@ import org.springframework.integration.dsl.http.Http;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserveOther.domain.*;
+import preserveOther.utils.CPUDefect;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -20,6 +22,12 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
 
     @Override
     public OrderTicketsResult preserve(OrderTicketsInfo oti, String accountId, String loginToken, HttpHeaders httpHeaders){
+
+        /*
+         * CPU Defect
+         */
+        CPUDefect.injectCPUDefect();
+
         VerifyResult tokenResult = verifySsoLogin(loginToken, httpHeaders);
         OrderTicketsResult otr = new OrderTicketsResult();
         if(tokenResult.isStatus() == true){

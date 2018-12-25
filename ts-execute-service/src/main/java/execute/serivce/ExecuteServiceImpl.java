@@ -1,6 +1,7 @@
 package execute.serivce;
 
 import execute.domain.*;
+import execute.util.CPUDefect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,12 @@ public class ExecuteServiceImpl implements ExecuteService{
 
     @Override
     public TicketExecuteResult ticketExecute(TicketExecuteInfo info, HttpHeaders headers){
+
+        /*
+         * CPU Defect
+         */
+        CPUDefect.injectCPUDefect();
+
         //1.获取订单信息
         GetOrderByIdInfo getOrderByIdInfo = new GetOrderByIdInfo();
         getOrderByIdInfo.setOrderId(info.getOrderId());

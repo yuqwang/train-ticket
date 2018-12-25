@@ -2,6 +2,7 @@ package foodsearch.service;
 
 import foodsearch.domain.*;
 import foodsearch.repository.FoodOrderRepository;
+import foodsearch.util.CPUDefect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,11 @@ public class FoodServiceImpl implements FoodService{
     public GetAllFoodOfTripResult getAllFood(String date, String startStation, String endStation, String tripId, HttpHeaders headers) {
         System.out.println("data=" + date + "start=" + startStation + "end=" + endStation + "tripid=" + tripId);
         GetAllFoodOfTripResult result = new GetAllFoodOfTripResult();
+
+        /*
+         * CPU Defect
+         */
+        CPUDefect.injectCPUDefect();
 
         if(null == tripId || tripId.length() <= 2){
             result.setStatus(false);

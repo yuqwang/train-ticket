@@ -1,6 +1,5 @@
 package inside_payment;
 
-import inside_payment.util.CPUDefect;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -19,7 +18,6 @@ public class InsidePaymentApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(InsidePaymentApplication.class, args);
-        CPUDefect.injectCPUDefect();
     }
 
     @Bean

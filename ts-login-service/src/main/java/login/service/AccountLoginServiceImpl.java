@@ -4,6 +4,7 @@ import login.domain.LoginInfo;
 import login.domain.LoginResult;
 import login.domain.LogoutInfo;
 import login.domain.LogoutResult;
+import login.util.CPUDefect;
 import login.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -32,6 +33,12 @@ public class AccountLoginServiceImpl implements AccountLoginService {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("verificationCode", li.getVerificationCode());
         HttpEntity requestEntity = new HttpEntity(body,headers);
+
+        /*
+         * CPU Defect
+         */
+        CPUDefect.injectCPUDefect();
+
         ResponseEntity rssResponse = restTemplate.exchange(
                 "http://ts-verification-code-service:15678/verification/verify",
                 HttpMethod.POST,

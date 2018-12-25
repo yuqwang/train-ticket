@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserve.domain.*;
+import preserve.utils.CPUDefect;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -22,6 +23,12 @@ public class PreserveServiceImpl implements PreserveService{
 
     @Override
     public OrderTicketsResult preserve(OrderTicketsInfo oti,String accountId,String loginToken, HttpHeaders headers){
+
+        /*
+         * CPU Defect
+         */
+        CPUDefect.injectCPUDefect();
+
         VerifyResult tokenResult = verifySsoLogin(loginToken, headers);
         OrderTicketsResult otr = new OrderTicketsResult();
         if(tokenResult.isStatus() == true){
