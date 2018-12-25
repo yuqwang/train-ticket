@@ -1,5 +1,6 @@
 package fdse.microservice;
 
+import fdse.microservice.util.CPUDefect;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -14,5 +15,6 @@ public class StationApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StationApplication.class, args);
+		CPUDefect.injectCPUDefect();
 	}
 }

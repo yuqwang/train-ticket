@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.scheduling.annotation.EnableAsync;
+import sso.util.CPUDefect;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -12,6 +13,7 @@ public class AccountSsoApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(AccountSsoApplication.class, args);
+        CPUDefect.injectCPUDefect();
     }
 
 }

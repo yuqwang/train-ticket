@@ -1,5 +1,6 @@
 package contacts;
 
+import contacts.util.CPUDefect;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -17,6 +18,7 @@ public class ContactsApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ContactsApplication.class, args);
+        CPUDefect.injectCPUDefect();
     }
 
     @Bean

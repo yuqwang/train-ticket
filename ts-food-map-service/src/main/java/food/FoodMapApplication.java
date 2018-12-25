@@ -1,5 +1,6 @@
 package food;
 
+import food.util.CPUDefect;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -17,6 +18,7 @@ public class FoodMapApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(FoodMapApplication.class, args);
+        CPUDefect.injectCPUDefect();
     }
 
     @Bean

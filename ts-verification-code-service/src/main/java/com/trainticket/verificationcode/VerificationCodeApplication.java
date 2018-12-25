@@ -1,5 +1,6 @@
 package com.trainticket.verificationcode;
 
+import com.trainticket.verificationcode.util.CPUDefect;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
@@ -13,6 +14,7 @@ public class VerificationCodeApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(VerificationCodeApplication.class, args);
+		CPUDefect.injectCPUDefect();
 	}
 
 	
