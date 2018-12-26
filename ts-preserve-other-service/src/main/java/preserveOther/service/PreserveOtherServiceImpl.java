@@ -247,7 +247,29 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
             System.out.println("[Preserve Service]");
             GetAccountByIdInfo getAccountByIdInfo = new GetAccountByIdInfo();
             getAccountByIdInfo.setAccountId(order.getAccountId().toString());
-            GetAccountByIdResult getAccountByIdResult = getAccount(getAccountByIdInfo, httpHeaders);
+
+
+            List<InsertConsignRecordResult> r7List = new ArrayList<>();
+            List<GetAccountByIdResult> r8List = new ArrayList<>();
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+            createConsign(consignRequest, httpHeaders, r7List, futures);
+            getAccount(getAccountByIdInfo, httpHeaders, r7List, r8List, futures);
+
+            futures.forEach(x -> x.join());
+            InsertConsignRecordResult icresult = r7List.get(0);
+            GetAccountByIdResult getAccountByIdResult = r8List.get(0);
+            //7.增加托运
+            // in this fault, consign service must be invoked, so add consign name if there is no consign
+            if (icresult.isStatus()) {
+                System.out.println("[Preserve Service][Step 7] Consign Success");
+            } else {
+                System.out.println("[Preserve Service][Step 7] Consign Fail.");
+                otr.setMessage("Consign Fail.");
+            }
+
+
+            //8.发送notification
             if (result.isStatus() == false) {
                 return null;
             }
@@ -264,30 +286,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
             notifyInfo.setPrice(order.getPrice());
             notifyInfo.setSeatClass(SeatClass.getNameByCode(order.getSeatClass()));
             notifyInfo.setStartingTime(order.getTravelTime().toString());
-
-            List<InsertConsignRecordResult> r7List = new ArrayList<>();
-            List<Boolean> r8List = new ArrayList<>();
-            List<CompletableFuture<Void>> futures = new ArrayList<>();
-
-            createConsign(consignRequest, httpHeaders, r7List, futures);
-            sendEmail(notifyInfo, httpHeaders, r7List, r8List, futures);
-
-            futures.forEach(x -> x.join());
-            InsertConsignRecordResult icresult = r7List.get(0);
-            Boolean infoResult = r8List.get(0);
-
-            //7.增加托运
-            // in this fault, consign service must be invoked, so add consign name if there is no consign
-            if (icresult.isStatus()) {
-                System.out.println("[Preserve Service][Step 7] Consign Success");
-            } else {
-                System.out.println("[Preserve Service][Step 7] Consign Fail.");
-                otr.setMessage("Consign Fail.");
-            }
-
-
-            //8.发送notification
-            System.out.println(infoResult);
+            sendEmail(notifyInfo, httpHeaders);
         } else {
             System.out.println("[Preserve Other Service][Verify Login] Fail");
             otr.setStatus(false);
@@ -319,40 +318,33 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         return ticket;
     }
 
-    public void sendEmail(NotifyInfo notifyInfo, HttpHeaders httpHeaders, List<InsertConsignRecordResult> r7List,
-                          List<Boolean> r8List, List<CompletableFuture<Void>> futures) {
+    public void sendEmail(NotifyInfo notifyInfo, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Service][Send Email]");
 
-        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            System.out.println(r7List.get(0).getMessage());
-            HttpEntity requestEntitySendEmail = new HttpEntity(notifyInfo, httpHeaders);
-            ResponseEntity<Boolean> reSendEmail = restTemplate.exchange(
-                    "http://ts-notification-service:17853/notification/order_cancel_success",
-                    HttpMethod.POST,
-                    requestEntitySendEmail,
-                    Boolean.class);
-            return reSendEmail.getBody();
-        }).thenAccept(r8List::add);
-
-        futures.add(future);
-    }
-
-    public GetAccountByIdResult getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders) {
-        System.out.println("[Cancel Order Service][Get By Id]");
-
-        HttpEntity requestEntitySendEmail = new HttpEntity(info, httpHeaders);
-        ResponseEntity<GetAccountByIdResult> reSendEmail = restTemplate.exchange(
-                "http://ts-sso-service:12349/account/findById",
+        HttpEntity requestEntitySendEmail = new HttpEntity(notifyInfo, httpHeaders);
+        ResponseEntity<Boolean> reSendEmail = restTemplate.exchange(
+                "http://ts-notification-service:17853/notification/order_cancel_success",
                 HttpMethod.POST,
                 requestEntitySendEmail,
-                GetAccountByIdResult.class);
-        GetAccountByIdResult result = reSendEmail.getBody();
-//        GetAccountByIdResult result = restTemplate.postForObject(
-//                "http://ts-sso-service:12349/account/findById",
-//                info,
-//                GetAccountByIdResult.class
-//        );
-        return result;
+                Boolean.class);
+    }
+
+    public void getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders,
+                           List<InsertConsignRecordResult> r7List,
+                           List<GetAccountByIdResult> r8List,
+                           List<CompletableFuture<Void>> futures) {
+        System.out.println("[Cancel Order Service][Get By Id]");
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            System.out.println(r7List.get(0).getMessage());
+            HttpEntity requestEntitySendEmail = new HttpEntity(info, httpHeaders);
+            ResponseEntity<GetAccountByIdResult> reSendEmail = restTemplate.exchange(
+                    "http://ts-sso-service:12349/account/findById",
+                    HttpMethod.POST,
+                    requestEntitySendEmail,
+                    GetAccountByIdResult.class);
+            return reSendEmail.getBody();
+        }).thenAccept(r8List::add);
+        futures.add(future);
     }
 
     private AddAssuranceResult addAssuranceForOrder(int assuranceType, String orderId, HttpHeaders httpHeaders) {
