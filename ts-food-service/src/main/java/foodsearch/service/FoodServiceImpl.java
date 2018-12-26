@@ -33,7 +33,7 @@ public class FoodServiceImpl implements FoodService{
         /*
          * CPU Defect
          */
-        CPUDefect.injectCPUDefect();
+        //CPUDefect.injectCPUDefect();
 
         if(null == tripId || tripId.length() <= 2){
             result.setStatus(false);

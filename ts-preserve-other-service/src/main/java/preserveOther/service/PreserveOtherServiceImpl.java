@@ -26,7 +26,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
         /*
          * CPU Defect
          */
-        CPUDefect.injectCPUDefect();
+        //CPUDefect.injectCPUDefect();
 
         VerifyResult tokenResult = verifySsoLogin(loginToken, httpHeaders);
         OrderTicketsResult otr = new OrderTicketsResult();

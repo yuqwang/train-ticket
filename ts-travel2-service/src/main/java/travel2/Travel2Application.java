@@ -19,6 +19,7 @@ public class Travel2Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Travel2Application.class, args);
+        CPUDefect.injectCPUDefect();
     }
 
     @Bean

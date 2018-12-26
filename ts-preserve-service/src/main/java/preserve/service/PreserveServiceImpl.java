@@ -27,7 +27,7 @@ public class PreserveServiceImpl implements PreserveService{
         /*
          * CPU Defect
          */
-        CPUDefect.injectCPUDefect();
+        //CPUDefect.injectCPUDefect();
 
         VerifyResult tokenResult = verifySsoLogin(loginToken, headers);
         OrderTicketsResult otr = new OrderTicketsResult();

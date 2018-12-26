@@ -22,7 +22,7 @@ public class ExecuteServiceImpl implements ExecuteService{
         /*
          * CPU Defect
          */
-        CPUDefect.injectCPUDefect();
+        //CPUDefect.injectCPUDefect();
 
         //1.获取订单信息
         GetOrderByIdInfo getOrderByIdInfo = new GetOrderByIdInfo();

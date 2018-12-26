@@ -26,7 +26,7 @@ public class ContactsServiceImpl implements ContactsService{
        /*
         * CPU Defect
         */
-        CPUDefect.injectCPUDefect();
+        //CPUDefect.injectCPUDefect();
 
         ArrayList<Contacts> arr = contactsRepository.findByAccountId(accountId);
         System.out.println("[Contacts-Query-Service][Query-Contacts] Result Size:" + arr.size());

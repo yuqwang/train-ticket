@@ -37,7 +37,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
         /*
          * CPU Defect
          */
-        CPUDefect.injectCPUDefect();
+        //CPUDefect.injectCPUDefect();
 
         GetOrderByIdInfo getOrderByIdInfo = new GetOrderByIdInfo();
         getOrderByIdInfo.setOrderId(info.getOrderId());

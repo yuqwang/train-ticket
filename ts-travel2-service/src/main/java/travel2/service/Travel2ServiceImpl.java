@@ -159,7 +159,7 @@ public class Travel2ServiceImpl implements Travel2Service{
         /*
          * CPU Defect
          */
-        CPUDefect.injectCPUDefect();
+        //CPUDefect.injectCPUDefect();
 
         String startingPlaceId = queryForStationId(startingPlaceName,headers);
         String endPlaceId = queryForStationId(endPlaceName,headers);
