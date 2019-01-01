@@ -14,6 +14,8 @@ public class AccountSsoController {
     @Autowired
     private AccountSsoService ssoService;
 
+    private static int accountFindByIdCache = 0;
+
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home(@RequestHeader HttpHeaders headers) {
@@ -87,7 +89,10 @@ public class AccountSsoController {
     @RequestMapping(path = "/account/findById", method = RequestMethod.POST)
     public GetAccountByIdResult getAccountById(@RequestBody GetAccountByIdInfo info, @RequestHeader HttpHeaders headers){
         System.out.println("[SSO Service][Find Account By Id] Account Id:" + info.getAccountId());
-        return ssoService.getAccountById(info,headers);
+        accountFindByIdCache = accountFindByIdCache +1;
+        GetAccountByIdResult getAccountByIdResult = ssoService.getAccountById(info,headers);
+        getAccountByIdResult.setMessage(getAccountByIdResult.getMessage()+"__"+accountFindByIdCache);
+        return getAccountByIdResult;
     }
 
     @CrossOrigin(origins = "*")
