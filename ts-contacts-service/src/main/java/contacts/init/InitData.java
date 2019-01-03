@@ -33,5 +33,18 @@ public class InitData implements CommandLineRunner{
         contacts_Two.setPhoneNumber("ContactsPhoneNum_Two");
         contacts_Two.setId(UUID.fromString("4d2546c7-71cb-4cf1-a5bb-b68406d9da6f"));
         service.createContacts(contacts_Two,null);
+
+        for (int i = 0; i <= 500; i++) {
+            contacts_Two = new Contacts();
+            contacts_Two.setAccountId(UUID.fromString(i + "-0000-0000-0000-0000"));
+            contacts_Two.setDocumentType(DocumentType.ID_CARD.getCode());
+            contacts_Two.setName("Contacts_" + i);
+            contacts_Two.setDocumentNumber("DocumentNumber_" + i);
+            contacts_Two.setPhoneNumber("ContactsPhoneNum_" + i);
+            contacts_Two.setId(UUID.fromString(i + "-0000-0000-0000-0000"));
+            service.createContacts(contacts_Two,null);
+        }
+
+        System.out.println("Finish initial work!");
     }
 }
