@@ -71,17 +71,17 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             gtdi.setTripId(oti.getTripId());
             System.out.println("[Preserve Other Service] [Step 3] TripId:" + oti.getTripId());
             GetTripAllDetailResult gtdr = getTripAllDetailInformation(gtdi, httpHeaders);
-            if(gtdr.isStatus() == false){
-                System.out.println("[Preserve Other Service][Search For Trip Detail Information] " + gcr.getMessage());
+            if(!gtdr.isStatus()){
+                System.out.println("[Preserve Other Service][Search For Trip Detail Information] " + gtdr.getMessage());
                 otr.setStatus(false);
-                otr.setMessage(gcr.getMessage());
+                otr.setMessage(gtdr.getMessage());
                 otr.setOrder(null);
                 return otr;
             }else{
                 TripResponse tripResponse = gtdr.getTripResponse();
                 if(oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()){
                     if(tripResponse.getConfortClass() == 0){
-                        System.out.println("[Preserve Other Service][Check seat is enough] " + gcr.getMessage());
+                        System.out.println("[Preserve Other Service][Check seat is enough] " + gtdr.getMessage());
                         otr.setStatus(false);
                         otr.setMessage("Seat Not Enough");
                         otr.setOrder(null);
@@ -90,7 +90,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
                 }else{
                     if(tripResponse.getEconomyClass() == SeatClass.SECONDCLASS.getCode()){
                         if(tripResponse.getConfortClass() == 0){
-                            System.out.println("[Preserve Other Service][Check seat is enough] " + gcr.getMessage());
+                            System.out.println("[Preserve Other Service][Check seat is enough] " + gtdr.getMessage());
                             otr.setStatus(false);
                             otr.setMessage("Seat Not Enough");
                             otr.setOrder(null);
