@@ -18,6 +18,7 @@ public class ContactsApplication {
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(ContactsApplication.class, args);
+        Thread.sleep(25000);
         CPUDefect.injectCPUDefect();
     }
 

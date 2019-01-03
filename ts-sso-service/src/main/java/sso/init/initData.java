@@ -45,7 +45,7 @@ public class initData implements CommandLineRunner {
             acc.setPassword("123456");
             acc.setName("Customer " + i);
             acc.setGender(Gender.MALE.getCode());
-            acc.setId(UUID.randomUUID());
+            acc.setId(UUID.fromString(i + "-0000-0000-0000-0000"));
             ssoService.createAccount(acc, null);
         }
 
