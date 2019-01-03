@@ -36,20 +36,6 @@ public class initData implements CommandLineRunner {
         acc.setGender(Gender.MALE.getCode());
         acc.setId(UUID.fromString("1d1a11c1-11cb-1cf1-b1bb-b11111d1da1f"));
         ssoService.createAccount(acc, null);
-
-        for (int i = 0; i <= 500; i++) {
-            acc = new Account();
-            acc.setDocumentType(DocumentType.ID_CARD.getCode());
-            acc.setDocumentNum("DefaultDocumentNumber");
-            acc.setEmail(i + "@163.com");
-            acc.setPassword("123456");
-            acc.setName("Customer " + i);
-            acc.setGender(Gender.MALE.getCode());
-            acc.setId(UUID.fromString(i + "-0000-0000-0000-0000"));
-            ssoService.createAccount(acc, null);
-        }
-
-        System.out.println("Finish initial work!");
     }
 
 }
