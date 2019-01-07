@@ -44,7 +44,7 @@ public class SeatServiceImpl implements SeatService {
             CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
                 HttpEntity requestEntity = new HttpEntity(headers);
                 try {
-                    TimeUnit.SECONDS.sleep(4);
+                    TimeUnit.SECONDS.sleep(3);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -63,12 +63,14 @@ public class SeatServiceImpl implements SeatService {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println(reList.get(0).getBody().getMessage());
-                return restTemplate.exchange(
+
+                ResponseEntity<LeftTicketInfo> ret = restTemplate.exchange(
                         "http://ts-order-service:12031/order/getTicketListByDateAndTripId",
                         HttpMethod.POST,
                         requestEntity,
                         LeftTicketInfo.class);
+                System.out.println(reList.get(0).getBody().getMessage());
+                return ret;
             }).thenAccept(re3List::add);
 
             future.join();
