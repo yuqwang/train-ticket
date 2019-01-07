@@ -176,18 +176,12 @@ public class PreserveServiceImpl implements PreserveService {
             otr.setMessage("Success");
             otr.setOrder(cor.getOrder());
 
-
             // seq fault
             AddFoodOrderInfo afoi = new AddFoodOrderInfo();
             afoi.setOrderId(cor.getOrder().getId().toString());
             afoi.setFoodType(oti.getFoodType());
             afoi.setFoodName(oti.getFoodName());
             afoi.setPrice(oti.getFoodPrice());
-
-            // in this fault, consign service must be invoked, so add consign name if there is no consign
-            if (null != oti.getConsigneeName() && !"".equals(oti.getConsigneeName())) {
-                oti.setConsigneeName("Tom");
-            }
 
             ConsignRequest consignRequest = new ConsignRequest();
             consignRequest.setAccountId(cor.getOrder().getAccountId());
@@ -200,21 +194,27 @@ public class PreserveServiceImpl implements PreserveService {
             consignRequest.setWeight(oti.getConsigneeWeight());
             consignRequest.setWithin(oti.isWithin());
 
+            System.out.println("[Preserve Service]");
+            GetAccountByIdInfo getAccountByIdInfo = new GetAccountByIdInfo();
+            getAccountByIdInfo.setAccountId(order.getAccountId().toString());
+
             List<AddAssuranceResult> r5List = new ArrayList<>();
             List<AddFoodOrderResult> r6List = new ArrayList<>();
             List<InsertConsignRecordResult> r7List = new ArrayList<>();
+            List<GetAccountByIdResult> r8List = new ArrayList<>();
             List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-            addAssuranceForOrder(
-                    oti.getAssurance(), cor.getOrder().getId().toString(), headers, r5List, futures);
+            addAssuranceForOrder(oti.getAssurance(), cor.getOrder().getId().toString(), headers, r5List, futures);
             createFoodOrder(afoi, headers, r6List, futures);
-            createConsign(consignRequest, headers, r5List, r7List, futures);
+            createConsign(consignRequest, headers, r7List, futures);
+            getAccount(getAccountByIdInfo, headers, r5List, r8List, futures);
+
 
             futures.forEach(x -> x.join());
-
             AddAssuranceResult addAssuranceResult = r5List.get(0);
             AddFoodOrderResult afor = r6List.get(0);
             InsertConsignRecordResult icresult = r7List.get(0);
+            GetAccountByIdResult getAccountByIdResult = r8List.get(0);
 
             //5.检查保险的选择
             if (addAssuranceResult.isStatus() == true) {
@@ -235,6 +235,9 @@ public class PreserveServiceImpl implements PreserveService {
 
 
             //7.增加托运
+            if (null != oti.getConsigneeName() && !"".equals(oti.getConsigneeName())) {
+                oti.setConsigneeName("Tom");
+            }
             if (icresult.isStatus()) {
                 System.out.println("[Preserve Service][Step 7] Consign Success");
             } else {
@@ -242,11 +245,8 @@ public class PreserveServiceImpl implements PreserveService {
                 otr.setMessage("Consign Fail.");
             }
 
+
             //8.发送notification
-            System.out.println("[Preserve Service]");
-            GetAccountByIdInfo getAccountByIdInfo = new GetAccountByIdInfo();
-            getAccountByIdInfo.setAccountId(order.getAccountId().toString());
-            GetAccountByIdResult getAccountByIdResult = getAccount(getAccountByIdInfo, headers);
             if (result.isStatus() == false) {
                 return null;
             }
@@ -274,8 +274,7 @@ public class PreserveServiceImpl implements PreserveService {
         return otr;
     }
 
-    public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId,
-                              int seatType, HttpHeaders httpHeaders) {
+    public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId, int seatType, HttpHeaders httpHeaders) {
         SeatRequest seatRequest = new SeatRequest();
         seatRequest.setTravelDate(date);
         seatRequest.setTrainNumber(tripId);
@@ -297,44 +296,40 @@ public class PreserveServiceImpl implements PreserveService {
         return ticket;
     }
 
-    public boolean sendEmail(NotifyInfo notifyInfo, HttpHeaders httpHeaders) {
+    public void sendEmail(NotifyInfo notifyInfo, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Service][Send Email]");
 
-        HttpEntity requestEntitySendEmail = new HttpEntity(notifyInfo, httpHeaders);
+
+        HttpEntity<NotifyInfo> requestEntitySendEmail = new HttpEntity<>(notifyInfo, httpHeaders);
         ResponseEntity<Boolean> reSendEmail = restTemplate.exchange(
                 "http://ts-notification-service:17853/notification/order_cancel_success",
                 HttpMethod.POST,
                 requestEntitySendEmail,
                 Boolean.class);
-        boolean result = reSendEmail.getBody();
-//        boolean result = restTemplate.postForObject(
-//                "http://ts-notification-service:17853/notification/order_cancel_success",
-//                notifyInfo,
-//                Boolean.class
-//        );
-        return result;
     }
 
-    public GetAccountByIdResult getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders) {
+    public void getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders, List<AddAssuranceResult> r5List,
+                           List<GetAccountByIdResult> r8List,
+                           List<CompletableFuture<Void>> futures) {
         System.out.println("[Cancel Order Service][Get By Id]");
 
-        HttpEntity requestEntitySendEmail = new HttpEntity(info, httpHeaders);
-        ResponseEntity<GetAccountByIdResult> reSendEmail = restTemplate.exchange(
-                "http://ts-sso-service:12349/account/findById",
-                HttpMethod.POST,
-                requestEntitySendEmail,
-                GetAccountByIdResult.class);
-        GetAccountByIdResult result = reSendEmail.getBody();
-//        GetAccountByIdResult result = restTemplate.postForObject(
-//                "http://ts-sso-service:12349/account/findById",
-//                info,
-//                GetAccountByIdResult.class
-//        );
-        return result;
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            HttpEntity<GetAccountByIdInfo> requestEntitySendEmail = new HttpEntity<>(info, httpHeaders);
+            ResponseEntity<GetAccountByIdResult> reSendEmail = restTemplate.exchange(
+                    "http://ts-sso-service:12349/account/findById",
+                    HttpMethod.POST,
+                    requestEntitySendEmail,
+                    GetAccountByIdResult.class);
+            System.out.println(r5List.get(0).getMessage());
+            return reSendEmail.getBody();
+        }).thenAccept(r8List::add);
+
+        futures.add(future);
     }
 
     private void addAssuranceForOrder(int assuranceType, String orderId, HttpHeaders httpHeaders,
-                                      List<AddAssuranceResult> r5List, List<CompletableFuture<Void>> futures) {
+                                      List<AddAssuranceResult> r5List,
+                                      List<CompletableFuture<Void>> futures) {
         System.out.println("[Preserve Service][Add Assurance For Order]");
         AddAssuranceInfo info = new AddAssuranceInfo();
         info.setOrderId(orderId);
@@ -354,7 +349,6 @@ public class PreserveServiceImpl implements PreserveService {
                     AddAssuranceResult.class);
             return reAddAssuranceResult.getBody();
         }).thenAccept(r5List::add);
-
         futures.add(future);
     }
 
@@ -457,13 +451,12 @@ public class PreserveServiceImpl implements PreserveService {
         return cor;
     }
 
-    private void createFoodOrder(AddFoodOrderInfo afi, HttpHeaders httpHeaders,
-                                 List<AddFoodOrderResult> r6List,
+    private void createFoodOrder(AddFoodOrderInfo afi, HttpHeaders httpHeaders, List<AddFoodOrderResult> r6List,
                                  List<CompletableFuture<Void>> futures) {
         System.out.println("[Preserve Service][Add food Order] Creating....");
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            HttpEntity<AddFoodOrderInfo> requestEntityAddFoodOrderResult = new HttpEntity<>(afi, httpHeaders);
+            HttpEntity requestEntityAddFoodOrderResult = new HttpEntity(afi, httpHeaders);
             ResponseEntity<AddFoodOrderResult> reAddFoodOrderResult = restTemplate.exchange(
                     "http://ts-food-service:18856/food/createFoodOrder",
                     HttpMethod.POST,
@@ -475,11 +468,10 @@ public class PreserveServiceImpl implements PreserveService {
         futures.add(future);
     }
 
-    private void createConsign(ConsignRequest cr, HttpHeaders httpHeaders,
-                               List<AddAssuranceResult> r5List,
-                               List<InsertConsignRecordResult> r7List,
+    private void createConsign(ConsignRequest cr, HttpHeaders httpHeaders, List<InsertConsignRecordResult> r7List,
                                List<CompletableFuture<Void>> futures) {
         System.out.println("[Preserve Service][Add Condign] Creating....");
+
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity<ConsignRequest> requestEntityResultForTravel = new HttpEntity<>(cr, httpHeaders);
             ResponseEntity<InsertConsignRecordResult> reResultForTravel = restTemplate.exchange(
@@ -487,7 +479,6 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.POST,
                     requestEntityResultForTravel,
                     InsertConsignRecordResult.class);
-            System.out.println(r5List.get(0).getMessage());
             return reResultForTravel.getBody();
         }).thenAccept(r7List::add);
 
