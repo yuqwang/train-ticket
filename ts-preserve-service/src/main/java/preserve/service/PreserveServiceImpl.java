@@ -477,7 +477,7 @@ public class PreserveServiceImpl implements PreserveService {
         System.out.println("[Preserve Service][Add Condign] Creating....");
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            HttpEntity<ConsignRequest> requestEntityResultForgitTravel = new HttpEntity<>(cr, httpHeaders);
+            HttpEntity<ConsignRequest> requestEntityResultForTravel = new HttpEntity<>(cr, httpHeaders);
             ResponseEntity<InsertConsignRecordResult> reResultForTravel = restTemplate.exchange(
                     "http://ts-consign-service:16111/consign/insertConsign",
                     HttpMethod.POST,
