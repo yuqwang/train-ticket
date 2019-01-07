@@ -193,6 +193,19 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
             otr.setStatus(true);
             otr.setMessage("Success");
             otr.setOrder(cor.getOrder());
+            //5.检查保险的选择
+            if (oti.getAssurance() == 0) {
+                System.out.println("[Preserve Service][Step 5] Do not need to buy assurance");
+            } else {
+                AddAssuranceResult addAssuranceResult = addAssuranceForOrder(
+                        oti.getAssurance(), cor.getOrder().getId().toString(), httpHeaders);
+                if (addAssuranceResult.isStatus() == true) {
+                    System.out.println("[Preserve Service][Step 5] Buy Assurance Success");
+                } else {
+                    System.out.println("[Preserve Service][Step 5] Buy Assurance Fail.");
+                    otr.setMessage("Success.But Buy Assurance Fail.");
+                }
+            }
 
             // seq fault
             AddFoodOrderInfo afoi = new AddFoodOrderInfo();
@@ -219,33 +232,20 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
             GetAccountByIdInfo getAccountByIdInfo = new GetAccountByIdInfo();
             getAccountByIdInfo.setAccountId(order.getAccountId().toString());
 
-            List<AddAssuranceResult> r5List = new ArrayList<>();
             List<AddFoodOrderResult> r6List = new ArrayList<>();
             List<InsertConsignRecordResult> r7List = new ArrayList<>();
             List<GetAccountByIdResult> r8List = new ArrayList<>();
-
             List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-
-            addAssuranceForOrder(oti.getAssurance(), cor.getOrder().getId().toString(), httpHeaders, r5List, futures);
             createFoodOrder(afoi, httpHeaders, r6List, futures);
             createConsign(consignRequest, httpHeaders, r7List, futures);
-            getAccount(getAccountByIdInfo, httpHeaders, r5List, r8List, futures);
-
+            getAccount(getAccountByIdInfo, httpHeaders, r6List, r8List, futures);
 
             futures.forEach(x -> x.join());
-            AddAssuranceResult addAssuranceResult = r5List.get(0);
+
             AddFoodOrderResult afor = r6List.get(0);
             InsertConsignRecordResult icresult = r7List.get(0);
             GetAccountByIdResult getAccountByIdResult = r8List.get(0);
-
-            //5.检查保险的选择
-            if (addAssuranceResult.isStatus() == true) {
-                System.out.println("[Preserve Service][Step 5] Buy Assurance Success");
-            } else {
-                System.out.println("[Preserve Service][Step 5] Buy Assurance Fail.");
-                otr.setMessage("Success.But Buy Assurance Fail.");
-            }
 
             //6.增加订餐
             if (afor.isStatus()) {
@@ -254,6 +254,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
                 System.out.println("[Preserve Service][Step 6] Buy Food Fail.");
                 otr.setMessage("Success.But Buy Food Fail.");
             }
+
 
             //7.增加托运
             if (icresult.isStatus()) {
@@ -332,8 +333,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         return result;
     }
 
-    public void getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders,
-                           List<AddAssuranceResult> r5List,
+    public void getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders, List<AddFoodOrderResult> r6List,
                            List<GetAccountByIdResult> r8List,
                            List<CompletableFuture<Void>> futures) {
         System.out.println("[Cancel Order Service][Get By Id]");
@@ -345,37 +345,32 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
                     HttpMethod.POST,
                     requestEntitySendEmail,
                     GetAccountByIdResult.class);
-            System.out.println(r5List.get(0).getAssurance());
+            System.out.println(r6List.get(0).getFoodOrder());
             return reSendEmail.getBody();
         }).thenAccept(r8List::add);
 
         futures.add(future);
     }
 
-    private void addAssuranceForOrder(int assuranceType, String orderId, HttpHeaders httpHeaders,
-                                      List<AddAssuranceResult> r5List,
-                                      List<CompletableFuture<Void>> futures) {
+    private AddAssuranceResult addAssuranceForOrder(int assuranceType, String orderId, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Service][Add Assurance For Order]");
         AddAssuranceInfo info = new AddAssuranceInfo();
         info.setOrderId(orderId);
         info.setTypeIndex(assuranceType);
 
-        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            HttpEntity<AddAssuranceInfo> requestAddAssuranceResult = new HttpEntity<>(info, httpHeaders);
-            ResponseEntity<AddAssuranceResult> reAddAssuranceResult = restTemplate.exchange(
-                    "http://ts-assurance-service:18888/assurance/create",
-                    HttpMethod.POST,
-                    requestAddAssuranceResult,
-                    AddAssuranceResult.class);
-            return reAddAssuranceResult.getBody();
-        }).thenAccept(r5List::add);
-
-        futures.add(future);
+        HttpEntity requestAddAssuranceResult = new HttpEntity(info, httpHeaders);
+        ResponseEntity<AddAssuranceResult> reAddAssuranceResult = restTemplate.exchange(
+                "http://ts-assurance-service:18888/assurance/create",
+                HttpMethod.POST,
+                requestAddAssuranceResult,
+                AddAssuranceResult.class);
+        AddAssuranceResult result = reAddAssuranceResult.getBody();
+//        AddAssuranceResult result = restTemplate.postForObject(
+//                "http://ts-assurance-service:18888/assurance/create",
+//                info,
+//                AddAssuranceResult.class
+//        );
+        return result;
     }
 
 
@@ -481,6 +476,11 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         System.out.println("[Preserve Service][Add food Order] Creating....");
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             HttpEntity<AddFoodOrderInfo> requestEntityAddFoodOrderResult = new HttpEntity<>(afi, httpHeaders);
             ResponseEntity<AddFoodOrderResult> reAddFoodOrderResult = restTemplate.exchange(
                     "http://ts-food-service:18856/food/createFoodOrder",
@@ -493,13 +493,12 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         futures.add(future);
     }
 
-    private void createConsign(ConsignRequest cr, HttpHeaders httpHeaders,
-                               List<InsertConsignRecordResult> r7List,
+    private void createConsign(ConsignRequest cr, HttpHeaders httpHeaders, List<InsertConsignRecordResult> r7List,
                                List<CompletableFuture<Void>> futures) {
         System.out.println("[Preserve Service][Add Condign] Creating....");
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            HttpEntity requestEntityResultForTravel = new HttpEntity(cr, httpHeaders);
+            HttpEntity<ConsignRequest> requestEntityResultForTravel = new HttpEntity<>(cr, httpHeaders);
             ResponseEntity<InsertConsignRecordResult> reResultForTravel = restTemplate.exchange(
                     "http://ts-consign-service:16111/consign/insertConsign",
                     HttpMethod.POST,
