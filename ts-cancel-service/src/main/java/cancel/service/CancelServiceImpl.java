@@ -342,6 +342,11 @@ public class CancelServiceImpl implements CancelService {
             changeOrderResults, List<CompletableFuture<Void>> futures) {
         HttpEntity<ChangeOrderInfo> requestEntity = new HttpEntity<>(info, headers);
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(3);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             ResponseEntity<ChangeOrderResult> re = restTemplate.exchange(
                     "http://ts-order-other-service:12032/orderOther/update",
                     HttpMethod.POST,
