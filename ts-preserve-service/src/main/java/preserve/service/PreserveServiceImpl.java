@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserve.domain.*;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,6 +19,9 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class PreserveServiceImpl implements PreserveService {
 
+    List<AddAssuranceResult> r5List = new ArrayList<>();
+    List<AddFoodOrderResult> r6List = new ArrayList<>();
+    List<CompletableFuture<Void>> futures = new ArrayList<>();
     @Autowired
     private RestTemplate restTemplate;
 
@@ -41,36 +43,13 @@ public class PreserveServiceImpl implements PreserveService {
                 return otr;
             }
             System.out.println("[Preserve Service] [Step 1] Check Security Complete");
-
-            // seq fault
-            List<GetContactsResult> r2List = new ArrayList<>();
-            List<GetTripAllDetailResult> re3List = new ArrayList<>();
-            List<CompletableFuture<Void>> futures = new ArrayList<>();
-
-            //2. 3. request param
+            //2.查询联系人信息 -- 修改，通过基础信息微服务作为中介
             System.out.println("[Preserve Service] [Step 2] Find contacts");
             GetContactsInfo gci = new GetContactsInfo();
             System.out.println("[Preserve Service] [Step 2] Contacts Id:" + oti.getContactsId());
             gci.setContactsId(oti.getContactsId());
             gci.setLoginToken(loginToken);
-            System.out.println("[Preserve Service] [Step 3] Check tickets num");
-            GetTripAllDetailInfo gtdi = new GetTripAllDetailInfo();
-            gtdi.setFrom(oti.getFrom());//todo
-            gtdi.setTo(oti.getTo());
-            gtdi.setTravelDate(oti.getDate());
-            gtdi.setTripId(oti.getTripId());
-            System.out.println("[Preserve Service] [Step 3] TripId:" + oti.getTripId());
-
-            // sync call
-            getContactsById(gci, headers, r2List, futures);
-            getTripAllDetailInformation(gtdi, headers, r2List, re3List, futures);
-
-            // wait
-            futures.forEach(x -> x.join());
-
-            GetContactsResult gcr = r2List.get(0);
-            GetTripAllDetailResult gtdr = re3List.get(0);
-
+            GetContactsResult gcr = getContactsById(gci, headers);
             if (gcr.isStatus() == false) {
                 System.out.println("[Preserve Service][Get Contacts] Fail." + gcr.getMessage());
                 otr.setStatus(false);
@@ -80,6 +59,16 @@ public class PreserveServiceImpl implements PreserveService {
             }
             System.out.println("[Preserve Service][Step 2] Complete");
             //3.查询座位余票信息和车次的详情
+            System.out.println("[Preserve Service] [Step 3] Check tickets num");
+            GetTripAllDetailInfo gtdi = new GetTripAllDetailInfo();
+
+            gtdi.setFrom(oti.getFrom());//todo
+            gtdi.setTo(oti.getTo());
+
+            gtdi.setTravelDate(oti.getDate());
+            gtdi.setTripId(oti.getTripId());
+            System.out.println("[Preserve Service] [Step 3] TripId:" + oti.getTripId());
+            GetTripAllDetailResult gtdr = getTripAllDetailInformation(gtdi, headers);
             if (gtdr.isStatus() == false) {
                 System.out.println("[Preserve Service][Search For Trip Detail Information] " + gcr.getMessage());
                 otr.setStatus(false);
@@ -189,42 +178,42 @@ public class PreserveServiceImpl implements PreserveService {
             otr.setStatus(true);
             otr.setMessage("Success");
             otr.setOrder(cor.getOrder());
+
+            // seq fault
+            AddFoodOrderInfo afoi = new AddFoodOrderInfo();
+            afoi.setOrderId(cor.getOrder().getId().toString());
+            afoi.setFoodType(oti.getFoodType());
+            afoi.setFoodName(oti.getFoodName());
+            afoi.setPrice(oti.getFoodPrice());
+
+            List<AddAssuranceResult> r5List = new ArrayList<>();
+            List<AddFoodOrderResult> r6List = new ArrayList<>();
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+            addAssuranceForOrder(
+                    oti.getAssurance(), cor.getOrder().getId().toString(), headers, r5List, futures);
+            createFoodOrder(afoi, headers, r5List, r6List, futures);
+
+            futures.forEach(x -> x.join());
+            AddAssuranceResult addAssuranceResult = r5List.get(0);
+            AddFoodOrderResult afor = r6List.get(0);
             //5.检查保险的选择
-            if (oti.getAssurance() == 0) {
-                System.out.println("[Preserve Service][Step 5] Do not need to buy assurance");
+            if (addAssuranceResult.isStatus() == true) {
+                System.out.println("[Preserve Service][Step 5] Buy Assurance Success");
             } else {
-                AddAssuranceResult addAssuranceResult = addAssuranceForOrder(
-                        oti.getAssurance(), cor.getOrder().getId().toString(), headers);
-                if (addAssuranceResult.isStatus() == true) {
-                    System.out.println("[Preserve Service][Step 5] Buy Assurance Success");
-                } else {
-                    System.out.println("[Preserve Service][Step 5] Buy Assurance Fail.");
-                    otr.setMessage("Success.But Buy Assurance Fail.");
-                }
+                System.out.println("[Preserve Service][Step 5] Buy Assurance Fail.");
+                otr.setMessage("Success.But Buy Assurance Fail.");
             }
 
             //6.增加订餐
 //            System.out.println("[Food Service]!!!!!!!!!!!!!!!foodstorename=" + oti.getStationName()+"   "+oti.getStoreName());
-            if (oti.getFoodType() != 0) {
-                AddFoodOrderInfo afoi = new AddFoodOrderInfo();
-                afoi.setOrderId(cor.getOrder().getId().toString());
-                afoi.setFoodType(oti.getFoodType());
-                afoi.setFoodName(oti.getFoodName());
-                afoi.setPrice(oti.getFoodPrice());
-                if (oti.getFoodType() == 2) {
-                    afoi.setStationName(oti.getStationName());
-                    afoi.setStoreName(oti.getStoreName());
-                    System.out.println("[Food Service]!!!!!!!!!!!!!!!foodstore=" + afoi.getFoodType() + "   " + afoi.getStationName() + "   " + afoi.getStoreName());
-                }
-                AddFoodOrderResult afor = createFoodOrder(afoi, headers);
-                if (afor.isStatus()) {
-                    System.out.println("[Preserve Service][Step 6] Buy Food Success");
-                } else {
-                    System.out.println("[Preserve Service][Step 6] Buy Food Fail.");
-                    otr.setMessage("Success.But Buy Food Fail.");
-                }
+
+
+            if (afor.isStatus()) {
+                System.out.println("[Preserve Service][Step 6] Buy Food Success");
             } else {
-                System.out.println("[Preserve Service][Step 6] Do not need to buy food");
+                System.out.println("[Preserve Service][Step 6] Buy Food Fail.");
+                otr.setMessage("Success.But Buy Food Fail.");
             }
 
             //7.增加托运
@@ -340,25 +329,28 @@ public class PreserveServiceImpl implements PreserveService {
         return result;
     }
 
-    private AddAssuranceResult addAssuranceForOrder(int assuranceType, String orderId, HttpHeaders httpHeaders) {
+    private void addAssuranceForOrder(int assuranceType, String orderId, HttpHeaders httpHeaders,
+                                      List<AddAssuranceResult> r5List, List<CompletableFuture<Void>> futures) {
         System.out.println("[Preserve Service][Add Assurance For Order]");
         AddAssuranceInfo info = new AddAssuranceInfo();
         info.setOrderId(orderId);
         info.setTypeIndex(assuranceType);
 
-        HttpEntity requestAddAssuranceResult = new HttpEntity(info, httpHeaders);
-        ResponseEntity<AddAssuranceResult> reAddAssuranceResult = restTemplate.exchange(
-                "http://ts-assurance-service:18888/assurance/create",
-                HttpMethod.POST,
-                requestAddAssuranceResult,
-                AddAssuranceResult.class);
-        AddAssuranceResult result = reAddAssuranceResult.getBody();
-//        AddAssuranceResult result = restTemplate.postForObject(
-//                "http://ts-assurance-service:18888/assurance/create",
-//                info,
-//                AddAssuranceResult.class
-//        );
-        return result;
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            HttpEntity<AddAssuranceInfo> requestAddAssuranceResult = new HttpEntity<>(info, httpHeaders);
+            ResponseEntity<AddAssuranceResult> reAddAssuranceResult = restTemplate.exchange(
+                    "http://ts-assurance-service:18888/assurance/create",
+                    HttpMethod.POST,
+                    requestAddAssuranceResult,
+                    AddAssuranceResult.class);
+            return reAddAssuranceResult.getBody();
+        }).thenAccept(r5List::add);
+        futures.add(future);
     }
 
     private String queryForStationId(String stationName, HttpHeaders httpHeaders) {
@@ -409,44 +401,38 @@ public class PreserveServiceImpl implements PreserveService {
         return tokenResult;
     }
 
-    private void getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders,
-                                             List<GetContactsResult> r2List,
-                                             List<GetTripAllDetailResult> re3List,
-                                             List<CompletableFuture<Void>> futures) {
+
+    private GetTripAllDetailResult getTripAllDetailInformation(GetTripAllDetailInfo gtdi, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Other Service][Get Trip All Detail Information] Getting....");
-        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            HttpEntity<GetTripAllDetailInfo> requestGetTripAllDetailResult = new HttpEntity<>(gtdi, httpHeaders);
-            ResponseEntity<GetTripAllDetailResult> reGetTripAllDetailResult = restTemplate.exchange(
-                    "http://ts-travel-service:12346/travel/getTripAllDetailInfo/",
-                    HttpMethod.POST,
-                    requestGetTripAllDetailResult,
-                    GetTripAllDetailResult.class);
-            System.out.println(r2List.get(0).getMessage());
-            return reGetTripAllDetailResult.getBody();
-        }).thenAccept(re3List::add);
-        futures.add(future);
+
+        HttpEntity requestGetTripAllDetailResult = new HttpEntity(gtdi, httpHeaders);
+        ResponseEntity<GetTripAllDetailResult> reGetTripAllDetailResult = restTemplate.exchange(
+                "http://ts-travel-service:12346/travel/getTripAllDetailInfo/",
+                HttpMethod.POST,
+                requestGetTripAllDetailResult,
+                GetTripAllDetailResult.class);
+        GetTripAllDetailResult gtdr = reGetTripAllDetailResult.getBody();
+//        GetTripAllDetailResult gtdr = restTemplate.postForObject(
+//                "http://ts-travel-service:12346/travel/getTripAllDetailInfo/"
+//                ,gtdi,GetTripAllDetailResult.class);
+        return gtdr;
     }
 
 
-    private void getContactsById(GetContactsInfo gci, HttpHeaders httpHeaders, List<GetContactsResult> r2List, List<CompletableFuture<Void>> futures) {
+    private GetContactsResult getContactsById(GetContactsInfo gci, HttpHeaders httpHeaders) {
         System.out.println("[Preserve Other Service][Get Contacts By Id] Getting....");
 
-        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(3);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            HttpEntity<GetContactsInfo> requestGetContactsResult = new HttpEntity<>(gci, httpHeaders);
-            ResponseEntity<GetContactsResult> reGetContactsResult = restTemplate.exchange(
-                    "http://ts-contacts-service:12347/contacts/getContactsById/",
-                    HttpMethod.POST,
-                    requestGetContactsResult,
-                    GetContactsResult.class);
-            return reGetContactsResult.getBody();
-        }).thenAccept(r2List::add);
-
-        futures.add(future);
+        HttpEntity requestGetContactsResult = new HttpEntity(gci, httpHeaders);
+        ResponseEntity<GetContactsResult> reGetContactsResult = restTemplate.exchange(
+                "http://ts-contacts-service:12347/contacts/getContactsById/",
+                HttpMethod.POST,
+                requestGetContactsResult,
+                GetContactsResult.class);
+        GetContactsResult gcr = reGetContactsResult.getBody();
+//        GetContactsResult gcr = restTemplate.postForObject(
+//                "http://ts-contacts-service:12347/contacts/getContactsById/"
+//                ,gci,GetContactsResult.class);
+        return gcr;
     }
 
     private CreateOrderResult createOrder(CreateOrderInfo coi, HttpHeaders httpHeaders) {
@@ -466,20 +452,22 @@ public class PreserveServiceImpl implements PreserveService {
         return cor;
     }
 
-    private AddFoodOrderResult createFoodOrder(AddFoodOrderInfo afi, HttpHeaders httpHeaders) {
+    private void createFoodOrder(AddFoodOrderInfo afi, HttpHeaders httpHeaders, List<AddAssuranceResult> r5List,
+                                 List<AddFoodOrderResult> r6List, List<CompletableFuture<Void>> futures) {
         System.out.println("[Preserve Service][Add food Order] Creating....");
 
-        HttpEntity requestEntityAddFoodOrderResult = new HttpEntity(afi, httpHeaders);
-        ResponseEntity<AddFoodOrderResult> reAddFoodOrderResult = restTemplate.exchange(
-                "http://ts-food-service:18856/food/createFoodOrder",
-                HttpMethod.POST,
-                requestEntityAddFoodOrderResult,
-                AddFoodOrderResult.class);
-        AddFoodOrderResult afr = reAddFoodOrderResult.getBody();
-//        AddFoodOrderResult afr = restTemplate.postForObject(
-//                "http://ts-food-service:18856/food/createFoodOrder"
-//                ,afi,AddFoodOrderResult.class);
-        return afr;
+        CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            HttpEntity<AddFoodOrderInfo> requestEntityAddFoodOrderResult = new HttpEntity<>(afi, httpHeaders);
+            ResponseEntity<AddFoodOrderResult> reAddFoodOrderResult = restTemplate.exchange(
+                    "http://ts-food-service:18856/food/createFoodOrder",
+                    HttpMethod.POST,
+                    requestEntityAddFoodOrderResult,
+                    AddFoodOrderResult.class);
+            System.out.println(r5List.get(0));
+            return reAddFoodOrderResult.getBody();
+        }).thenAccept(r6List::add);
+
+        futures.add(future);
     }
 
     private InsertConsignRecordResult createConsign(ConsignRequest cr, HttpHeaders httpHeaders) {
