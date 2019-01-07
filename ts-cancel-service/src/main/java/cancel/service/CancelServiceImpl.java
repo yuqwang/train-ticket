@@ -323,7 +323,7 @@ public class CancelServiceImpl implements CancelService {
         HttpEntity<ChangeOrderInfo> requestEntity = new HttpEntity<>(info, headers);
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             try {
-                TimeUnit.SECONDS.sleep(4);
+                TimeUnit.SECONDS.sleep(3);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -340,14 +340,8 @@ public class CancelServiceImpl implements CancelService {
 
     private void cancelFromOtherOrder(ChangeOrderInfo info, HttpHeaders headers, List<ChangeOrderResult>
             changeOrderResults, List<CompletableFuture<Void>> futures) {
-        logger.info("[Cancel Order Service][Change Order Status] Changing....");
         HttpEntity<ChangeOrderInfo> requestEntity = new HttpEntity<>(info, headers);
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(4);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             ResponseEntity<ChangeOrderResult> re = restTemplate.exchange(
                     "http://ts-order-other-service:12032/orderOther/update",
                     HttpMethod.POST,
@@ -355,7 +349,6 @@ public class CancelServiceImpl implements CancelService {
                     ChangeOrderResult.class);
             return re.getBody();
         }).thenAccept(changeOrderResults::add);
-
         futures.add(future);
     }
 
@@ -366,18 +359,13 @@ public class CancelServiceImpl implements CancelService {
         info.setMoney(money);
         info.setUserId(userId);
         HttpEntity<DrawBackInfo> requestEntity = new HttpEntity<>(info, headers);
-        logger.info(changeOrderResults.get(0).toString());
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             ResponseEntity<String> re = restTemplate.exchange(
                     "http://ts-inside-payment-service:18673/inside_payment/drawBack",
                     HttpMethod.POST,
                     requestEntity,
                     String.class);
+            logger.info(changeOrderResults.get(0).toString());
             String result = re.getBody();
             if (result.equals("true")) {
                 return true;
