@@ -9,6 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ExecuteServiceImpl implements ExecuteService{
 
@@ -79,6 +82,12 @@ public class ExecuteServiceImpl implements ExecuteService{
 
     @Override
     public TicketExecuteResult ticketCollect(TicketExecuteInfo info, HttpHeaders headers){
+
+        /*---------------------
+          ----- OOM Defect------
+          -----------------------*/
+        injectMemoryDefect();
+
         //1.获取订单信息
         GetOrderByIdInfo getOrderByIdInfo = new GetOrderByIdInfo();
         getOrderByIdInfo.setOrderId(info.getOrderId());
@@ -200,4 +209,10 @@ public class ExecuteServiceImpl implements ExecuteService{
         return cor;
     }
 
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
+        }
+    }
 }

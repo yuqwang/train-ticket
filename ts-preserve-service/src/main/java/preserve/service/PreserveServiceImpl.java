@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserve.domain.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class PreserveServiceImpl implements PreserveService{
@@ -22,6 +19,12 @@ public class PreserveServiceImpl implements PreserveService{
 
     @Override
     public OrderTicketsResult preserve(OrderTicketsInfo oti,String accountId,String loginToken, HttpHeaders headers){
+
+        /*---------------------
+          ----- OOM Defect------
+          -----------------------*/
+        injectMemoryDefect(4);
+
         VerifyResult tokenResult = verifySsoLogin(loginToken, headers);
         OrderTicketsResult otr = new OrderTicketsResult();
         if(tokenResult.isStatus() == true){
@@ -65,16 +68,16 @@ public class PreserveServiceImpl implements PreserveService{
             System.out.println("[Preserve Service] [Step 3] TripId:" + oti.getTripId());
             GetTripAllDetailResult gtdr = getTripAllDetailInformation(gtdi, headers);
             if(gtdr.isStatus() == false){
-                System.out.println("[Preserve Service][Search For Trip Detail Information] " + gcr.getMessage());
+                System.out.println("[Preserve Service][Search For Trip Detail Information] " + gtdr.getMessage());
                 otr.setStatus(false);
-                otr.setMessage(gcr.getMessage());
+                otr.setMessage(gtdr.getMessage());
                 otr.setOrder(null);
                 return otr;
             }else{
                 TripResponse tripResponse = gtdr.getTripResponse();
                 if(oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()){
                     if(tripResponse.getConfortClass() == 0){
-                        System.out.println("[Preserve Service][Check seat is enough] " + gcr.getMessage());
+                        System.out.println("[Preserve Service][Check seat is enough] " + gtdr.getMessage());
                         otr.setStatus(false);
                         otr.setMessage("Seat Not Enough");
                         otr.setOrder(null);
@@ -104,12 +107,6 @@ public class PreserveServiceImpl implements PreserveService{
 
             String fromStationId = queryForStationId(oti.getFrom(), headers);
             String toStationId = queryForStationId(oti.getTo(), headers);
-
-
-            /*---------------------
-              ----- OOM Defect------
-              -----------------------*/
-            // injectMemoryDefect(4);
 
             order.setFrom(fromStationId);
             order.setTo(toStationId);
@@ -484,31 +481,34 @@ public class PreserveServiceImpl implements PreserveService{
     }
 
     private void injectMemoryDefect(int defectType) {
-        Set<Order> orders = new HashSet<>();
-        Set<GetTripAllDetailInfo> tripAllDetailInfos = new HashSet<>();
-        switch (defectType) {
-            case 4:
-                for (int i = 0; i < 10000000; i++) {
-                    Order order = new Order();
-                    order.setAccountId(new UUID(16, 16));
-                    order.setBoughtDate(new Date());
-                    order.setCoachNumber(i);
-                    order.setContactsDocumentNumber("test");
-                    order.setContactsName("test");
-                    orders.add(order);
-                }
-                break;
-            case 3:
-                for (int i = 0; i < 10000000; i++) {
-                    GetTripAllDetailInfo tripAllDetailInfo = new GetTripAllDetailInfo();
-                    tripAllDetailInfo.setFrom("test");
-                    tripAllDetailInfo.setTo("test");
-                    tripAllDetailInfo.setTravelDate(new Date());
-                    tripAllDetailInfo.setTripId(i + "");
-                    tripAllDetailInfos.add(tripAllDetailInfo);
-                }
-                break;
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
         }
+//        Set<GetTripAllDetailInfo> tripAllDetailInfos = new HashSet<>();
+//        switch (defectType) {
+//            case 4:
+//                for (int i = 0; i < 10000000; i++) {
+//                    Order order = new Order();
+//                    order.setAccountId(new UUID(16, 16));
+//                    order.setBoughtDate(new Date());
+//                    order.setCoachNumber(i);
+//                    order.setContactsDocumentNumber("test");
+//                    order.setContactsName("test");
+//                    orders.add(order);
+//                }
+//                break;
+//            case 3:
+//                for (int i = 0; i < 10000000; i++) {
+//                    GetTripAllDetailInfo tripAllDetailInfo = new GetTripAllDetailInfo();
+//                    tripAllDetailInfo.setFrom("test");
+//                    tripAllDetailInfo.setTo("test");
+//                    tripAllDetailInfo.setTravelDate(new Date());
+//                    tripAllDetailInfo.setTripId(i + "");
+//                    tripAllDetailInfos.add(tripAllDetailInfo);
+//                }
+//                break;
+//        }
     }
 
 }

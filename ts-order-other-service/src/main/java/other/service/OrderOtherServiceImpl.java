@@ -109,6 +109,12 @@ public class OrderOtherServiceImpl implements OrderOtherService{
 
     @Override
     public ArrayList<Order> queryOrders(QueryInfo qi,String accountId, HttpHeaders headers){
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect();
+
         //1.Get all orders of the user
         ArrayList<Order> list = orderOtherRepository.findByAccountId(UUID.fromString(accountId));
         System.out.println("[Order Other Service][Query Order][Step 1] Get Orders Number of Account:" + list.size());
@@ -462,7 +468,12 @@ public class OrderOtherServiceImpl implements OrderOtherService{
         return result;
     }
 
-
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
+        }
+    }
 
 }
 

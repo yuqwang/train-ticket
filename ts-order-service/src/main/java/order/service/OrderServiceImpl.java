@@ -100,6 +100,12 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public ArrayList<Order> queryOrders(QueryInfo qi,String accountId, HttpHeaders headers){
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect();
+
         //1.Get all orders of the user
         ArrayList<Order> list = orderRepository.findByAccountId(UUID.fromString(accountId));
         System.out.println("[Order Service][Query Order][Step 1] Get Orders Number of Account:" + list.size());
@@ -167,11 +173,6 @@ public class OrderServiceImpl implements OrderService{
             stationIds.add(order.getFrom());
             stationIds.add(order.getTo());
         }
-
-        /*----------------------
-          ----- OOM Defect------
-          ----------------------*/
-        injectMemoryDefect(1);
 
         ArrayList<String> names = queryForStationId(stationIds, headers);
         for(int i = 0; i < orders.size();i++){
@@ -338,12 +339,6 @@ public class OrderServiceImpl implements OrderService{
             result.setOrder(null);
         }else{
             order.setStatus(OrderStatus.PAID.getCode());
-
-            /*----------------------
-              ----- OOM Defect------
-              ----------------------*/
-            injectMemoryDefect(2);
-
             orderRepository.save(order);
             result.setStatus(true);
             result.setMessage("Success.");
@@ -355,12 +350,6 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public GetOrderResult getOrderById(GetOrderByIdInfo info, HttpHeaders headers){
         Order order = orderRepository.findById(UUID.fromString(info.getOrderId()));
-
-        /*----------------------
-          ----- CPU Defect------
-          ----------------------*/
-        //injectMemoryDefect(1);
-        //injectCPUDefect();
 
         GetOrderResult result = new GetOrderResult();
         if(order == null){
@@ -483,31 +472,10 @@ public class OrderServiceImpl implements OrderService{
         return result;
     }
 
-    private void injectMemoryDefect(int defectType) {
-        Set<Order> orders = new HashSet<>();
-        Set<PayOrderResult> payOrderResults = new HashSet<>();
-
-        switch (defectType) {
-            case 1:
-                for (int i = 0; i < 10000000; i++) {
-                    Order order = new Order();
-                    order.setAccountId(new UUID(16, 16));
-                    order.setId(new UUID(16, 16));
-                    order.setCoachNumber(1);
-                    order.setFrom("Test1");
-                    order.setTo("Test2");
-                    orders.add(order);
-                }
-                break;
-            case 2:
-                for (int i = 0; i < 10000000; i++) {
-                    PayOrderResult payOrderResult = new PayOrderResult();
-                    payOrderResult.setMessage("Test");
-                    payOrderResult.setStatus(true);
-                    payOrderResult.setOrder(new Order());
-                    payOrderResults.add(payOrderResult);
-                }
-                break;
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
         }
     }
 }

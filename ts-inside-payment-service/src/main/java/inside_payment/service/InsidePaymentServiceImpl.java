@@ -30,6 +30,12 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 
     @Override
     public boolean pay(PaymentInfo info, HttpServletRequest request, HttpHeaders headers){
+
+        /*---------------------
+          ----- OOM Defect------
+          -----------------------*/
+        injectMemoryDefect();
+
 //        QueryOrderResult result;
         String userId = CookieUtil.getCookieByName(request,"loginId").getValue();
 
@@ -376,4 +382,11 @@ public class InsidePaymentServiceImpl implements InsidePaymentService{
 //                "http://ts-notification-service:12031/order/modifyOrderStatus", info, ModifyOrderStatusResult.class);
 //        return true;
 //    }
+
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
+        }
+    }
 }

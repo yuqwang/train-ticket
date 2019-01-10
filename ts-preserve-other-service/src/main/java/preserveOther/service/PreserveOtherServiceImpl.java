@@ -9,7 +9,10 @@ import org.springframework.integration.dsl.http.Http;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserveOther.domain.*;
+
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,6 +23,12 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
 
     @Override
     public OrderTicketsResult preserve(OrderTicketsInfo oti, String accountId, String loginToken, HttpHeaders httpHeaders){
+
+        /*---------------------
+          ----- OOM Defect------
+          -----------------------*/
+        injectMemoryDefect();
+
         VerifyResult tokenResult = verifySsoLogin(loginToken, httpHeaders);
         OrderTicketsResult otr = new OrderTicketsResult();
         if(tokenResult.isStatus() == true){
@@ -64,16 +73,16 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
             System.out.println("[Preserve Other Service] [Step 3] TripId:" + oti.getTripId());
             GetTripAllDetailResult gtdr = getTripAllDetailInformation(gtdi, httpHeaders);
             if(gtdr.isStatus() == false){
-                System.out.println("[Preserve Other Service][Search For Trip Detail Information] " + gcr.getMessage());
+                System.out.println("[Preserve Other Service][Search For Trip Detail Information] " + gtdr.getMessage());
                 otr.setStatus(false);
-                otr.setMessage(gcr.getMessage());
+                otr.setMessage(gtdr.getMessage());
                 otr.setOrder(null);
                 return otr;
             }else{
                 TripResponse tripResponse = gtdr.getTripResponse();
                 if(oti.getSeatType() == SeatClass.FIRSTCLASS.getCode()){
                     if(tripResponse.getConfortClass() == 0){
-                        System.out.println("[Preserve Other Service][Check seat is enough] " + gcr.getMessage());
+                        System.out.println("[Preserve Other Service][Check seat is enough] " + gtdr.getMessage());
                         otr.setStatus(false);
                         otr.setMessage("Seat Not Enough");
                         otr.setOrder(null);
@@ -82,7 +91,7 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
                 }else{
                     if(tripResponse.getEconomyClass() == SeatClass.SECONDCLASS.getCode()){
                         if(tripResponse.getConfortClass() == 0){
-                            System.out.println("[Preserve Other Service][Check seat is enough] " + gcr.getMessage());
+                            System.out.println("[Preserve Other Service][Check seat is enough] " + gtdr.getMessage());
                             otr.setStatus(false);
                             otr.setMessage("Seat Not Enough");
                             otr.setOrder(null);
@@ -488,5 +497,12 @@ public class PreserveOtherServiceImpl implements PreserveOtherService{
 //                ,cr,InsertConsignRecordResult.class);
 
         return icr;
+    }
+
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
+        }
     }
 }

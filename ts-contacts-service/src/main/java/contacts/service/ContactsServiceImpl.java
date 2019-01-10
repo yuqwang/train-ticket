@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import contacts.repository.ContactsRepository;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -22,6 +23,10 @@ public class ContactsServiceImpl implements ContactsService{
     @Override
     public ArrayList<Contacts> findContactsByAccountId(UUID accountId, HttpHeaders headers){
         ArrayList<Contacts> arr = contactsRepository.findByAccountId(accountId);
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect();
         System.out.println("[Contacts-Query-Service][Query-Contacts] Result Size:" + arr.size());
         return arr;
     }
@@ -114,6 +119,12 @@ public class ContactsServiceImpl implements ContactsService{
         return result;
     }
 
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
+        }
+    }
 }
 
 

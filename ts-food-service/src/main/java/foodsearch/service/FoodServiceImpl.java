@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class FoodServiceImpl implements FoodService{
@@ -28,6 +25,11 @@ public class FoodServiceImpl implements FoodService{
     public GetAllFoodOfTripResult getAllFood(String date, String startStation, String endStation, String tripId, HttpHeaders headers) {
         System.out.println("data=" + date + "start=" + startStation + "end=" + endStation + "tripid=" + tripId);
         GetAllFoodOfTripResult result = new GetAllFoodOfTripResult();
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect();
 
         if(null == tripId || tripId.length() <= 2){
             result.setStatus(false);
@@ -278,5 +280,10 @@ public class FoodServiceImpl implements FoodService{
         return result;
     }
 
-
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
+        }
+    }
 }

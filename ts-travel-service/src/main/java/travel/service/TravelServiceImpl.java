@@ -25,11 +25,6 @@ public class TravelServiceImpl implements TravelService{
     public GetRouteResult getRouteByTripId(String tripId, HttpHeaders headers){
         GetRouteResult result = new GetRouteResult();
 
-        /*----------------------
-          ----- OOM Defect------
-          ----------------------*/
-        injectMemoryDefect(1);
-
         if(null != tripId && tripId.length() >= 2){
             TripId tripId1 = new TripId(tripId);
             Trip trip = repository.findByTripId(tripId1);
@@ -161,6 +156,11 @@ public class TravelServiceImpl implements TravelService{
 
     @Override
     public ArrayList<TripResponse> query(QueryInfo info, HttpHeaders headers){
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect();
 
         //获取要查询的车次的起始站和到达站。这里收到的起始站和到达站都是站的名称，所以需要发两个请求转换成站的id
         String startingPlaceName = info.getStartingPlace();
@@ -451,51 +451,55 @@ public class TravelServiceImpl implements TravelService{
         return result;
     }
 
-    private void injectMemoryDefect(int defectType) {
-        Set<Trip> trips = new HashSet<>();
-        Set<TripId> tripIds = new HashSet<>();
-        Set<TripResponse> tripResponses = new HashSet<>();
-        Set<TrainType> trainTypes = new HashSet<>();
-
-        switch (defectType) {
-            case 1:
-                for (int i = 0; i < 10000000; i++) {
-                    Trip trip = new Trip();
-                    trip.setTripId(new TripId("G"));
-                    trip.setEndTime(new Date());
-                    trip.setStartingTime(new Date());
-                    trips.add(trip);
-                }
-                break;
-            case 2:
-                for (int i = 0; i < 10000000; i++) {
-                    TripId tripId = new TripId("D");
-                    tripIds.add(tripId);
-                }
-                break;
-            case 3:
-                for (int i = 0; i < 10000000; i++) {
-                    TripResponse tripResponse = new TripResponse();
-                    tripResponse.setTripId(new TripId("G"));
-                    tripResponse.setConfortClass(1);
-                    tripResponse.setEndTime(new Date());
-                    tripResponse.setStartingTime(new Date());
-                    tripResponses.add(tripResponse);
-                }
-                break;
-            case 4:
-                for (int i = 0; i < 10000000; i++) {
-                    TrainType trainType = new TrainType();
-                    trainType.setAverageSpeed(100);
-                    trainType.setConfortClass(1);
-                    trainType.setEconomyClass(1);
-                    trainType.setId(i + "");
-                    trainTypes.add(trainType);
-                }
-                break;
-
-            default:
-                break;
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
         }
+//        Set<Trip> trips = new HashSet<>();
+//        Set<TripId> tripIds = new HashSet<>();
+//        Set<TripResponse> tripResponses = new HashSet<>();
+//        Set<TrainType> trainTypes = new HashSet<>();
+
+//        switch (defectType) {
+//            case 1:
+//                for (int i = 0; i < 10000000; i++) {
+//                    Trip trip = new Trip();
+//                    trip.setTripId(new TripId("G"));
+//                    trip.setEndTime(new Date());
+//                    trip.setStartingTime(new Date());
+//                    trips.add(trip);
+//                }
+//                break;
+//            case 2:
+//                for (int i = 0; i < 10000000; i++) {
+//                    TripId tripId = new TripId("D");
+//                    tripIds.add(tripId);
+//                }
+//                break;
+//            case 3:
+//                for (int i = 0; i < 10000000; i++) {
+//                    TripResponse tripResponse = new TripResponse();
+//                    tripResponse.setTripId(new TripId("G"));
+//                    tripResponse.setConfortClass(1);
+//                    tripResponse.setEndTime(new Date());
+//                    tripResponse.setStartingTime(new Date());
+//                    tripResponses.add(tripResponse);
+//                }
+//                break;
+//            case 4:
+//                for (int i = 0; i < 10000000; i++) {
+//                    TrainType trainType = new TrainType();
+//                    trainType.setAverageSpeed(100);
+//                    trainType.setConfortClass(1);
+//                    trainType.setEconomyClass(1);
+//                    trainType.setId(i + "");
+//                    trainTypes.add(trainType);
+//                }
+//                break;
+//
+//            default:
+//                break;
+//        }
     }
 }

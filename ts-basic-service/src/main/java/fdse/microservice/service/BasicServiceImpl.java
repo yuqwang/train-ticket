@@ -9,9 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class BasicServiceImpl implements BasicService{
@@ -41,7 +39,7 @@ public class BasicServiceImpl implements BasicService{
         /*---------------------
          ----- OOM Defect------
          -----------------------*/
-        injectMemoryDefect(1);
+        injectMemoryDefect();
 
         String routeId = info.getTrip().getRouteId();
         String trainTypeString = trainType.getId();
@@ -160,29 +158,10 @@ public class BasicServiceImpl implements BasicService{
         return result.getPriceConfig();
     }
 
-    private void injectMemoryDefect(int testType) {
-        Set<ResultForTravel> resultForTravels = new HashSet<>();
-        Set<TrainType> trainTypes = new HashSet<>();
-        switch (testType) {
-            case 1:
-                for (int i = 0; i < 10000000; i++) {
-                    ResultForTravel resultForTravel = new ResultForTravel();
-                    TrainType trainType = new TrainType(String.valueOf(i), 1,1 );
-                    resultForTravel.setPercent(0);
-                    resultForTravel.setStatus(true);
-                    resultForTravel.setPrices(new HashMap<>());
-                    resultForTravel.setTrainType(trainType);
-                    resultForTravels.add(resultForTravel);
-                }
-                break;
-            case 2:
-                for (int i = 0; i < 10000000; i++) {
-                    TrainType trainType = new TrainType(String.valueOf(i), 1,1 );
-                    trainTypes.add(trainType);
-                }
-                break;
-            default:
-                break;
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
         }
     }
 }

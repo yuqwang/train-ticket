@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,6 +33,12 @@ public class AccountLoginServiceImpl implements AccountLoginService {
         headers.add("Cookie","YsbCaptcha=" + YsbCaptcha);
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("verificationCode", li.getVerificationCode());
+
+        /*
+         * Inject memory defects
+         */
+        injectMemoryDefect();
+
         HttpEntity requestEntity = new HttpEntity(body,headers);
         ResponseEntity rssResponse = restTemplate.exchange(
                 "http://ts-verification-code-service:15678/verification/verify",
@@ -102,4 +110,10 @@ public class AccountLoginServiceImpl implements AccountLoginService {
 //        }
     }
 
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
+        }
+    }
 }

@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import seat.domain.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class SeatServiceImpl implements SeatService {
@@ -140,7 +137,7 @@ public class SeatServiceImpl implements SeatService {
         /*---------------------
          ----- OOM Defect------
          -----------------------*/
-        injectMemoryDefect(1);
+        injectMemoryDefect();
 
 
         //分配新的票
@@ -318,26 +315,10 @@ public class SeatServiceImpl implements SeatService {
         return Double.parseDouble(configValue);
     }
 
-    private void injectMemoryDefect(int defectType) {
-        Set<String> stationList = new HashSet<>();
-        Set<Ticket> tickets = new HashSet<>();
-        switch (defectType) {
-            case 1:
-                for (int i = 0; i < 10000000; i++) {
-                    Ticket ticket = new Ticket();
-                    ticket.setDestStation("Test1");
-                    ticket.setStartStation("Test2");
-                    tickets.add(ticket);
-                }
-
-                break;
-            case 2:
-                for (int i = 0; i < 10000000; i++) {
-                    stationList.add(i + "");
-                }
-                break;
-            default:
-                break;
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
         }
     }
 }

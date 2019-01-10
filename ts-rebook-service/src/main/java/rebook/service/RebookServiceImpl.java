@@ -36,7 +36,7 @@ public class RebookServiceImpl implements RebookService{
         /*----------------------
           ----- OOM Defect------
           ----------------------*/
-        injectMemoryDefect(1);
+        injectMemoryDefect();
 
         int status = order.getStatus();
         if(status == OrderStatus.NOTPAID.getCode()){
@@ -585,34 +585,10 @@ public class RebookServiceImpl implements RebookService{
         return result;
     }
 
-    private void injectMemoryDefect(int defectType) {
-        Set<Order> orders = new HashSet<>();
-        Set<GetTripAllDetailInfo> tripAllDetailInfos = new HashSet<>();
-
-        switch (defectType) {
-            case 1:
-                for (int i = 0; i < 10000000; i++) {
-                    Order order = new Order();
-                    order.setAccountId(new UUID(16, 16));
-                    order.setId(new UUID(16, 16));
-                    order.setBoughtDate(new Date());
-                    order.setCoachNumber(i);
-                    order.setPrice("111");
-                    orders.add(order);
-                }
-                break;
-            case 2:
-                for (int i = 0; i < 10000000; i++) {
-                    GetTripAllDetailInfo tripAllDetailInfo = new GetTripAllDetailInfo();
-                    tripAllDetailInfo.setFrom("Test1");
-                    tripAllDetailInfo.setTo("Test2");
-                    tripAllDetailInfo.setTravelDate(new Date());
-                    tripAllDetailInfo.setTripId(i + "");
-                    tripAllDetailInfos.add(tripAllDetailInfo);
-                }
-                break;
-            default:
-                break;
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
         }
     }
 }

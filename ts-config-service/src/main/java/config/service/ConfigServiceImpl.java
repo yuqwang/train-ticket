@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,11 +56,6 @@ public class ConfigServiceImpl implements ConfigService {
         if(repository.findByName(info.getName()) == null){
             return null;
         }else{
-
-            /*----------------------
-              ----- CPU Defect------
-              ----------------------*/
-            //injectCPUDefect();
             return repository.findByName(info.getName());
         }
     }
@@ -71,7 +67,7 @@ public class ConfigServiceImpl implements ConfigService {
             /*----------------------
               ----- OOM Defect------
               ----------------------*/
-            injectMemoryDefect(1);
+            injectMemoryDefect();
 
             return repository.findByName(info.getName()).getValue();
         }
@@ -92,16 +88,10 @@ public class ConfigServiceImpl implements ConfigService {
         return repository.findAll();
     }
 
-    private void injectMemoryDefect(int defectType) {
-        Set<Config> configs = new HashSet<>();
-
-        switch (defectType) {
-            case 1:
-                for (int i = 0; i < 10000000; i++) {
-                    Config config = new Config("TestName", "TestValue", "TestDescription");
-                    configs.add(config);
-                }
-                break;
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
         }
     }
 }

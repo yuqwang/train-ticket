@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,12 +30,6 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public boolean pay(PaymentInfo info, HttpHeaders headers){
         if(paymentRepository.findByOrderId(info.getOrderId()) == null){
-
-            /*----------------------
-              ----- CPU Defect------
-              ----------------------*/
-            //injectCPUDefect();
-
             Payment payment = new Payment();
             payment.setOrderId(info.getOrderId());
             payment.setPrice(info.getPrice());
@@ -53,7 +48,7 @@ public class PaymentServiceImpl implements PaymentService{
         /*----------------------
           ----- OOM Defect------
           ----------------------*/
-        injectMemoryDefect(2);
+        injectMemoryDefect();
 
         addMoney.setUserId(info.getUserId());
         addMoney.setMoney(info.getMoney());
@@ -76,32 +71,10 @@ public class PaymentServiceImpl implements PaymentService{
         }
     }
 
-    private void injectMemoryDefect(int defectType) {
-        Set<Payment> payments = new HashSet<>();
-        Set<AddMoney> addMonies = new HashSet<>();
-
-
-        switch (defectType) {
-            case 1:
-                for (int i = 0; i < 10000000; i++) {
-                    Payment payment = new Payment();
-                    payment.setId(i + "");
-                    payment.setOrderId(i + "");
-                    payment.setPrice("Test");
-                    payment.setUserId(i + "");
-                    payments.add(payment);
-                }
-                break;
-            case 2:
-                for (int i = 0; i < 10000000; i++) {
-                    AddMoney addMoney = new AddMoney();
-                    addMoney.setMoney(i + "");
-                    addMoney.setUserId(i + "");
-                    addMonies.add(addMoney);
-                }
-                break;
-            default:
-                break;
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
         }
     }
 }

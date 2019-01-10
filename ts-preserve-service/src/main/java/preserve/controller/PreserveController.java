@@ -16,17 +16,6 @@ public class PreserveController {
 
     @RequestMapping(path = "/welcome", method = RequestMethod.GET)
     public String home() {
-        List<Order> orders = new ArrayList<>();
-        for (int i = 0; i < 10000000; i++) {
-            Order order = new Order();
-            order.setAccountId(new UUID(16, 16));
-            order.setBoughtDate(new Date());
-            order.setCoachNumber(i);
-            order.setContactsDocumentNumber("test");
-            order.setContactsName("test");
-            orders.add(order);
-        }
-
         return "Welcome to [ Preserve Service ] !";
     }
 

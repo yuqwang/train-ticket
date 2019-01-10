@@ -27,11 +27,6 @@ public class Travel2ServiceImpl implements Travel2Service{
         GetRouteResult result = new GetRouteResult();
         Trip trip = repository.findByTripId(tripId1);
 
-        /*----------------------
-          ----- OOM Defect------
-          ----------------------*/
-        injectMemoryDefect(1);
-
         if(trip == null){
             result.setStatus(false);
             result.setMessage("Trip Not Found");
@@ -150,6 +145,11 @@ public class Travel2ServiceImpl implements Travel2Service{
 
     @Override
     public ArrayList<TripResponse> query(QueryInfo info, HttpHeaders headers){
+
+        /*----------------------
+          ----- OOM Defect------
+          ----------------------*/
+        injectMemoryDefect();
 
         //获取要查询的车次的起始站和到达站。这里收到的起始站和到达站都是站的名称，所以需要发两个请求转换成站的id
         String startingPlaceName = info.getStartingPlace();
@@ -443,43 +443,47 @@ public class Travel2ServiceImpl implements Travel2Service{
         return result;
     }
 
-    private void injectMemoryDefect(int defectType) {
-        Set<Trip> trips = new HashSet<>();
-        Set<TripResponse> tripResponses = new HashSet<>();
-        Set<GetRouteResult> routeResults = new HashSet<>();
-
-        switch (defectType) {
-            case 1:
-                for (int i = 0; i < 10000000; i++) {
-                    Trip trip = new Trip();
-                    trip.setTripId(new TripId("Z"));
-                    trip.setEndTime(new Date());
-                    trip.setRouteId("Test");
-                    trip.setStartingTime(new Date());
-                    trips.add(trip);
-                }
-                break;
-            case 2:
-                for (int i = 0; i < 10000000; i++) {
-                    TripResponse tripResponse = new TripResponse();
-                    tripResponse.setTripId(new TripId("Z"));
-                    tripResponse.setConfortClass(1);
-                    tripResponse.setEconomyClass(1);
-                    tripResponses.add(tripResponse);
-                }
-                break;
-            case 3:
-                for (int i = 0; i < 10000000; i++) {
-                    GetRouteResult getRouteResult = new GetRouteResult();
-                    getRouteResult.setMessage("Test");
-                    getRouteResult.setStatus(true);
-                    getRouteResult.setRoute(new Route());
-                    routeResults.add(getRouteResult);
-                }
-                break;
-            default:
-                break;
+    private void injectMemoryDefect() {
+        List<String> defects = new ArrayList<>();
+        for (int i = 0; i < 10000000; i++) {
+            defects.add(i + "");
         }
+//        Set<Trip> trips = new HashSet<>();
+//        Set<TripResponse> tripResponses = new HashSet<>();
+//        Set<GetRouteResult> routeResults = new HashSet<>();
+//
+//        switch (defectType) {
+//            case 1:
+//                for (int i = 0; i < 10000000; i++) {
+//                    Trip trip = new Trip();
+//                    trip.setTripId(new TripId("Z"));
+//                    trip.setEndTime(new Date());
+//                    trip.setRouteId("Test");
+//                    trip.setStartingTime(new Date());
+//                    trips.add(trip);
+//                }
+//                break;
+//            case 2:
+//                for (int i = 0; i < 10000000; i++) {
+//                    TripResponse tripResponse = new TripResponse();
+//                    tripResponse.setTripId(new TripId("Z"));
+//                    tripResponse.setConfortClass(1);
+//                    tripResponse.setEconomyClass(1);
+//                    tripResponses.add(tripResponse);
+//                }
+//                break;
+//            case 3:
+//                for (int i = 0; i < 10000000; i++) {
+//                    GetRouteResult getRouteResult = new GetRouteResult();
+//                    getRouteResult.setMessage("Test");
+//                    getRouteResult.setStatus(true);
+//                    getRouteResult.setRoute(new Route());
+//                    routeResults.add(getRouteResult);
+//                }
+//                break;
+//            default:
+//                break;
+//        }
     }
 }
 
