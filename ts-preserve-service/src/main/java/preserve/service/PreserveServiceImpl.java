@@ -494,7 +494,7 @@ public class PreserveServiceImpl implements PreserveService {
             HttpEntity basic = new HttpEntity(httpHeaders);
             ResponseEntity<String> reResultForTravel = restTemplate.exchange(
                     "http://ts-basic-service:15680/welcome",
-                    HttpMethod.POST,
+                    HttpMethod.GET,
                     basic,
                     String.class);
             return reResultForTravel.getBody();
@@ -508,7 +508,7 @@ public class PreserveServiceImpl implements PreserveService {
             HttpEntity basic = new HttpEntity(httpHeaders);
             ResponseEntity<String> reResultForTravel = restTemplate.exchange(
                     "http://ts-config-service:15679/welcome",
-                    HttpMethod.POST,
+                    HttpMethod.GET,
                     basic,
                     String.class);
             return reResultForTravel.getBody();
