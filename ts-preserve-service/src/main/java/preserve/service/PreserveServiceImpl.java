@@ -210,8 +210,8 @@ public class PreserveServiceImpl implements PreserveService {
             createFoodOrder(afoi, headers, r6List, futures);
             createConsign(consignRequest, headers, r7List, futures);
             helloBasic(headers, r8List, futures);
-            helloconfig(headers, r8List, r9List, futures);
-            getAccount(getAccountByIdInfo, headers, r8List, r10List, futures);
+            helloconfig(headers, r9List, futures);
+            getAccount(getAccountByIdInfo, headers, r9List, r10List, futures);
 
 
             futures.forEach(x -> x.join());
@@ -313,7 +313,7 @@ public class PreserveServiceImpl implements PreserveService {
     }
 
     public void getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders,
-                           List<String> r8List,
+                           List<String> r9List,
                            List<GetAccountByIdResult> r10List,
                            List<CompletableFuture<Void>> futures) {
         System.out.println("[Cancel Order Service][Get By Id]");
@@ -326,7 +326,7 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.POST,
                     requestEntitySendEmail,
                     GetAccountByIdResult.class);
-            System.out.println(r8List.get(0));
+            System.out.println(r9List.get(0));
             return reSendEmail.getBody();
         }).thenAccept(r10List::add);
 
@@ -493,11 +493,6 @@ public class PreserveServiceImpl implements PreserveService {
     private void helloBasic(HttpHeaders httpHeaders, List<String> r8List, List<CompletableFuture<Void>> futures) {
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity basic = new HttpEntity(httpHeaders);
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             ResponseEntity<String> reResultForTravel = restTemplate.exchange(
                     "http://ts-basic-service:15680/welcome",
                     HttpMethod.GET,
@@ -510,10 +505,15 @@ public class PreserveServiceImpl implements PreserveService {
         futures.add(future);
     }
 
-    private void helloconfig(HttpHeaders httpHeaders, List<String> r8List,
+    private void helloconfig(HttpHeaders httpHeaders,
                              List<String> r9List, List<CompletableFuture<Void>> futures) {
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity basic = new HttpEntity(httpHeaders);
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             ResponseEntity<String> reResultForTravel = restTemplate.exchange(
                     "http://ts-config-service:15679/welcome",
                     HttpMethod.GET,
