@@ -320,12 +320,17 @@ public class PreserveServiceImpl implements PreserveService {
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity<GetAccountByIdInfo> requestEntitySendEmail = new HttpEntity<>(info, httpHeaders);
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             ResponseEntity<GetAccountByIdResult> reSendEmail = restTemplate.exchange(
                     "http://ts-sso-service:12349/account/findById",
                     HttpMethod.POST,
                     requestEntitySendEmail,
                     GetAccountByIdResult.class);
-            //System.out.println(r5List.get(0));
+            System.out.println(r5List.get(0));
             return reSendEmail.getBody();
         }).thenAccept(r8List::add);
 
@@ -515,17 +520,12 @@ public class PreserveServiceImpl implements PreserveService {
                              List<String> r9List, List<CompletableFuture<Void>> futures) {
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity basic = new HttpEntity(httpHeaders);
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             ResponseEntity<String> reResultForTravel = restTemplate.exchange(
                     "http://ts-config-service:15679/welcome",
                     HttpMethod.GET,
                     basic,
                     String.class);
-            System.out.println(r5List.get(0));
+            //System.out.println(r5List.get(0));
             return reResultForTravel.getBody();
         }).thenAccept(r9List::add);
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++hello config");
