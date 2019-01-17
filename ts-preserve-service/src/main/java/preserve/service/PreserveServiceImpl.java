@@ -463,18 +463,13 @@ public class PreserveServiceImpl implements PreserveService {
         System.out.println("[Preserve Service][Add food Order] Creating....");
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             HttpEntity<AddFoodOrderInfo> requestEntityAddFoodOrderResult = new HttpEntity<>(afi, httpHeaders);
             ResponseEntity<AddFoodOrderResult> reAddFoodOrderResult = restTemplate.exchange(
                     "http://ts-food-service:18856/food/createFoodOrder",
                     HttpMethod.POST,
                     requestEntityAddFoodOrderResult,
                     AddFoodOrderResult.class);
-            System.out.println(r5List.get(0).getMessage());
+            //System.out.println(r5List.get(0).getMessage());
             return reAddFoodOrderResult.getBody();
         }).thenAccept(r6List::add);
 
@@ -487,13 +482,18 @@ public class PreserveServiceImpl implements PreserveService {
         System.out.println("[Preserve Service][Add Condign] Creating....");
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             HttpEntity<ConsignRequest> requestEntityResultForTravel = new HttpEntity<>(cr, httpHeaders);
             ResponseEntity<InsertConsignRecordResult> reResultForTravel = restTemplate.exchange(
                     "http://ts-consign-service:16111/consign/insertConsign",
                     HttpMethod.POST,
                     requestEntityResultForTravel,
                     InsertConsignRecordResult.class);
-            //System.out.println(r5List.get(0));
+            System.out.println(r5List.get(0));
             return reResultForTravel.getBody();
         }).thenAccept(r7List::add);
 
