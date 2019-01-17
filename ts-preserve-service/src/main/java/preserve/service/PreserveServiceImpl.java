@@ -470,7 +470,7 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.POST,
                     requestEntityAddFoodOrderResult,
                     AddFoodOrderResult.class);
-            System.out.println(r5List.get(0).getMessage());
+            //System.out.println(r5List.get(0).getMessage());
             return reAddFoodOrderResult.getBody();
         }).thenAccept(r6List::add);
 
@@ -489,7 +489,7 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.POST,
                     requestEntityResultForTravel,
                     InsertConsignRecordResult.class);
-            //System.out.println(r5List.get(0));
+            System.out.println(r5List.get(0));
             return reResultForTravel.getBody();
         }).thenAccept(r7List::add);
 
