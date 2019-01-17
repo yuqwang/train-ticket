@@ -320,17 +320,13 @@ public class PreserveServiceImpl implements PreserveService {
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity<GetAccountByIdInfo> requestEntitySendEmail = new HttpEntity<>(info, httpHeaders);
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
             ResponseEntity<GetAccountByIdResult> reSendEmail = restTemplate.exchange(
                     "http://ts-sso-service:12349/account/findById",
                     HttpMethod.POST,
                     requestEntitySendEmail,
                     GetAccountByIdResult.class);
-            System.out.println(r5List.get(0));
+            //System.out.println(r5List.get(0));
             return reSendEmail.getBody();
         }).thenAccept(r8List::add);
 
@@ -347,7 +343,7 @@ public class PreserveServiceImpl implements PreserveService {
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             try {
-                TimeUnit.SECONDS.sleep(3);
+                TimeUnit.SECONDS.sleep(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -474,7 +470,7 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.POST,
                     requestEntityAddFoodOrderResult,
                     AddFoodOrderResult.class);
-            //System.out.println(r5List.get(0).getMessage());
+            System.out.println(r5List.get(0).getMessage());
             return reAddFoodOrderResult.getBody();
         }).thenAccept(r6List::add);
 
