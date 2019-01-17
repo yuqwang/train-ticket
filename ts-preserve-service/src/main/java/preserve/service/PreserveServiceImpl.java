@@ -482,18 +482,13 @@ public class PreserveServiceImpl implements PreserveService {
         System.out.println("[Preserve Service][Add Condign] Creating....");
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             HttpEntity<ConsignRequest> requestEntityResultForTravel = new HttpEntity<>(cr, httpHeaders);
             ResponseEntity<InsertConsignRecordResult> reResultForTravel = restTemplate.exchange(
                     "http://ts-consign-service:16111/consign/insertConsign",
                     HttpMethod.POST,
                     requestEntityResultForTravel,
                     InsertConsignRecordResult.class);
-            System.out.println(r5List.get(0));
+            //System.out.println(r5List.get(0));
             return reResultForTravel.getBody();
         }).thenAccept(r7List::add);
 
@@ -503,12 +498,17 @@ public class PreserveServiceImpl implements PreserveService {
     private void helloBasic(HttpHeaders httpHeaders, List<AddAssuranceResult> r5List, List<String> r8List, List<CompletableFuture<Void>> futures) {
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity basic = new HttpEntity(httpHeaders);
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             ResponseEntity<String> reResultForTravel = restTemplate.exchange(
                     "http://ts-basic-service:15680/welcome",
                     HttpMethod.GET,
                     basic,
                     String.class);
-            //System.out.println(r5List.get(0));
+            System.out.println(r5List.get(0));
             return reResultForTravel.getBody();
         }).thenAccept(r8List::add);
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++hello basic");
