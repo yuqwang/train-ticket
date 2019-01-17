@@ -209,9 +209,9 @@ public class PreserveServiceImpl implements PreserveService {
             addAssuranceForOrder(oti.getAssurance(), cor.getOrder().getId().toString(), headers, r5List, futures);
             createFoodOrder(afoi, headers, r6List, futures);
             createConsign(consignRequest, headers, r7List, futures);
-            helloBasic(headers, r7List, r8List, futures);
-            helloconfig(headers, r7List, r9List, futures);
-            getAccount(getAccountByIdInfo, headers, r7List, r10List, futures);
+            helloBasic(headers, r8List, futures);
+            helloconfig(headers, r8List, r9List, futures);
+            getAccount(getAccountByIdInfo, headers, r8List, r10List, futures);
 
 
             futures.forEach(x -> x.join());
@@ -313,7 +313,7 @@ public class PreserveServiceImpl implements PreserveService {
     }
 
     public void getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders,
-                           List<InsertConsignRecordResult> r7List,
+                           List<String> r7List,
                            List<GetAccountByIdResult> r8List,
                            List<CompletableFuture<Void>> futures) {
         System.out.println("[Cancel Order Service][Get By Id]");
@@ -326,7 +326,7 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.POST,
                     requestEntitySendEmail,
                     GetAccountByIdResult.class);
-            System.out.println(r7List.get(0));
+            //System.out.println(r7List.get(0));
             return reSendEmail.getBody();
         }).thenAccept(r8List::add);
 
@@ -477,11 +477,7 @@ public class PreserveServiceImpl implements PreserveService {
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity<ConsignRequest> requestEntityResultForTravel = new HttpEntity<>(cr, httpHeaders);
-            try {
-                TimeUnit.SECONDS.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
             ResponseEntity<InsertConsignRecordResult> reResultForTravel = restTemplate.exchange(
                     "http://ts-consign-service:16111/consign/insertConsign",
                     HttpMethod.POST,
@@ -494,10 +490,14 @@ public class PreserveServiceImpl implements PreserveService {
         futures.add(future);
     }
 
-    private void helloBasic(HttpHeaders httpHeaders, List<InsertConsignRecordResult> r7List, List<String> r8List, List<CompletableFuture<Void>> futures) {
+    private void helloBasic(HttpHeaders httpHeaders, List<String> r8List, List<CompletableFuture<Void>> futures) {
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity basic = new HttpEntity(httpHeaders);
-
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             ResponseEntity<String> reResultForTravel = restTemplate.exchange(
                     "http://ts-basic-service:15680/welcome",
                     HttpMethod.GET,
@@ -510,7 +510,7 @@ public class PreserveServiceImpl implements PreserveService {
         futures.add(future);
     }
 
-    private void helloconfig(HttpHeaders httpHeaders, List<InsertConsignRecordResult> r7List,
+    private void helloconfig(HttpHeaders httpHeaders, List<String> r8List,
                              List<String> r9List, List<CompletableFuture<Void>> futures) {
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
             HttpEntity basic = new HttpEntity(httpHeaders);
@@ -519,7 +519,7 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.GET,
                     basic,
                     String.class);
-            //System.out.println(r7List.get(0));
+            System.out.println(r8List.get(0));
             return reResultForTravel.getBody();
         }).thenAccept(r9List::add);
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++hello config");
