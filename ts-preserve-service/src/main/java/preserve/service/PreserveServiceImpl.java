@@ -326,7 +326,7 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.POST,
                     requestEntitySendEmail,
                     GetAccountByIdResult.class);
-            //System.out.println(r5List.get(0));
+            System.out.println(r5List.get(0));
             return reSendEmail.getBody();
         }).thenAccept(r8List::add);
 
@@ -521,7 +521,7 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.GET,
                     basic,
                     String.class);
-            System.out.println(r5List.get(0));
+            //System.out.println(r5List.get(0));
             return reResultForTravel.getBody();
         }).thenAccept(r9List::add);
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++hello config");
