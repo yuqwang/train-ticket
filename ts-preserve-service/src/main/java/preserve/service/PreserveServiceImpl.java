@@ -463,6 +463,11 @@ public class PreserveServiceImpl implements PreserveService {
         System.out.println("[Preserve Service][Add food Order] Creating....");
 
         CompletableFuture<Void> future = CompletableFuture.supplyAsync(() -> {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             HttpEntity<AddFoodOrderInfo> requestEntityAddFoodOrderResult = new HttpEntity<>(afi, httpHeaders);
             ResponseEntity<AddFoodOrderResult> reAddFoodOrderResult = restTemplate.exchange(
                     "http://ts-food-service:18856/food/createFoodOrder",
