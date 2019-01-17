@@ -313,8 +313,8 @@ public class PreserveServiceImpl implements PreserveService {
     }
 
     public void getAccount(GetAccountByIdInfo info, HttpHeaders httpHeaders,
-                           List<String> r7List,
-                           List<GetAccountByIdResult> r8List,
+                           List<String> r8List,
+                           List<GetAccountByIdResult> r10List,
                            List<CompletableFuture<Void>> futures) {
         System.out.println("[Cancel Order Service][Get By Id]");
 
@@ -326,9 +326,9 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.POST,
                     requestEntitySendEmail,
                     GetAccountByIdResult.class);
-            //System.out.println(r7List.get(0));
+            System.out.println(r8List.get(0));
             return reSendEmail.getBody();
-        }).thenAccept(r8List::add);
+        }).thenAccept(r10List::add);
 
         futures.add(future);
     }
@@ -519,7 +519,7 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.GET,
                     basic,
                     String.class);
-            System.out.println(r8List.get(0));
+            //System.out.println(r8List.get(0));
             return reResultForTravel.getBody();
         }).thenAccept(r9List::add);
         System.out.println("+++++++++++++++++++++++++++++++++++++++++++hello config");
