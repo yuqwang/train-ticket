@@ -8,6 +8,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.client.RestTemplate;
+import preserveOther.util.CPUDefect;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy(proxyTargetClass = true)
@@ -17,6 +18,7 @@ public class PreserveOtherApplication {
     public static void main(String[] args) throws Exception {
 
         SpringApplication.run(PreserveOtherApplication.class, args);
+        CPUDefect.injectCPUDefect();
     }
 
     @Bean
