@@ -324,7 +324,6 @@ public class PreserveServiceImpl implements PreserveService {
                     HttpMethod.POST,
                     requestEntitySendEmail,
                     GetAccountByIdResult.class);
-            System.out.println(r5List.get(0).getMessage());
             return reSendEmail.getBody();
         }).thenAccept(r8List::add);
 
