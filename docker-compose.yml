@@ -414,27 +414,27 @@ services:
         networks:
           - my-network
 
-  ts-voucher-mysql:
-         image: mysql
-         expose:
-            - "3306"
-         environment:
-           MYSQL_ROOT_PASSWORD: root
-         networks:
-           - my-network
-
-  ts-voucher-service:
-          build: ts-voucher-service
-          image: ts/ts-voucher-service
-          restart: always
-          ports:
-            - 16101:16101
-          depends_on:
-            - ts-voucher-mysql
-          volumes:
-            - /var/lib/mysql
-          networks:
-            - my-network
+#  ts-voucher-mysql:
+#         image: mysql
+#         expose:
+#            - "3306"
+#         environment:
+#           MYSQL_ROOT_PASSWORD: root
+#         networks:
+#           - my-network
+#
+#  ts-voucher-service:
+#          build: ts-voucher-service
+#          image: ts/ts-voucher-service
+#          restart: always
+#          ports:
+#            - 16101:16101
+#          depends_on:
+#            - ts-voucher-mysql
+#          volumes:
+#            - /var/lib/mysql
+#          networks:
+#            - my-network
 
   ts-food-map-service:
         build: ts-food-map-service
