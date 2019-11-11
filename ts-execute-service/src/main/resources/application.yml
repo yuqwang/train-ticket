@@ -4,5 +4,11 @@ server:
 spring:
   application:
     name: ts-execute-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: execute.controller

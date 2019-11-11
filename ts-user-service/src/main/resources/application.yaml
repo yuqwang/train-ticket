@@ -9,6 +9,10 @@ spring:
       host: ts-user-mongo
       database: ts-user-mongo
       port: 27017
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: user.controller

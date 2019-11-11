@@ -1,16 +1,19 @@
 package fdse.microservice.repository;
 
 import fdse.microservice.entity.Station;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-
-public interface StationRepository extends CrudRepository<Station,String> {
+@Repository
+public interface StationRepository extends CrudRepository<Station, String> {
 
     Station findByName(String name);
 
-    Station findById(String id);
+    Optional<Station> findById(String id);
 
     List<Station> findAll();
 }

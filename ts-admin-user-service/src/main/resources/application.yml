@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: ts-admin-user-service
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: adminuser.controller

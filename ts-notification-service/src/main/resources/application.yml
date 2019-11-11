@@ -25,7 +25,11 @@ spring:
           starttls:
             enable: true
             required: true
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: notification.controller
 #  main:

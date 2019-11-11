@@ -5,6 +5,11 @@ server:
 spring:
   application:
     name: ts-rebook-service
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: rebook.controller
 #  rabbitmq:

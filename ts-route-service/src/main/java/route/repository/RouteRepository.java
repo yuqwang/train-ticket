@@ -5,12 +5,13 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import route.entity.Route;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Repository
 public interface RouteRepository extends MongoRepository<Route, String> {
 
     @Query("{ 'id': ?0 }")
-    Route findById(String id);
+    Optional<Route> findById(String id);
 
     ArrayList<Route> findAll();
 

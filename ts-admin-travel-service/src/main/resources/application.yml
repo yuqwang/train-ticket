@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: ts-admin-travel-service
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: admintravel.controller

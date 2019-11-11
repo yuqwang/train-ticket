@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: ts-seat-service
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: seat.controller

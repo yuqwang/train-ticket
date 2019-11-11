@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: ts-cancel-service
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: cancel.controller

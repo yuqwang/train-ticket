@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Administrator on 2017/6/23.
@@ -59,7 +60,7 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public void initPayment(Payment payment, HttpHeaders headers){
-        Payment paymentTemp = paymentRepository.findById(payment.getId());
+        Optional<Payment> paymentTemp = paymentRepository.findById(payment.getId());
         if(paymentTemp == null){
             paymentRepository.save(payment);
         }else{

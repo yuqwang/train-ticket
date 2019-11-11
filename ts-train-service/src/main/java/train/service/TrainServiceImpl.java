@@ -7,6 +7,7 @@ import train.entity.TrainType;
 import train.repository.TrainTypeRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TrainServiceImpl implements TrainService {
@@ -32,7 +33,8 @@ public class TrainServiceImpl implements TrainService {
             //log.info("ts-train-service:retireve "+id+ " and there is no TrainType with the id:" +id);
             return null;
         } else {
-            return repository.findById(id);
+            Optional<TrainType> trainType = repository.findById(id);
+            return trainType.get();
         }
     }
 

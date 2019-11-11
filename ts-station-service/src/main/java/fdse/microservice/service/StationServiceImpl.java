@@ -5,12 +5,11 @@ import fdse.microservice.entity.*;
 import fdse.microservice.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -108,9 +107,9 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public Response queryById(String stationId, HttpHeaders headers) {
-        Station station = repository.findById(stationId);
+        Optional<Station> station = repository.findById(stationId);
         if (station != null) {
-            return new Response<>(1, "Success", station.getName());
+            return new Response<>(1, "Success", station.get().getName());
         } else {
             return new Response<>(0, "No that stationId", stationId);
         }
@@ -120,9 +119,9 @@ public class StationServiceImpl implements StationService {
     public Response queryByIdBatch(List<String> idList, HttpHeaders headers) {
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < idList.size(); i++) {
-            Station station = repository.findById(idList.get(i));
+            Optional<Station>  station = repository.findById(idList.get(i));
             if (station != null) {
-                result.add(station.getName());
+                result.add(station.get().getName());
             }
         }
 

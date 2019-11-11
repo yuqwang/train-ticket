@@ -8,7 +8,11 @@ spring:
 #      password: ${MONGODB_PASSWORD}
       database: ts
       port: 27017
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 # HTTP Server
 server:
   port: 11188  # HTTP (Tomcat) port

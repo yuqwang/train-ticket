@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: ts-basic-service
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: fdse.microservice.controller
