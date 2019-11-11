@@ -62,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers("/actuator/prometheus").permitAll()
                 .antMatchers("/api/v1/trainservice/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/v1/trainservice/trains").hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.PUT, "/api/v1/trainservice/trains").hasAnyRole("ADMIN")
