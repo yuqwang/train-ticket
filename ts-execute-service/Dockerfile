@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM hechuan73/openjdk8-stress
 
 
 ADD ./target/ts-execute-service-1.0.jar /app/
