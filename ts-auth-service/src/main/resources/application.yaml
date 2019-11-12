@@ -8,6 +8,10 @@ spring:
       host: ts-auth-mongo
       database: ts-auth-mongo
       port: 27017
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: auth.controller

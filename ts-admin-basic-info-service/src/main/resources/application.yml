@@ -5,5 +5,10 @@ spring:
   application:
     name: ts-admin-basic-info-service
 
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: adminbasic.microservice

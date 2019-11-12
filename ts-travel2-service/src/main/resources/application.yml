@@ -12,5 +12,10 @@ spring:
 #      password: ${MONGODB_PASSWORD}
       database: ts
       port: 27017
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: travel2.controller

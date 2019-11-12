@@ -47,6 +47,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "18767"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-admin-basic-info-service
     spec:
@@ -80,6 +84,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "16112"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-admin-order-service
     spec:
@@ -112,6 +120,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "16113"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-admin-route-service
     spec:
@@ -144,6 +156,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "16114"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-admin-travel-service
     spec:
@@ -176,6 +192,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "16115"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-admin-user-service
     spec:
@@ -208,6 +228,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "18888"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-assurance-service
     spec:
@@ -240,6 +264,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "15680"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-basic-service
     spec:
@@ -272,6 +300,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "18885"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-cancel-service
     spec:
@@ -304,6 +336,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "15679"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-config-service
     spec:
@@ -336,6 +372,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "16110"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-consign-price-service
     spec:
@@ -368,6 +408,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "16111"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-consign-service
     spec:
@@ -400,6 +444,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "12347"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-contacts-service
     spec:
@@ -432,6 +480,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "12386"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-execute-service
     spec:
@@ -464,6 +516,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "18855"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-food-map-service
     spec:
@@ -496,6 +552,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "18856"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-food-service
     spec:
@@ -528,6 +588,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "18673"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-inside-payment-service
     spec:
@@ -560,6 +624,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "12349"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-auth-service
     spec:
@@ -624,6 +692,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "17853"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-notification-service
     spec:
@@ -656,6 +728,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "12032"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-order-other-service
     spec:
@@ -688,6 +764,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "12031"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-order-service
     spec:
@@ -720,6 +800,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "19001"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-payment-service
     spec:
@@ -752,6 +836,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "14569"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-preserve-other-service
     spec:
@@ -784,6 +872,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "14568"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-preserve-service
     spec:
@@ -816,6 +908,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "16579"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-price-service
     spec:
@@ -848,6 +944,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "18886"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-rebook-service
     spec:
@@ -880,6 +980,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "14578"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-route-plan-service
     spec:
@@ -912,6 +1016,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "11178"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-route-service
     spec:
@@ -944,6 +1052,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "18898"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-seat-service
     spec:
@@ -976,6 +1088,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "11188"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-security-service
     spec:
@@ -1008,6 +1124,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "12342"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-user-service
     spec:
@@ -1040,6 +1160,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "12345"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-station-service
     spec:
@@ -1104,6 +1228,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "15681"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-ticketinfo-service
     spec:
@@ -1136,6 +1264,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "14567"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-train-service
     spec:
@@ -1168,6 +1300,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "16346"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-travel2-service
     spec:
@@ -1200,6 +1336,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "14322"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-travel-plan-service
     spec:
@@ -1232,6 +1372,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "12346"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-travel-service
     spec:
@@ -1264,6 +1408,10 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "15678"
+        prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-verification-code-service
     spec:

@@ -4,7 +4,11 @@ server:
 spring:
   application:
     name: ts-admin-order-service
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 
 swagger:
   controllerPackage: adminorder.controller

@@ -13,6 +13,10 @@ spring:
 # HTTP Server
 server:
   port: 16579  # HTTP (Tomcat) port
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: price.controller

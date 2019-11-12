@@ -6,7 +6,11 @@ spring:
       host: ts-consign-price-mongo
       database: ts
       port: 27017
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 
 # HTTP Server
 server:

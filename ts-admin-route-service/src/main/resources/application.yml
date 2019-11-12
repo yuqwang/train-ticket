@@ -4,7 +4,11 @@ server:
 spring:
   application:
     name: ts-admin-route-service
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: adminroute.controller
 

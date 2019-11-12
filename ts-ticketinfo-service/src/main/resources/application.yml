@@ -6,6 +6,10 @@ spring:
   application:
     name: ts-ticketinfo-service
 
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
 swagger:
   controllerPackage: ticketinfo.controller
