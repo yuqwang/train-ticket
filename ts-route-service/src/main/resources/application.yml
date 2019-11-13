@@ -3,10 +3,10 @@ spring:
     name: ts-route-service
   data:
     mongodb:
+#      host: ts-route-mongo
+#      database: ts-route-mongo
       host: ts-route-mongo
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-      database: ts
+      database: ts-route-mongo
       port: 27017
 management:
   endpoints:
