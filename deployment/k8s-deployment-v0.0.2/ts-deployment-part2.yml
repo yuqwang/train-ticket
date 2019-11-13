@@ -626,7 +626,7 @@ spec:
     metadata:
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "12349"
+        prometheus.io/port: "12340"
         prometheus.io/path: "/actuator/prometheus"
       labels:
         app: ts-auth-service

@@ -3,17 +3,15 @@ package route.service;
 import edu.fudan.common.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import route.entity.*;
 import route.repository.RouteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import static org.springframework.http.ResponseEntity.ok;
 
 @Service
 public class RouteServiceImpl implements RouteService {
@@ -50,19 +48,24 @@ public class RouteServiceImpl implements RouteService {
 
             return new Response<>(1, "Save Success", route);
         } else {
-            Route route = routeRepository.findById(info.getId()).get();
-            if (route == null) {
-                route = new Route();
-                route.setId(info.getId());
-            }
+            Optional<Route> routeOptional = routeRepository.findById(info.getId());
+            if(routeOptional.isPresent()) {
+                Route route = routeOptional.get();
+                if (route == null) {
+                    route = new Route();
+                    route.setId(info.getId());
+                }
 
-            route.setStartStationId(info.getStartStation());
-            route.setTerminalStationId(info.getEndStation());
-            route.setStations(stationList);
-            route.setDistances(distanceList);
-            routeRepository.save(route);
-            System.out.println("Modify success");
-            return new Response<>(1, "Modify success", route);
+                route.setStartStationId(info.getStartStation());
+                route.setTerminalStationId(info.getEndStation());
+                route.setStations(stationList);
+                route.setDistances(distanceList);
+                routeRepository.save(route);
+                System.out.println("Modify success");
+                return new Response<>(1, "Modify success", route);
+            }else{
+                return new Response<>(0, "Modify failed", routeOptional);
+            }
         }
     }
 
