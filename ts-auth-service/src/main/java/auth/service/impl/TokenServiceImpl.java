@@ -68,7 +68,7 @@ public class TokenServiceImpl implements TokenService {
             return new Response<>(0, "Incorrect username or password.", null);
         }
 
-        User user = userRepository.get(username)
+        User user = userRepository.getUser(username)
                 .orElseThrow(() -> new UserOperationException(MessageFormat.format(
                         InfoConstant.USER_NAME_NOT_FOUND_1, username
                 )));
