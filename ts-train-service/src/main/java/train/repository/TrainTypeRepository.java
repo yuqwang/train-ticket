@@ -1,17 +1,12 @@
 package train.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import org.springframework.stereotype.Repository;
 import train.entity.TrainType;
 
-import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface TrainTypeRepository extends CrudRepository<TrainType,String>{
-
-    Optional<TrainType> findById(String id);
-    List<TrainType> findAll();
-    //void save(TrainType trainType);
-    void deleteById(String id);
-    //void update();
+public interface TrainTypeRepository extends JpaRepository<TrainType, String> {
+    TrainType findByTrainTypeId(String trainTypeId);
 }

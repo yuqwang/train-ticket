@@ -1,70 +1,35 @@
 package train.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.validation.Valid;
+import javax.persistence.*;
 
 
-@Document(collection="trainType")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "TrainType")
 public class TrainType {
-    @Valid
-    @Id
-    private String id;
 
-    @Valid
+    @Id
+    @Column(name = "trainTypeId")
+    @GeneratedValue(generator = "IdStrategy")
+    @GenericGenerator(name = "IdStrategy", strategy = "assigned")
+    private String trainTypeId;
+
     private int economyClass;
-    @Valid
+
     private int confortClass;
 
     private int averageSpeed;
 
-    public TrainType(){
-        //Default Constructor
-    }
-
-    public TrainType(String id, int economyClass, int confortClass) {
-        this.id = id;
+    public TrainType(String trainTypeId, int economyClass, int confortClass) {
+        this.trainTypeId = trainTypeId;
         this.economyClass = economyClass;
         this.confortClass = confortClass;
-    }
-
-    public TrainType(String id, int economyClass, int confortClass, int averageSpeed) {
-        this.id = id;
-        this.economyClass = economyClass;
-        this.confortClass = confortClass;
-        this.averageSpeed = averageSpeed;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public int getEconomyClass() {
-        return economyClass;
-    }
-
-    public void setEconomyClass(int economyClass) {
-        this.economyClass = economyClass;
-    }
-
-    public int getConfortClass() {
-        return confortClass;
-    }
-
-    public void setConfortClass(int confortClass) {
-        this.confortClass = confortClass;
-    }
-
-    public int getAverageSpeed() {
-        return averageSpeed;
-    }
-
-    public void setAverageSpeed(int averageSpeed) {
-        this.averageSpeed = averageSpeed;
     }
 }

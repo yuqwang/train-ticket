@@ -4,7 +4,6 @@ import edu.fudan.common.util.Response;
 import org.springframework.http.HttpHeaders;
 import route.entity.*;
 
-import java.util.List;
 
 public interface RouteService {
 

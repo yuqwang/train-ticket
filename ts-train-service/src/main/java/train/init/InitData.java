@@ -17,37 +17,37 @@ public class InitData implements CommandLineRunner {
     public void run(String... args) throws Exception {
         TrainType info = new TrainType();
 
-        info.setId("GaoTieOne");
+        info.setTrainTypeId("GaoTieOne");
         info.setConfortClass(Integer.MAX_VALUE);
         info.setEconomyClass(Integer.MAX_VALUE);
         info.setAverageSpeed(250);
         service.create(info, null);
 
-        info.setId("GaoTieTwo");
+        info.setTrainTypeId("GaoTieTwo");
         info.setConfortClass(Integer.MAX_VALUE);
         info.setEconomyClass(Integer.MAX_VALUE);
         info.setAverageSpeed(200);
         service.create(info, null);
 
-        info.setId("DongCheOne");
+        info.setTrainTypeId("DongCheOne");
         info.setConfortClass(Integer.MAX_VALUE);
         info.setEconomyClass(Integer.MAX_VALUE);
         info.setAverageSpeed(180);
         service.create(info, null);
 
-        info.setId("ZhiDa");
+        info.setTrainTypeId("ZhiDa");
         info.setConfortClass(Integer.MAX_VALUE);
         info.setEconomyClass(Integer.MAX_VALUE);
         info.setAverageSpeed(120);
         service.create(info, null);
 
-        info.setId("TeKuai");
+        info.setTrainTypeId("TeKuai");
         info.setConfortClass(Integer.MAX_VALUE);
         info.setEconomyClass(Integer.MAX_VALUE);
         info.setAverageSpeed(120);
         service.create(info, null);
 
-        info.setId("KuaiSu");
+        info.setTrainTypeId("KuaiSu");
         info.setConfortClass(Integer.MAX_VALUE);
         info.setEconomyClass(Integer.MAX_VALUE);
         info.setAverageSpeed(90);
