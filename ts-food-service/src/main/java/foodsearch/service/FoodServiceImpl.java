@@ -30,13 +30,13 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public Response createFoodOrder(FoodOrder addFoodOrder, HttpHeaders headers) {
 
-        FoodOrder fo = foodOrderRepository.findByOrderId(addFoodOrder.getOrderId());
+        FoodOrder fo = foodOrderRepository.findFoodOrderByOrderId(addFoodOrder.getOrderId());
         if (fo != null) {
             System.out.println("[Food-Service][AddFoodOrder] Order Id Has Existed.");
             return new Response<>(0, "Order Id Has Existed.", null);
         } else {
             fo = new FoodOrder();
-            fo.setId(UUID.randomUUID());
+            fo.setId(UUID.randomUUID().toString());
             fo.setOrderId(addFoodOrder.getOrderId());
             fo.setFoodType(addFoodOrder.getFoodType());
             if (addFoodOrder.getFoodType() == 2) {
@@ -53,12 +53,12 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public Response deleteFoodOrder(String orderId, HttpHeaders headers) {
-        FoodOrder foodOrder = foodOrderRepository.findByOrderId(UUID.fromString(orderId));
+        FoodOrder foodOrder = foodOrderRepository.findFoodOrderByOrderId(orderId);
         if (foodOrder == null) {
             System.out.println("[Food-Service][Cancel FoodOrder] Order Id Is Non-Existent.");
             return new Response<>(0, "Order Id Is Non-Existent.", null);
         } else {
-            foodOrderRepository.deleteFoodOrderByOrderId(UUID.fromString(orderId));
+            foodOrderRepository.deleteFoodOrderByOrderId(orderId);
             System.out.println("[Food-Service][Cancel FoodOrder] Success.");
             return new Response<>(1, "Success.", null);
         }
@@ -77,7 +77,7 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public Response updateFoodOrder(FoodOrder updateFoodOrder, HttpHeaders headers) {
-        FoodOrder fo = foodOrderRepository.findById(updateFoodOrder.getId());
+        FoodOrder fo = foodOrderRepository.findFoodOrderById(updateFoodOrder.getId());
         if (fo == null) {
             System.out.println("[Food-Service][Update FoodOrder] Order Id Is Non-Existent.");
             return new Response<>(0, "Order Id Is Non-Existent.", null);
@@ -98,7 +98,7 @@ public class FoodServiceImpl implements FoodService {
 
     @Override
     public Response findByOrderId(String orderId, HttpHeaders headers) {
-        FoodOrder fo = foodOrderRepository.findByOrderId(UUID.fromString(orderId));
+        FoodOrder fo = foodOrderRepository.findFoodOrderByOrderId(orderId);
         if (fo != null) {
             System.out.println("[Food-Service][Find Order by id] Success.");
             return new Response<>(1, "Success.", fo);

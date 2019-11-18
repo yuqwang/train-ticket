@@ -1,48 +1,61 @@
 package foodsearch.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.GenericGenerator;
 
-import java.util.UUID;
+import javax.persistence.*;
+import java.io.Serializable;
 
-@Document(collection = "foodorder")
+
+@Entity
+@Table(name = "FoodOrder")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class FoodOrder {
+public class FoodOrder implements Serializable {
+
+    private static final long serialVersionUID = -4784211815665767850L;
 
     @Id
-    private UUID id;
+    @Column
+    @GeneratedValue(generator = "IdStrategy")
+    @GenericGenerator(name = "IdStrategy", strategy = "assigned")
+    private String id;
 
-    private UUID orderId;
+    @Column
+    private String orderId;
 
     //1:train food;2:food store
+    @Column
     private int foodType;
 
+    @Column
     private String stationName;
 
+    @Column
     private String storeName;
 
+    @Column
     private String foodName;
 
+    @Column
     private double price;
 
     public FoodOrder(){
 
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public UUID getOrderId() {
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(UUID orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 

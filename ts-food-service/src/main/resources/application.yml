@@ -4,13 +4,17 @@ server:
 spring:
   application:
     name: ts-food-service
-  data:
-    mongodb:
-      host: ts-food-mongo
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-      database: ts
-      port: 27017
+  datasource:
+    url: jdbc:mysql://ts-food-service:3306/food?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+    jooq:
+      sql-dialect: org.hibernate.dialect.MySQL5Dialect
 management:
   endpoints:
     web:
