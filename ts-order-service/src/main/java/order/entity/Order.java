@@ -1,52 +1,74 @@
 package order.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.Date;
-import java.util.UUID;
+import org.hibernate.annotations.GenericGenerator;
 
-@Document(collection = "orders")
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
 @ToString
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class Order {
+@Entity
+@Data
+@AllArgsConstructor
+@Table(name = "Order")
+public class Order implements Serializable {
+
+    private static final long serialVersionUID = -3749838967194060415L;
 
     @Id
-    private UUID id;
+    @Column
+    @GeneratedValue(generator = "IdStrategy")
+    @GenericGenerator(name = "IdStrategy", strategy = "assigned")
+    private String orderId;
 
+    @Column
     private Date boughtDate;
 
-
+    @Column
     private Date travelDate;
 
-
+    @Column
     private Date travelTime;
 
     //Which Account Bought it
-    private UUID accountId;
+    @Column
+    private String accountId;
 
     //Tickets bought for whom....
+    @Column
     private String contactsName;
 
+    @Column
     private int documentType;
 
+    @Column
     private String contactsDocumentNumber;
 
+    @Column
     private String trainNumber;
 
+    @Column
     private int coachNumber;
 
+    @Column
     private int seatClass;
 
+    @Column
     private String seatNumber;
 
+    @Column
     private String from;
 
+    @Column
     private String to;
 
+    @Column
     private int status;
 
+    @Column
     private String price;
 
 
@@ -93,19 +115,19 @@ public class Order {
                 && price.equals(other.price);
     }
 
-    public UUID getId() {
-        return id;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public UUID getAccountId() {
+    public String getAccountId() {
         return accountId;
     }
 
-    public void setAccountId(UUID accountId) {
+    public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
 
@@ -126,8 +148,7 @@ public class Order {
     }
 
     public void setTravelDate(int year,int month,int day){
-        Date date = new Date(year,month,day,0,0,0);
-        this.travelDate = date;
+        this.travelDate = new Date(year,month,day,0,0,0);
     }
 
     public Date getTravelTime() {
@@ -139,7 +160,7 @@ public class Order {
     }
 
     public void setTravelTime(int hour,int minute){
-        Date date = new Date(1970,1,1,hour,minute,0);
+        this.travelTime =  new Date(1970,1,1,hour,minute,0);
     }
 
     public String getTrainNumber() {

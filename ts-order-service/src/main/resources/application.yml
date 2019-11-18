@@ -5,13 +5,18 @@ server:
 spring:
   application:
     name: ts-order-service
-  data:
-    mongodb:
-      host: ts-order-mongo
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-      database: ts
-      port: 27017
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
+        dialect: org.hibernate.dialect.MySQL5Dialect
+      show-sql: true
+    jooq:
+      sql-dialect: org.hibernate.dialect.MySQL5Dialect
+    url: jdbc:mysql://10.141.212.139:30343/order?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
 management:
   endpoints:
     web:
@@ -19,3 +24,10 @@ management:
         include: prometheus
 swagger:
   controllerPackage: order.controller
+
+logging:
+  level:
+    root: info
+    org.hibernate: info
+    org.hibernate.type.descriptor.sql.BasicBinder: trace
+    org.hibernate.type.descriptor.sql.BasicExtractor: trace
