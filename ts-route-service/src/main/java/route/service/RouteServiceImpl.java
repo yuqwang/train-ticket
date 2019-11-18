@@ -9,7 +9,6 @@ import route.repository.RouteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -48,9 +47,8 @@ public class RouteServiceImpl implements RouteService {
 
             return new Response<>(1, "Save Success", route);
         } else {
-            Optional<Route> routeOptional = routeRepository.findById(info.getId());
-            if(routeOptional.isPresent()) {
-                Route route = routeOptional.get();
+            Route route = routeRepository.findRouteById(info.getId());
+            if (route == null) {
                 if (route == null) {
                     route = new Route();
                     route.setId(info.getId());
@@ -63,8 +61,9 @@ public class RouteServiceImpl implements RouteService {
                 routeRepository.save(route);
                 System.out.println("Modify success");
                 return new Response<>(1, "Modify success", route);
-            }else{
-                return new Response<>(0, "Modify failed", routeOptional);
+            } else {
+                System.out.println("Modify failed");
+                return new Response<>(0, "Modify failed", route);
             }
         }
     }
@@ -72,7 +71,7 @@ public class RouteServiceImpl implements RouteService {
     @Override
     public Response deleteRoute(String routeId, HttpHeaders headers) {
         routeRepository.removeRouteById(routeId);
-        Route route = routeRepository.findById(routeId).get();
+        Route route = routeRepository.findRouteById(routeId) ;
         if (route == null) {
             return new Response<>(1, "Delete Success", routeId);
         } else {
@@ -82,7 +81,7 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response getRouteById(String routeId, HttpHeaders headers) {
-        Route route = routeRepository.findById(routeId).get();
+        Route route = routeRepository.findRouteById(routeId);
         if (route == null) {
             return new Response<>(0, "No content with the routeId", routeId);
         } else {
@@ -114,6 +113,7 @@ public class RouteServiceImpl implements RouteService {
     @Override
     public Response getAllRoutes(HttpHeaders headers) {
         ArrayList<Route> routes = routeRepository.findAll();
+
         if (routes != null && routes.size() > 0) {
             return new Response<>(1, "Success", routes);
         } else {

@@ -9,9 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import static org.springframework.http.ResponseEntity.ok;
 
 @Service
 public class StationServiceImpl implements StationService {
@@ -21,7 +18,7 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public Response create(Station station, HttpHeaders headers) {
-        if (repository.findById(station.getId()) == null) {
+        if (repository.findStationById(station.getId()) == null) {
             station.setStayTime(station.getStayTime());
             repository.save(station);
             return new Response<>(1, "Create success", station);
@@ -42,7 +39,7 @@ public class StationServiceImpl implements StationService {
     @Override
     public Response update(Station info, HttpHeaders headers) {
 
-        if (repository.findById(info.getId()) == null) {
+        if (repository.findStationById(info.getId()) == null) {
             return new Response<>(0, "Station not exist", info);
         } else {
             Station station = new Station(info.getId(), info.getName());
@@ -55,7 +52,7 @@ public class StationServiceImpl implements StationService {
     @Override
     public Response delete(Station info, HttpHeaders headers) {
 
-        if (repository.findById(info.getId()) != null) {
+        if (repository.findStationById(info.getId()) != null) {
             Station station = new Station(info.getId(), info.getName());
             repository.delete(station);
             return new Response<>(1, "Delete success", station);
@@ -77,7 +74,7 @@ public class StationServiceImpl implements StationService {
     public Response queryForId(String stationName, HttpHeaders headers) {
         Station station = repository.findByName(stationName);
 
-        if (station  != null) {
+        if (station != null) {
             return new Response<>(1, "Success", station.getId());
         } else {
             return new Response<>(0, "Not exists", stationName);
@@ -107,9 +104,9 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public Response queryById(String stationId, HttpHeaders headers) {
-        Optional<Station> station = repository.findById(stationId);
+        Station station = repository.findStationById(stationId);
         if (station != null) {
-            return new Response<>(1, "Success", station.get().getName());
+            return new Response<>(1, "Success", station.getName());
         } else {
             return new Response<>(0, "No that stationId", stationId);
         }
@@ -119,9 +116,9 @@ public class StationServiceImpl implements StationService {
     public Response queryByIdBatch(List<String> idList, HttpHeaders headers) {
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < idList.size(); i++) {
-            Optional<Station>  station = repository.findById(idList.get(i));
+            Station station = repository.findStationById(idList.get(i));
             if (station != null) {
-                result.add(station.get().getName());
+                result.add(station.getName());
             }
         }
 

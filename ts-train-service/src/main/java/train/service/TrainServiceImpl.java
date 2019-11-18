@@ -7,7 +7,6 @@ import train.entity.TrainType;
 import train.repository.TrainTypeRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TrainServiceImpl implements TrainService {
@@ -19,8 +18,8 @@ public class TrainServiceImpl implements TrainService {
 
     public boolean create(TrainType trainType, HttpHeaders headers) {
         boolean result = false;
-        if (repository.findById(trainType.getId()) == null) {
-            TrainType type = new TrainType(trainType.getId(), trainType.getEconomyClass(), trainType.getConfortClass());
+        if (repository.findByTrainTypeId(trainType.getTrainTypeId()) == null) {
+            TrainType type = new TrainType(trainType.getTrainTypeId(), trainType.getEconomyClass(), trainType.getConfortClass());
             type.setAverageSpeed(trainType.getAverageSpeed());
             repository.save(type);
             result = true;
@@ -29,20 +28,20 @@ public class TrainServiceImpl implements TrainService {
     }
 
     public TrainType retrieve(String id, HttpHeaders headers) {
-        if (repository.findById(id) == null) {
+        if (repository.findByTrainTypeId(id) == null) {
             //log.info("ts-train-service:retireve "+id+ " and there is no TrainType with the id:" +id);
             return null;
         } else {
-            Optional<TrainType> trainType = repository.findById(id);
-            return trainType.get();
+            TrainType trainType = repository.findByTrainTypeId(id);
+            return trainType;
         }
     }
 
     public boolean update(TrainType trainType, HttpHeaders headers) {
         boolean result = false;
         //
-        if (repository.findById(trainType.getId()) != null) {
-            TrainType type = new TrainType(trainType.getId(), trainType.getEconomyClass(), trainType.getConfortClass());
+        if (repository.findByTrainTypeId(trainType.getTrainTypeId()) != null) {
+            TrainType type = new TrainType(trainType.getTrainTypeId(), trainType.getEconomyClass(), trainType.getConfortClass());
             type.setAverageSpeed(trainType.getAverageSpeed());
             repository.save(type);
             result = true;
@@ -52,7 +51,7 @@ public class TrainServiceImpl implements TrainService {
 
     public boolean delete(String id, HttpHeaders headers) {
         boolean result = false;
-        if (repository.findById(id) == null) {
+        if (repository.findByTrainTypeId(id) == null) {
             //log.info("ts-train-service:delete " + id +" and there doesn't exist TrainType with the id:" +id);
         } else {
             repository.deleteById(id);

@@ -1,62 +1,34 @@
 package fdse.microservice.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+
+import javax.persistence.*;
 
 
-@Document(collection="station")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "Station")
 public class Station {
-    @Valid
-    @NotNull
+
     @Id
+    @Column(name = "id")
+    @GeneratedValue(generator = "IdStrategy")
+    @GenericGenerator(name = "IdStrategy", strategy = "assigned")
     private String id;
 
-    @Valid
-    @NotNull
     private String name;
 
     private int stayTime;
-
-    public Station(){
-        //Default Constructor
-    }
 
     public Station(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-
-    public Station(String id, String name, int stayTime) {
-        this.id = id;
-        this.name = name;
-        this.stayTime = stayTime;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getStayTime() {
-        return stayTime;
-    }
-
-    public void setStayTime(int stayTime) {
-        this.stayTime = stayTime;
-    }
 }

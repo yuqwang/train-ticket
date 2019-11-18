@@ -18,7 +18,7 @@ import java.util.Date;
 public class Trip {
 
     @Id
-    @Column(name = "userID")
+    @Column(name = "tripId")
     @GeneratedValue(generator = "IdStrategy")
     @GenericGenerator(name = "IdStrategy", strategy = "assigned")
     private String tripId;

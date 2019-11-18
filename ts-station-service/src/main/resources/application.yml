@@ -1,13 +1,19 @@
 spring:
   application:
     name: ts-station-service
-  data:
-    mongodb:
-      host: ts-station-mongo
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-      database: ts
-      port: 27017
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    #    url: jdbc:mysql://ts-user-mysql:3306/users?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://ts-station-mysql:3306/station?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+  jooq:
+    sql-dialect: org.hibernate.dialect.MySQL5Dialect
 management:
   endpoints:
     web:

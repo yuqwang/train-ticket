@@ -3,8 +3,6 @@ spring:
     name: ts-route-service
   data:
     mongodb:
-#      host: ts-route-mongo
-#      database: ts-route-mongo
       host: ts-route-mongo
       database: ts-route-mongo
       port: 27017
