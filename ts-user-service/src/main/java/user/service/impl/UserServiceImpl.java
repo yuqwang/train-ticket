@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
             userId = UUID.randomUUID();
 
         User user = User.builder()
-                .userId(userId)
+                .userId(userId.toString())
                 .userName(userDto.getUserName())
                 .password(userDto.getPassword())
                 .gender(userDto.getGender())
@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService {
                 .email(userDto.getEmail()).build();
 
         // avoid same user name
+
         User user1 = userRepository.findByUserName(userDto.getUserName());
         if (user1 == null) {
 
@@ -92,21 +93,21 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response findByUserId(String userId, HttpHeaders headers) {
-        User user = userRepository.findByUserId(UUID.fromString(userId));
+        User user = userRepository.findByUserId(userId);
         if (user != null)
             return new Response<>(1, "Find User Success", user);
         return new Response<>(0, "No User", null);
     }
 
     @Override
-    public Response deleteUser(UUID userId, HttpHeaders headers) {
+    public Response deleteUser(String userId, HttpHeaders headers) {
         log.info("DELETE USER BY ID :" + userId);
         User user = userRepository.findByUserId(userId);
         if (user != null) {
             // first  only admin token can delete success
             deleteUserAuth(userId, headers);
             // second
-            userRepository.deleteByUserId(userId);
+            userRepository.delete(user);
             log.info("DELETE SUCCESS");
             return new Response<>(1, "DELETE SUCCESS", null);
         } else {
@@ -126,7 +127,7 @@ public class UserServiceImpl implements UserService {
                     .gender(userDto.getGender())
                     .documentNum(userDto.getDocumentNum())
                     .documentType(userDto.getDocumentType()).build();
-            userRepository.deleteByUserId(oldUser.getUserId());
+            userRepository.delete(oldUser);
             userRepository.save(newUser);
             return new Response<>(1, "SAVE USER SUCCESS", newUser);
         } else {
@@ -134,7 +135,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void deleteUserAuth(UUID userId, HttpHeaders headers) {
+    public void deleteUserAuth(String userId, HttpHeaders headers) {
         log.info("DELETE USER BY ID :" + userId);
         RestTemplate restTemplate = new RestTemplate();
 

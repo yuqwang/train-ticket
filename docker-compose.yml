@@ -64,8 +64,12 @@ services:
     networks:
       - my-network
 
-  ts-user-mongo:
-    image: mongo
+  ts-user-mysql:
+    image: mysql
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
     networks:
       - my-network
 

@@ -17,7 +17,7 @@ public interface UserService {
     Response findByUserId(String userId, HttpHeaders headers);
 
 
-    Response deleteUser(UUID userId, HttpHeaders headers);
+    Response deleteUser(String userId, HttpHeaders headers);
 
     Response updateUser(UserDto user, HttpHeaders headers);
 }

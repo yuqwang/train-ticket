@@ -1,16 +1,18 @@
 package travel.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import travel.entity.Trip;
 import travel.entity.TripId;
 
 import java.util.ArrayList;
 
-public interface TripRepository extends CrudRepository<Trip,TripId> {
+@Repository
+public interface TripRepository extends JpaRepository<Trip,TripId> {
 
-    Trip findByTripId(TripId tripId);
+    Trip findByTripId(String tripId);
 
-    void deleteByTripId(TripId tripId);
+    void deleteByTripId(String tripId);
 
     ArrayList<Trip> findAll();
 

@@ -26,9 +26,9 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response getRouteByTripId(String tripId, HttpHeaders headers) {
-        TripId tripId1 = new TripId(tripId);
 
-        Trip trip = repository.findByTripId(tripId1);
+
+        Trip trip = repository.findByTripId(tripId);
         if (trip == null) {
             System.out.println("[Get Route By Trip ID] Trip Not Found:" + tripId);
             return new Response<>(0, "\"[Get Route By Trip ID] Trip Not Found:\" + tripId", null);
@@ -47,10 +47,10 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response getTrainTypeByTripId(String tripId, HttpHeaders headers) {
-        TripId tripId1 = new TripId(tripId);
+
 //        GetTrainTypeResult result = new GetTrainTypeResult();
         TrainType trainType = null;
-        Trip trip = repository.findByTripId(tripId1);
+        Trip trip = repository.findByTripId(tripId);
         if (trip != null) {
             trainType = getTrainType(trip.getTrainTypeId(), headers);
         }
@@ -80,13 +80,13 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response create(TravelInfo info, HttpHeaders headers) {
-        TripId ti = new TripId(info.getTripId());
-        if (repository.findByTripId(ti) == null) {
-            Trip trip = new Trip(ti, info.getTrainTypeId(), info.getStartingStationId(),
+
+        if (repository.findByTripId(info.getTripId()) == null) {
+            Trip trip = new Trip(info.getTripId(), info.getTrainTypeId(), info.getStartingStationId(),
                     info.getStationsId(), info.getTerminalStationId(), info.getStartingTime(), info.getEndTime());
             trip.setRouteId(info.getRouteId());
             repository.save(trip);
-            return new Response<>(1, "Create trip info:" + ti.toString() + ".", null);
+            return new Response<>(1, "Create trip info:" + info.getTripId() + ".", null);
         } else {
             return new Response<>(1, "Trip " + info.getTripId().toString() + " already exists", null);
         }
@@ -94,8 +94,8 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response retrieve(String tripId, HttpHeaders headers) {
-        TripId ti = new TripId(tripId);
-        Trip trip = repository.findByTripId(ti);
+
+        Trip trip = repository.findByTripId(tripId);
         if (trip != null) {
             return new Response<>(1, "Search Trip Success by Trip Id " + tripId, trip);
         } else {
@@ -105,13 +105,13 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response update(TravelInfo info, HttpHeaders headers) {
-        TripId ti = new TripId(info.getTripId());
-        if (repository.findByTripId(ti) != null) {
-            Trip trip = new Trip(ti, info.getTrainTypeId(), info.getStartingStationId(),
+
+        if (repository.findByTripId(info.getTripId()) != null) {
+            Trip trip = new Trip(info.getTripId(), info.getTrainTypeId(), info.getStartingStationId(),
                     info.getStationsId(), info.getTerminalStationId(), info.getStartingTime(), info.getEndTime());
             trip.setRouteId(info.getRouteId());
             repository.save(trip);
-            return new Response<>(1, "Update trip info:" + ti.toString(), trip);
+            return new Response<>(1, "Update trip info:" + info.getTripId(), trip);
         } else {
             return new Response<>(1, "Trip" + info.getTripId().toString() + "doesn 't exists", null);
         }
@@ -119,9 +119,9 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response delete(String tripId, HttpHeaders headers) {
-        TripId ti = new TripId(tripId);
-        if (repository.findByTripId(ti) != null) {
-            repository.deleteByTripId(ti);
+
+        if (repository.findByTripId(tripId) != null) {
+            repository.deleteByTripId(tripId);
             return new Response<>(1, "Delete trip:" + tripId + ".", tripId);
         } else {
             return new Response<>(0, "Trip " + tripId + " doesn't exist.", null);
@@ -164,7 +164,7 @@ public class Travel2ServiceImpl implements Travel2Service {
     public Response getTripAllDetailInfo(TripAllDetailInfo gtdi, HttpHeaders headers) {
         TripAllDetail gtdr = new TripAllDetail();
         System.out.println("[TravelService] [getTripAllDetailInfo] gtdi info:" + gtdi.toString());
-        Trip trip = repository.findByTripId(new TripId(gtdi.getTripId()));
+        Trip trip = repository.findByTripId(gtdi.getTripId());
         if (trip == null) {
             gtdr.setTripResponse(null);
             gtdr.setTrip(null);
@@ -181,7 +181,7 @@ public class Travel2ServiceImpl implements Travel2Service {
                 gtdr.setTripResponse(null);
             } else {
                 gtdr.setTripResponse(tripResponse);
-                gtdr.setTrip(repository.findByTripId(new TripId(gtdi.getTripId())));
+                gtdr.setTrip(repository.findByTripId(gtdi.getTripId()));
             }
         }
 
@@ -211,8 +211,7 @@ public class Travel2ServiceImpl implements Travel2Service {
                 new ParameterizedTypeReference<Response<TravelResult>>() {
                 });
         System.out.println("Ticket info  is: " + re.getBody().toString());
-        TravelResult resultForTravel =  re.getBody().getData();
-
+        TravelResult resultForTravel = re.getBody().getData();
 
 
         //车票订单_高铁动车（已购票数）
@@ -354,7 +353,7 @@ public class Travel2ServiceImpl implements Travel2Service {
                 Response.class);
         Response result = re.getBody();
 
-        if (result.getStatus() == 0 ) {
+        if (result.getStatus() == 0) {
             System.out.println("[Travel Other Service][Get Route By Id] Fail." + result.getMsg());
             return null;
         } else {
@@ -383,7 +382,7 @@ public class Travel2ServiceImpl implements Travel2Service {
                 requestEntity,
                 new ParameterizedTypeReference<Response<Integer>>() {
                 });
-        int restNumber =   re.getBody().getData();
+        int restNumber = re.getBody().getData();
 
         System.out.println("Get Rest tickets num is: " + re.getBody().toString());
         return restNumber;

@@ -6,7 +6,7 @@ import train.entity.TrainType;
 import java.util.List;
 import java.util.Optional;
 
-
+@Repository
 public interface TrainTypeRepository extends CrudRepository<TrainType,String>{
 
     Optional<TrainType> findById(String id);

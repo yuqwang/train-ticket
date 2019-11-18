@@ -49,7 +49,7 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<Response> deleteUserById(@PathVariable String userId,
                                                    @RequestHeader HttpHeaders headers) {
-        return ok(userService.deleteUser(UUID.fromString(userId), headers));
+        return ok(userService.deleteUser( userId , headers));
     }
 
     @PutMapping

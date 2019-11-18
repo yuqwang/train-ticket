@@ -5,13 +5,19 @@ server:
 spring:
   application:
     name: ts-travel2-service
-  data:
-    mongodb:
-      host: ts-travel2-mongo
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-      database: ts
-      port: 27017
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    #    url: jdbc:mysql://ts-travel-mysql:3306/users?useUnicode=true&characterEncoding=utf8
+    url: jdbc:mysql://ts-travel2-mysql:3306/travel2?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+  jooq:
+    sql-dialect: org.hibernate.dialect.MySQL5Dialect
 management:
   endpoints:
     web:

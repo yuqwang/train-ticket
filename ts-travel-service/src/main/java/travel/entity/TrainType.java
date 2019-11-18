@@ -1,21 +1,13 @@
 package travel.entity;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import javax.validation.Valid;
-
-
-@Document(collection="trainType")
 public class TrainType {
-    @Valid
-    @Id
+
     private String id;
 
-    @Valid
+
     private int economyClass;
 
-    @Valid
+
     private int confortClass;
 
     private int averageSpeed;
