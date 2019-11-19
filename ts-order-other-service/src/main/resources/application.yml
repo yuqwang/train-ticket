@@ -5,13 +5,19 @@ server:
 spring:
   application:
     name: ts-order-other-service
-  data:
-    mongodb:
-      host: ts-order-other-mongo
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-      database: ts
-      port: 27017
+  datasource:
+    url: jdbc:mysql://ts-order-other-service:3306/orders?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+#        format_sql: true
+        use_sql_comments: true
 management:
   endpoints:
     web:

@@ -101,20 +101,26 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ts-order-mongo
+  name: ts-order-mysql
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-order-mongo
+        app: ts-order-mysql
     spec:
       containers:
-      - name: ts-order-mongo
-        image: mongo
+      - name: ts-order-mysql
+        image: mysql:5.6.35
         imagePullPolicy: IfNotPresent
+        env:
+          # Use secret in real usage
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+          - name: MYSQL_DATABASE
+            value: orders
         ports:
-        - containerPort: 27017
+          - containerPort: 3306
         resources:
           requests:
             cpu: 50m
@@ -125,20 +131,26 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ts-order-other-mongo
+  name: ts-order-other-mysql
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-order-other-mongo
+        app: ts-order-other-mysql
     spec:
       containers:
-      - name: ts-order-other-mongo
-        image: mongo
+      - name: ts-order-other-mysql
+        image: mysql:5.6.35
         imagePullPolicy: IfNotPresent
+        env:
+          # Use secret in real usage
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+          - name: MYSQL_DATABASE
+            value: users
         ports:
-        - containerPort: 27017
+          - containerPort: 3306
         resources:
           requests:
             cpu: 50m
@@ -605,24 +617,24 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-order-mongo
+  name: ts-order-mysql
 spec:
   ports:
     - port: 27017
   selector:
-   app: ts-order-mongo
+   app: ts-order-mysql
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-order-other-mongo
+  name: ts-order-other-mysql
 spec:
   ports:
     - port: 27017
   selector:
-   app: ts-order-other-mongo
+   app: ts-order-other-mysql
 
 ---
 

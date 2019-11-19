@@ -9,12 +9,16 @@ spring:
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
-    jpa:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
       hibernate:
-        ddl-auto: update
-      show-sql: true
-    jooq:
-      sql-dialect: org.hibernate.dialect.MySQL5Dialect
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+  jooq:
+    sql-dialect: org.hibernate.dialect.MySQL5Dialect
 management:
   endpoints:
     web:
