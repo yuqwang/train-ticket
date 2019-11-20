@@ -41,6 +41,7 @@ public class ConsignPriceController {
     @PostMapping(value = "/consignprice")
     public HttpEntity modifyPriceConfig(@RequestBody ConsignPrice priceConfig,
                                         @RequestHeader HttpHeaders headers) {
+        System.out.println("modify consign price ====");
         return ok(service.createAndModifyPrice(priceConfig, headers));
     }
 }

@@ -2,7 +2,8 @@ spring:
   application:
     name: ts-order-service
   datasource:
-    url: jdbc:mysql://ts-order-service:3306/orders?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://ts-order-mysql:3306/orders?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+#    url: jdbc:mysql://10.141.212.139:32737/orders?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,7 +13,7 @@ spring:
     properties:
       hibernate:
         show_sql: true
-#        format_sql: true
+        format_sql: true
         use_sql_comments: true
   jooq:
     sql-dialect: org.hibernate.dialect.MySQL5Dialect

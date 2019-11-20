@@ -25,7 +25,7 @@ public class Order implements Serializable {
     @Column(name = "orderId")
     @GeneratedValue(generator = "IdStrategy")
     @GenericGenerator(name = "IdStrategy", strategy = "assigned")
-    private String orderId;
+    private String id;
 
     @Column
     private Date boughtDate;

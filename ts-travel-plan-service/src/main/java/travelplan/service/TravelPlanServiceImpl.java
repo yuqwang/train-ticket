@@ -218,6 +218,7 @@ public class TravelPlanServiceImpl implements TravelPlanService {
     }
 
     private ArrayList<RoutePlanResultUnit> getRoutePlanResultCheapest(RoutePlanInfo info, HttpHeaders headers) {
+        System.out.println("=========  " + info.toString());
         HttpEntity requestEntity = new HttpEntity(info, headers);
         ResponseEntity<Response<ArrayList<RoutePlanResultUnit>>> re = restTemplate.exchange(
                 "http://ts-route-plan-service:14578/api/v1/routeplanservice/routePlan/cheapestRoute",

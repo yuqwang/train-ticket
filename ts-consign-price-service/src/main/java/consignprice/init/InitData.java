@@ -15,15 +15,18 @@ public class InitData implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
-        System.out.println("[Consign price service] [Init data operation]");
-        ConsignPrice config = new ConsignPrice();
-        config.setId(UUID.randomUUID());
-        config.setIndex(0);
-        config.setInitialPrice(8);
-        config.setInitialWeight(1);
-        config.setWithinPrice(2);
-        config.setBeyondPrice(4);
-
-        service.createAndModifyPrice(config, null);
+        if (!service.isPriceConfigExisit(0)) {
+            System.out.println("[Consign price service] [Init data operation]");
+            ConsignPrice config = new ConsignPrice();
+            config.setId(UUID.randomUUID());
+            config.setIndex(0);
+            config.setInitialPrice(8);
+            config.setInitialWeight(1);
+            config.setWithinPrice(2);
+            config.setBeyondPrice(4);
+            service.createAndModifyPrice(config, null);
+        }else {
+            System.out.println("[Consign Price has exists!]");
+        }
     }
 }

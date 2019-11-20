@@ -73,7 +73,7 @@ var enterStation = new Vue({
             });
         },
         convertNumberToDateTimeString(timeNumber) {
-            var date = new Date(Number(timeNumber));
+            var date = new Date(timeNumber);
             var year = date.getFullYear(),
                 month = date.getMonth() + 1,//月份是从0开始的
                 day = date.getDate(),

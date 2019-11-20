@@ -8,5 +8,5 @@ import train.entity.TrainType;
 
 @Repository
 public interface TrainTypeRepository extends JpaRepository<TrainType, String> {
-    TrainType findByTrainTypeId(String trainTypeId);
+    TrainType findTrainTypeById(String trainTypeId);
 }

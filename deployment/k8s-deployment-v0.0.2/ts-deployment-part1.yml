@@ -39,15 +39,15 @@ spec:
         app: ts-auth-mongo
     spec:
       containers:
-      - name: ts-auth-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-auth-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 ---
 
 apiVersion: extensions/v1beta1
@@ -62,15 +62,15 @@ spec:
         app: ts-route-mongo
     spec:
       containers:
-      - name: ts-route-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-route-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -86,15 +86,15 @@ spec:
         app: ts-contacts-mongo
     spec:
       containers:
-      - name: ts-contacts-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-contacts-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -110,21 +110,21 @@ spec:
         app: ts-order-mysql
     spec:
       containers:
-      - name: ts-order-mysql
-        image: mysql:5.6.35
-        imagePullPolicy: IfNotPresent
-        env:
-          # Use secret in real usage
-          - name: MYSQL_ROOT_PASSWORD
-            value: root
-          - name: MYSQL_DATABASE
-            value: orders
-        ports:
-          - containerPort: 3306
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-order-mysql
+          image: mysql:5.6.35
+          imagePullPolicy: IfNotPresent
+          env:
+            # Use secret in real usage
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: orders
+          ports:
+            - containerPort: 3306
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -140,21 +140,21 @@ spec:
         app: ts-order-other-mysql
     spec:
       containers:
-      - name: ts-order-other-mysql
-        image: mysql:5.6.35
-        imagePullPolicy: IfNotPresent
-        env:
-          # Use secret in real usage
-          - name: MYSQL_ROOT_PASSWORD
-            value: root
-          - name: MYSQL_DATABASE
-            value: users
-        ports:
-          - containerPort: 3306
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-order-other-mysql
+          image: mysql:5.6.35
+          imagePullPolicy: IfNotPresent
+          env:
+            # Use secret in real usage
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: users
+          ports:
+            - containerPort: 3306
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
 
 ---
 
@@ -170,15 +170,15 @@ spec:
         app: ts-config-mongo
     spec:
       containers:
-      - name: ts-config-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-config-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -269,16 +269,16 @@ spec:
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: ts-travel2-service
+  name: ts-travel2-mysql
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-travel2-service
+        app: ts-travel2-mysql
     spec:
       containers:
-        - name: ts-travel2-service
+        - name: ts-travel2-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
           env:
@@ -306,15 +306,15 @@ spec:
         app: ts-price-mongo
     spec:
       containers:
-      - name: ts-price-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-price-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -330,15 +330,15 @@ spec:
         app: ts-security-mongo
     spec:
       containers:
-      - name: ts-security-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-security-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -354,15 +354,15 @@ spec:
         app: ts-inside-payment-mongo
     spec:
       containers:
-      - name: ts-inside-payment-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-inside-payment-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -378,15 +378,15 @@ spec:
         app: ts-payment-mongo
     spec:
       containers:
-      - name: ts-payment-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-payment-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -402,15 +402,15 @@ spec:
         app: ts-assurance-mongo
     spec:
       containers:
-      - name: ts-assurance-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-assurance-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -426,15 +426,15 @@ spec:
         app: ts-ticket-office-mongo
     spec:
       containers:
-      - name: ts-ticket-office-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-ticket-office-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 
 ---
@@ -451,19 +451,19 @@ spec:
         app: ts-voucher-mysql
     spec:
       containers:
-      - name: ts-voucher-mysql
-        image: mysql:5.6.35
-        imagePullPolicy: IfNotPresent
-        env:
-        # Use secret in real usage
-        - name: MYSQL_ROOT_PASSWORD
-          value: root
-        ports:
-        - containerPort: 3306
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-voucher-mysql
+          image: mysql:5.6.35
+          imagePullPolicy: IfNotPresent
+          env:
+            # Use secret in real usage
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+          ports:
+            - containerPort: 3306
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -479,15 +479,15 @@ spec:
         app: ts-food-map-mongo
     spec:
       containers:
-      - name: ts-food-map-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-food-map-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -503,15 +503,15 @@ spec:
         app: ts-consign-mongo
     spec:
       containers:
-      - name: ts-consign-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-consign-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -527,15 +527,15 @@ spec:
         app: ts-consign-price-mongo
     spec:
       containers:
-      - name: ts-consign-price-mongo
-        image: mongo
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-consign-price-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
 
 ---
 
@@ -551,20 +551,20 @@ spec:
         app: ts-food-mysql
     spec:
       containers:
-      - name: ts-food-mysql
-        image: mysql:5.6.35
-        imagePullPolicy: IfNotPresent
-        env:
-          - name: MYSQL_ROOT_PASSWORD
-            value: root
-          - name: MYSQL_DATABASE
-            value: food
-        ports:
-        - containerPort: 27017
-        resources:
-          requests:
-            cpu: 50m
-            memory: 100Mi
+        - name: ts-food-mysql
+          image: mysql:5.6.35
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: food
+          ports:
+            - containerPort: 3306
+          resources:
+            requests:
+              cpu: 100m
+              memory: 200Mi
 
 ---
 apiVersion: v1
@@ -587,7 +587,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-auth-mongo
+    app: ts-auth-mongo
 ---
 
 apiVersion: v1
@@ -598,7 +598,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-route-mongo
+    app: ts-route-mongo
 
 ---
 
@@ -610,7 +610,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-contacts-mongo
+    app: ts-contacts-mongo
 
 ---
 
@@ -620,9 +620,9 @@ metadata:
   name: ts-order-mysql
 spec:
   ports:
-    - port: 27017
+    - port: 3306
   selector:
-   app: ts-order-mysql
+    app: ts-order-mysql
 
 ---
 
@@ -632,9 +632,9 @@ metadata:
   name: ts-order-other-mysql
 spec:
   ports:
-    - port: 27017
+    - port: 3306
   selector:
-   app: ts-order-other-mysql
+    app: ts-order-other-mysql
 
 ---
 
@@ -646,7 +646,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-config-mongo
+    app: ts-config-mongo
 
 ---
 
@@ -692,13 +692,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-travel2-service
+  name: ts-travel2-mysql
 spec:
   type: NodePort
   ports:
     - port: 3306
   selector:
-    app: ts-travel2-service
+    app: ts-travel2-mysql
 
 ---
 
@@ -710,7 +710,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-price-mongo
+    app: ts-price-mongo
 
 ---
 
@@ -722,7 +722,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-security-mongo
+    app: ts-security-mongo
 
 ---
 
@@ -734,7 +734,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-inside-payment-mongo
+    app: ts-inside-payment-mongo
 
 ---
 
@@ -746,7 +746,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-payment-mongo
+    app: ts-payment-mongo
 
 ---
 
@@ -758,7 +758,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-assurance-mongo
+    app: ts-assurance-mongo
 
 ---
 
@@ -770,7 +770,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-ticket-office-mongo
+    app: ts-ticket-office-mongo
 
 ---
 
@@ -782,7 +782,7 @@ spec:
   ports:
     - port: 3306
   selector:
-   app: ts-voucher-mysql
+    app: ts-voucher-mysql
 
 ---
 
@@ -794,7 +794,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-food-map-mongo
+    app: ts-food-map-mongo
 
 ---
 
@@ -806,7 +806,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-consign-mongo
+    app: ts-consign-mongo
 
 ---
 
@@ -818,7 +818,7 @@ spec:
   ports:
     - port: 27017
   selector:
-   app: ts-consign-price-mongo
+    app: ts-consign-price-mongo
 
 ---
 
@@ -828,6 +828,6 @@ metadata:
   name: ts-food-mysql
 spec:
   ports:
-    - port: 27017
+    - port: 3306
   selector:
-   app: ts-food-mysql
+    app: ts-food-mysql

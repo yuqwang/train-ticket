@@ -64,6 +64,7 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
         originalConfig.setInitialWeight(config.getInitialWeight());
         originalConfig.setWithinPrice(config.getWithinPrice());
         originalConfig.setBeyondPrice(config.getBeyondPrice());
+        repository.delete(originalConfig);
         repository.save(originalConfig);
         return new Response<>(1, "Success", originalConfig);
     }
@@ -71,5 +72,13 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
     @Override
     public Response getPriceConfig(HttpHeaders headers) {
         return new Response<>(1, "Success", repository.findByIndex(0));
+    }
+
+    @Override
+    public boolean isPriceConfigExisit(int index) {
+        if (repository.findByIndex(index) != null){
+            return true;
+        }
+        return false;
     }
 }

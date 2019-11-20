@@ -37,12 +37,14 @@ public class BasicServiceImpl implements BasicService {
             response.setMsg("Start place or end place not exist!");
         }
 
+        System.out.println(" ======= info.getTrip().getTrainTypeId() " + info.getTrip().getTrainTypeId());
         TrainType trainType = queryTrainType(info.getTrip().getTrainTypeId(), headers);
         if (trainType == null) {
             System.out.println("traintype doesn't exist");
             result.setStatus(false);
             response.setStatus(0);
             response.setMsg("Train type doesn't exist");
+            return response;
         } else {
             result.setTrainType(trainType);
         }

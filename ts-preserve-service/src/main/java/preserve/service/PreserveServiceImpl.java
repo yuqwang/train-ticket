@@ -151,7 +151,8 @@ public class PreserveServiceImpl implements PreserveService {
             System.out.println("[Preserve Service][Step 5] Do not need to buy assurance");
         } else {
             Response addAssuranceResult = addAssuranceForOrder(
-                    oti.getAssurance(), cor.getData().getId().toString(), headers);
+                    oti.getAssurance(),
+                    cor.getData().getId().toString(), headers);
             if (addAssuranceResult.getStatus() == 1) {
                 System.out.println("[Preserve Service][Step 5] Buy Assurance Success");
             } else {
@@ -171,6 +172,14 @@ public class PreserveServiceImpl implements PreserveService {
             foodOrder.setPrice(oti.getFoodPrice());
 
             if (oti.getFoodType() == 2) {
+
+
+
+
+
+
+
+
                 foodOrder.setStationName(oti.getStationName());
                 foodOrder.setStoreName(oti.getStoreName());
                 System.out.println("[Food Service]!!!!!!!!!!!!!!!foodstore=" + foodOrder.getFoodType() + "   " + foodOrder.getStationName() + "   " + foodOrder.getStoreName());

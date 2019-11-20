@@ -13,4 +13,6 @@ public interface ConsignPriceService {
     Response createAndModifyPrice(ConsignPrice config, HttpHeaders headers);
 
     Response getPriceConfig(HttpHeaders headers);
+
+    boolean isPriceConfigExisit(int index);
 }

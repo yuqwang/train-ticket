@@ -9,11 +9,11 @@ import java.util.Date;
 @Repository
 public interface OrderOtherRepository extends JpaRepository<Order, String> {
 
-    Order findOrderByOrderId(String id);
+    Order findOrderById(String id);
 
     ArrayList<Order> findOrderByAccountId(String accountId);
 
     ArrayList<Order> findOrderByTravelDateAndTrainNumber(Date travelDate, String trainNumber);
 
-    void deleteOrderByOrderId(String id);
+    void deleteOrderById(String id);
 }

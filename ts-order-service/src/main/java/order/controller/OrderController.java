@@ -36,7 +36,6 @@ public class OrderController {
     public HttpEntity createNewOrder(@RequestBody Order createOrder, @RequestHeader HttpHeaders headers) {
         System.out.println("[Order Service][Create Order] Create Order form " + createOrder.getFrom() + " --->"
                 + createOrder.getTo() + " at " + createOrder.getTravelDate());
-        System.out.println("[Order Service][Verify Login] Success");
         return ok(orderService.create(createOrder, headers));
     }
 

@@ -5,7 +5,7 @@ spring:
   application:
     name: ts-food-service
   datasource:
-    url: jdbc:mysql://ts-food-service:3306/food?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://ts-food-mysql:3306/food?createDatabaseIfNotExist=true&useUnicode=true&characterEncoding=utf-8
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,8 +15,8 @@ spring:
     properties:
       hibernate:
         show_sql: true
-        format_sql: true
-        use_sql_comments: true
+#        format_sql: true
+#        use_sql_comments: true
   jooq:
     sql-dialect: org.hibernate.dialect.MySQL5Dialect
 management:

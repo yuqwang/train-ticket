@@ -3,6 +3,7 @@ package fdse.microservice.entity;
 
 public class TrainType {
 
+     // {"trainTypeId":"GaoTieOne","economyClass":2147483647,"confortClass":2147483647,"averageSpeed":250}
     private String id;
 
     private int economyClass;

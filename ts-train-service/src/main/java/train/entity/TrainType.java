@@ -19,7 +19,7 @@ public class TrainType {
     @Column(name = "trainTypeId")
     @GeneratedValue(generator = "IdStrategy")
     @GenericGenerator(name = "IdStrategy", strategy = "assigned")
-    private String trainTypeId;
+    private String id;
 
     private int economyClass;
 
@@ -27,8 +27,8 @@ public class TrainType {
 
     private int averageSpeed;
 
-    public TrainType(String trainTypeId, int economyClass, int confortClass) {
-        this.trainTypeId = trainTypeId;
+    public TrainType(String id, int economyClass, int confortClass) {
+        this.id = id;
         this.economyClass = economyClass;
         this.confortClass = confortClass;
     }
