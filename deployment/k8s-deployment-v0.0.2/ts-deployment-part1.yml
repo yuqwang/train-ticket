@@ -6,10 +6,22 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
       labels:
         app: ts-user-mysql
     spec:
       containers:
+        - name: mysql-exporter2
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9104
+              protocol: TCP
+          env:
+            - name: DATA_SOURCE_NAME
+              value: root:root@(ts-user-mysql:3306)/
         - name: ts-user-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
@@ -106,10 +118,22 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
       labels:
         app: ts-order-mysql
     spec:
       containers:
+        - name: mysql-exporter2
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9104
+              protocol: TCP
+          env:
+            - name: DATA_SOURCE_NAME
+              value: root:root@(ts-order-mysql:3306)/
         - name: ts-order-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
@@ -136,10 +160,22 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
       labels:
         app: ts-order-other-mysql
     spec:
       containers:
+        - name: mysql-exporter2
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9104
+              protocol: TCP
+          env:
+            - name: DATA_SOURCE_NAME
+              value: root:root@(ts-order-other-mysql:3306)/
         - name: ts-order-other-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
@@ -190,10 +226,22 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
       labels:
         app: ts-station-mysql
     spec:
       containers:
+        - name: mysql-exporter2
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9104
+              protocol: TCP
+          env:
+            - name: DATA_SOURCE_NAME
+              value: root:root@(ts-station-mysql:3306)/
         - name: ts-station-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
@@ -218,10 +266,22 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
       labels:
         app: ts-train-mysql
     spec:
       containers:
+        - name: mysql-exporter2
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9104
+              protocol: TCP
+          env:
+            - name: DATA_SOURCE_NAME
+              value: root:root@(ts-train-mysql:3306)/
         - name: ts-train-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
@@ -246,10 +306,22 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
       labels:
         app: ts-travel-mysql
     spec:
       containers:
+        - name: mysql-exporter2
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9104
+              protocol: TCP
+          env:
+            - name: DATA_SOURCE_NAME
+              value: root:root@(ts-travel-mysql:3306)/
         - name: ts-travel-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
@@ -274,10 +346,22 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
       labels:
         app: ts-travel2-mysql
     spec:
       containers:
+        - name: mysql-exporter2
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9104
+              protocol: TCP
+          env:
+            - name: DATA_SOURCE_NAME
+              value: root:root@(ts-travel2-mysql:3306)/
         - name: ts-travel2-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
@@ -447,10 +531,22 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
       labels:
         app: ts-voucher-mysql
     spec:
       containers:
+        - name: mysql-exporter2
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9104
+              protocol: TCP
+          env:
+            - name: DATA_SOURCE_NAME
+              value: root:root@(ts-voucher-mysql:3306)/
         - name: ts-voucher-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
@@ -547,10 +643,22 @@ spec:
   replicas: 1
   template:
     metadata:
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9104"
       labels:
         app: ts-food-mysql
     spec:
       containers:
+        - name: mysql-exporter2
+          image: prom/mysqld-exporter
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 9104
+              protocol: TCP
+          env:
+            - name: DATA_SOURCE_NAME
+              value: root:root@(ts-food-mysql:3306)/
         - name: ts-food-mysql
           image: mysql:5.6.35
           imagePullPolicy: IfNotPresent
@@ -574,7 +682,13 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 3306
+    - name: ts-user-mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: ts-user-mysql-prom
+      port: 9104
+      targetPort: 9104
   selector:
     app: ts-user-mysql
 
@@ -620,7 +734,13 @@ metadata:
   name: ts-order-mysql
 spec:
   ports:
-    - port: 3306
+    - name: ts-order-mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: ts-order-mysql-prom
+      port: 9104
+      targetPort: 9104
   selector:
     app: ts-order-mysql
 
@@ -632,7 +752,13 @@ metadata:
   name: ts-order-other-mysql
 spec:
   ports:
-    - port: 3306
+    - name: ts-order-other-mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: ts-order-other-mysql-prom
+      port: 9104
+      targetPort: 9104
   selector:
     app: ts-order-other-mysql
 
@@ -657,7 +783,13 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 3306
+    - name: ts-station-mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: ts-station-mysql-prom
+      port: 9104
+      targetPort: 9104
   selector:
     app: ts-station-mysql
 
@@ -670,7 +802,13 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 3306
+    - name: ts-train-mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: ts-train-mysql-prom
+      port: 9104
+      targetPort: 9104
   selector:
     app: ts-train-mysql
 
@@ -683,7 +821,13 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 3306
+    - name: ts-travel-mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: ts-travel-mysql-prom
+      port: 9104
+      targetPort: 9104
   selector:
     app: ts-travel-mysql
 
@@ -696,7 +840,13 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 3306
+    - name: ts-travel2-mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: ts-travel2-mysql-prom
+      port: 9104
+      targetPort: 9104
   selector:
     app: ts-travel2-mysql
 
@@ -780,7 +930,13 @@ metadata:
   name: ts-voucher-mysql
 spec:
   ports:
-    - port: 3306
+    - name: ts-voucher-mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: ts-voucher-mysql-prom
+      port: 9104
+      targetPort: 9104
   selector:
     app: ts-voucher-mysql
 
@@ -828,6 +984,12 @@ metadata:
   name: ts-food-mysql
 spec:
   ports:
-    - port: 3306
+    - name: ts-food-mysql
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+    - name: ts-food-mysql-prom
+      port: 9104
+      targetPort: 9104
   selector:
     app: ts-food-mysql
