@@ -123,6 +123,8 @@ var reserveApp = new Vue({
         },
         queryForTravelInfo(data, path) {
             $("#travel_booking_button").attr("disabled", true);
+            $("#travel_searching_button").attr("disabled", true);
+
             var that = this;
             $('#my-svg').shCircleLoader({namespace: 'runLoad'});
             $.ajax({
@@ -150,6 +152,7 @@ var reserveApp = new Vue({
                 complete: function () {
                     $('#my-svg').shCircleLoader('destroy');
                     $("#travel_booking_button").attr("disabled", false);
+                    $("#travel_searching_button").attr("disabled", false);
                 }
             });
         },
