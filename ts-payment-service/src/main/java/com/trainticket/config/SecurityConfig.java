@@ -62,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/actuator/prometheus").permitAll()
+                .antMatchers("/api/v1/paymentservice/welcome").permitAll()
                 .antMatchers("/api/v1/paymentservice/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/swagger-ui.html", "/webjars/**", "/images/**",
                         "/configuration/**", "/swagger-resources/**", "/v2/**").permitAll()

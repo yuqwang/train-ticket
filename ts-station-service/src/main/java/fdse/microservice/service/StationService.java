@@ -7,8 +7,12 @@ import org.springframework.http.HttpHeaders;
 import java.util.List;
 
 public interface StationService {
+
+    String insertRedis(Integer times) throws InterruptedException;
+
     //CRUD
     Response create(Station info, HttpHeaders headers);
+
 
     boolean exist(String stationName, HttpHeaders headers);
 
@@ -25,5 +29,7 @@ public interface StationService {
     Response queryById(String stationId, HttpHeaders headers);
 
     Response queryByIdBatch(List<String> stationIdList, HttpHeaders headers);
+
+
 
 }

@@ -77,7 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/actuator/prometheus").permitAll()
-                .antMatchers("/api/v1/auth", "/api/v1/hello").permitAll()
+                .antMatchers("/api/v1/auth", "/api/v1/auth/hello","/api/v1/user/hello").permitAll()
                 .antMatchers("/api/v1/users/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/api/v1/users/*").hasRole("ADMIN")

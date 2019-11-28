@@ -23,9 +23,17 @@ public class StationController {
     @Autowired
     private StationService stationService;
 
+
     @GetMapping(path = "/welcome")
     public String home(@RequestHeader HttpHeaders headers) {
         return "Welcome to [ Station Service ] !";
+    }
+
+
+
+    @GetMapping("/insert/{times}")
+    public String insert(@PathVariable Integer times) throws InterruptedException {
+        return stationService.insertRedis(times);
     }
 
     @GetMapping(value = "/stations")

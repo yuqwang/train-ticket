@@ -1,6 +1,11 @@
 spring:
   application:
     name: ts-station-service
+  redis:
+    database: 0
+    host: ts-station-redis
+    port: 6379
+    timeout: 8000 # ms
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     #    url: jdbc:mysql://ts-user-mysql:3306/users?useUnicode=true&characterEncoding=utf8
