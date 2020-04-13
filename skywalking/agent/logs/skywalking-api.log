@@ -1,0 +1,248 @@
+INFO 2020-04-12 16:19:36:558 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-dubbo-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:559 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jdbc-commons-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:559 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-httpClient-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:560 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jedis-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:560 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-redisson-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:560 main AgentClassLoader : /root/train-ticket/agent/plugins/tomcat-7.x-8.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:561 main AgentClassLoader : /root/train-ticket/agent/plugins/motan-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:561 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mongodb-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:562 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-feign-default-http-9.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:562 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-okhttp-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:562 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-async-annotation-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:563 main AgentClassLoader : /root/train-ticket/agent/plugins/spring-commons-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:563 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-concurrent-util-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:563 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-resttemplate-4.3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:564 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-springmvc-annotation-commons-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:564 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-springmvc-annotation-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:564 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-cloud-feign-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:565 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-springmvc-annotation-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:565 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-core-patch-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:566 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-springmvc-annotation-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:566 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-webflux-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:566 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-struts2-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:567 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-nutz-http-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:567 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-nutz-mvc-annotation-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:567 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jetty-client-9.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:568 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jetty-server-9.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:568 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jetty-client-9.0-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:569 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spymemcached-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:569 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-sharding-jdbc-1.5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:569 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-sharding-sphere-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:570 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-sharding-sphere-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:570 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-sharding-sphere-4.x-rc3-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:570 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-xmemcached-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:571 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-grpc-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:571 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mysql-commons-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:572 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mysql-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:572 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mysql-6.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:572 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mysql-8.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:573 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-h2-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:573 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-postgresql-8.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:573 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-rocketmq-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:574 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-rocketmq-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:574 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-elastic-job-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:574 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mongodb-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:575 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-httpasyncclient-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:575 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-kafka-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:576 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-servicecomb-java-chassis-0.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:576 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-servicecomb-java-chassis-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:576 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-hystrix-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:577 main AgentClassLoader : /root/train-ticket/agent/plugins/sofa-rpc-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:577 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-activemq-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:577 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-elasticsearch-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:578 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-elasticsearch-6.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:578 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-undertow-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:578 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-rabbitmq-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:579 main AgentClassLoader : /root/train-ticket/agent/plugins/dubbo-conflict-patch-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:579 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-canal-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:580 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-dubbo-2.7.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:580 main AgentClassLoader : /root/train-ticket/agent/plugins/dubbo-2.7.x-conflict-patch-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:580 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-vertx-core-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:581 main AgentClassLoader : /root/train-ticket/agent/plugins/resteasy-server-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:581 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-solrj-7.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:581 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-cassandra-java-driver-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:582 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-light4j-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:582 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-ehcache-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:583 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-pulsar-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:583 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-netty-socketio-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:583 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-armeria-0.84.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:584 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-armeria-0.85.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:584 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-httpclient-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:584 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-play-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:585 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-lettuce-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:585 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-avro-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:586 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-finagle-6.25.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:586 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-log4j-1.x-activation-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:586 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-log4j-2.x-activation-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:587 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-logback-1.x-activation-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:587 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-opentracing-activation-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:588 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-trace-activation-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:36:595 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-dubbo-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:595 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-httpClient-4.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:596 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-jedis-2.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:596 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-redisson-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:596 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/tomcat-7.x-8.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:596 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/motan-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:597 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-mongodb-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:597 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-feign-default-http-9.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:597 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-okhttp-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:598 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-spring-async-annotation-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:598 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-spring-concurrent-util-4.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:598 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-resttemplate-4.3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:599 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-springmvc-annotation-commons-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:599 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-springmvc-annotation-4.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:599 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-spring-cloud-feign-1.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:600 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-springmvc-annotation-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:600 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-spring-core-patch-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:600 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-springmvc-annotation-5.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:600 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-spring-webflux-5.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:601 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-struts2-2.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:601 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-nutz-http-1.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:601 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-nutz-mvc-annotation-1.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:602 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-jetty-client-9.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:602 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-jetty-server-9.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:602 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-jetty-client-9.0-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:602 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-spymemcached-2.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:603 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-sharding-jdbc-1.5.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:603 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-sharding-sphere-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:603 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-sharding-sphere-4.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:604 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-sharding-sphere-4.x-rc3-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:604 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-xmemcached-2.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:604 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-grpc-1.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:605 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-mysql-5.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:605 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-mysql-6.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:605 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-mysql-8.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:605 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-h2-1.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:606 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-postgresql-8.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:606 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-rocketmq-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:606 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-rocketmq-4.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:607 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-elastic-job-2.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:607 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-mongodb-2.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:607 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-httpasyncclient-4.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:608 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-kafka-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:608 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-servicecomb-java-chassis-0.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:608 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-servicecomb-java-chassis-1.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:609 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-hystrix-1.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:609 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/sofa-rpc-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:609 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-activemq-5.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:610 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-elasticsearch-5.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:610 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-elasticsearch-6.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:610 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-undertow-2.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:611 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-rabbitmq-5.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:611 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/dubbo-conflict-patch-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:611 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-canal-1.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:611 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-dubbo-2.7.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:612 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/dubbo-2.7.x-conflict-patch-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:612 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-vertx-core-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:612 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/resteasy-server-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:613 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-solrj-7.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:613 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-cassandra-java-driver-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:613 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-light4j-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:614 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-ehcache-2.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:614 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-pulsar-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:614 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-netty-socketio-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:614 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-armeria-0.84.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:615 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-armeria-0.85.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:615 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-httpclient-3.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:615 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-play-2.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:616 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-lettuce-5.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:616 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-avro-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:616 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/plugins/apm-finagle-6.25.x-plugin-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:617 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/activations/apm-toolkit-log4j-1.x-activation-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:617 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/activations/apm-toolkit-log4j-2.x-activation-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:617 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/activations/apm-toolkit-logback-1.x-activation-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:617 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/activations/apm-toolkit-opentracing-activation-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:36:618 main PluginResourcesResolver : find skywalking plugin define in jar:file:/root/train-ticket/agent/activations/apm-toolkit-trace-activation-7.0.0.jar!/skywalking-plugin.def 
+INFO 2020-04-12 16:19:40:197 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-dubbo-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:198 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jdbc-commons-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:198 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-httpClient-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:198 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jedis-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:198 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-redisson-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:198 main AgentClassLoader : /root/train-ticket/agent/plugins/tomcat-7.x-8.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:199 main AgentClassLoader : /root/train-ticket/agent/plugins/motan-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:200 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mongodb-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:200 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-feign-default-http-9.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:200 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-okhttp-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:200 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-async-annotation-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:201 main AgentClassLoader : /root/train-ticket/agent/plugins/spring-commons-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:201 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-concurrent-util-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:201 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-resttemplate-4.3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:201 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-springmvc-annotation-commons-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:201 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-springmvc-annotation-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:202 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-cloud-feign-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:202 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-springmvc-annotation-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:202 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-core-patch-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:202 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-springmvc-annotation-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:202 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spring-webflux-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:202 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-struts2-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:203 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-nutz-http-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:203 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-nutz-mvc-annotation-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:203 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jetty-client-9.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:203 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jetty-server-9.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:204 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-jetty-client-9.0-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:204 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-spymemcached-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:204 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-sharding-jdbc-1.5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:204 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-sharding-sphere-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:204 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-sharding-sphere-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:204 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-sharding-sphere-4.x-rc3-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:204 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-xmemcached-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:205 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-grpc-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:205 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mysql-commons-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:205 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mysql-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:205 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mysql-6.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:205 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mysql-8.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:205 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-h2-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:205 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-postgresql-8.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:206 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-rocketmq-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:206 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-rocketmq-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:206 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-elastic-job-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:206 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-mongodb-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:206 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-httpasyncclient-4.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:206 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-kafka-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:206 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-servicecomb-java-chassis-0.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:207 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-servicecomb-java-chassis-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:207 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-hystrix-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:207 main AgentClassLoader : /root/train-ticket/agent/plugins/sofa-rpc-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:207 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-activemq-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:207 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-elasticsearch-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:207 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-elasticsearch-6.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:207 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-undertow-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:207 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-rabbitmq-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:208 main AgentClassLoader : /root/train-ticket/agent/plugins/dubbo-conflict-patch-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:208 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-canal-1.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:208 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-dubbo-2.7.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:208 main AgentClassLoader : /root/train-ticket/agent/plugins/dubbo-2.7.x-conflict-patch-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:208 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-vertx-core-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:208 main AgentClassLoader : /root/train-ticket/agent/plugins/resteasy-server-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:208 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-solrj-7.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:209 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-cassandra-java-driver-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:209 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-light4j-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:209 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-ehcache-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:209 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-pulsar-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:209 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-netty-socketio-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:209 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-armeria-0.84.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:209 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-armeria-0.85.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:210 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-httpclient-3.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:210 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-play-2.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:210 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-lettuce-5.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:210 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-avro-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:210 main AgentClassLoader : /root/train-ticket/agent/plugins/apm-finagle-6.25.x-plugin-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:210 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-log4j-1.x-activation-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:210 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-log4j-2.x-activation-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:211 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-logback-1.x-activation-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:211 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-opentracing-activation-7.0.0.jar loaded. 
+INFO 2020-04-12 16:19:40:211 main AgentClassLoader : /root/train-ticket/agent/activations/apm-toolkit-trace-activation-7.0.0.jar loaded. 
+WARN 2020-04-12 16:19:42:928 main AbstractClassEnhancePluginDefine : enhance class fdse.microservice.controller.BasicController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v4.define.RestControllerForLowVersionInstrumentation is not working. Because witness class org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer is not existed. 
+WARN 2020-04-12 16:19:42:929 main AbstractClassEnhancePluginDefine : enhance class fdse.microservice.controller.BasicController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v5.define.RestControllerInstrumentation is not working. Because witness class org.springframework.web.servlet.resource.HttpResource is not existed. 
+WARN 2020-04-12 16:19:42:960 main AbstractClassEnhancePluginDefine : enhance class springfox.documentation.swagger2.web.Swagger2Controller by plugin org.apache.skywalking.apm.plugin.spring.mvc.v4.define.ControllerForLowVersionInstrumentation is not working. Because witness class org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer is not existed. 
+WARN 2020-04-12 16:19:42:960 main AbstractClassEnhancePluginDefine : enhance class springfox.documentation.swagger2.web.Swagger2Controller by plugin org.apache.skywalking.apm.plugin.spring.mvc.v3.define.ControllerInstrumentation is not working. Because witness class org.springframework.web.servlet.view.xslt.AbstractXsltView is not existed. 
+WARN 2020-04-12 16:19:42:961 main AbstractClassEnhancePluginDefine : enhance class springfox.documentation.swagger2.web.Swagger2Controller by plugin org.apache.skywalking.apm.plugin.spring.mvc.v5.define.ControllerInstrumentation is not working. Because witness class org.springframework.web.servlet.resource.HttpResource is not existed. 
+WARN 2020-04-12 16:19:43:206 main AbstractClassEnhancePluginDefine : enhance class springfox.documentation.swagger.web.ApiResourceController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v4.define.ControllerForLowVersionInstrumentation is not working. Because witness class org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer is not existed. 
+WARN 2020-04-12 16:19:43:206 main AbstractClassEnhancePluginDefine : enhance class springfox.documentation.swagger.web.ApiResourceController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v3.define.ControllerInstrumentation is not working. Because witness class org.springframework.web.servlet.view.xslt.AbstractXsltView is not existed. 
+WARN 2020-04-12 16:19:43:206 main AbstractClassEnhancePluginDefine : enhance class springfox.documentation.swagger.web.ApiResourceController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v5.define.ControllerInstrumentation is not working. Because witness class org.springframework.web.servlet.resource.HttpResource is not existed. 
+WARN 2020-04-12 16:19:43:697 main AbstractClassEnhancePluginDefine : enhance class org.springframework.boot.autoconfigure.web.BasicErrorController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v4.define.ControllerForLowVersionInstrumentation is not working. Because witness class org.springframework.web.context.support.ServletContextPropertyPlaceholderConfigurer is not existed. 
+WARN 2020-04-12 16:19:43:697 main AbstractClassEnhancePluginDefine : enhance class org.springframework.boot.autoconfigure.web.BasicErrorController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v3.define.ControllerInstrumentation is not working. Because witness class org.springframework.web.servlet.view.xslt.AbstractXsltView is not existed. 
+WARN 2020-04-12 16:19:43:697 main AbstractClassEnhancePluginDefine : enhance class org.springframework.boot.autoconfigure.web.BasicErrorController by plugin org.apache.skywalking.apm.plugin.spring.mvc.v5.define.ControllerInstrumentation is not working. Because witness class org.springframework.web.servlet.resource.HttpResource is not existed. 
+WARN 2020-04-12 16:19:48:560 main AbstractClassEnhancePluginDefine : enhance class org.springframework.web.method.HandlerMethod by plugin org.apache.skywalking.apm.plugin.spring.mvc.v3.define.HandlerMethodInstrumentation is not working. Because witness class org.springframework.web.servlet.view.xslt.AbstractXsltView is not existed. 
+WARN 2020-04-12 16:19:48:561 main AbstractClassEnhancePluginDefine : enhance class org.springframework.web.method.HandlerMethod by plugin org.apache.skywalking.apm.plugin.spring.mvc.v5.define.HandlerMethodInstrumentation is not working. Because witness class org.springframework.web.servlet.resource.HttpResource is not existed. 
+WARN 2020-04-12 16:19:50:516 main AbstractClassEnhancePluginDefine : enhance class org.springframework.web.method.support.InvocableHandlerMethod by plugin org.apache.skywalking.apm.plugin.spring.mvc.v3.define.InvocableHandlerInstrumentation is not working. Because witness class org.springframework.web.servlet.view.xslt.AbstractXsltView is not existed. 
