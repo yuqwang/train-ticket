@@ -16,8 +16,8 @@ server:
 swagger:
   controllerPackage: fdse.microservice
 
-opentracing:
-  jaeger:
-    udp-sender:
-      host: jaeger
-      port: 6831
+#opentracing:
+#  jaeger:
+#    udp-sender:
+#      host: jaeger
+#      port: 6831

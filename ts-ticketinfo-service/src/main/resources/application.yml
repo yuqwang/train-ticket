@@ -10,8 +10,8 @@ spring:
 swagger:
   controllerPackage: ticketinfo.controller
 
-opentracing:
-  jaeger:
-    udp-sender:
-      host: jaeger
-      port: 6831
+#opentracing:
+#  jaeger:
+#    udp-sender:
+#      host: jaeger
+#      port: 6831

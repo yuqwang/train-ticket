@@ -27,8 +27,8 @@ swagger:
 #          contentType: text/plain
 #          binder: rabbit
 
-opentracing:
-  jaeger:
-    udp-sender:
-      host: jaeger
-      port: 6831
+#opentracing:
+#  jaeger:
+#    udp-sender:
+#      host: jaeger
+#      port: 6831
