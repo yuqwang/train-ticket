@@ -9,7 +9,6 @@ import auth.repository.UserRepository;
 import auth.security.jwt.JWTProvider;
 import auth.service.TokenService;
 import edu.fudan.common.util.Response;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +20,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 
@@ -28,7 +29,6 @@ import java.text.MessageFormat;
  * @author fdse
  */
 @Service
-@Slf4j
 public class TokenServiceImpl implements TokenService {
 
     @Autowired
@@ -43,12 +43,14 @@ public class TokenServiceImpl implements TokenService {
     @Autowired
     private RestTemplate restTemplate;
 
+    private static final Logger LOG = LoggerFactory.getLogger(TokenServiceImpl.class);
+
     @Override
     public Response getToken(BasicAuthDto dto, HttpHeaders headers) {
         String username = dto.getUsername();
         String password = dto.getPassword();
         String verifyCode = dto.getVerificationCode();
-        log.info("LOGIN USER :" + username + " __ " + password + " __ " + verifyCode);
+        LOG.info("LOGIN USER :" + username + " __ " + password + " __ " + verifyCode);
 
         if (!StringUtils.isEmpty(verifyCode)) {
             HttpEntity requestEntity = new HttpEntity(headers);
@@ -78,8 +80,8 @@ public class TokenServiceImpl implements TokenService {
                         InfoConstant.USER_NAME_NOT_FOUND_1, username
                 )));
         String token = jwtProvider.createToken(user);
-        log.info(token + "USER TOKEN");
-        log.info(user.getUserId() + "   USER ID");
+        LOG.info(token + "USER TOKEN");
+        LOG.info(user.getUserId() + "   USER ID");
         return new Response<>(1, "login success", new TokenDto(user.getUserId(), username, token));
     }
 }

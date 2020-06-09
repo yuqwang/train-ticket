@@ -2,7 +2,8 @@ package edu.fudan.common.security.jwt;
 
 import edu.fudan.common.exception.TokenException;
 import io.jsonwebtoken.*;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,8 +21,9 @@ import java.util.stream.Collectors;
 /**
  * @author fdse
  */
-@Slf4j
 public class JWTUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(JWTUtil.class);
 
     private JWTUtil() {
         throw new IllegalStateException("Utility class");
@@ -98,19 +100,19 @@ public class JWTUtil {
             Jws<Claims> claimsJws = getClaims(token);
             return !claimsJws.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
-            log.error("Token expired: {} " + e);
+            LOG.error("Token expired: {} " + e);
             throw new TokenException("Token expired");
         } catch (UnsupportedJwtException e) {
-            log.error("Token format error: {} " + e);
+            LOG.error("Token format error: {} " + e);
             throw new TokenException("Token format error");
         } catch (MalformedJwtException e) {
-            log.error("Token is not properly constructed: {} " + e);
+            LOG.error("Token is not properly constructed: {} " + e);
             throw new TokenException("Token is not properly constructed");
         } catch (SignatureException e) {
-            log.error("Signature failure: {} " + e);
+            LOG.error("Signature failure: {} " + e);
             throw new TokenException("Signature failure");
         } catch (IllegalArgumentException e) {
-            log.error("Illegal parameter exception: {} " + e);
+            LOG.error("Illegal parameter exception: {} " + e);
             throw new TokenException("Illegal parameter exception");
         }
     }

@@ -15,8 +15,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Component  
 public class AsyncTask {  
-    protected final Logger logger = LoggerFactory.getLogger(this.getClass());  
-    
+
     @Autowired
 	private RestTemplate restTemplate;
 

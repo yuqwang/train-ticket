@@ -1,6 +1,8 @@
 package verifycode.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +22,12 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/api/v1/verifycode")
-@Slf4j
 public class VerifyCodeController {
 
     @Autowired
     private VerifyCodeService verifyCodeService;
+
+    private static final Logger LOG = LoggerFactory.getLogger(VerifyCodeController.class);
 
     @GetMapping("/generate")
     public void imageCode(@RequestHeader HttpHeaders headers,
@@ -47,7 +50,7 @@ public class VerifyCodeController {
     @GetMapping(value = "/verify/{verifyCode}")
     public boolean verifyCode(@PathVariable String verifyCode, HttpServletRequest request,
                               HttpServletResponse response, @RequestHeader HttpHeaders headers) {
-        log.info("receivedCode  " +verifyCode);
+        LOG.info("receivedCode  " +verifyCode);
         return verifyCodeService.verifyCode(request, response, verifyCode, headers);
     }
 }
