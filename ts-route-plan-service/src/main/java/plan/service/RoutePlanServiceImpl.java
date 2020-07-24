@@ -4,6 +4,7 @@ import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
@@ -34,6 +35,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
 
     @Override
     public Response searchCheapestResult(RoutePlanInfo info, HttpHeaders headers) {
+        RoutePlanServiceImpl proxy = (RoutePlanServiceImpl) AopContext.currentProxy();
 
         //1.Violence pulls out all the results of travel-service and travle2-service
         TripInfo queryInfo = new TripInfo();
@@ -41,8 +43,8 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         queryInfo.setEndPlace(info.getToStationName());
         queryInfo.setDepartureTime(info.getTravelDate());
 
-        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServive(queryInfo, headers);
-        ArrayList<TripResponse> normalTrain = getTripFromNormalTrainTravelService(queryInfo, headers);
+        ArrayList<TripResponse> highSpeed = proxy.getTripFromHighSpeedTravelServive(queryInfo, headers);
+        ArrayList<TripResponse> normalTrain = proxy.getTripFromNormalTrainTravelService(queryInfo, headers);
 
         //2.Sort by second-class seats
         ArrayList<TripResponse> finalResult = new ArrayList<>();
@@ -77,7 +79,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
             tempUnit.setTrainTypeId(tempResponse.getTrainTypeId());
             tempUnit.setFromStationName(tempResponse.getStartingStation());
             tempUnit.setToStationName(tempResponse.getTerminalStation());
-            tempUnit.setStopStations(getStationList(tempResponse.getTripId().toString(), headers));
+            tempUnit.setStopStations(proxy.getStationList(tempResponse.getTripId().toString(), headers));
             tempUnit.setPriceForSecondClassSeat(tempResponse.getPriceForEconomyClass());
             tempUnit.setPriceForFirstClassSeat(tempResponse.getPriceForConfortClass());
             tempUnit.setEndTime(tempResponse.getEndTime());
@@ -91,6 +93,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
 
     @Override
     public Response searchQuickestResult(RoutePlanInfo info, HttpHeaders headers) {
+        RoutePlanServiceImpl proxy = (RoutePlanServiceImpl) AopContext.currentProxy();
 
         //1.Violence pulls out all the results of travel-service and travle2-service
         TripInfo queryInfo = new TripInfo();
@@ -98,8 +101,8 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         queryInfo.setEndPlace(info.getToStationName());
         queryInfo.setDepartureTime(info.getTravelDate());
 
-        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServive(queryInfo, headers);
-        ArrayList<TripResponse> normalTrain = getTripFromNormalTrainTravelService(queryInfo, headers);
+        ArrayList<TripResponse> highSpeed = proxy.getTripFromHighSpeedTravelServive(queryInfo, headers);
+        ArrayList<TripResponse> normalTrain = proxy.getTripFromNormalTrainTravelService(queryInfo, headers);
 
         //2.Sort by time
         ArrayList<TripResponse> finalResult = new ArrayList<>();
@@ -141,7 +144,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
             tempUnit.setFromStationName(tempResponse.getStartingStation());
             tempUnit.setToStationName(tempResponse.getTerminalStation());
 
-            tempUnit.setStopStations(getStationList(tempResponse.getTripId().toString(), headers));
+            tempUnit.setStopStations(proxy.getStationList(tempResponse.getTripId().toString(), headers));
 
             tempUnit.setPriceForSecondClassSeat(tempResponse.getPriceForEconomyClass());
             tempUnit.setPriceForFirstClassSeat(tempResponse.getPriceForConfortClass());
@@ -154,8 +157,10 @@ public class RoutePlanServiceImpl implements RoutePlanService {
 
     @Override
     public Response searchMinStopStations(RoutePlanInfo info, HttpHeaders headers) {
-        String fromStationId = queryForStationId(info.getFormStationName(), headers);
-        String toStationId = queryForStationId(info.getToStationName(), headers);
+        RoutePlanServiceImpl proxy = (RoutePlanServiceImpl) AopContext.currentProxy();
+
+        String fromStationId = proxy.queryForStationId(info.getFormStationName(), headers);
+        String toStationId = proxy.queryForStationId(info.getToStationName(), headers);
         RoutePlanServiceImpl.LOGGER.info("From Id: {} To: {}", fromStationId , toStationId);
         //1.Get the route through the two stations
 
@@ -265,7 +270,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
             unit.setPriceForSecondClassSeat(tripResponse.getPriceForEconomyClass());
             //Go get the roadmap according to routeid
             String routeId = trip.getRouteId();
-            Route tripRoute = getRouteByRouteId(routeId, headers);
+            Route tripRoute = proxy.getRouteByRouteId(routeId, headers);
             if (tripRoute != null) {
                 unit.setStopStations(tripRoute.getStations());
             }
@@ -276,7 +281,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         return new Response<>(1, "Success.", tripResponses);
     }
 
-    private String queryForStationId(String stationName, HttpHeaders headers) {
+    public String queryForStationId(String stationName, HttpHeaders headers) {
         RoutePlanServiceImpl.LOGGER.info("[Preserve Service][Get Station Name]");
 
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
@@ -289,7 +294,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         return re.getBody().getData();
     }
 
-    private Route getRouteByRouteId(String routeId, HttpHeaders headers) {
+    public Route getRouteByRouteId(String routeId, HttpHeaders headers) {
         RoutePlanServiceImpl.LOGGER.info("[Route Plan Service][Get Route By Id] Route ID：{}", routeId);
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Route>> re = restTemplate.exchange(
@@ -309,7 +314,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         }
     }
 
-    private ArrayList<TripResponse> getTripFromHighSpeedTravelServive(TripInfo info, HttpHeaders headers) {
+    public ArrayList<TripResponse> getTripFromHighSpeedTravelServive(TripInfo info, HttpHeaders headers) {
         HttpEntity requestEntity = new HttpEntity(info, headerBuilder.constructHeader(headers));
 
         ResponseEntity<Response<ArrayList<TripResponse>>> re = restTemplate.exchange(
@@ -324,7 +329,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         return tripResponses;
     }
 
-    private ArrayList<TripResponse> getTripFromNormalTrainTravelService(TripInfo info, HttpHeaders headers) {
+    public ArrayList<TripResponse> getTripFromNormalTrainTravelService(TripInfo info, HttpHeaders headers) {
         HttpEntity requestEntity = new HttpEntity(info, headerBuilder.constructHeader(headers));
 
         ResponseEntity<Response<ArrayList<TripResponse>>> re = restTemplate.exchange(
@@ -338,7 +343,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         return list;
     }
 
-    private List<String> getStationList(String tripId, HttpHeaders headers) {
+    public List<String> getStationList(String tripId, HttpHeaders headers) {
 
         String path;
         if (tripId.charAt(0) == 'G' || tripId.charAt(0) == 'D') {

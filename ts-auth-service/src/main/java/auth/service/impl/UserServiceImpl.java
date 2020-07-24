@@ -10,6 +10,7 @@ import auth.service.UserService;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
@@ -59,7 +60,7 @@ public class UserServiceImpl implements UserService {
                 .roles(new HashSet<>(Arrays.asList(AuthConstant.ROLE_USER)))
                 .build();
 
-        checkUserCreateInfo(user);
+        ((UserServiceImpl) AopContext.currentProxy()).checkUserCreateInfo(user);
         return userRepository.save(user);
     }
 
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService {
      *
      * @param user
      */
-    private void checkUserCreateInfo(User user) {
+    public void checkUserCreateInfo(User user) {
         List<String> infos = new ArrayList<>();
 
         if (null == user.getUsername() || "".equals(user.getUsername())) {

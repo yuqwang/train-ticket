@@ -7,6 +7,7 @@ import inside_payment.repository.AddMoneyRepository;
 import inside_payment.repository.PaymentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
@@ -43,6 +44,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
 
     @Override
     public Response pay(PaymentInfo info, HttpHeaders headers) {
+        InsidePaymentServiceImpl proxy = (InsidePaymentServiceImpl) AopContext.currentProxy();
 
         String userId = info.getUserId();
 
@@ -114,13 +116,13 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
                 if (outsidePaySuccess.getStatus() == 1) {
                     payment.setType(PaymentType.O);
                     paymentRepository.save(payment);
-                    setOrderStatus(info.getTripId(), info.getOrderId(), headers);
+                    proxy.setOrderStatus(info.getTripId(), info.getOrderId(), headers);
                     return new Response<>(1, "Payment Success " +    outsidePaySuccess.getMsg(), null);
                 } else {
                     return new Response<>(0, "Payment Failed:  " +  outsidePaySuccess.getMsg(), null);
                 }
             } else {
-                setOrderStatus(info.getTripId(), info.getOrderId(), headers);
+                proxy.setOrderStatus(info.getTripId(), info.getOrderId(), headers);
                 payment.setType(PaymentType.P);
                 paymentRepository.save(payment);
             }
@@ -313,7 +315,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
         }
     }
 
-    private Response setOrderStatus(String tripId, String orderId, HttpHeaders headers) {
+    public Response setOrderStatus(String tripId, String orderId, HttpHeaders headers) {
 
         //order paid and not collected
         int orderStatus = 1;

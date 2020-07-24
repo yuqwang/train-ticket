@@ -6,6 +6,7 @@ import order.entity.*;
 import order.repository.OrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
@@ -170,14 +171,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response queryOrdersForRefresh(OrderInfo qi, String accountId, HttpHeaders headers) {
-        ArrayList<Order> orders =   queryOrders(qi, accountId, headers).getData();
+        OrderServiceImpl proxy = (OrderServiceImpl) AopContext.currentProxy();
+
+        ArrayList<Order> orders =  proxy.queryOrders(qi, accountId, headers).getData();
         ArrayList<String> stationIds = new ArrayList<>();
         for (Order order : orders) {
             stationIds.add(order.getFrom());
             stationIds.add(order.getTo());
         }
 
-        List<String> names = queryForStationId(stationIds, headers);
+        List<String> names = proxy.queryForStationId(stationIds, headers);
         for (int i = 0; i < orders.size(); i++) {
             orders.get(i).setFrom(names.get(i * 2));
             orders.get(i).setTo(names.get(i * 2 + 1));

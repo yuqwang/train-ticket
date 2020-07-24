@@ -4,6 +4,7 @@ import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
@@ -34,6 +35,8 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     public Response distributeSeat(Seat seatRequest, HttpHeaders headers) {
+        SeatServiceImpl proxy = (SeatServiceImpl) AopContext.currentProxy();
+
         Response<Route> routeResult;
 
         LeftTicketInfo leftTicketInfo;
@@ -152,7 +155,7 @@ public class SeatServiceImpl implements SeatService {
                     return new Response<>(1, "Use the previous distributed seat number!", ticket);
                 }
             }
-            while (isContained(soldTickets, seat)) {
+            while (proxy.isContained(soldTickets, seat)) {
                 seat = rand.nextInt(range) + 1;
             }
         }
@@ -161,7 +164,7 @@ public class SeatServiceImpl implements SeatService {
         return new Response<>(1, "Use a new seat number!", ticket);
     }
 
-    private boolean isContained(Set<Ticket> soldTickets, int seat) {
+    public boolean isContained(Set<Ticket> soldTickets, int seat) {
         //Check that the seat number has been used
         boolean result = false;
         for (Ticket soldTicket : soldTickets) {
@@ -174,6 +177,8 @@ public class SeatServiceImpl implements SeatService {
 
     @Override
     public Response getLeftTicketOfInterval(Seat seatRequest, HttpHeaders headers) {
+        SeatServiceImpl proxy = (SeatServiceImpl) AopContext.currentProxy();
+
         int numOfLeftTicket = 0;
         Response<Route> routeResult;
         TrainType trainTypeResult;
@@ -291,7 +296,7 @@ public class SeatServiceImpl implements SeatService {
         }
         //Count the unsold tickets
 
-        double direstPart = getDirectProportion(headers);
+        double direstPart = proxy.getDirectProportion(headers);
         Route route = routeResult.getData();
         if (route.getStations().get(0).equals(seatRequest.getStartStation()) &&
                 route.getStations().get(route.getStations().size() - 1).equals(seatRequest.getDestStation())) {
@@ -306,7 +311,7 @@ public class SeatServiceImpl implements SeatService {
         return new Response<>(1, "Get Left Ticket of Internal Success", numOfLeftTicket);
     }
 
-    private double getDirectProportion(HttpHeaders headers) {
+    public double getDirectProportion(HttpHeaders headers) {
 
         String configName = "DirectTicketAllocationProportion";
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));

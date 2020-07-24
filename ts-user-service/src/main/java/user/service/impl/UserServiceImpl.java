@@ -4,6 +4,7 @@ import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
@@ -38,6 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response saveUser(UserDto userDto, HttpHeaders headers) {
+        UserServiceImpl proxy = (UserServiceImpl) AopContext.currentProxy();
+
         LOGGER.info("Save User Name id：" + userDto.getUserName());
         UUID userId = userDto.getUserId();
         if (userDto.getUserId() == null) {
@@ -57,7 +60,7 @@ public class UserServiceImpl implements UserService {
         User user1 = userRepository.findByUserName(userDto.getUserName());
         if (user1 == null) {
 
-            createDefaultAuthUser(AuthDto.builder().userId(userId + "")
+            proxy.createDefaultAuthUser(AuthDto.builder().userId(userId + "")
                     .userName(user.getUserName())
                     .password(user.getPassword()).build());
 
@@ -70,7 +73,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private Response createDefaultAuthUser(AuthDto dto) {
+    public Response createDefaultAuthUser(AuthDto dto) {
         LOGGER.info("CALL TO AUTH");
         LOGGER.info("AuthDto : " + dto.toString());
         HttpHeaders headers = new HttpHeaders();

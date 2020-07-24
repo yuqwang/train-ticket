@@ -5,6 +5,7 @@ import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
@@ -42,6 +43,8 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response getRouteByTripId(String tripId, HttpHeaders headers) {
+        Travel2ServiceImpl proxy = (Travel2ServiceImpl) AopContext.currentProxy();
+
         TripId tripId1 = new TripId(tripId);
 
         Trip trip = repository.findByTripId(tripId1);
@@ -49,7 +52,7 @@ public class Travel2ServiceImpl implements Travel2Service {
             Travel2ServiceImpl.LOGGER.info("[Get Route By Trip ID] Trip Not Found: {}", tripId);
             return new Response<>(0, "\"[Get Route By Trip ID] Trip Not Found:\" + tripId", null);
         } else {
-            Route route = getRouteByRouteId(trip.getRouteId(), headers);
+            Route route = proxy.getRouteByRouteId(trip.getRouteId(), headers);
             if (route == null) {
                 return new Response<>(0, "\"[Get Route By Trip ID] Route Not Found:\" + trip.getRouteId()", null);
             } else {
@@ -62,11 +65,13 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response getTrainTypeByTripId(String tripId, HttpHeaders headers) {
+        Travel2ServiceImpl proxy = (Travel2ServiceImpl) AopContext.currentProxy();
+
         TripId tripId1 = new TripId(tripId);
         TrainType trainType = null;
         Trip trip = repository.findByTripId(tripId1);
         if (trip != null) {
-            trainType = getTrainType(trip.getTrainTypeId(), headers);
+            trainType = proxy.getTrainType(trip.getTrainTypeId(), headers);
         }
         if (trainType != null) {
             return new Response<>(1, "Success query Train by trip id", trainType);
@@ -144,12 +149,13 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response query(TripInfo info, HttpHeaders headers) {
+        Travel2ServiceImpl proxy = (Travel2ServiceImpl) AopContext.currentProxy();
 
         //Gets the start and arrival stations of the train number to query. The originating and arriving stations received here are both station names, so two requests need to be sent to convert to station ids
         String startingPlaceName = info.getStartingPlace();
         String endPlaceName = info.getEndPlace();
-        String startingPlaceId = queryForStationId(startingPlaceName, headers);
-        String endPlaceId = queryForStationId(endPlaceName, headers);
+        String startingPlaceId = proxy.queryForStationId(startingPlaceName, headers);
+        String endPlaceId = proxy.queryForStationId(endPlaceName, headers);
 
         //This is the final result
         ArrayList<TripResponse> list = new ArrayList<>();
@@ -158,13 +164,13 @@ public class Travel2ServiceImpl implements Travel2Service {
         ArrayList<Trip> allTripList = repository.findAll();
         for (Trip tempTrip : allTripList) {
             //Get the detailed route list of this train
-            Route tempRoute = getRouteByRouteId(tempTrip.getRouteId(), headers);
+            Route tempRoute = proxy.getRouteByRouteId(tempTrip.getRouteId(), headers);
             //Check the route list for this train. Check that the required start and arrival stations are in the list of stops that are not on the route, and check that the location of the start station is before the stop
             //Trains that meet the above criteria are added to the return list
             if (tempRoute.getStations().contains(startingPlaceId) &&
                     tempRoute.getStations().contains(endPlaceId) &&
                     tempRoute.getStations().indexOf(startingPlaceId) < tempRoute.getStations().indexOf(endPlaceId)) {
-                TripResponse response = getTickets(tempTrip, tempRoute, startingPlaceId, endPlaceId, startingPlaceName, endPlaceName, info.getDepartureTime(), headers);
+                TripResponse response = proxy.getTickets(tempTrip, tempRoute, startingPlaceId, endPlaceId, startingPlaceName, endPlaceName, info.getDepartureTime(), headers);
                 if (response == null) {
                     return new Response<>(0, noCnontent, null);
                 }
@@ -176,6 +182,8 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response getTripAllDetailInfo(TripAllDetailInfo gtdi, HttpHeaders headers) {
+        Travel2ServiceImpl proxy = (Travel2ServiceImpl) AopContext.currentProxy();
+
         TripAllDetail gtdr = new TripAllDetail();
         Travel2ServiceImpl.LOGGER.info("[TravelService] [getTripAllDetailInfo] gtdi info: {}", gtdi.toString());
         Trip trip = repository.findByTripId(new TripId(gtdi.getTripId()));
@@ -185,11 +193,11 @@ public class Travel2ServiceImpl implements Travel2Service {
         } else {
             String endPlaceName = gtdi.getTo();
             String startingPlaceName = gtdi.getFrom();
-            String startingPlaceId = queryForStationId(startingPlaceName, headers);
-            String endPlaceId = queryForStationId(endPlaceName, headers);
+            String startingPlaceId = proxy.queryForStationId(startingPlaceName, headers);
+            String endPlaceId = proxy.queryForStationId(endPlaceName, headers);
             Travel2ServiceImpl.LOGGER.info("[TravelService] [getTripAllDetailInfo] endPlaceID: {}", endPlaceId);
-            Route tempRoute = getRouteByRouteId(trip.getRouteId(), headers);
-            TripResponse tripResponse = getTickets(trip, tempRoute, startingPlaceId, endPlaceId, gtdi.getFrom(), gtdi.getTo(), gtdi.getTravelDate(), headers);
+            Route tempRoute = proxy.getRouteByRouteId(trip.getRouteId(), headers);
+            TripResponse tripResponse = proxy.getTickets(trip, tempRoute, startingPlaceId, endPlaceId, gtdi.getFrom(), gtdi.getTo(), gtdi.getTravelDate(), headers);
             if (tripResponse == null) {
                 gtdr.setTrip(null);
                 gtdr.setTripResponse(null);
@@ -204,10 +212,11 @@ public class Travel2ServiceImpl implements Travel2Service {
     }
 
 
-    private TripResponse getTickets(Trip trip, Route route, String startingPlaceId, String endPlaceId, String startingPlaceName, String endPlaceName, Date departureTime, HttpHeaders headers) {
+    public TripResponse getTickets(Trip trip, Route route, String startingPlaceId, String endPlaceId, String startingPlaceName, String endPlaceName, Date departureTime, HttpHeaders headers) {
+        Travel2ServiceImpl proxy = (Travel2ServiceImpl) AopContext.currentProxy();
 
         //Determine if the date checked is the same day and after
-        if (!afterToday(departureTime)) {
+        if (!proxy.afterToday(departureTime)) {
             return null;
         }
 
@@ -246,8 +255,8 @@ public class Travel2ServiceImpl implements Travel2Service {
         }
         //Set the returned ticket information
         TripResponse response = new TripResponse();
-        if (queryForStationId(startingPlaceName, headers).equals(trip.getStartingStationId()) &&
-                queryForStationId(endPlaceName, headers).equals(trip.getTerminalStationId())) {
+        if (proxy.queryForStationId(startingPlaceName, headers).equals(trip.getStartingStationId()) &&
+                proxy.queryForStationId(endPlaceName, headers).equals(trip.getTerminalStationId())) {
             response.setEconomyClass(50);
             response.setConfortClass(50);
         } else {
@@ -255,10 +264,10 @@ public class Travel2ServiceImpl implements Travel2Service {
             response.setEconomyClass(50);
         }
 
-        int first = getRestTicketNumber(departureTime, trip.getTripId().toString(),
+        int first = proxy.getRestTicketNumber(departureTime, trip.getTripId().toString(),
                 startingPlaceName, endPlaceName, SeatClass.FIRSTCLASS.getCode(), headers);
 
-        int second = getRestTicketNumber(departureTime, trip.getTripId().toString(),
+        int second = proxy.getRestTicketNumber(departureTime, trip.getTripId().toString(),
                 startingPlaceName, endPlaceName, SeatClass.SECONDCLASS.getCode(), headers);
         response.setConfortClass(first);
         response.setEconomyClass(second);
@@ -272,7 +281,7 @@ public class Travel2ServiceImpl implements Travel2Service {
         int indexEnd = route.getStations().indexOf(endPlaceId);
         int distanceStart = route.getDistances().get(indexStart) - route.getDistances().get(0);
         int distanceEnd = route.getDistances().get(indexEnd) - route.getDistances().get(0);
-        TrainType trainType = getTrainType(trip.getTrainTypeId(), headers);
+        TrainType trainType = proxy.getTrainType(trip.getTrainTypeId(), headers);
         //Train running time is calculated according to the average running speed of the train
         int minutesStart = 60 * distanceStart / trainType.getAverageSpeed();
         int minutesEnd = 60 * distanceEnd / trainType.getAverageSpeed();
@@ -306,7 +315,7 @@ public class Travel2ServiceImpl implements Travel2Service {
         return new Response<>(0, noCnontent, null);
     }
 
-    private static boolean afterToday(Date date) {
+    public boolean afterToday(Date date) {
         Calendar calDateA = Calendar.getInstance();
         Date today = new Date();
         calDateA.setTime(today);
@@ -329,7 +338,7 @@ public class Travel2ServiceImpl implements Travel2Service {
         }
     }
 
-    private TrainType getTrainType(String trainTypeId, HttpHeaders headers) {
+    public TrainType getTrainType(String trainTypeId, HttpHeaders headers) {
 
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<TrainType>> re = restTemplate.exchange(
@@ -342,7 +351,7 @@ public class Travel2ServiceImpl implements Travel2Service {
         return re.getBody().getData();
     }
 
-    private String queryForStationId(String stationName, HttpHeaders headers) {
+    public String queryForStationId(String stationName, HttpHeaders headers) {
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<String>> re = restTemplate.exchange(
                 "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo/" + stationName,
@@ -355,7 +364,7 @@ public class Travel2ServiceImpl implements Travel2Service {
         return re.getBody().getData();
     }
 
-    private Route getRouteByRouteId(String routeId, HttpHeaders headers) {
+    public Route getRouteByRouteId(String routeId, HttpHeaders headers) {
         Travel2ServiceImpl.LOGGER.info("[Travel Service][Get Route By Id] Route ID：{}", routeId);
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
@@ -374,11 +383,13 @@ public class Travel2ServiceImpl implements Travel2Service {
         }
     }
 
-    private int getRestTicketNumber(Date travelDate, String trainNumber, String startStationName, String endStationName, int seatType, HttpHeaders headers) {
+    public int getRestTicketNumber(Date travelDate, String trainNumber, String startStationName, String endStationName, int seatType, HttpHeaders headers) {
+        Travel2ServiceImpl proxy = (Travel2ServiceImpl) AopContext.currentProxy();
+
         Seat seatRequest = new Seat();
 
-        String fromId = queryForStationId(startStationName, headers);
-        String toId = queryForStationId(endStationName, headers);
+        String fromId = proxy.queryForStationId(startStationName, headers);
+        String toId = proxy.queryForStationId(endStationName, headers);
 
         seatRequest.setDestStation(toId);
         seatRequest.setStartStation(fromId);
@@ -402,12 +413,14 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     @Override
     public Response adminQueryAll(HttpHeaders headers) {
+        Travel2ServiceImpl proxy = (Travel2ServiceImpl) AopContext.currentProxy();
+
         List<Trip> trips = repository.findAll();
         ArrayList<AdminTrip> adminTrips = new ArrayList<>();
         for (Trip trip : trips) {
             AdminTrip adminTrip = new AdminTrip();
-            adminTrip.setRoute(getRouteByRouteId(trip.getRouteId(), headers));
-            adminTrip.setTrainType(getTrainType(trip.getTrainTypeId(), headers));
+            adminTrip.setRoute(proxy.getRouteByRouteId(trip.getRouteId(), headers));
+            adminTrip.setTrainType(proxy.getTrainType(trip.getTrainTypeId(), headers));
             adminTrip.setTrip(trip);
             adminTrips.add(adminTrip);
         }

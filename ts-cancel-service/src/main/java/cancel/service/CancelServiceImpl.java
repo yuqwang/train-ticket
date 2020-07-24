@@ -2,9 +2,11 @@ package cancel.service;
 
 import cancel.entity.*;
 import com.chuan.methodenhancer.aop.HeaderBuilder;
+import com.sun.jnlp.BasicServiceImpl;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
@@ -37,8 +39,9 @@ public class CancelServiceImpl implements CancelService {
 
     @Override
     public Response cancelOrder(String orderId, String loginId, HttpHeaders headers) {
+        CancelServiceImpl proxy = (CancelServiceImpl) AopContext.currentProxy();
 
-        Response<Order> orderResult = getOrderByIdFromOrder(orderId, headers);
+        Response<Order> orderResult = proxy.getOrderByIdFromOrder(orderId, headers);
         if (orderResult.getStatus() == 1) {
             CancelServiceImpl.LOGGER.info("[Cancel Order Service][Cancel Order] Order found G|H");
             Order order =  orderResult.getData();
@@ -47,20 +50,20 @@ public class CancelServiceImpl implements CancelService {
 
                 order.setStatus(OrderStatus.CANCEL.getCode());
 
-                Response changeOrderResult = cancelFromOrder(order, headers);
+                Response changeOrderResult = proxy.cancelFromOrder(order, headers);
                 // 0 -- not find order   1 - cancel success
                 if (changeOrderResult.getStatus() == 1) {
 
                     CancelServiceImpl.LOGGER.info("[Cancel Order Service][Cancel Order] Success.");
                     //Draw back money
-                    String money = calculateRefund(order);
-                    boolean status = drawbackMoney(money, loginId, headers);
+                    String money = proxy.calculateRefund(order);
+                    boolean status = proxy.drawbackMoney(money, loginId, headers);
                     if (status) {
                         CancelServiceImpl.LOGGER.info("[Cancel Order Service][Draw Back Money] Success.");
 
 
 
-                        Response<User> result = getAccount(order.getAccountId().toString(), headers);
+                        Response<User> result = proxy.getAccount(order.getAccountId().toString(), headers);
                         if (result.getStatus() == 0) {
                             return new Response<>(0, "Cann't find userinfo by user id.", null);
                         }
@@ -93,7 +96,7 @@ public class CancelServiceImpl implements CancelService {
             }
         } else {
 
-            Response<Order> orderOtherResult = getOrderByIdFromOrderOther(orderId, headers);
+            Response<Order> orderOtherResult = proxy.getOrderByIdFromOrderOther(orderId, headers);
             if (orderOtherResult.getStatus() == 1) {
                 CancelServiceImpl.LOGGER.info("[Cancel Order Service][Cancel Order] Order found Z|K|Other");
 
@@ -104,13 +107,13 @@ public class CancelServiceImpl implements CancelService {
                     CancelServiceImpl.LOGGER.info("[Cancel Order Service][Cancel Order] Order status ok");
 
                     order.setStatus(OrderStatus.CANCEL.getCode());
-                    Response changeOrderResult = cancelFromOtherOrder(order, headers);
+                    Response changeOrderResult = proxy.cancelFromOtherOrder(order, headers);
 
                     if (changeOrderResult.getStatus() == 1) {
                         CancelServiceImpl.LOGGER.info("[Cancel Order Service][Cancel Order] Success.");
                         //Draw back money
-                        String money = calculateRefund(order);
-                        boolean status = drawbackMoney(money, loginId, headers);
+                        String money = proxy.calculateRefund(order);
+                        boolean status = proxy.drawbackMoney(money, loginId, headers);
                         if (status) {
                             CancelServiceImpl.LOGGER.info("[Cancel Order Service][Draw Back Money] Success.");
                         } else {
@@ -145,8 +148,9 @@ public class CancelServiceImpl implements CancelService {
 
     @Override
     public Response calculateRefund(String orderId, HttpHeaders headers) {
+        CancelServiceImpl proxy = (CancelServiceImpl) AopContext.currentProxy();
 
-        Response<Order> orderResult = getOrderByIdFromOrder(orderId, headers);
+        Response<Order> orderResult = proxy.getOrderByIdFromOrder(orderId, headers);
         if (orderResult.getStatus() == 1) {
             Order order =   orderResult.getData();
             if (order.getStatus() == OrderStatus.NOTPAID.getCode()
@@ -156,7 +160,7 @@ public class CancelServiceImpl implements CancelService {
                     return new Response<>(1, "Success. Refoud 0", "0");
                 } else {
                     CancelServiceImpl.LOGGER.info("[Cancel Order][Refund Price] From Order Service.Paid.");
-                    return new Response<>(1, "Success. ", calculateRefund(order));
+                    return new Response<>(1, "Success. ", proxy.calculateRefund(order));
                 }
             } else {
                 CancelServiceImpl.LOGGER.info("[Cancel Order][Refund Price] Order. Cancel Not Permitted.");
@@ -164,7 +168,7 @@ public class CancelServiceImpl implements CancelService {
             }
         } else {
 
-            Response<Order> orderOtherResult = getOrderByIdFromOrderOther(orderId, headers);
+            Response<Order> orderOtherResult = proxy.getOrderByIdFromOrderOther(orderId, headers);
             if (orderOtherResult.getStatus() == 1) {
                 Order order =   orderOtherResult.getData();
                 if (order.getStatus() == OrderStatus.NOTPAID.getCode()
@@ -174,7 +178,7 @@ public class CancelServiceImpl implements CancelService {
                         return new Response<>(1, "Success, Refound 0", "0");
                     } else {
                         CancelServiceImpl.LOGGER.info("[Cancel Order][Refund Price] From Order Other Service.Paid.");
-                        return new Response<>(1, "Success", calculateRefund(order));
+                        return new Response<>(1, "Success", proxy.calculateRefund(order));
                     }
                 } else {
                     CancelServiceImpl.LOGGER.info("[Cancel Order][Refund Price] Order Other. Cancel Not Permitted.");
@@ -187,7 +191,7 @@ public class CancelServiceImpl implements CancelService {
         }
     }
 
-    private String calculateRefund(Order order) {
+    public String calculateRefund(Order order) {
         if (order.getStatus() == OrderStatus.NOTPAID.getCode()) {
             return "0.00";
         }
@@ -225,7 +229,7 @@ public class CancelServiceImpl implements CancelService {
     }
 
 
-    private Response cancelFromOrder(Order order, HttpHeaders headers) {
+    public Response cancelFromOrder(Order order, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Cancel Order Service][Change Order Status] Changing....");
 
         HttpEntity requestEntity = new HttpEntity(order, headerBuilder.constructHeader(headers));
@@ -238,7 +242,7 @@ public class CancelServiceImpl implements CancelService {
         return re.getBody();
     }
 
-    private Response cancelFromOtherOrder(Order info, HttpHeaders headers) {
+    public Response cancelFromOtherOrder(Order info, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Cancel Order Service][Change Order Status] Changing....");
         HttpEntity requestEntity = new HttpEntity(info, headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
@@ -276,7 +280,7 @@ public class CancelServiceImpl implements CancelService {
         return re.getBody();
     }
 
-    private Response<Order> getOrderByIdFromOrder(String orderId, HttpHeaders headers) {
+    public Response<Order> getOrderByIdFromOrder(String orderId, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Cancel Order Service][Get Order] Getting....");
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Order>> re = restTemplate.exchange(
@@ -288,7 +292,7 @@ public class CancelServiceImpl implements CancelService {
         return re.getBody();
     }
 
-    private Response<Order> getOrderByIdFromOrderOther(String orderId, HttpHeaders headers) {
+    public Response<Order> getOrderByIdFromOrderOther(String orderId, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Cancel Order Service][Get Order] Getting....");
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Order>> re = restTemplate.exchange(

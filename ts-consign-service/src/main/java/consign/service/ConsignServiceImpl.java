@@ -7,6 +7,7 @@ import consign.repository.ConsignRepository;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
@@ -79,7 +80,7 @@ public class ConsignServiceImpl implements ConsignService {
 
         ConsignRecord originalRecord = repository.findById(consignRequest.getId());
         if (originalRecord == null) {
-            return this.insertConsignRecord(consignRequest, headers);
+            return ((ConsignServiceImpl) AopContext.currentProxy()).insertConsignRecord(consignRequest, headers);
         }
         originalRecord.setAccountId(consignRequest.getAccountId());
         originalRecord.setHandleDate(consignRequest.getHandleDate());

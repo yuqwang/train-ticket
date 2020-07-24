@@ -4,6 +4,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -50,6 +51,8 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 
     @Override
     public Map<String, Object> getImageCode(int width, int height, OutputStream os, HttpServletRequest request, HttpServletResponse response, HttpHeaders headers) {
+        VerifyCodeServiceImpl proxy = (VerifyCodeServiceImpl) AopContext.currentProxy();
+
         Map<String, Object> returnMap = new HashMap<>();
         if (width <= 0) {
             width = 60;
@@ -63,12 +66,12 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 
         Random random = new Random(); //NOSONAR
 
-        g.setColor(getRandColor(200, 250));
+        g.setColor(proxy.getRandColor(200, 250));
         g.fillRect(0, 0, width, height);
 
         g.setFont(new Font("Times New Roman", Font.PLAIN, 18));
 
-        g.setColor(getRandColor(160, 200));
+        g.setColor(proxy.getRandColor(160, 200));
         for (int i = 0; i < 168; i++) {
             int x = random.nextInt(width);
             int y = random.nextInt(height);
@@ -134,7 +137,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
     }
 
 
-    static Color getRandColor(int fc, int bc) {
+    public Color getRandColor(int fc, int bc) {
         Random random = new Random(); //NOSONAR
         if (fc > 255) {
             fc = 255;

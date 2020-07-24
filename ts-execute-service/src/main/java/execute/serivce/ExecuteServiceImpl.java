@@ -5,6 +5,7 @@ import edu.fudan.common.util.Response;
 import execute.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
@@ -33,9 +34,11 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     @Override
     public Response ticketExecute(String orderId, HttpHeaders headers) {
+        ExecuteServiceImpl proxy = (ExecuteServiceImpl) AopContext.currentProxy();
+
         //1.Get order information
 
-        Response<Order> resultFromOrder = getOrderByIdFromOrder(orderId, headers);
+        Response<Order> resultFromOrder = proxy.getOrderByIdFromOrder(orderId, headers);
         Order order;
         if (resultFromOrder.getStatus() == 1) {
             order =   resultFromOrder.getData();
@@ -45,14 +48,14 @@ public class ExecuteServiceImpl implements ExecuteService {
             }
             //3.Confirm inbound, request change order information
 
-            Response resultExecute = executeOrder(orderId, OrderStatus.USED.getCode(), headers);
+            Response resultExecute = proxy.executeOrder(orderId, OrderStatus.USED.getCode(), headers);
             if (resultExecute.getStatus() == 1) {
                 return new Response<>(1, "Success.", null);
             } else {
                 return new Response<>(0, resultExecute.getMsg(), null);
             }
         } else {
-            resultFromOrder = getOrderByIdFromOrderOther(orderId, headers);
+            resultFromOrder = proxy.getOrderByIdFromOrderOther(orderId, headers);
             if (resultFromOrder.getStatus() == 1) {
                 order =   resultFromOrder.getData();
                 //2.Check if the order can come in
@@ -61,7 +64,7 @@ public class ExecuteServiceImpl implements ExecuteService {
                 }
                 //3.Confirm inbound, request change order information
 
-                Response resultExecute = executeOrderOther(orderId, OrderStatus.USED.getCode(), headers);
+                Response resultExecute = proxy.executeOrderOther(orderId, OrderStatus.USED.getCode(), headers);
                 if (resultExecute.getStatus() == 1) {
                     return new Response<>(1, "Success", null);
                 } else {
@@ -75,9 +78,11 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     @Override
     public Response ticketCollect(String orderId, HttpHeaders headers) {
+        ExecuteServiceImpl proxy = (ExecuteServiceImpl) AopContext.currentProxy();
+
         //1.Get order information
 
-        Response<Order> resultFromOrder = getOrderByIdFromOrder(orderId, headers);
+        Response<Order> resultFromOrder = proxy.getOrderByIdFromOrder(orderId, headers);
         Order order;
         if (resultFromOrder.getStatus() == 1) {
             order =  resultFromOrder.getData();
@@ -87,14 +92,14 @@ public class ExecuteServiceImpl implements ExecuteService {
             }
             //3.Confirm inbound, request change order information
 
-            Response resultExecute = executeOrder(orderId, OrderStatus.COLLECTED.getCode(), headers);
+            Response resultExecute = proxy.executeOrder(orderId, OrderStatus.COLLECTED.getCode(), headers);
             if (resultExecute.getStatus() == 1) {
                 return new Response<>(1, "Success", null);
             } else {
                 return new Response<>(0, resultExecute.getMsg(), null);
             }
         } else {
-            resultFromOrder = getOrderByIdFromOrderOther(orderId, headers);
+            resultFromOrder = proxy.getOrderByIdFromOrderOther(orderId, headers);
             if (resultFromOrder.getStatus() == 1) {
                 order = (Order) resultFromOrder.getData();
                 //2.Check if the order can come in
@@ -102,7 +107,7 @@ public class ExecuteServiceImpl implements ExecuteService {
                     return new Response<>(0, orderStatusWrong, null);
                 }
                 //3.Confirm inbound, request change order information
-                Response resultExecute = executeOrderOther(orderId, OrderStatus.COLLECTED.getCode(), headers);
+                Response resultExecute = proxy.executeOrderOther(orderId, OrderStatus.COLLECTED.getCode(), headers);
                 if (resultExecute.getStatus() == 1) {
                     return new Response<>(1, "Success.", null);
                 } else {
@@ -115,7 +120,7 @@ public class ExecuteServiceImpl implements ExecuteService {
     }
 
 
-    private Response executeOrder(String orderId, int status, HttpHeaders headers) {
+    public Response executeOrder(String orderId, int status, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Execute Order] Executing....");
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
@@ -127,7 +132,7 @@ public class ExecuteServiceImpl implements ExecuteService {
     }
 
 
-    private Response executeOrderOther(String orderId, int status, HttpHeaders headers) {
+    public Response executeOrderOther(String orderId, int status, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Execute Order] Executing....");
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
@@ -138,7 +143,7 @@ public class ExecuteServiceImpl implements ExecuteService {
         return re.getBody();
     }
 
-    private Response<Order> getOrderByIdFromOrder(String orderId, HttpHeaders headers) {
+    public Response<Order> getOrderByIdFromOrder(String orderId, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Get Order] Getting....");
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Order>> re = restTemplate.exchange(
@@ -150,7 +155,7 @@ public class ExecuteServiceImpl implements ExecuteService {
         return re.getBody();
     }
 
-    private Response<Order> getOrderByIdFromOrderOther(String orderId, HttpHeaders headers) {
+    public Response<Order> getOrderByIdFromOrderOther(String orderId, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Get Order] Getting....");
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Order>> re = restTemplate.exchange(

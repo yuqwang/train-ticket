@@ -6,6 +6,7 @@ import edu.fudan.common.util.Response;
 import fdse.microservice.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpEntity;
@@ -33,21 +34,22 @@ public class BasicServiceImpl implements BasicService {
 
     @Override
     public Response queryForTravel(Travel info, HttpHeaders headers) {
+        BasicServiceImpl proxy = (BasicServiceImpl) AopContext.currentProxy();
 
         Response response = new Response<>();
         TravelResult result = new TravelResult();
         result.setStatus(true);
         response.setStatus(1);
         response.setMsg("Success");
-        boolean startingPlaceExist = checkStationExists(info.getStartingPlace(), headers);
-        boolean endPlaceExist = checkStationExists(info.getEndPlace(), headers);
+        boolean startingPlaceExist = proxy.checkStationExists(info.getStartingPlace(), headers);
+        boolean endPlaceExist = proxy.checkStationExists(info.getEndPlace(), headers);
         if (!startingPlaceExist || !endPlaceExist) {
             result.setStatus(false);
             response.setStatus(0);
             response.setMsg("Start place or end place not exist!");
         }
 
-        TrainType trainType = queryTrainType(info.getTrip().getTrainTypeId(), headers);
+        TrainType trainType = proxy.queryTrainType(info.getTrip().getTrainTypeId(), headers);
         if (trainType == null) {
             BasicServiceImpl.LOGGER.info("traintype doesn't exist");
             result.setStatus(false);
@@ -62,11 +64,11 @@ public class BasicServiceImpl implements BasicService {
         if (trainType != null){
             trainTypeString = trainType.getId();
         }
-        Route route = getRouteByRouteId(routeId, headers);
-        PriceConfig priceConfig = queryPriceConfigByRouteIdAndTrainType(routeId, trainTypeString, headers);
+        Route route = proxy.getRouteByRouteId(routeId, headers);
+        PriceConfig priceConfig = proxy.queryPriceConfigByRouteIdAndTrainType(routeId, trainTypeString, headers);
 
-        String startingPlaceId = (String) queryForStationId(info.getStartingPlace(), headers).getData();
-        String endPlaceId = (String) queryForStationId(info.getEndPlace(), headers).getData();
+        String startingPlaceId = (String) proxy.queryForStationId(info.getStartingPlace(), headers).getData();
+        String endPlaceId = (String) proxy.queryForStationId(info.getEndPlace(), headers).getData();
 
         LOGGER.info("startingPlaceId : " + startingPlaceId + "endPlaceId : " + endPlaceId);
 
@@ -144,7 +146,7 @@ public class BasicServiceImpl implements BasicService {
         return JsonUtils.conveterObject(response.getData(), TrainType.class);
     }
 
-    private Route getRouteByRouteId(String routeId, HttpHeaders headers) {
+    public Route getRouteByRouteId(String routeId, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Basic Information Service][Get Route By Id] Route ID：{}", routeId);
         HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
@@ -162,7 +164,7 @@ public class BasicServiceImpl implements BasicService {
         }
     }
 
-    private PriceConfig queryPriceConfigByRouteIdAndTrainType(String routeId, String trainType, HttpHeaders headers) {
+    public PriceConfig queryPriceConfigByRouteIdAndTrainType(String routeId, String trainType, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Basic Information Service][Query For Price Config] RouteId: {} ,TrainType: {}", routeId, trainType);
         HttpEntity requestEntity = new HttpEntity(null, headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
