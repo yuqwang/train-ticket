@@ -18,7 +18,7 @@ import java.util.Date;
  * @author fdse
  */
 @SpringBootApplication
-@EnableAspectJAutoProxy(proxyTargetClass = true)
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @EnableAsync
 @IntegrationComponentScan
 @EnableSwagger2

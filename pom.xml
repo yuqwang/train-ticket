@@ -129,6 +129,12 @@
 			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 		</dependency>
 
+        <dependency>
+            <groupId>com.chuan</groupId>
+            <artifactId>method-enhancer</artifactId>
+            <version>1.0</version>
+        </dependency>
+
     </dependencies>
 
 	<!--<repositories>-->
