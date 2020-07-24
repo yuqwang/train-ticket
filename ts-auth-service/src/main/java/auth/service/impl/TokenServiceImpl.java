@@ -8,10 +8,12 @@ import auth.exception.UserOperationException;
 import auth.repository.UserRepository;
 import auth.security.jwt.JWTProvider;
 import auth.service.TokenService;
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -28,6 +30,7 @@ import java.text.MessageFormat;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class TokenServiceImpl implements TokenService {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenServiceImpl.class);
@@ -44,6 +47,9 @@ public class TokenServiceImpl implements TokenService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private HeaderBuilder headerBuilder;
+
     @Override
     public Response getToken(BasicAuthDto dto, HttpHeaders headers) {
         String username = dto.getUsername();
@@ -52,7 +58,7 @@ public class TokenServiceImpl implements TokenService {
         LOGGER.info("LOGIN USER :" + username + " __ " + password + " __ " + verifyCode);
 
         if (!StringUtils.isEmpty(verifyCode)) {
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
             ResponseEntity<Boolean> re = restTemplate.exchange(
                     "http://ts-verification-code-service:15678/api/v1/verifycode/verify/" + verifyCode,
                     HttpMethod.GET,

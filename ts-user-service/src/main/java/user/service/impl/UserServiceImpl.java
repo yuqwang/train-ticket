@@ -1,9 +1,11 @@
 package user.service.impl;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,15 @@ import java.util.UUID;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     private RestTemplate restTemplate = new RestTemplate();
     private static final String AUHT_SERVICE_URI = "http://ts-auth-service:12340/api/v1";
@@ -69,7 +74,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.info("CALL TO AUTH");
         LOGGER.info("AuthDto : " + dto.toString());
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<AuthDto> entity = new HttpEntity<>(dto, headers);
+        HttpEntity<AuthDto> entity = new HttpEntity<>(dto, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<AuthDto>> res  = restTemplate.exchange("http://ts-auth-service:12340/api/v1/auth",
                 HttpMethod.POST,
                 entity,
@@ -144,7 +149,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserAuth(UUID userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER BY ID :" + userId);
 
-        HttpEntity<Response> httpEntity = new HttpEntity<>(headers);
+        HttpEntity<Response> httpEntity = new HttpEntity<>(headerBuilder.constructHeader(headers));
         restTemplate.exchange(AUHT_SERVICE_URI + "/users/" + userId,
                 HttpMethod.DELETE,
                 httpEntity,

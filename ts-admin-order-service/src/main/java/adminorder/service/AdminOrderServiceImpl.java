@@ -1,10 +1,12 @@
 package adminorder.service;
 
 import adminorder.entity.*;
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,10 +20,14 @@ import java.util.ArrayList;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class AdminOrderServiceImpl implements AdminOrderService {
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private HeaderBuilder headerBuilder;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminOrderServiceImpl.class);
 
     @Override
@@ -31,7 +37,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         //Get all of the orders
         ArrayList<Order> orders = new ArrayList<>();
         //From ts-order-service
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<ArrayList<Order>>> re = restTemplate.exchange(
                 "http://ts-order-service:12031/api/v1/orderservice/order",
                 HttpMethod.GET,
@@ -48,7 +54,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
             AdminOrderServiceImpl.LOGGER.info("[Admin Order Service][Get Orders From ts-order-service fail!]");
         }
         //From ts-order-other-service
-        HttpEntity requestEntity2 = new HttpEntity(headers);
+        HttpEntity requestEntity2 = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<ArrayList<Order>>> re2 = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
                 HttpMethod.GET,
@@ -74,7 +80,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         Response deleteOrderResult;
         if (trainNumber.startsWith("G") || trainNumber.startsWith("D")) {
             AdminOrderServiceImpl.LOGGER.info("[Admin Order Service][Delete Order]");
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-service:12031/api/v1/orderservice/order/" + orderId,
                     HttpMethod.DELETE,
@@ -84,7 +90,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 
         } else {
             AdminOrderServiceImpl.LOGGER.info("[Admin Order Service][Delete Order Other]");
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/" + orderId,
                     HttpMethod.DELETE,
@@ -105,7 +111,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         if (request.getTrainNumber().startsWith("G") || request.getTrainNumber().startsWith("D")) {
 
             AdminOrderServiceImpl.LOGGER.info("[Admin Order Service][Update Order]");
-            HttpEntity requestEntity = new HttpEntity(request, headers);
+            HttpEntity requestEntity = new HttpEntity(request, headerBuilder.constructHeader(headers));
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-service:12031/api/v1/orderservice/order/admin",
                     HttpMethod.PUT,
@@ -115,7 +121,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 
         } else {
             AdminOrderServiceImpl.LOGGER.info("[Admin Order Service][Add New Order Other]");
-            HttpEntity requestEntity = new HttpEntity(request, headers);
+            HttpEntity requestEntity = new HttpEntity(request, headerBuilder.constructHeader(headers));
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/admin",
                     HttpMethod.PUT,
@@ -133,7 +139,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         Response addOrderResult;
         if (request.getTrainNumber().startsWith("G") || request.getTrainNumber().startsWith("D")) {
             AdminOrderServiceImpl.LOGGER.info("[Admin Order Service][Add New Order]");
-            HttpEntity requestEntity = new HttpEntity(request, headers);
+            HttpEntity requestEntity = new HttpEntity(request, headerBuilder.constructHeader(headers));
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-service:12031/api/v1/orderservice/order/admin",
                     HttpMethod.POST,
@@ -143,7 +149,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 
         } else {
             AdminOrderServiceImpl.LOGGER.info("[Admin Order Service][Add New Order Other]");
-            HttpEntity requestEntity = new HttpEntity(request, headers);
+            HttpEntity requestEntity = new HttpEntity(request, headerBuilder.constructHeader(headers));
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/admin",
                     HttpMethod.POST,

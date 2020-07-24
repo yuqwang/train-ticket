@@ -5,6 +5,7 @@ import javax.mail.internet.MimeMessage;
 import notification.entity.Mail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import freemarker.template.Template;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class MailService {
 

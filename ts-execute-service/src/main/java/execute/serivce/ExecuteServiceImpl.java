@@ -1,10 +1,12 @@
 package execute.serivce;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import execute.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,11 +18,14 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class ExecuteServiceImpl implements ExecuteService {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     String orderStatusWrong = "Order Status Wrong";
 
@@ -112,7 +117,7 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     private Response executeOrder(String orderId, int status, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Execute Order] Executing....");
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-order-service:12031/api/v1/orderservice/order/status/" + orderId + "/" + status,
                 HttpMethod.GET,
@@ -124,7 +129,7 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     private Response executeOrderOther(String orderId, int status, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Execute Order] Executing....");
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/status/" + orderId + "/" + status,
                 HttpMethod.GET,
@@ -135,7 +140,7 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     private Response<Order> getOrderByIdFromOrder(String orderId, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Get Order] Getting....");
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Order>> re = restTemplate.exchange(
                 "http://ts-order-service:12031/api/v1/orderservice/order/" + orderId,
                 HttpMethod.GET,
@@ -147,7 +152,7 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     private Response<Order> getOrderByIdFromOrderOther(String orderId, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Get Order] Getting....");
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Order>> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/" + orderId,
                 HttpMethod.GET,

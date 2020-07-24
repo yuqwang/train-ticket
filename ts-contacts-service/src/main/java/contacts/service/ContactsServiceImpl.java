@@ -5,6 +5,7 @@ import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import contacts.repository.ContactsRepository;
@@ -16,6 +17,7 @@ import java.util.UUID;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class ContactsServiceImpl implements ContactsService {
 

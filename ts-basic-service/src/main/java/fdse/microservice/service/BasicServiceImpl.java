@@ -1,11 +1,13 @@
 package fdse.microservice.service;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
 import fdse.microservice.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,11 +20,14 @@ import java.util.HashMap;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class BasicServiceImpl implements BasicService {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BasicServiceImpl.class);
 
@@ -104,7 +109,7 @@ public class BasicServiceImpl implements BasicService {
     @Override
     public Response queryForStationId(String stationName, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Basic Information Service][Query For Station Id] Station Id: {}", stationName);
-        HttpEntity requestEntity = new HttpEntity( headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-station-service:12345/api/v1/stationservice/stations/id/" + stationName,
                 HttpMethod.GET,
@@ -115,7 +120,7 @@ public class BasicServiceImpl implements BasicService {
 
     public boolean checkStationExists(String stationName, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Basic Information Service][Check Station Exists] Station Name: {}", stationName);
-        HttpEntity requestEntity = new HttpEntity( headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-station-service:12345/api/v1/stationservice/stations/id/" + stationName,
                 HttpMethod.GET,
@@ -128,7 +133,7 @@ public class BasicServiceImpl implements BasicService {
 
     public TrainType queryTrainType(String trainTypeId, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Basic Information Service][Query Train Type] Train Type: {}", trainTypeId);
-        HttpEntity requestEntity = new HttpEntity( headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-train-service:14567/api/v1/trainservice/trains/" + trainTypeId,
                 HttpMethod.GET,
@@ -141,7 +146,7 @@ public class BasicServiceImpl implements BasicService {
 
     private Route getRouteByRouteId(String routeId, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Basic Information Service][Get Route By Id] Route ID：{}", routeId);
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-route-service:11178/api/v1/routeservice/routes/" + routeId,
                 HttpMethod.GET,
@@ -159,7 +164,7 @@ public class BasicServiceImpl implements BasicService {
 
     private PriceConfig queryPriceConfigByRouteIdAndTrainType(String routeId, String trainType, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Basic Information Service][Query For Price Config] RouteId: {} ,TrainType: {}", routeId, trainType);
-        HttpEntity requestEntity = new HttpEntity(null, headers);
+        HttpEntity requestEntity = new HttpEntity(null, headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-price-service:16579/api/v1/priceservice/prices/" + routeId + "/" + trainType,
                 HttpMethod.GET,

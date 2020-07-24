@@ -1,8 +1,10 @@
 package other.service;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +21,7 @@ import java.util.*;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class OrderOtherServiceImpl implements OrderOtherService {
 
@@ -27,6 +30,9 @@ public class OrderOtherServiceImpl implements OrderOtherService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderOtherServiceImpl.class);
 
@@ -195,7 +201,7 @@ public class OrderOtherServiceImpl implements OrderOtherService {
 
     public List<String> queryForStationId(List<String> ids, HttpHeaders headers) {
 
-        HttpEntity requestEntity = new HttpEntity(ids, headers);
+        HttpEntity requestEntity = new HttpEntity(ids, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<List<String>>> re = restTemplate.exchange(
                 "http://ts-station-service:12345/api/v1/stationservice/stations/namelist",
                 HttpMethod.POST,

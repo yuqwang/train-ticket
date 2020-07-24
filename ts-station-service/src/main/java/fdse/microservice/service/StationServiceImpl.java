@@ -4,6 +4,7 @@ import edu.fudan.common.util.Response;
 import fdse.microservice.entity.*;
 import fdse.microservice.repository.StationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class StationServiceImpl implements StationService {
 

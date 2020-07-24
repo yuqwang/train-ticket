@@ -2,10 +2,12 @@ package adminuser.service;
 
 import adminuser.dto.UserDto;
 import adminuser.entity.*;
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,10 +22,13 @@ import java.util.List;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class AdminUserServiceImpl implements AdminUserService {
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminUserServiceImpl.class);
     private static final String USER_SERVICE_IP_URI = "http://ts-user-service:12342/api/v1/userservice/users";
@@ -32,7 +37,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public Response getAllUsers(HttpHeaders headers) {
         AdminUserServiceImpl.LOGGER.info("[Admin User Service][Get All Users]");
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<List<User>>> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI,
                 HttpMethod.GET,
@@ -46,7 +51,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public Response deleteUser(String userId, HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI + "/" + userId,
                 HttpMethod.DELETE,
@@ -58,7 +63,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public Response updateUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("UPDATE USER: " + userDto.toString());
-        HttpEntity requestEntity = new HttpEntity(userDto, headers);
+        HttpEntity requestEntity = new HttpEntity(userDto, headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI,
                 HttpMethod.PUT,
@@ -70,7 +75,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public Response addUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("ADD USER INFO : "+userDto.toString());
-        HttpEntity requestEntity = new HttpEntity(userDto, headers);
+        HttpEntity requestEntity = new HttpEntity(userDto, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<User>> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI + "/register",
                 HttpMethod.POST,

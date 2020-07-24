@@ -2,10 +2,12 @@ package admintravel.service;
 
 import admintravel.entity.AdminTrip;
 import admintravel.entity.TravelInfo;
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,11 +21,15 @@ import java.util.ArrayList;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class AdminTravelServiceImpl implements AdminTravelService {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private HeaderBuilder headerBuilder;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminTravelServiceImpl.class);
 
     @Override
@@ -32,7 +38,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
         ArrayList<AdminTrip> trips = new ArrayList<>();
 
         AdminTravelServiceImpl.LOGGER.info("[Admin Travel Service][Get All Travels]");
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<ArrayList<AdminTrip>>> re = restTemplate.exchange(
                 "http://ts-travel-service:12346/api/v1/travelservice/admin_trip",
                 HttpMethod.GET,
@@ -49,7 +55,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
             AdminTravelServiceImpl.LOGGER.info("[Admin Travel Service][Get Travel From ts-travel-service fail!]");
         }
 
-        HttpEntity requestEntity2 = new HttpEntity(headers);
+        HttpEntity requestEntity2 = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<ArrayList<AdminTrip>>> re2 = restTemplate.exchange(
                 "http://ts-travel2-service:16346/api/v1/travel2service/admin_trip",
                 HttpMethod.GET,
@@ -79,7 +85,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
         } else {
             requestUrl = "http://ts-travel2-service:16346/api/v1/travel2service/trips";
         }
-        HttpEntity requestEntity = new HttpEntity(request, headers);
+        HttpEntity requestEntity = new HttpEntity(request, headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 requestUrl,
                 HttpMethod.POST,
@@ -105,7 +111,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
         } else {
             requestUrl = "http://ts-travel2-service:16346/api/v1/travel2service/trips";
         }
-        HttpEntity requestEntity = new HttpEntity(request, headers);
+        HttpEntity requestEntity = new HttpEntity(request, headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 requestUrl,
                 HttpMethod.PUT,
@@ -126,7 +132,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
         } else {
             requestUtl = "http://ts-travel2-service:16346/api/v1/travel2service/trips/" + tripId;
         }
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response> re = restTemplate.exchange(
                 requestUtl,
                 HttpMethod.DELETE,
