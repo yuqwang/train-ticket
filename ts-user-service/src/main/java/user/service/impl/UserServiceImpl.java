@@ -23,6 +23,7 @@ import java.util.UUID;
  */
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -30,11 +31,9 @@ public class UserServiceImpl implements UserService {
     private RestTemplate restTemplate = new RestTemplate();
     private static final String AUHT_SERVICE_URI = "http://ts-auth-service:12340/api/v1";
 
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
-
     @Override
     public Response saveUser(UserDto userDto, HttpHeaders headers) {
-        LOG.info("Save User Name id：" + userDto.getUserName());
+        LOGGER.info("Save User Name id：" + userDto.getUserName());
         UUID userId = userDto.getUserId();
         if (userDto.getUserId() == null) {
             userId = UUID.randomUUID();
@@ -58,7 +57,7 @@ public class UserServiceImpl implements UserService {
                     .password(user.getPassword()).build());
 
             User userSaveResult = userRepository.save(user);
-            LOG.info("Send authorization message to ts-auth-service....");
+            LOGGER.info("Send authorization message to ts-auth-service....");
 
             return new Response<>(1, "REGISTER USER SUCCESS", userSaveResult);
         } else {
@@ -67,8 +66,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private Response createDefaultAuthUser(AuthDto dto) {
-        LOG.info("CALL TO AUTH");
-        LOG.info("AuthDto : " + dto.toString());
+        LOGGER.info("CALL TO AUTH");
+        LOGGER.info("AuthDto : " + dto.toString());
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<AuthDto> entity = new HttpEntity<>(dto, headers);
         ResponseEntity<Response<AuthDto>> res  = restTemplate.exchange("http://ts-auth-service:12340/api/v1/auth",
@@ -108,14 +107,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response deleteUser(UUID userId, HttpHeaders headers) {
-        LOG.info("DELETE USER BY ID :" + userId);
+        LOGGER.info("DELETE USER BY ID :" + userId);
         User user = userRepository.findByUserId(userId);
         if (user != null) {
             // first  only admin token can delete success
             deleteUserAuth(userId, headers);
             // second
             userRepository.deleteByUserId(userId);
-            LOG.info("DELETE SUCCESS");
+            LOGGER.info("DELETE SUCCESS");
             return new Response<>(1, "DELETE SUCCESS", null);
         } else {
             return new Response<>(0, "USER NOT EXISTS", null);
@@ -124,7 +123,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response updateUser(UserDto userDto, HttpHeaders headers) {
-        LOG.info("UPDATE USER :" + userDto.toString());
+        LOGGER.info("UPDATE USER :" + userDto.toString());
         User oldUser = userRepository.findByUserName(userDto.getUserName());
         if (oldUser != null) {
             User newUser = User.builder().email(userDto.getEmail())
@@ -143,13 +142,13 @@ public class UserServiceImpl implements UserService {
     }
 
     public void deleteUserAuth(UUID userId, HttpHeaders headers) {
-        LOG.info("DELETE USER BY ID :" + userId);
+        LOGGER.info("DELETE USER BY ID :" + userId);
 
         HttpEntity<Response> httpEntity = new HttpEntity<>(headers);
         restTemplate.exchange(AUHT_SERVICE_URI + "/users/" + userId,
                 HttpMethod.DELETE,
                 httpEntity,
                 Response.class);
-        LOG.info("DELETE USER AUTH SUCCESS");
+        LOGGER.info("DELETE USER AUTH SUCCESS");
     }
 }

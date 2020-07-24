@@ -23,14 +23,13 @@ import java.util.*;
  */
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
-
-    private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public User saveUser(User user) {
@@ -50,7 +49,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User createDefaultAuthUser(AuthDto dto) {
-        LOG.info("Register User Info is:  " + dto.getUserName());
+        LOGGER.info("Register User Info is:  " + dto.getUserName());
         User user = User.builder()
                 .userId(UUID.fromString(dto.getUserId()))
                 .username(dto.getUserName())
@@ -64,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response deleteByUserId(UUID userId, HttpHeaders headers) {
-        LOG.info("DELETE USER :" + userId);
+        LOGGER.info("DELETE USER :" + userId);
         userRepository.deleteByUserId(userId);
         return new Response(1, "DELETE USER SUCCESS", null);
     }
@@ -94,7 +93,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (!infos.isEmpty()) {
-            LOG.error(infos.toString());
+            LOGGER.error(infos.toString());
             throw new UserOperationException(infos.toString());
         }
     }

@@ -23,12 +23,11 @@ import java.util.stream.Collectors;
  */
 public class JWTUtil {
 
-    private static final Logger LOG = LoggerFactory.getLogger(JWTUtil.class);
-
     private JWTUtil() {
         throw new IllegalStateException("Utility class");
     }
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(JWTUtil.class);
     private static String secretKey = Base64.getEncoder().encodeToString("secret".getBytes());
 
 
@@ -100,19 +99,19 @@ public class JWTUtil {
             Jws<Claims> claimsJws = getClaims(token);
             return !claimsJws.getBody().getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
-            LOG.error("Token expired: {} " + e);
+            LOGGER.error("Token expired: {} " + e);
             throw new TokenException("Token expired");
         } catch (UnsupportedJwtException e) {
-            LOG.error("Token format error: {} " + e);
+            LOGGER.error("Token format error: {} " + e);
             throw new TokenException("Token format error");
         } catch (MalformedJwtException e) {
-            LOG.error("Token is not properly constructed: {} " + e);
+            LOGGER.error("Token is not properly constructed: {} " + e);
             throw new TokenException("Token is not properly constructed");
         } catch (SignatureException e) {
-            LOG.error("Signature failure: {} " + e);
+            LOGGER.error("Signature failure: {} " + e);
             throw new TokenException("Signature failure");
         } catch (IllegalArgumentException e) {
-            LOG.error("Illegal parameter exception: {} " + e);
+            LOGGER.error("Illegal parameter exception: {} " + e);
             throw new TokenException("Illegal parameter exception");
         }
     }

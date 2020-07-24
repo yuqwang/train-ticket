@@ -393,7 +393,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response updateOrder(Order order, HttpHeaders headers) {
-        LOGGER.info("UPDATE ORDER INFO: " +order.toString());
+        LOGGER.info("UPDATE ORDER INFO: " + order.toString());
         Order oldOrder = orderRepository.findById(order.getId());
         if (oldOrder == null) {
             OrderServiceImpl.LOGGER.info("[Order Service][Admin Update Order] Fail.Order not found.");

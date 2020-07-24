@@ -120,8 +120,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
             cookieId = cookie.getValue();
         }
 
-//        String code = cacheCode.getIfPresent(cookieId);
-        String code = receivedCode.toUpperCase();
+        String code = cacheCode.getIfPresent(cookieId);
         LOGGER.info("GET Code By cookieId " + cookieId + "   is :" + code);
         if (code == null) {
             return false;
