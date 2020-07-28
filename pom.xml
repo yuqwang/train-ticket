@@ -57,17 +57,6 @@
 		<!--<module>1_services_analysis_mvn</module>-->
     </modules>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.springframework.cloud</groupId>
-				<artifactId>spring-cloud-dependencies</artifactId>
-				<version>Edgware.RELEASE</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 
 	<dependencies>
 
@@ -124,10 +113,11 @@
 			<version>1.2.31</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>com.chuan</groupId>
+            <artifactId>method-enhancer</artifactId>
+            <version>1.0</version>
+        </dependency>
 
     </dependencies>
 

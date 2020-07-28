@@ -8,8 +8,12 @@ import auth.exception.UserOperationException;
 import auth.repository.UserRepository;
 import auth.security.jwt.JWTProvider;
 import auth.service.TokenService;
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,16 +24,16 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
 
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class TokenServiceImpl implements TokenService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenServiceImpl.class);
 
     @Autowired
     private JWTProvider jwtProvider;
@@ -43,17 +47,18 @@ public class TokenServiceImpl implements TokenService {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final Logger LOG = LoggerFactory.getLogger(TokenServiceImpl.class);
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     @Override
     public Response getToken(BasicAuthDto dto, HttpHeaders headers) {
         String username = dto.getUsername();
         String password = dto.getPassword();
         String verifyCode = dto.getVerificationCode();
-        LOG.info("LOGIN USER :" + username + " __ " + password + " __ " + verifyCode);
+        LOGGER.info("LOGIN USER :" + username + " __ " + password + " __ " + verifyCode);
 
         if (!StringUtils.isEmpty(verifyCode)) {
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
             ResponseEntity<Boolean> re = restTemplate.exchange(
                     "http://ts-verification-code-service:15678/api/v1/verifycode/verify/" + verifyCode,
                     HttpMethod.GET,
@@ -80,8 +85,8 @@ public class TokenServiceImpl implements TokenService {
                         InfoConstant.USER_NAME_NOT_FOUND_1, username
                 )));
         String token = jwtProvider.createToken(user);
-        LOG.info(token + "USER TOKEN");
-        LOG.info(user.getUserId() + "   USER ID");
+        LOGGER.info(token + "USER TOKEN");
+        LOGGER.info(user.getUserId() + "   USER ID");
         return new Response<>(1, "login success", new TokenDto(user.getUserId(), username, token));
     }
 }

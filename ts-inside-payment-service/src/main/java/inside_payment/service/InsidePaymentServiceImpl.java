@@ -1,12 +1,15 @@
 package inside_payment.service;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import inside_payment.entity.*;
 import inside_payment.repository.AddMoneyRepository;
 import inside_payment.repository.PaymentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +24,7 @@ import java.util.*;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class InsidePaymentServiceImpl implements InsidePaymentService {
 
@@ -33,10 +37,14 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
     @Autowired
     public RestTemplate restTemplate;
 
+    @Autowired
+    private HeaderBuilder headerBuilder;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(InsidePaymentServiceImpl.class);
 
     @Override
     public Response pay(PaymentInfo info, HttpHeaders headers) {
+        InsidePaymentServiceImpl proxy = (InsidePaymentServiceImpl) AopContext.currentProxy();
 
         String userId = info.getUserId();
 
@@ -46,7 +54,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
         } else {
             requestOrderURL = "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/" + info.getOrderId();
         }
-        HttpEntity requestGetOrderResults = new HttpEntity(headers);
+        HttpEntity requestGetOrderResults = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Order>> reGetOrderResults = restTemplate.exchange(
                 requestOrderURL,
                 HttpMethod.GET,
@@ -96,7 +104,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
 
                 /****这里调用第三方支付***/
 
-                HttpEntity requestEntityOutsidePaySuccess = new HttpEntity(outsidePaymentInfo, headers);
+                HttpEntity requestEntityOutsidePaySuccess = new HttpEntity(outsidePaymentInfo, headerBuilder.constructHeader(headers));
                 ResponseEntity<Response> reOutsidePaySuccess = restTemplate.exchange(
                         "http://ts-payment-service:19001/api/v1/paymentservice/payment",
                         HttpMethod.POST,
@@ -108,13 +116,13 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
                 if (outsidePaySuccess.getStatus() == 1) {
                     payment.setType(PaymentType.O);
                     paymentRepository.save(payment);
-                    setOrderStatus(info.getTripId(), info.getOrderId(), headers);
+                    proxy.setOrderStatus(info.getTripId(), info.getOrderId(), headers);
                     return new Response<>(1, "Payment Success " +    outsidePaySuccess.getMsg(), null);
                 } else {
                     return new Response<>(0, "Payment Failed:  " +  outsidePaySuccess.getMsg(), null);
                 }
             } else {
-                setOrderStatus(info.getTripId(), info.getOrderId(), headers);
+                proxy.setOrderStatus(info.getTripId(), info.getOrderId(), headers);
                 payment.setType(PaymentType.P);
                 paymentRepository.save(payment);
             }
@@ -275,7 +283,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
             outsidePaymentInfo.setUserId(userId);
             outsidePaymentInfo.setPrice(info.getPrice());
 
-            HttpEntity requestEntityOutsidePaySuccess = new HttpEntity(outsidePaymentInfo, headers);
+            HttpEntity requestEntityOutsidePaySuccess = new HttpEntity(outsidePaymentInfo, headerBuilder.constructHeader(headers));
             ResponseEntity<Response> reOutsidePaySuccess = restTemplate.exchange(
                     "http://ts-payment-service:19001/api/v1/paymentservice/payment",
                     HttpMethod.POST,
@@ -307,14 +315,14 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
         }
     }
 
-    private Response setOrderStatus(String tripId, String orderId, HttpHeaders headers) {
+    public Response setOrderStatus(String tripId, String orderId, HttpHeaders headers) {
 
         //order paid and not collected
         int orderStatus = 1;
         Response result;
         if (tripId.startsWith("G") || tripId.startsWith("D")) {
 
-            HttpEntity requestEntityModifyOrderStatusResult = new HttpEntity(headers);
+            HttpEntity requestEntityModifyOrderStatusResult = new HttpEntity(headerBuilder.constructHeader(headers));
             ResponseEntity<Response> reModifyOrderStatusResult = restTemplate.exchange(
                     "http://ts-order-service:12031/api/v1/orderservice/order/status/" + orderId + "/" + orderStatus,
                     HttpMethod.GET,
@@ -323,7 +331,7 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
             result = reModifyOrderStatusResult.getBody();
 
         } else {
-            HttpEntity requestEntityModifyOrderStatusResult = new HttpEntity(headers);
+            HttpEntity requestEntityModifyOrderStatusResult = new HttpEntity(headerBuilder.constructHeader(headers));
             ResponseEntity<Response> reModifyOrderStatusResult = restTemplate.exchange(
                     "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/status/" + orderId + "/" + orderStatus,
                     HttpMethod.GET,

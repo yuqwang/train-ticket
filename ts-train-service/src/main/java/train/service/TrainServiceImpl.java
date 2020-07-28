@@ -1,6 +1,7 @@
 package train.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import train.entity.TrainType;
@@ -8,6 +9,7 @@ import train.repository.TrainTypeRepository;
 
 import java.util.List;
 
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class TrainServiceImpl implements TrainService {
 

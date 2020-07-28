@@ -1,12 +1,15 @@
 package consign.service;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import consign.entity.ConsignRecord;
 import consign.entity.Consign;
 import consign.repository.ConsignRepository;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +24,7 @@ import java.util.UUID;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class ConsignServiceImpl implements ConsignService {
     @Autowired
@@ -28,6 +32,9 @@ public class ConsignServiceImpl implements ConsignService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsignServiceImpl.class);
 
@@ -52,7 +59,7 @@ public class ConsignServiceImpl implements ConsignService {
         consignRecord.setWeight(consignRequest.getWeight());
 
         //get the price
-        HttpEntity requestEntity = new HttpEntity(null, headers);
+        HttpEntity requestEntity = new HttpEntity(null, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Double>> re = restTemplate.exchange(
                 "http://ts-consign-price-service:16110/api/v1/consignpriceservice/consignprice/" + consignRequest.getWeight() + "/" + consignRequest.isWithin(),
                 HttpMethod.GET,
@@ -73,7 +80,7 @@ public class ConsignServiceImpl implements ConsignService {
 
         ConsignRecord originalRecord = repository.findById(consignRequest.getId());
         if (originalRecord == null) {
-            return this.insertConsignRecord(consignRequest, headers);
+            return ((ConsignServiceImpl) AopContext.currentProxy()).insertConsignRecord(consignRequest, headers);
         }
         originalRecord.setAccountId(consignRequest.getAccountId());
         originalRecord.setHandleDate(consignRequest.getHandleDate());
@@ -84,7 +91,7 @@ public class ConsignServiceImpl implements ConsignService {
         originalRecord.setPhone(consignRequest.getPhone());
         //Recalculate price
         if (originalRecord.getWeight() != consignRequest.getWeight()) {
-            HttpEntity requestEntity = new HttpEntity<>(null, headers);
+            HttpEntity requestEntity = new HttpEntity<>(null, headerBuilder.constructHeader(headers));
             ResponseEntity<Response<Double>> re = restTemplate.exchange(
                     "http://ts-consign-price-service:16110/api/v1/consignpriceservice/consignprice/" + consignRequest.getWeight() + "/" + consignRequest.isWithin(),
                     HttpMethod.GET,

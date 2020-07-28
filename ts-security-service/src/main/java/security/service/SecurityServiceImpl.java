@@ -1,9 +1,12 @@
 package security.service;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -22,6 +25,7 @@ import java.util.UUID;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class SecurityServiceImpl implements SecurityService {
 
@@ -30,6 +34,9 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SecurityServiceImpl.class);
 
@@ -87,10 +94,12 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public Response check(String accountId, HttpHeaders headers) {
+        SecurityServiceImpl proxy = (SecurityServiceImpl) AopContext.currentProxy();
+
         //1.Get the orders in the past one hour and the total effective votes
         SecurityServiceImpl.LOGGER.info("[Security Service][Get Order Num Info]");
-        OrderSecurity orderResult = getSecurityOrderInfoFromOrder(new Date(), accountId, headers);
-        OrderSecurity orderOtherResult = getSecurityOrderOtherInfoFromOrder(new Date(), accountId, headers);
+        OrderSecurity orderResult = proxy.getSecurityOrderInfoFromOrder(new Date(), accountId, headers);
+        OrderSecurity orderOtherResult = proxy.getSecurityOrderOtherInfoFromOrder(new Date(), accountId, headers);
         int orderInOneHour = orderOtherResult.getOrderNumInLastOneHour() + orderResult.getOrderNumInLastOneHour();
         int totalValidOrder = orderOtherResult.getOrderNumOfValidOrder() + orderResult.getOrderNumOfValidOrder();
         //2. get critical configuration information
@@ -107,9 +116,9 @@ public class SecurityServiceImpl implements SecurityService {
         }
     }
 
-    private OrderSecurity getSecurityOrderInfoFromOrder(Date checkDate, String accountId, HttpHeaders headers) {
+    public OrderSecurity getSecurityOrderInfoFromOrder(Date checkDate, String accountId, HttpHeaders headers) {
         SecurityServiceImpl.LOGGER.info("[Security Service][Get Order Info For Security] Getting....");
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<OrderSecurity>> re = restTemplate.exchange(
                 "http://ts-order-service:12031/api/v1/orderservice/order/security/" + checkDate + "/" + accountId,
                 HttpMethod.GET,
@@ -122,9 +131,9 @@ public class SecurityServiceImpl implements SecurityService {
         return result;
     }
 
-    private OrderSecurity getSecurityOrderOtherInfoFromOrder(Date checkDate, String accountId, HttpHeaders headers) {
+    public OrderSecurity getSecurityOrderOtherInfoFromOrder(Date checkDate, String accountId, HttpHeaders headers) {
         SecurityServiceImpl.LOGGER.info("[Security Service][Get Order Other Info For Security] Getting....");
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<OrderSecurity>> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/security/" + checkDate + "/" + accountId,
                 HttpMethod.GET,

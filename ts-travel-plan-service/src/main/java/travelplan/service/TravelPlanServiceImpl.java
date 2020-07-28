@@ -1,9 +1,12 @@
 package travelplan.service;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,11 +23,14 @@ import java.util.List;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class TravelPlanServiceImpl implements TravelPlanService {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TravelPlanServiceImpl.class);
 
@@ -33,6 +39,8 @@ public class TravelPlanServiceImpl implements TravelPlanService {
 
     @Override
     public Response getTransferSearch(TransferTravelInfo info, HttpHeaders headers) {
+        TravelPlanServiceImpl proxy = (TravelPlanServiceImpl) AopContext.currentProxy();
+
 
         TripInfo queryInfoFirstSection = new TripInfo();
         queryInfoFirstSection.setDepartureTime(info.getTravelDate());
@@ -41,8 +49,8 @@ public class TravelPlanServiceImpl implements TravelPlanService {
 
         List<TripResponse> firstSectionFromHighSpeed;
         List<TripResponse> firstSectionFromNormal;
-        firstSectionFromHighSpeed = tripsFromHighSpeed(queryInfoFirstSection, headers);
-        firstSectionFromNormal = tripsFromNormal(queryInfoFirstSection, headers);
+        firstSectionFromHighSpeed = proxy.tripsFromHighSpeed(queryInfoFirstSection, headers);
+        firstSectionFromNormal = proxy.tripsFromNormal(queryInfoFirstSection, headers);
 
         TripInfo queryInfoSecondSectoin = new TripInfo();
         queryInfoSecondSectoin.setDepartureTime(info.getTravelDate());
@@ -51,8 +59,8 @@ public class TravelPlanServiceImpl implements TravelPlanService {
 
         List<TripResponse> secondSectionFromHighSpeed;
         List<TripResponse> secondSectionFromNormal;
-        secondSectionFromHighSpeed = tripsFromHighSpeed(queryInfoSecondSectoin, headers);
-        secondSectionFromNormal = tripsFromNormal(queryInfoSecondSectoin, headers);
+        secondSectionFromHighSpeed = proxy.tripsFromHighSpeed(queryInfoSecondSectoin, headers);
+        secondSectionFromNormal = proxy.tripsFromNormal(queryInfoSecondSectoin, headers);
 
         List<TripResponse> firstSection = new ArrayList<>();
         firstSection.addAll(firstSectionFromHighSpeed);
@@ -71,12 +79,14 @@ public class TravelPlanServiceImpl implements TravelPlanService {
 
     @Override
     public Response getCheapest(TripInfo info, HttpHeaders headers) {
+        TravelPlanServiceImpl proxy = (TravelPlanServiceImpl) AopContext.currentProxy();
+
         RoutePlanInfo routePlanInfo = new RoutePlanInfo();
         routePlanInfo.setNum(5);
         routePlanInfo.setFormStationName(info.getStartingPlace());
         routePlanInfo.setToStationName(info.getEndPlace());
         routePlanInfo.setTravelDate(info.getDepartureTime());
-        ArrayList<RoutePlanResultUnit> routePlanResultUnits = getRoutePlanResultCheapest(routePlanInfo, headers);
+        ArrayList<RoutePlanResultUnit> routePlanResultUnits = proxy.getRoutePlanResultCheapest(routePlanInfo, headers);
 
         if (!routePlanResultUnits.isEmpty()) {
             ArrayList<TravelAdvanceResultUnit> lists = new ArrayList<>();
@@ -88,16 +98,16 @@ public class TravelPlanServiceImpl implements TravelPlanService {
                 newUnit.setTrainTypeId(tempUnit.getTrainTypeId());
                 newUnit.setFromStationName(tempUnit.getFromStationName());
 
-                List<String> stops = transferStationIdToStationName(tempUnit.getStopStations(), headers);
+                List<String> stops = proxy.transferStationIdToStationName(tempUnit.getStopStations(), headers);
                 newUnit.setStopStations(stops);
                 newUnit.setPriceForFirstClassSeat(tempUnit.getPriceForFirstClassSeat());
                 newUnit.setPriceForSecondClassSeat(tempUnit.getPriceForSecondClassSeat());
                 newUnit.setStartingTime(tempUnit.getStartingTime());
                 newUnit.setEndTime(tempUnit.getEndTime());
-                int first = getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
+                int first = proxy.getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
                         tempUnit.getFromStationName(), tempUnit.getToStationName(), SeatClass.FIRSTCLASS.getCode(), headers);
 
-                int second = getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
+                int second = proxy.getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
                         tempUnit.getFromStationName(), tempUnit.getToStationName(), SeatClass.SECONDCLASS.getCode(), headers);
                 newUnit.setNumberOfRestTicketFirstClass(first);
                 newUnit.setNumberOfRestTicketSecondClass(second);
@@ -112,12 +122,14 @@ public class TravelPlanServiceImpl implements TravelPlanService {
 
     @Override
     public Response getQuickest(TripInfo info, HttpHeaders headers) {
+        TravelPlanServiceImpl proxy = (TravelPlanServiceImpl) AopContext.currentProxy();
+
         RoutePlanInfo routePlanInfo = new RoutePlanInfo();
         routePlanInfo.setNum(5);
         routePlanInfo.setFormStationName(info.getStartingPlace());
         routePlanInfo.setToStationName(info.getEndPlace());
         routePlanInfo.setTravelDate(info.getDepartureTime());
-        ArrayList<RoutePlanResultUnit> routePlanResultUnits = getRoutePlanResultQuickest(routePlanInfo, headers);
+        ArrayList<RoutePlanResultUnit> routePlanResultUnits = proxy.getRoutePlanResultQuickest(routePlanInfo, headers);
 
 
         if (!routePlanResultUnits.isEmpty()) {
@@ -131,17 +143,17 @@ public class TravelPlanServiceImpl implements TravelPlanService {
                 newUnit.setToStationName(tempUnit.getToStationName());
                 newUnit.setFromStationName(tempUnit.getFromStationName());
 
-                List<String> stops = transferStationIdToStationName(tempUnit.getStopStations(), headers);
+                List<String> stops = proxy.transferStationIdToStationName(tempUnit.getStopStations(), headers);
                 newUnit.setStopStations(stops);
 
                 newUnit.setPriceForFirstClassSeat(tempUnit.getPriceForFirstClassSeat());
                 newUnit.setPriceForSecondClassSeat(tempUnit.getPriceForSecondClassSeat());
                 newUnit.setStartingTime(tempUnit.getStartingTime());
                 newUnit.setEndTime(tempUnit.getEndTime());
-                int first = getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
+                int first = proxy.getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
                         tempUnit.getFromStationName(), tempUnit.getToStationName(), SeatClass.FIRSTCLASS.getCode(), headers);
 
-                int second = getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
+                int second = proxy.getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
                         tempUnit.getFromStationName(), tempUnit.getToStationName(), SeatClass.SECONDCLASS.getCode(), headers);
                 newUnit.setNumberOfRestTicketFirstClass(first);
                 newUnit.setNumberOfRestTicketSecondClass(second);
@@ -155,12 +167,14 @@ public class TravelPlanServiceImpl implements TravelPlanService {
 
     @Override
     public Response getMinStation(TripInfo info, HttpHeaders headers) {
+        TravelPlanServiceImpl proxy = (TravelPlanServiceImpl) AopContext.currentProxy();
+
         RoutePlanInfo routePlanInfo = new RoutePlanInfo();
         routePlanInfo.setNum(5);
         routePlanInfo.setFormStationName(info.getStartingPlace());
         routePlanInfo.setToStationName(info.getEndPlace());
         routePlanInfo.setTravelDate(info.getDepartureTime());
-        ArrayList<RoutePlanResultUnit> routePlanResultUnits = getRoutePlanResultMinStation(routePlanInfo, headers);
+        ArrayList<RoutePlanResultUnit> routePlanResultUnits = proxy.getRoutePlanResultMinStation(routePlanInfo, headers);
 
         if (!routePlanResultUnits.isEmpty()) {
 
@@ -173,7 +187,7 @@ public class TravelPlanServiceImpl implements TravelPlanService {
                 newUnit.setFromStationName(tempUnit.getFromStationName());
                 newUnit.setToStationName(tempUnit.getToStationName());
 
-                List<String> stops = transferStationIdToStationName(tempUnit.getStopStations(), headers);
+                List<String> stops = proxy.transferStationIdToStationName(tempUnit.getStopStations(), headers);
                 newUnit.setStopStations(stops);
 
                 newUnit.setPriceForFirstClassSeat(tempUnit.getPriceForFirstClassSeat());
@@ -181,10 +195,10 @@ public class TravelPlanServiceImpl implements TravelPlanService {
                 newUnit.setEndTime(tempUnit.getEndTime());
                 newUnit.setStartingTime(tempUnit.getStartingTime());
 
-                int first = getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
+                int first = proxy.getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
                         tempUnit.getFromStationName(), tempUnit.getToStationName(), SeatClass.FIRSTCLASS.getCode(), headers);
 
-                int second = getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
+                int second = proxy.getRestTicketNumber(info.getDepartureTime(), tempUnit.getTripId(),
                         tempUnit.getFromStationName(), tempUnit.getToStationName(), SeatClass.SECONDCLASS.getCode(), headers);
                 newUnit.setNumberOfRestTicketFirstClass(first);
                 newUnit.setNumberOfRestTicketSecondClass(second);
@@ -196,11 +210,13 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         }
     }
 
-    private int getRestTicketNumber(Date travelDate, String trainNumber, String startStationName, String endStationName, int seatType, HttpHeaders headers) {
+    public int getRestTicketNumber(Date travelDate, String trainNumber, String startStationName, String endStationName, int seatType, HttpHeaders headers) {
+        TravelPlanServiceImpl proxy = (TravelPlanServiceImpl) AopContext.currentProxy();
+
         Seat seatRequest = new Seat();
 
-        String fromId = queryForStationId(startStationName, headers);
-        String toId = queryForStationId(endStationName, headers);
+        String fromId = proxy.queryForStationId(startStationName, headers);
+        String toId = proxy.queryForStationId(endStationName, headers);
 
         seatRequest.setDestStation(toId);
         seatRequest.setStartStation(fromId);
@@ -209,7 +225,7 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         seatRequest.setSeatType(seatType);
 
         TravelPlanServiceImpl.LOGGER.info("Seat Request is: {}", seatRequest.toString());
-        HttpEntity requestEntity = new HttpEntity(seatRequest, headers);
+        HttpEntity requestEntity = new HttpEntity(seatRequest, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Integer>> re = restTemplate.exchange(
                 "http://ts-seat-service:18898/api/v1/seatservice/seats/left_tickets",
                 HttpMethod.POST,
@@ -220,8 +236,8 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         return re.getBody().getData();
     }
 
-    private ArrayList<RoutePlanResultUnit> getRoutePlanResultCheapest(RoutePlanInfo info, HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(info, headers);
+    public ArrayList<RoutePlanResultUnit> getRoutePlanResultCheapest(RoutePlanInfo info, HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(info, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<ArrayList<RoutePlanResultUnit>>> re = restTemplate.exchange(
                 "http://ts-route-plan-service:14578/api/v1/routeplanservice/routePlan/cheapestRoute",
                 HttpMethod.POST,
@@ -231,8 +247,8 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         return re.getBody().getData();
     }
 
-    private ArrayList<RoutePlanResultUnit> getRoutePlanResultQuickest(RoutePlanInfo info, HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(info, headers);
+    public ArrayList<RoutePlanResultUnit> getRoutePlanResultQuickest(RoutePlanInfo info, HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(info, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<ArrayList<RoutePlanResultUnit>>> re = restTemplate.exchange(
                 "http://ts-route-plan-service:14578/api/v1/routeplanservice/routePlan/quickestRoute",
                 HttpMethod.POST,
@@ -243,8 +259,8 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         return re.getBody().getData();
     }
 
-    private ArrayList<RoutePlanResultUnit> getRoutePlanResultMinStation(RoutePlanInfo info, HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(info, headers);
+    public ArrayList<RoutePlanResultUnit> getRoutePlanResultMinStation(RoutePlanInfo info, HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(info, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<ArrayList<RoutePlanResultUnit>>> re = restTemplate.exchange(
                 "http://ts-route-plan-service:14578/api/v1/routeplanservice/routePlan/minStopStations",
                 HttpMethod.POST,
@@ -254,8 +270,8 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         return re.getBody().getData();
     }
 
-    private List<TripResponse> tripsFromHighSpeed(TripInfo info, HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(info, headers);
+    public List<TripResponse> tripsFromHighSpeed(TripInfo info, HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(info, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<List<TripResponse>>> re = restTemplate.exchange(
                 "http://ts-travel-service:12346/api/v1/travelservice/trips/left",
                 HttpMethod.POST,
@@ -265,9 +281,9 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         return re.getBody().getData();
     }
 
-    private ArrayList<TripResponse> tripsFromNormal(TripInfo info, HttpHeaders headers) {
+    public ArrayList<TripResponse> tripsFromNormal(TripInfo info, HttpHeaders headers) {
 
-        HttpEntity requestEntity = new HttpEntity(info, headers);
+        HttpEntity requestEntity = new HttpEntity(info, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<ArrayList<TripResponse>>> re = restTemplate.exchange(
                 "http://ts-travel2-service:16346/api/v1/travel2service/trips/left",
                 HttpMethod.POST,
@@ -278,9 +294,9 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         return re.getBody().getData();
     }
 
-    private String queryForStationId(String stationName, HttpHeaders headers) {
+    public String queryForStationId(String stationName, HttpHeaders headers) {
 
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<String>> re = restTemplate.exchange(
                 "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo/" + stationName,
                 HttpMethod.GET,
@@ -291,8 +307,8 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         return re.getBody().getData();
     }
 
-    private List<String> transferStationIdToStationName(ArrayList<String> stations, HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(stations, headers);
+    public List<String> transferStationIdToStationName(ArrayList<String> stations, HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(stations, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<List<String>>> re = restTemplate.exchange(
                 "http://ts-station-service:12345/api/v1/stationservice/stations/namelist",
                 HttpMethod.POST,

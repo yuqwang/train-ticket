@@ -1,8 +1,11 @@
 package other.service;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +22,7 @@ import java.util.*;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class OrderOtherServiceImpl implements OrderOtherService {
 
@@ -27,6 +31,9 @@ public class OrderOtherServiceImpl implements OrderOtherService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderOtherServiceImpl.class);
 
@@ -179,13 +186,15 @@ public class OrderOtherServiceImpl implements OrderOtherService {
 
     @Override
     public Response queryOrdersForRefresh(QueryInfo qi, String accountId, HttpHeaders headers) {
-        ArrayList<Order> orders = queryOrders(qi, accountId, headers).getData();
+        OrderOtherServiceImpl proxy = (OrderOtherServiceImpl) AopContext.currentProxy();
+
+        ArrayList<Order> orders = proxy.queryOrders(qi, accountId, headers).getData();
         ArrayList<String> stationIds = new ArrayList<>();
         for (Order order : orders) {
             stationIds.add(order.getFrom());
             stationIds.add(order.getTo());
         }
-        List<String> names = queryForStationId(stationIds, headers);
+        List<String> names = proxy.queryForStationId(stationIds, headers);
         for (int i = 0; i < orders.size(); i++) {
             orders.get(i).setFrom(names.get(i * 2));
             orders.get(i).setTo(names.get(i * 2 + 1));
@@ -195,7 +204,7 @@ public class OrderOtherServiceImpl implements OrderOtherService {
 
     public List<String> queryForStationId(List<String> ids, HttpHeaders headers) {
 
-        HttpEntity requestEntity = new HttpEntity(ids, headers);
+        HttpEntity requestEntity = new HttpEntity(ids, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<List<String>>> re = restTemplate.exchange(
                 "http://ts-station-service:12345/api/v1/stationservice/stations/namelist",
                 HttpMethod.POST,

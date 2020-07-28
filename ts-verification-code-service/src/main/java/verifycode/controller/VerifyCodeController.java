@@ -21,11 +21,10 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/v1/verifycode")
 public class VerifyCodeController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(VerifyCodeController.class);
 
     @Autowired
     private VerifyCodeService verifyCodeService;
-
-    private static final Logger LOG = LoggerFactory.getLogger(VerifyCodeController.class);
 
     @GetMapping("/generate")
     public void imageCode(@RequestHeader HttpHeaders headers,
@@ -48,8 +47,7 @@ public class VerifyCodeController {
     @GetMapping(value = "/verify/{verifyCode}")
     public boolean verifyCode(@PathVariable String verifyCode, HttpServletRequest request,
                               HttpServletResponse response, @RequestHeader HttpHeaders headers) {
-        System.out.println("receivedCode  " +verifyCode);
-        LOG.info("receivedCode  " +verifyCode);
+        LOGGER.info("receivedCode  " + verifyCode);
         return verifyCodeService.verifyCode(request, response, verifyCode, headers);
     }
 }

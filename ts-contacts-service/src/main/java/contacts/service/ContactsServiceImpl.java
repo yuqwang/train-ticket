@@ -4,7 +4,9 @@ import contacts.entity.*;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import contacts.repository.ContactsRepository;
@@ -16,6 +18,7 @@ import java.util.UUID;
 /**
  * @author fdse
  */
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class ContactsServiceImpl implements ContactsService {
 
@@ -93,7 +96,7 @@ public class ContactsServiceImpl implements ContactsService {
 
     @Override
     public Response modify(Contacts contacts, HttpHeaders headers) {
-        Response oldContactResponse = findContactsById(contacts.getId(), headers);
+        Response oldContactResponse = ((ContactsServiceImpl) AopContext.currentProxy()).findContactsById(contacts.getId(), headers);
         LOGGER.info(oldContactResponse.toString());
         Contacts oldContacts = (Contacts) oldContactResponse.getData();
         if (oldContacts == null) {

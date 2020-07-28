@@ -1,11 +1,13 @@
 package foodsearch.service;
 
+import com.chuan.methodenhancer.aop.HeaderBuilder;
 import edu.fudan.common.util.Response;
 import foodsearch.entity.*;
 import foodsearch.repository.FoodOrderRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +22,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@ComponentScan(basePackages = { "com.chuan.methodenhancer.aop" })
 @Service
 public class FoodServiceImpl implements FoodService {
 
@@ -28,6 +31,9 @@ public class FoodServiceImpl implements FoodService {
 
     @Autowired
     private FoodOrderRepository foodOrderRepository;
+
+    @Autowired
+    private HeaderBuilder headerBuilder;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FoodServiceImpl.class);
 
@@ -129,7 +135,7 @@ public class FoodServiceImpl implements FoodService {
         Map<String, List<FoodStore>> foodStoreListMap = new HashMap<>();
 
         /**--------------------------------------------------------------------------------------*/
-        HttpEntity requestEntityGetTrainFoodListResult = new HttpEntity(headers);
+        HttpEntity requestEntityGetTrainFoodListResult = new HttpEntity(headerBuilder.constructHeader(headers));
         ResponseEntity<Response<List<TrainFood>>> reGetTrainFoodListResult = restTemplate.exchange(
                 "http://ts-food-map-service:18855/api/v1/foodmapservice/trainfoods/" + tripId,
                 HttpMethod.GET,
@@ -148,7 +154,7 @@ public class FoodServiceImpl implements FoodService {
         }
         //车次途经的车站
         /**--------------------------------------------------------------------------------------*/
-        HttpEntity requestEntityGetRouteResult = new HttpEntity(null, headers);
+        HttpEntity requestEntityGetRouteResult = new HttpEntity(null, headerBuilder.constructHeader(headers));
         ResponseEntity<Response<Route>> reGetRouteResult = restTemplate.exchange(
                 "http://ts-travel-service:12346/api/v1/travelservice/routes/" + tripId,
                 HttpMethod.GET,
@@ -163,7 +169,7 @@ public class FoodServiceImpl implements FoodService {
             //去除不经过的站，如果起点终点有的话
             if (null != startStation && !"".equals(startStation)) {
                 /**--------------------------------------------------------------------------------------*/
-                HttpEntity requestEntityStartStationId = new HttpEntity(headers);
+                HttpEntity requestEntityStartStationId = new HttpEntity(headerBuilder.constructHeader(headers));
                 ResponseEntity<Response<String>> reStartStationId = restTemplate.exchange(
                         "http://ts-station-service:12345/api/v1/stationservice/stations/id/" + startStation,
                         HttpMethod.GET,
@@ -182,7 +188,7 @@ public class FoodServiceImpl implements FoodService {
             }
             if (null != endStation && !"".equals(endStation)) {
                 /**--------------------------------------------------------------------------------------*/
-                HttpEntity requestEntityEndStationId = new HttpEntity(headers);
+                HttpEntity requestEntityEndStationId = new HttpEntity(headerBuilder.constructHeader(headers));
                 ResponseEntity<Response<String>> reEndStationId = restTemplate.exchange(
                         "http://ts-station-service:12345/api/v1/stationservice/stations/id/" + endStation,
                         HttpMethod.GET,
@@ -200,7 +206,7 @@ public class FoodServiceImpl implements FoodService {
                 }
             }
 
-            HttpEntity requestEntityFoodStoresListResult = new HttpEntity(stations, headers);
+            HttpEntity requestEntityFoodStoresListResult = new HttpEntity(stations, headerBuilder.constructHeader(headers));
             ResponseEntity<Response<List<FoodStore>>> reFoodStoresListResult = restTemplate.exchange(
                     "http://ts-food-map-service:18855/api/v1/foodmapservice/foodstores",
                     HttpMethod.POST,

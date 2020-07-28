@@ -7,8 +7,8 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 /**
  * @author fdse
  */
+@EnableAspectJAutoProxy(proxyTargetClass = true, exposeProxy = true)
 @SpringBootApplication
-@EnableCircuitBreaker
 public class UserApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
