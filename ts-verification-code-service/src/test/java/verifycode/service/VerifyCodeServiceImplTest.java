@@ -566,7 +566,7 @@ public class VerifyCodeServiceImplTest {
     @Test
     public void testVerifyCode() {
         boolean result = verifyCodeServiceImpl.verifyCode(request, response, "XYZ5", headers);
-        Assert.assertTrue(result);
+        Assert.assertFalse(result);
     }
 
 }
