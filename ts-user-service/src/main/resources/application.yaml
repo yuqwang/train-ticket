@@ -9,6 +9,3 @@ spring:
       host: ts-user-mongo
       database: ts-user-mongo
       port: 27017
-
-swagger:
-  controllerPackage: user.controller

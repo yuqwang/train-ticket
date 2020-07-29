@@ -4,5 +4,3 @@ server:
 spring:
   application:
     name: ts-execute-service
-swagger:
-  controllerPackage: execute.controller
