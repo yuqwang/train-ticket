@@ -4,6 +4,3 @@ server:
 spring:
   application:
     name: ts-admin-route-service
-
-swagger:
-  controllerPackage: adminroute.controller

@@ -12,6 +12,3 @@ spring:
 # HTTP Server
 server:
   port: 15679  # HTTP (Tomcat) port
-
-swagger:
-  controllerPackage: config.controller

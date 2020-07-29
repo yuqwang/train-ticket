@@ -15,5 +15,3 @@ spring:
   application:
     name: ts-preserve-other-service
 
-swagger:
-  controllerPackage: preserveOther.controller
