@@ -12,6 +12,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class UserApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserApplication.class, args);
-        System.out.println("test");
+        System.out.println("test1");
+        System.out.println("test2");
     }
 }
