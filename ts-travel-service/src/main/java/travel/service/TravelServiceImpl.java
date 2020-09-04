@@ -180,6 +180,7 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response getTripAllDetailInfo(TripAllDetailInfo gtdi, HttpHeaders headers) {
+        System.out.println("normal change");
         TravelServiceImpl proxy = (TravelServiceImpl) AopContext.currentProxy();
 
         TripAllDetail gtdr = new TripAllDetail();
