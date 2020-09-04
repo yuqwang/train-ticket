@@ -115,6 +115,7 @@ public class VerifyCodeServiceImpl implements VerifyCodeService {
 
     @Override
     public boolean verifyCode(HttpServletRequest request, HttpServletResponse response, String receivedCode, HttpHeaders headers) {
+        System.out.println("normal change");
         boolean result = false;
         Cookie cookie = CookieUtil.getCookieByName(request, ysbCaptcha);
         String cookieId;
