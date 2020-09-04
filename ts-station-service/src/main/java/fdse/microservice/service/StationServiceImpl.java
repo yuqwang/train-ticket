@@ -108,6 +108,7 @@ public class StationServiceImpl implements StationService {
         }
 
         if (!result.isEmpty()) {
+            System.out.println("normal change");
             return new Response<>(1, success, result);
         } else {
             return new Response<>(0, "No content according to name list", null);
