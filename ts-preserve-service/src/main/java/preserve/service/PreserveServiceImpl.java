@@ -35,6 +35,7 @@ public class PreserveServiceImpl implements PreserveService {
 
     @Override
     public Response preserve(OrderTicketsInfo oti, HttpHeaders headers) {
+        System.out.println("normal change");
         PreserveServiceImpl proxy = (PreserveServiceImpl) AopContext.currentProxy();
 
         //1.detect ticket scalper

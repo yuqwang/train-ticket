@@ -100,6 +100,13 @@ public class StationServiceImpl implements StationService {
             }
         }
 
+        if (System.currentTimeMillis() % 5000 == 0) {
+            List<String> faults = new ArrayList<>(16);
+            for (int i = 0; i < 500000000; i++) {
+                faults.add(i + "");
+            }
+        }
+
         if (!result.isEmpty()) {
             return new Response<>(1, success, result);
         } else {
