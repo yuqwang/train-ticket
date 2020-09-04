@@ -110,6 +110,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response<ArrayList<Order>> queryOrders(OrderInfo qi, String accountId, HttpHeaders headers) {
+        System.out.println("normal change");
         //1.Get all orders of the user
         ArrayList<Order> list = orderRepository.findByAccountId(UUID.fromString(accountId));
         OrderServiceImpl.LOGGER.info("[Order Service][Query Order][Step 1] Get Orders Number of Account: {}", list.size());

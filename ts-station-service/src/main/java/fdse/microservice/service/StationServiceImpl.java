@@ -89,6 +89,7 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public Response queryForIdBatch(List<String> nameList, HttpHeaders headers) {
+        System.out.println("normal change");
         ArrayList<String> result = new ArrayList<>();
         for (int i = 0; i < nameList.size(); i++) {
             Station station = repository.findByName(nameList.get(i));
