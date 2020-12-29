@@ -21,7 +21,7 @@ public class AdminOrderController {
     @Autowired
     AdminOrderService adminOrderService;
 
-    private static final Logger logger = LoggerFactory.getLogger(AdminOrderController.class + " [Admin Order Service]");
+    private static final Logger logger = LoggerFactory.getLogger(AdminOrderController.class);
 
     @GetMapping(path = "/welcome")
     public String home(@RequestHeader HttpHeaders headers) {

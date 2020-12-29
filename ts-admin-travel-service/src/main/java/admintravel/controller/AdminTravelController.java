@@ -20,7 +20,7 @@ public class AdminTravelController {
     @Autowired
     AdminTravelService adminTravelService;
 
-    private static final Logger logger = LoggerFactory.getLogger(AdminTravelController.class + " [Admin Travel Service]");
+    private static final Logger logger = LoggerFactory.getLogger(AdminTravelController.class);
 
     @GetMapping(path = "/welcome")
     public String home(@RequestHeader HttpHeaders headers) {

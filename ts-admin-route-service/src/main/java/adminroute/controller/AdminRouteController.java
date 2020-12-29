@@ -21,7 +21,7 @@ public class AdminRouteController {
     @Autowired
     AdminRouteService adminRouteService;
 
-    public static final Logger logger = LoggerFactory.getLogger(AdminRouteController.class + " [Admin Route Service]");
+    public static final Logger logger = LoggerFactory.getLogger(AdminRouteController.class);
 
     @GetMapping(path = "/welcome")
     public String home(@RequestHeader HttpHeaders headers) {
