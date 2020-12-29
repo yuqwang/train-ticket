@@ -45,7 +45,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
             ArrayList<Order> orders1 = result.getData();
             orders.addAll(orders1);
         } else {
-            AdminOrderServiceImpl.LOGGER.info("[Admin Order Service][Get Orders From ts-order-service fail!]");
+            AdminOrderServiceImpl.LOGGER.error("[Admin Order Service][Get Orders From ts-order-service fail!]");
         }
         //From ts-order-other-service
         HttpEntity requestEntity2 = new HttpEntity(headers);
@@ -62,7 +62,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
             ArrayList<Order> orders1 = (ArrayList<Order>) result.getData();
             orders.addAll(orders1);
         } else {
-            AdminOrderServiceImpl.LOGGER.info("[Admin Order Service][Get Orders From ts-order-other-service fail!]");
+            AdminOrderServiceImpl.LOGGER.error("[Admin Order Service][Get Orders From ts-order-other-service fail!]");
         }
         //Return orders
         return new Response<>(1, "Get the orders successfully!", orders);

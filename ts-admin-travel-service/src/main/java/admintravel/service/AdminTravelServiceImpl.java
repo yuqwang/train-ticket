@@ -46,7 +46,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
             AdminTravelServiceImpl.LOGGER.info("[Admin Travel Service][Get Travel From ts-travel-service successfully!]");
             trips.addAll(adminTrips);
         } else {
-            AdminTravelServiceImpl.LOGGER.info("[Admin Travel Service][Get Travel From ts-travel-service fail!]");
+            AdminTravelServiceImpl.LOGGER.error("[Admin Travel Service][Get Travel From ts-travel-service fail!]");
         }
 
         HttpEntity requestEntity2 = new HttpEntity(headers);
@@ -63,7 +63,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
             ArrayList<AdminTrip> adminTrips = result.getData();
             trips.addAll(adminTrips);
         } else {
-            AdminTravelServiceImpl.LOGGER.info("[Admin Travel Service][Get Travel From ts-travel2-service fail!]");
+            AdminTravelServiceImpl.LOGGER.error("[Admin Travel Service][Get Travel From ts-travel2-service fail!]");
         }
         result.setData(trips);
 
@@ -91,6 +91,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
             AdminTravelServiceImpl.LOGGER.info("[Admin Travel Service][Admin add new travel]");
             return new Response<>(1, "[Admin Travel Service][Admin add new travel]", null);
         } else {
+            AdminTravelServiceImpl.LOGGER.error("[Admin Travel Service] Admin add new travel failed, trip id: {}", request.getTripId());
             return new Response<>(0, "Admin add new travel failed", null);
         }
     }
@@ -133,7 +134,13 @@ public class AdminTravelServiceImpl implements AdminTravelService {
                 requestEntity,
                 Response.class);
         result = re.getBody();
-
+        if (result.getStatus() == 1) {
+            AdminTravelServiceImpl.LOGGER.info("[Admin Travel Service][Admin delete travel]");
+            return new Response<>(1, "[Admin Travel Service][Admin delete travel]", null);
+        } else {
+            AdminTravelServiceImpl.LOGGER.error("[Admin Travel Service] Admin delete travel failed, trip id: {}", request.getTripId());
+            return new Response<>(0, "Admin delete travel failed", null);
+        }
         return result;
     }
 }
