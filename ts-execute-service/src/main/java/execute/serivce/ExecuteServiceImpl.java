@@ -36,6 +36,7 @@ public class ExecuteServiceImpl implements ExecuteService {
             order =   resultFromOrder.getData();
             //2.Check if the order can come in
             if (order.getStatus() != OrderStatus.COLLECTED.getCode()) {
+                LOGGER.error("ticket execute error: {}, orderId: {}", orderStatusWrong, orderId);
                 return new Response<>(0, orderStatusWrong, null);
             }
             //3.Confirm inbound, request change order information
@@ -44,6 +45,7 @@ public class ExecuteServiceImpl implements ExecuteService {
             if (resultExecute.getStatus() == 1) {
                 return new Response<>(1, "Success.", null);
             } else {
+                LOGGER.error("executeOrder error: {}, orderId: {}", resultExecute.getMsg(), orderId);
                 return new Response<>(0, resultExecute.getMsg(), null);
             }
         } else {
@@ -52,6 +54,7 @@ public class ExecuteServiceImpl implements ExecuteService {
                 order =   resultFromOrder.getData();
                 //2.Check if the order can come in
                 if (order.getStatus() != OrderStatus.COLLECTED.getCode()) {
+                    LOGGER.error("ticket execute error: {}, orderId: {}", orderStatusWrong, orderId);
                     return new Response<>(0, orderStatusWrong, null);
                 }
                 //3.Confirm inbound, request change order information
@@ -60,9 +63,11 @@ public class ExecuteServiceImpl implements ExecuteService {
                 if (resultExecute.getStatus() == 1) {
                     return new Response<>(1, "Success", null);
                 } else {
+                    LOGGER.error("executeOrderOther error: {}, orderId: {}", resultExecute.getMsg(), orderId);
                     return new Response<>(0, resultExecute.getMsg(), null);
                 }
             } else {
+                LOGGER.error("ticker execute error: {}, , orderId: {}", "Order Not Found", orderId);
                 return new Response<>(0, "Order Not Found", null);
             }
         }
@@ -78,6 +83,7 @@ public class ExecuteServiceImpl implements ExecuteService {
             order =  resultFromOrder.getData();
             //2.Check if the order can come in
             if (order.getStatus() != OrderStatus.PAID.getCode() && order.getStatus() != OrderStatus.CHANGE.getCode()) {
+                LOGGER.error("ticket collect error: {}, orderId: {}", orderStatusWrong, orderId);
                 return new Response<>(0, orderStatusWrong, null);
             }
             //3.Confirm inbound, request change order information
@@ -86,6 +92,7 @@ public class ExecuteServiceImpl implements ExecuteService {
             if (resultExecute.getStatus() == 1) {
                 return new Response<>(1, "Success", null);
             } else {
+                LOGGER.error("ticket collect error: {}, orderId: {}", resultExecute.getMsg(), orderId);
                 return new Response<>(0, resultExecute.getMsg(), null);
             }
         } else {
@@ -94,6 +101,7 @@ public class ExecuteServiceImpl implements ExecuteService {
                 order = (Order) resultFromOrder.getData();
                 //2.Check if the order can come in
                 if (order.getStatus() != OrderStatus.PAID.getCode() && order.getStatus() != OrderStatus.CHANGE.getCode()) {
+                    LOGGER.error("ticket collect error: {}, orderId: {}", orderStatusWrong, orderId);
                     return new Response<>(0, orderStatusWrong, null);
                 }
                 //3.Confirm inbound, request change order information
@@ -101,9 +109,11 @@ public class ExecuteServiceImpl implements ExecuteService {
                 if (resultExecute.getStatus() == 1) {
                     return new Response<>(1, "Success.", null);
                 } else {
+                    LOGGER.error("ticket collect error: {}, orderId: {}", resultExecute.getMsg(), orderId);
                     return new Response<>(0, resultExecute.getMsg(), null);
                 }
             } else {
+                LOGGER.error("ticket collect error: {}, orderId: {}", "Order Not Found", orderId);
                 return new Response<>(0, "Order Not Found", null);
             }
         }
