@@ -24,21 +24,25 @@ public class NotificationController {
 
     @PostMapping(value = "/notification/preserve_success")
     public boolean preserve_success(@RequestBody NotifyInfo info, @RequestHeader HttpHeaders headers) {
-        return service.preserveSuccess(info, headers);
+        return true;
+        //return service.preserveSuccess(info, headers);
     }
 
     @PostMapping(value = "/notification/order_create_success")
     public boolean order_create_success(@RequestBody NotifyInfo info, @RequestHeader HttpHeaders headers) {
-        return service.orderCreateSuccess(info, headers);
+        return true;
+        //return service.orderCreateSuccess(info, headers);
     }
 
     @PostMapping(value = "/notification/order_changed_success")
     public boolean order_changed_success(@RequestBody NotifyInfo info, @RequestHeader HttpHeaders headers) {
-        return service.orderChangedSuccess(info, headers);
+        return true;
+        //return service.orderChangedSuccess(info, headers);
     }
 
     @PostMapping(value = "/notification/order_cancel_success")
     public boolean order_cancel_success(@RequestBody NotifyInfo info, @RequestHeader HttpHeaders headers) {
-        return service.orderCancelSuccess(info, headers);
+        return true;
+        //return service.orderCancelSuccess(info, headers);
     }
 }
