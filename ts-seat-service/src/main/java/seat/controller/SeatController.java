@@ -51,4 +51,5 @@ public class SeatController {
         // int
         return ok(seatService.getLeftTicketOfInterval(seatRequest, headers));
     }
+
 }

@@ -1,7 +1,7 @@
 import os
 
 PREFIX = "registry.cn-hangzhou.aliyuncs.com/h10g"
-VERSION = "sw0.3"
+VERSION = "sw0.6"
 
 base_path = os.getcwd()
 build_paths = []

@@ -15,11 +15,11 @@ spec:
     spec:
       containers:
       - name: ts-ui-dashboard
-        image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-ui-dashboard:sw0.3
+        image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-ui-dashboard:sw0.6
         imagePullPolicy: Always
         env:
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "collector.h10g.svc.cluster.local:3200"
+            value: "skywalking-oap.h10g.svc.cluster.local:11800"
         ports:
         - containerPort: 8080
         resources:

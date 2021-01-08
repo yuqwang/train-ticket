@@ -60,4 +60,5 @@ public class UserController {
                                                @RequestHeader HttpHeaders headers) {
         return ok(userService.updateUser(user, headers));
     }
+
 }

@@ -45,4 +45,5 @@ public class AdminUserController {
     public HttpEntity deleteUser(@PathVariable String userId, @RequestHeader HttpHeaders headers) {
         return ok(adminUserService.deleteUser(userId, headers));
     }
+
 }
