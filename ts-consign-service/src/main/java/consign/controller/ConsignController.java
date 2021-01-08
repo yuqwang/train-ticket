@@ -49,9 +49,9 @@ public class ConsignController {
         return ok(service.queryByOrderId(newid, headers));
     }
 
-
     @GetMapping(value = "/consigns/{consignee}")
     public HttpEntity findByConsignee(@PathVariable String consignee, @RequestHeader HttpHeaders headers) {
         return ok(service.queryByConsignee(consignee, headers));
     }
+
 }

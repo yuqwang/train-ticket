@@ -44,4 +44,5 @@ public class RoutePlanController {
         RoutePlanController.LOGGER.info("[Route Plan Service][Get Min Stop Stations] From: {} To: {} Num: {} Date: {}", info.getFormStationName(), info.getToStationName(), info.getNum(), info.getTravelDate());
         return ok(routePlanService.searchMinStopStations(info, headers));
     }
+
 }

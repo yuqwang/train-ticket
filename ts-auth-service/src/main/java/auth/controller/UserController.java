@@ -47,4 +47,5 @@ public class UserController {
     public ResponseEntity<Response> deleteUserById(@PathVariable String userId, @RequestHeader HttpHeaders headers) {
         return ResponseEntity.ok(userService.deleteByUserId(UUID.fromString(userId), headers));
     }
+
 }

@@ -15,6 +15,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @RestController
 @RequestMapping("/api/v1/basicservice")
+
 public class BasicController {
 
     @Autowired
@@ -36,4 +37,5 @@ public class BasicController {
         // String id
         return ok(service.queryForStationId(stationName, headers));
     }
+
 }

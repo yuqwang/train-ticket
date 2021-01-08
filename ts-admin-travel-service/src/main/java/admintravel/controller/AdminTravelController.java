@@ -43,4 +43,5 @@ public class AdminTravelController {
     public HttpEntity deleteTravel(@PathVariable String tripId, @RequestHeader HttpHeaders headers) {
         return ok(adminTravelService.deleteTravel(tripId, headers));
     }
+
 }

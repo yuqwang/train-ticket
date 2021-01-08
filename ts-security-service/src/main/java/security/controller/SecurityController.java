@@ -62,4 +62,5 @@ public class SecurityController {
         SecurityController.LOGGER.info("[Security Service][Check Security] Check Account Id: {}", accountId);
         return ok(securityService.check(accountId, headers));
     }
+
 }

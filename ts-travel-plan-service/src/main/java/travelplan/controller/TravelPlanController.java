@@ -52,4 +52,5 @@ public class TravelPlanController {
         TravelPlanController.LOGGER.info("[Search Min Station]");
         return ok(travelPlanService.getMinStation(queryInfo, headers));
     }
+
 }
