@@ -39,7 +39,7 @@ public class FoodServiceImpl implements FoodService {
 
         FoodOrder fo = foodOrderRepository.findByOrderId(addFoodOrder.getOrderId());
         if (fo != null) {
-            FoodServiceImpl.LOGGER.info("[Food-Service][AddFoodOrder] Order Id Has Existed.");
+            FoodServiceImpl.LOGGER.error("[AddFoodOrder] Order Id Has Existed, OrderId: {}", addFoodOrder.getOrderId());
             return new Response<>(0, "Order Id Has Existed.", null);
         } else {
             fo = new FoodOrder();
@@ -53,7 +53,7 @@ public class FoodServiceImpl implements FoodService {
             fo.setFoodName(addFoodOrder.getFoodName());
             fo.setPrice(addFoodOrder.getPrice());
             foodOrderRepository.save(fo);
-            FoodServiceImpl.LOGGER.info("[Food-Service][AddFoodOrder] Success.");
+            FoodServiceImpl.LOGGER.info("[AddFoodOrder] Success.");
             return new Response<>(1, success, fo);
         }
     }
@@ -62,11 +62,11 @@ public class FoodServiceImpl implements FoodService {
     public Response deleteFoodOrder(String orderId, HttpHeaders headers) {
         FoodOrder foodOrder = foodOrderRepository.findByOrderId(UUID.fromString(orderId));
         if (foodOrder == null) {
-            FoodServiceImpl.LOGGER.info("[Food-Service][Cancel FoodOrder] Order Id Is Non-Existent.");
+            FoodServiceImpl.LOGGER.error("[Cancel FoodOrder] Order Id Is Non-Existent, orderId: {}", orderId);
             return new Response<>(0, orderIdNotExist, null);
         } else {
             foodOrderRepository.deleteFoodOrderByOrderId(UUID.fromString(orderId));
-            FoodServiceImpl.LOGGER.info("[Food-Service][Cancel FoodOrder] Success.");
+            FoodServiceImpl.LOGGER.info("[Cancel FoodOrder] Success.");
             return new Response<>(1, success, null);
         }
     }
@@ -77,6 +77,7 @@ public class FoodServiceImpl implements FoodService {
         if (foodOrders != null && !foodOrders.isEmpty()) {
             return new Response<>(1, success, foodOrders);
         } else {
+            FoodServiceImpl.LOGGER.error("Find all food order error: {}", "No Content");
             return new Response<>(0, "No Content", null);
         }
     }
@@ -86,7 +87,7 @@ public class FoodServiceImpl implements FoodService {
     public Response updateFoodOrder(FoodOrder updateFoodOrder, HttpHeaders headers) {
         FoodOrder fo = foodOrderRepository.findById(updateFoodOrder.getId());
         if (fo == null) {
-            FoodServiceImpl.LOGGER.info("[Food-Service][Update FoodOrder] Order Id Is Non-Existent.");
+            FoodServiceImpl.LOGGER.info("[Update FoodOrder] Order Id Is Non-Existent, orderId: {}", updateFoodOrder.getOrderId());
             return new Response<>(0, orderIdNotExist, null);
         } else {
             fo.setFoodType(updateFoodOrder.getFoodType());
@@ -97,7 +98,7 @@ public class FoodServiceImpl implements FoodService {
             fo.setFoodName(updateFoodOrder.getFoodName());
             fo.setPrice(updateFoodOrder.getPrice());
             foodOrderRepository.save(fo);
-            FoodServiceImpl.LOGGER.info("[Food-Service][Update FoodOrder] Success.");
+            FoodServiceImpl.LOGGER.info("[Update FoodOrder] Success.");
             return new Response<>(1, "Success", fo);
         }
     }
@@ -106,10 +107,10 @@ public class FoodServiceImpl implements FoodService {
     public Response findByOrderId(String orderId, HttpHeaders headers) {
         FoodOrder fo = foodOrderRepository.findByOrderId(UUID.fromString(orderId));
         if (fo != null) {
-            FoodServiceImpl.LOGGER.info("[Food-Service][Find Order by id] Success.");
+            FoodServiceImpl.LOGGER.info("[Find Order by id] Success.");
             return new Response<>(1, success, fo);
         } else {
-            FoodServiceImpl.LOGGER.info("[Food-Service][Find Order by id] Order Id Is Non-Existent.");
+            FoodServiceImpl.LOGGER.info("[Find Order by id] Order Id Is Non-Existent, orderId: {}", orderId);
             return new Response<>(0, orderIdNotExist, null);
         }
     }
@@ -121,6 +122,7 @@ public class FoodServiceImpl implements FoodService {
         AllTripFood allTripFood = new AllTripFood();
 
         if (null == tripId || tripId.length() <= 2) {
+            FoodServiceImpl.LOGGER.error("Get the Get Food Request Failed! Trip id is not suitable, date: {}, tripId: {}", date, tripId);
             return new Response<>(0, "Trip id is not suitable", null);
         }
 
@@ -141,9 +143,9 @@ public class FoodServiceImpl implements FoodService {
 
         if (trainFoodListResult != null) {
             trainFoodList = trainFoodListResult;
-            FoodServiceImpl.LOGGER.info("[Food Service]Get Train Food List!");
+            FoodServiceImpl.LOGGER.info("Get Train Food List!");
         } else {
-            FoodServiceImpl.LOGGER.info("[Food Service]Get the Get Food Request Failed!");
+            FoodServiceImpl.LOGGER.error("Get the Get Food Request Failed!, date: {}, tripId: {}", date, tripId);
             return new Response<>(0, "Get the Get Food Request Failed!", null);
         }
         //车次途经的车站
@@ -216,9 +218,11 @@ public class FoodServiceImpl implements FoodService {
                     foodStoreListMap.put(stationId, res);
                 }
             } else {
+                FoodServiceImpl.LOGGER.error("Get the Get Food Request Failed! foodStoresListResult is null, date: {}, tripId: {}", date, tripId);
                 return new Response<>(0, "Get All Food Failed", allTripFood);
             }
         } else {
+            FoodServiceImpl.LOGGER.error("Get the Get Food Request Failed! station status error, date: {}, tripId: {}", date, tripId);
             return new Response<>(0, "Get All Food Failed", allTripFood);
         }
         allTripFood.setTrainFoodList(trainFoodList);

@@ -163,7 +163,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
 
 
         ArrayList<Route> routeList = re.getBody().getData();
-        RoutePlanServiceImpl.LOGGER.info("[Route Plan Service] Candidate Route Number: {}", routeList.size());
+        RoutePlanServiceImpl.LOGGER.info("Candidate Route Number: {}", routeList.size());
         //2.Calculate how many stops there are between the two stations
         ArrayList<Integer> gapList = new ArrayList<>();
         for (int i = 0; i < routeList.size(); i++) {
@@ -214,7 +214,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
             tempList.addAll(travelTrips.get(i));
             finalTripResult.add(tempList);
         }
-        RoutePlanServiceImpl.LOGGER.info("[Route Plan Service] Trips Num: {}", finalTripResult.size());
+        RoutePlanServiceImpl.LOGGER.info("Trips Num: {}", finalTripResult.size());
         //5.Then, get the price and the station information according to the train information
         ArrayList<Trip> trips = new ArrayList<>();
         for (ArrayList<Trip> tempTrips : finalTripResult) {
@@ -266,12 +266,12 @@ public class RoutePlanServiceImpl implements RoutePlanService {
 
             tripResponses.add(unit);
         }
-        RoutePlanServiceImpl.LOGGER.info("[Route Plan Service] Trips Response Unit Num: {}", tripResponses.size());
+        RoutePlanServiceImpl.LOGGER.info("Trips Response Unit Num: {}", tripResponses.size());
         return new Response<>(1, "Success.", tripResponses);
     }
 
     private String queryForStationId(String stationName, HttpHeaders headers) {
-        RoutePlanServiceImpl.LOGGER.info("[Preserve Service][Get Station Name]");
+        RoutePlanServiceImpl.LOGGER.info("[Get Station Name]");
 
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<Response<String>> re = restTemplate.exchange(
@@ -284,7 +284,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
     }
 
     private Route getRouteByRouteId(String routeId, HttpHeaders headers) {
-        RoutePlanServiceImpl.LOGGER.info("[Route Plan Service][Get Route By Id] Route ID：{}", routeId);
+        RoutePlanServiceImpl.LOGGER.info("[Get Route By Id] Route ID：{}", routeId);
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<Response<Route>> re = restTemplate.exchange(
                 "http://ts-route-service:11178/api/v1/routeservice/routes/" + routeId,
@@ -295,10 +295,10 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         Response<Route> result = re.getBody();
 
         if (result.getStatus() == 0) {
-            RoutePlanServiceImpl.LOGGER.info("[Travel Service][Get Route By Id] Fail. {}", result.getMsg());
+            RoutePlanServiceImpl.LOGGER.error("[Get Route By Id] Fail, RouteId: {}", routeId);
             return null;
         } else {
-            RoutePlanServiceImpl.LOGGER.info("[Travel Service][Get Route By Id] Success.");
+            RoutePlanServiceImpl.LOGGER.info("[Get Route By Id] Success.");
             return result.getData();
         }
     }

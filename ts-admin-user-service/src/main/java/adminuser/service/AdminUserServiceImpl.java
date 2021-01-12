@@ -31,7 +31,6 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public Response getAllUsers(HttpHeaders headers) {
-        AdminUserServiceImpl.LOGGER.info("[Admin User Service][Get All Users]");
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<Response<List<User>>> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI,
@@ -39,7 +38,11 @@ public class AdminUserServiceImpl implements AdminUserService {
                 requestEntity,
                 new ParameterizedTypeReference<Response<List<User>>>() {
                 });
-
+        if (re.getBody() == null || re.getBody().getStatus() != 1) {
+            AdminUserServiceImpl.LOGGER.error("Get All Users error");
+            return new Response<>(0, "get all users error", null);
+        }
+        AdminUserServiceImpl.LOGGER.info("Get All Users");
         return re.getBody();
     }
 
@@ -52,6 +55,11 @@ public class AdminUserServiceImpl implements AdminUserService {
                 HttpMethod.DELETE,
                 requestEntity,
                 Response.class);
+        if (re.getBody() == null || re.getBody().getStatus() != 1) {
+            AdminUserServiceImpl.LOGGER.error("Delete user error, userId: {}", userId);
+            return new Response<>(0, "delete user error", null);
+        }
+        AdminUserServiceImpl.LOGGER.info("Delete user success, userId: {}", userId);
         return re.getBody();
     }
 
@@ -64,6 +72,13 @@ public class AdminUserServiceImpl implements AdminUserService {
                 HttpMethod.PUT,
                 requestEntity,
                 Response.class);
+
+        String userName = userDto.getUserName();
+        if (re.getBody() == null || re.getBody().getStatus() != 1) {
+            AdminUserServiceImpl.LOGGER.error("Update user error, userName: {}", userName);
+            return new Response<>(0, "Update user error", null);
+        }
+        AdminUserServiceImpl.LOGGER.info("Update user success, userName: {}", userName);
         return re.getBody();
     }
 
@@ -78,6 +93,12 @@ public class AdminUserServiceImpl implements AdminUserService {
                 new ParameterizedTypeReference<Response<User>>() {
                 });
 
+        String userName = userDto.getUserName();
+        if (re.getBody() == null || re.getBody().getStatus() != 1) {
+            AdminUserServiceImpl.LOGGER.error("Add user error, userName: {}", userName);
+            return new Response<>(0, "Add user error", null);
+        }
+        AdminUserServiceImpl.LOGGER.info("Add user success, userName: {}", userName);
         return re.getBody();
     }
 }
