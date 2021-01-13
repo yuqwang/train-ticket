@@ -131,7 +131,7 @@ public class FoodServiceImpl implements FoodService {
         Map<String, List<FoodStore>> foodStoreListMap = new HashMap<>();
 
         /**--------------------------------------------------------------------------------------*/
-        HttpEntity requestEntityGetTrainFoodListResult = new HttpEntity(headers);
+        HttpEntity requestEntityGetTrainFoodListResult = new HttpEntity(null);
         ResponseEntity<Response<List<TrainFood>>> reGetTrainFoodListResult = restTemplate.exchange(
                 "http://ts-food-map-service:18855/api/v1/foodmapservice/trainfoods/" + tripId,
                 HttpMethod.GET,
@@ -150,7 +150,7 @@ public class FoodServiceImpl implements FoodService {
         }
         //车次途经的车站
         /**--------------------------------------------------------------------------------------*/
-        HttpEntity requestEntityGetRouteResult = new HttpEntity(null, headers);
+        HttpEntity requestEntityGetRouteResult = new HttpEntity(null, null);
         ResponseEntity<Response<Route>> reGetRouteResult = restTemplate.exchange(
                 "http://ts-travel-service:12346/api/v1/travelservice/routes/" + tripId,
                 HttpMethod.GET,
@@ -165,7 +165,7 @@ public class FoodServiceImpl implements FoodService {
             //去除不经过的站，如果起点终点有的话
             if (null != startStation && !"".equals(startStation)) {
                 /**--------------------------------------------------------------------------------------*/
-                HttpEntity requestEntityStartStationId = new HttpEntity(headers);
+                HttpEntity requestEntityStartStationId = new HttpEntity(null);
                 ResponseEntity<Response<String>> reStartStationId = restTemplate.exchange(
                         "http://ts-station-service:12345/api/v1/stationservice/stations/id/" + startStation,
                         HttpMethod.GET,
@@ -184,7 +184,7 @@ public class FoodServiceImpl implements FoodService {
             }
             if (null != endStation && !"".equals(endStation)) {
                 /**--------------------------------------------------------------------------------------*/
-                HttpEntity requestEntityEndStationId = new HttpEntity(headers);
+                HttpEntity requestEntityEndStationId = new HttpEntity(null);
                 ResponseEntity<Response<String>> reEndStationId = restTemplate.exchange(
                         "http://ts-station-service:12345/api/v1/stationservice/stations/id/" + endStation,
                         HttpMethod.GET,
@@ -202,7 +202,7 @@ public class FoodServiceImpl implements FoodService {
                 }
             }
 
-            HttpEntity requestEntityFoodStoresListResult = new HttpEntity(stations, headers);
+            HttpEntity requestEntityFoodStoresListResult = new HttpEntity(stations, null);
             ResponseEntity<Response<List<FoodStore>>> reFoodStoresListResult = restTemplate.exchange(
                     "http://ts-food-map-service:18855/api/v1/foodmapservice/foodstores",
                     HttpMethod.POST,
