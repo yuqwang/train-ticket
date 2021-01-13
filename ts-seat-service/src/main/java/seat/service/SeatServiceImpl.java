@@ -44,7 +44,7 @@ public class SeatServiceImpl implements SeatService {
             SeatServiceImpl.LOGGER.info("TrainNumber start with G|D");
 
             //Call the microservice to query all the station information for the train
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(null);
             re = restTemplate.exchange(
                     "http://ts-travel-service:12346/api/v1/travelservice/routes/" + trainNumber,
                     HttpMethod.GET,
@@ -55,7 +55,7 @@ public class SeatServiceImpl implements SeatService {
             SeatServiceImpl.LOGGER.info("[distributeSeat] The result of getRouteResult is {}", routeResult.getMsg());
 
             //Call the microservice to query for residual Ticket information: the set of the Ticket sold for the specified seat type
-            requestEntity = new HttpEntity(seatRequest, headers);
+            requestEntity = new HttpEntity(seatRequest, null);
             re3 = restTemplate.exchange(
                     "http://ts-order-service:12031/api/v1/orderservice/order/tickets",
                     HttpMethod.POST,
@@ -66,7 +66,7 @@ public class SeatServiceImpl implements SeatService {
             leftTicketInfo = re3.getBody().getData();
 
             //Calls the microservice to query the total number of seats specified for that vehicle
-            requestEntity = new HttpEntity(headers);
+            requestEntity = new HttpEntity(null);
             re2 = restTemplate.exchange(
                     "http://ts-travel-service:12346/api/v1/travelservice/train_types/" + seatRequest.getTrainNumber(),
                     HttpMethod.GET,
@@ -80,7 +80,7 @@ public class SeatServiceImpl implements SeatService {
         } else {
             SeatServiceImpl.LOGGER.info("TrainNumber start with other capital");
             //Call the micro service to query all the station information for the trains
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(null);
             re = restTemplate.exchange(
                     "http://ts-travel2-service:16346/api/v1/travel2service/routes/" + seatRequest.getTrainNumber(),
                     HttpMethod.GET,
@@ -91,7 +91,7 @@ public class SeatServiceImpl implements SeatService {
             SeatServiceImpl.LOGGER.info("[distributeSeat] The result of getRouteResult is {}", routeResult.toString());
 
             //Call the microservice to query for residual Ticket information: the set of the Ticket sold for the specified seat type
-            requestEntity = new HttpEntity(seatRequest, headers);
+            requestEntity = new HttpEntity(seatRequest, null);
             re3 = restTemplate.exchange(
                     "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/tickets",
                     HttpMethod.POST,
@@ -102,7 +102,7 @@ public class SeatServiceImpl implements SeatService {
             leftTicketInfo = re3.getBody().getData();
 
             //Calls the microservice to query the total number of seats specified for that vehicle
-            requestEntity = new HttpEntity(headers);
+            requestEntity = new HttpEntity(null);
             re2 = restTemplate.exchange(
                     "http://ts-travel2-service:16346/api/v1/travel2service/train_types/" + seatRequest.getTrainNumber(),
                     HttpMethod.GET,
@@ -185,7 +185,7 @@ public class SeatServiceImpl implements SeatService {
             SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] TrainNumber start with G|D {}", trainNumber);
 
             //Call the micro service to query all the station information for the trains
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(null);
             re = restTemplate.exchange(
                     "http://ts-travel-service:12346/api/v1/travelservice/routes/" + trainNumber,
                     HttpMethod.GET,
@@ -196,7 +196,7 @@ public class SeatServiceImpl implements SeatService {
             SeatServiceImpl.LOGGER.info("[ getLeftTicketOfInterval] The result of getRouteResult is {}", routeResult.getMsg());
 
             //Call the micro service to query for residual Ticket information: the set of the Ticket sold for the specified seat type
-            requestEntity = new HttpEntity(seatRequest, headers);
+            requestEntity = new HttpEntity(seatRequest, null);
             re3 = restTemplate.exchange(
                     "http://ts-order-service:12031/api/v1/orderservice/order/tickets",
                     HttpMethod.POST,
@@ -208,7 +208,7 @@ public class SeatServiceImpl implements SeatService {
             leftTicketInfo = re3.getBody().getData();
 
             //Calls the microservice to query the total number of seats specified for that vehicle
-            requestEntity = new HttpEntity(headers);
+            requestEntity = new HttpEntity(null);
             re2 = restTemplate.exchange(
                     "http://ts-travel-service:12346/api/v1/travelservice/train_types/" + seatRequest.getTrainNumber(),
                     HttpMethod.GET,
@@ -223,7 +223,7 @@ public class SeatServiceImpl implements SeatService {
         } else {
             SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] TrainNumber start with other capital");
             //Call the micro service to query all the station information for the trains
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(null);
             re = restTemplate.exchange(
                     "http://ts-travel2-service:16346/api/v1/travel2service/routes/" + seatRequest.getTrainNumber(),
                     HttpMethod.GET,
@@ -234,7 +234,7 @@ public class SeatServiceImpl implements SeatService {
             SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The result of getRouteResult is {}", routeResult.toString());
 
             //Call the micro service to query for residual Ticket information: the set of the Ticket sold for the specified seat type
-            requestEntity = new HttpEntity(seatRequest, headers);
+            requestEntity = new HttpEntity(seatRequest, null);
             re3 = restTemplate.exchange(
                     "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/tickets",
                     HttpMethod.POST,
@@ -246,7 +246,7 @@ public class SeatServiceImpl implements SeatService {
 
 
             //Calls the microservice to query the total number of seats specified for that vehicle
-            requestEntity = new HttpEntity(headers);
+            requestEntity = new HttpEntity(null);
             re2 = restTemplate.exchange(
                     "http://ts-travel2-service:16346/api/v1/travel2service/train_types/" + seatRequest.getTrainNumber(),
                     HttpMethod.GET,
@@ -304,7 +304,7 @@ public class SeatServiceImpl implements SeatService {
     private double getDirectProportion(HttpHeaders headers) {
 
         String configName = "DirectTicketAllocationProportion";
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response<Config>> re = restTemplate.exchange(
                 "http://ts-config-service:15679/api/v1/configservice/configs/" + configName,
                 HttpMethod.GET,
