@@ -108,7 +108,7 @@ public class BasicServiceImpl implements BasicService {
     @Override
     public Response queryForStationId(String stationName, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Query For Station Id] stationName: {}", stationName);
-        HttpEntity requestEntity = new HttpEntity( headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-station-service:12345/api/v1/stationservice/stations/id/" + stationName,
                 HttpMethod.GET,
@@ -124,7 +124,7 @@ public class BasicServiceImpl implements BasicService {
 
     public boolean checkStationExists(String stationName, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Check Station Exists] stationName: {}", stationName);
-        HttpEntity requestEntity = new HttpEntity( headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-station-service:12345/api/v1/stationservice/stations/id/" + stationName,
                 HttpMethod.GET,
@@ -137,7 +137,7 @@ public class BasicServiceImpl implements BasicService {
 
     public TrainType queryTrainType(String trainTypeId, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Query Train Type] Train Type: {}", trainTypeId);
-        HttpEntity requestEntity = new HttpEntity( headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-train-service:14567/api/v1/trainservice/trains/" + trainTypeId,
                 HttpMethod.GET,
@@ -150,7 +150,7 @@ public class BasicServiceImpl implements BasicService {
 
     private Route getRouteByRouteId(String routeId, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Get Route By Id] Route ID：{}", routeId);
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-route-service:11178/api/v1/routeservice/routes/" + routeId,
                 HttpMethod.GET,
@@ -168,7 +168,7 @@ public class BasicServiceImpl implements BasicService {
 
     private PriceConfig queryPriceConfigByRouteIdAndTrainType(String routeId, String trainType, HttpHeaders headers) {
         BasicServiceImpl.LOGGER.info("[Query For Price Config] RouteId: {} ,TrainType: {}", routeId, trainType);
-        HttpEntity requestEntity = new HttpEntity(null, headers);
+        HttpEntity requestEntity = new HttpEntity(null, null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-price-service:16579/api/v1/priceservice/prices/" + routeId + "/" + trainType,
                 HttpMethod.GET,

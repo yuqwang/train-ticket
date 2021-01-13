@@ -52,7 +52,7 @@ public class TokenServiceImpl implements TokenService {
 //        LOGGER.info("LOGIN USER :" + username + " __ " + password + " __ " + verifyCode);
 
         if (!StringUtils.isEmpty(verifyCode)) {
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(null);
             ResponseEntity<Boolean> re = restTemplate.exchange(
                     "http://ts-verification-code-service:15678/api/v1/verifycode/verify/" + verifyCode,
                     HttpMethod.GET,
