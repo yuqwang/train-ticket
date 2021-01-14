@@ -31,7 +31,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public Response getAllUsers(HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response<List<User>>> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI,
                 HttpMethod.GET,
@@ -49,7 +49,7 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public Response deleteUser(String userId, HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI + "/" + userId,
                 HttpMethod.DELETE,
@@ -66,7 +66,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public Response updateUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("UPDATE USER: " + userDto.toString());
-        HttpEntity requestEntity = new HttpEntity(userDto, headers);
+        HttpEntity requestEntity = new HttpEntity(userDto, null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI,
                 HttpMethod.PUT,
@@ -85,7 +85,7 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public Response addUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("ADD USER INFO : "+userDto.toString());
-        HttpEntity requestEntity = new HttpEntity(userDto, headers);
+        HttpEntity requestEntity = new HttpEntity(userDto, null);
         ResponseEntity<Response<User>> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI + "/register",
                 HttpMethod.POST,
