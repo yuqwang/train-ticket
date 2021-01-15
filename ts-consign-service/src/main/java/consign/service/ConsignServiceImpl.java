@@ -52,6 +52,7 @@ public class ConsignServiceImpl implements ConsignService {
         consignRecord.setWeight(consignRequest.getWeight());
 
         //get the price
+        headers = null;
         HttpEntity requestEntity = new HttpEntity(null, headers);
         ResponseEntity<Response<Double>> re = restTemplate.exchange(
                 "http://ts-consign-price-service:16110/api/v1/consignpriceservice/consignprice/" + consignRequest.getWeight() + "/" + consignRequest.isWithin(),
@@ -70,6 +71,8 @@ public class ConsignServiceImpl implements ConsignService {
     @Override
     public Response updateConsignRecord(Consign consignRequest, HttpHeaders headers) {
         ConsignServiceImpl.LOGGER.info("[ Update consign record]");
+
+        headers = null;
 
         ConsignRecord originalRecord = repository.findById(consignRequest.getId());
         if (originalRecord == null) {

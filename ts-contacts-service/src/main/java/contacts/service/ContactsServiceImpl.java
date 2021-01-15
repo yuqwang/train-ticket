@@ -94,6 +94,7 @@ public class ContactsServiceImpl implements ContactsService {
 
     @Override
     public Response modify(Contacts contacts, HttpHeaders headers) {
+        headers = null;
         Response oldContactResponse = findContactsById(contacts.getId(), headers);
         LOGGER.info(oldContactResponse.toString());
         Contacts oldContacts = (Contacts) oldContactResponse.getData();

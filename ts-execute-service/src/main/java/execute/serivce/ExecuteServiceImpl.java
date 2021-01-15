@@ -30,6 +30,7 @@ public class ExecuteServiceImpl implements ExecuteService {
     public Response ticketExecute(String orderId, HttpHeaders headers) {
         //1.Get order information
 
+        headers = null;
         Response<Order> resultFromOrder = getOrderByIdFromOrder(orderId, headers);
         Order order;
         if (resultFromOrder.getStatus() == 1) {
@@ -77,6 +78,7 @@ public class ExecuteServiceImpl implements ExecuteService {
     public Response ticketCollect(String orderId, HttpHeaders headers) {
         //1.Get order information
 
+        headers = null;
         Response<Order> resultFromOrder = getOrderByIdFromOrder(orderId, headers);
         Order order;
         if (resultFromOrder.getStatus() == 1) {
@@ -122,6 +124,7 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     private Response executeOrder(String orderId, int status, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Execute Order] Executing....");
+        headers = null;
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-order-service:12031/api/v1/orderservice/order/status/" + orderId + "/" + status,
@@ -134,6 +137,7 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     private Response executeOrderOther(String orderId, int status, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Execute Order] Executing....");
+        headers = null;
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/status/" + orderId + "/" + status,
@@ -145,6 +149,7 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     private Response<Order> getOrderByIdFromOrder(String orderId, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Get Order] Getting....");
+        headers = null;
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<Response<Order>> re = restTemplate.exchange(
                 "http://ts-order-service:12031/api/v1/orderservice/order/" + orderId,
@@ -157,6 +162,7 @@ public class ExecuteServiceImpl implements ExecuteService {
 
     private Response<Order> getOrderByIdFromOrderOther(String orderId, HttpHeaders headers) {
         ExecuteServiceImpl.LOGGER.info("[Execute Service][Get Order] Getting....");
+        headers = null;
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<Response<Order>> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/" + orderId,
