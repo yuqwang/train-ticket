@@ -32,7 +32,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
         ArrayList<AdminTrip> trips = new ArrayList<>();
 
         AdminTravelServiceImpl.LOGGER.info("[Get All Travels]");
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response<ArrayList<AdminTrip>>> re = restTemplate.exchange(
                 "http://ts-travel-service:12346/api/v1/travelservice/admin_trip",
                 HttpMethod.GET,
@@ -49,7 +49,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
             AdminTravelServiceImpl.LOGGER.error("[Get Travel From ts-travel-service fail!]");
         }
 
-        HttpEntity requestEntity2 = new HttpEntity(headers);
+        HttpEntity requestEntity2 = new HttpEntity(null);
         ResponseEntity<Response<ArrayList<AdminTrip>>> re2 = restTemplate.exchange(
                 "http://ts-travel2-service:16346/api/v1/travel2service/admin_trip",
                 HttpMethod.GET,
@@ -79,7 +79,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
         } else {
             requestUrl = "http://ts-travel2-service:16346/api/v1/travel2service/trips";
         }
-        HttpEntity requestEntity = new HttpEntity(request, headers);
+        HttpEntity requestEntity = new HttpEntity(request, null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 requestUrl,
                 HttpMethod.POST,
@@ -106,7 +106,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
         } else {
             requestUrl = "http://ts-travel2-service:16346/api/v1/travel2service/trips";
         }
-        HttpEntity requestEntity = new HttpEntity(request, headers);
+        HttpEntity requestEntity = new HttpEntity(request, null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 requestUrl,
                 HttpMethod.PUT,
@@ -133,7 +133,7 @@ public class AdminTravelServiceImpl implements AdminTravelService {
         } else {
             requestUtl = "http://ts-travel2-service:16346/api/v1/travel2service/trips/" + tripId;
         }
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 requestUtl,
                 HttpMethod.DELETE,

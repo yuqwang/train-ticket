@@ -31,7 +31,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         //Get all of the orders
         ArrayList<Order> orders = new ArrayList<>();
         //From ts-order-service
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response<ArrayList<Order>>> re = restTemplate.exchange(
                 "http://ts-order-service:12031/api/v1/orderservice/order",
                 HttpMethod.GET,
@@ -48,7 +48,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
             AdminOrderServiceImpl.LOGGER.error("[Get Orders From ts-order-service fail!]");
         }
         //From ts-order-other-service
-        HttpEntity requestEntity2 = new HttpEntity(headers);
+        HttpEntity requestEntity2 = new HttpEntity(null);
         ResponseEntity<Response<ArrayList<Order>>> re2 = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
                 HttpMethod.GET,
@@ -74,7 +74,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         Response deleteOrderResult;
         if (trainNumber.startsWith("G") || trainNumber.startsWith("D")) {
             AdminOrderServiceImpl.LOGGER.info("[Delete Order]");
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(null);
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-service:12031/api/v1/orderservice/order/" + orderId,
                     HttpMethod.DELETE,
@@ -84,7 +84,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 
         } else {
             AdminOrderServiceImpl.LOGGER.info("[Delete Order Other]");
-            HttpEntity requestEntity = new HttpEntity(headers);
+            HttpEntity requestEntity = new HttpEntity(null);
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/" + orderId,
                     HttpMethod.DELETE,
@@ -105,7 +105,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         if (request.getTrainNumber().startsWith("G") || request.getTrainNumber().startsWith("D")) {
 
             AdminOrderServiceImpl.LOGGER.info("[Update Order]");
-            HttpEntity requestEntity = new HttpEntity(request, headers);
+            HttpEntity requestEntity = new HttpEntity(request, null);
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-service:12031/api/v1/orderservice/order/admin",
                     HttpMethod.PUT,
@@ -115,7 +115,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 
         } else {
             AdminOrderServiceImpl.LOGGER.info("[Add New Order Other]");
-            HttpEntity requestEntity = new HttpEntity(request, headers);
+            HttpEntity requestEntity = new HttpEntity(request, null);
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/admin",
                     HttpMethod.PUT,
@@ -133,7 +133,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         Response addOrderResult;
         if (request.getTrainNumber().startsWith("G") || request.getTrainNumber().startsWith("D")) {
             AdminOrderServiceImpl.LOGGER.info("[Add New Order]");
-            HttpEntity requestEntity = new HttpEntity(request, headers);
+            HttpEntity requestEntity = new HttpEntity(request, null);
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-service:12031/api/v1/orderservice/order/admin",
                     HttpMethod.POST,
@@ -143,7 +143,7 @@ public class AdminOrderServiceImpl implements AdminOrderService {
 
         } else {
             AdminOrderServiceImpl.LOGGER.info("[Add New Order Other]");
-            HttpEntity requestEntity = new HttpEntity(request, headers);
+            HttpEntity requestEntity = new HttpEntity(request, null);
             ResponseEntity<Response> re = restTemplate.exchange(
                     "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/admin",
                     HttpMethod.POST,
