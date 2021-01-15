@@ -39,9 +39,3 @@ spring:
 
 swagger:
   controllerPackage: other.controller
-
-opentracing:
-  jaeger:
-    udp-sender:
-      host: ${NODE_IP:jaeger}
-      port: 6831

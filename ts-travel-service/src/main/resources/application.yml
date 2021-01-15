@@ -14,9 +14,3 @@ spring:
       port: 27017
 swagger:
   controllerPackage: travel.controller
-
-opentracing:
-  jaeger:
-    udp-sender:
-      host: ${NODE_IP:jaeger}
-      port: 6831

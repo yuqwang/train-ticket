@@ -115,15 +115,6 @@
 
     </dependencies>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>io.opentracing.contrib</groupId>
-				<artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
-				<version>0.2.2</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<!--<repositories>-->
 		<!--<repository>-->
 			<!--<id>spring-snapshots</id>-->

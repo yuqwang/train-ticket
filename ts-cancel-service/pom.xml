@@ -28,10 +28,7 @@
             <artifactId>ts-common</artifactId>
             <version>0.1.0</version>
         </dependency>
-        <dependency>
-            <groupId>io.opentracing.contrib</groupId>
-            <artifactId>opentracing-spring-jaeger-cloud-starter</artifactId>
-        </dependency>
+
 
     </dependencies>
 
