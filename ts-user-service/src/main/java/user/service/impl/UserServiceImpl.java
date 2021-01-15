@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         LOGGER.info("CALL TO AUTH");
         LOGGER.info("AuthDto : " + dto.toString());
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<AuthDto> entity = new HttpEntity<>(dto, headers);
+        HttpEntity<AuthDto> entity = new HttpEntity<>(dto, null);
         ResponseEntity<Response<AuthDto>> res  = restTemplate.exchange("http://ts-auth-service:12340/api/v1/auth",
                 HttpMethod.POST,
                 entity,
@@ -150,7 +150,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserAuth(UUID userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER BY ID :" + userId);
 
-        HttpEntity<Response> httpEntity = new HttpEntity<>(headers);
+        HttpEntity<Response> httpEntity = new HttpEntity<>(null);
         restTemplate.exchange(AUTH_SERVICE_URI + "/users/" + userId,
                 HttpMethod.DELETE,
                 httpEntity,

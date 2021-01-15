@@ -224,7 +224,7 @@ public class Travel2ServiceImpl implements Travel2Service {
         query.setEndPlace(endPlaceName);
         query.setDepartureTime(departureTime);
 
-        HttpEntity requestEntity = new HttpEntity(query, headers);
+        HttpEntity requestEntity = new HttpEntity(query, null);
         ResponseEntity<Response<TravelResult>> re = restTemplate.exchange(
                 "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo",
                 HttpMethod.POST,
@@ -237,7 +237,7 @@ public class Travel2ServiceImpl implements Travel2Service {
 
 
         //Ticket order _ high-speed train (number of tickets purchased)
-        requestEntity = new HttpEntity(headers);
+        requestEntity = new HttpEntity(null);
         ResponseEntity<Response<SoldTicket>> re2 = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/" + departureTime + "/" + trip.getTripId().toString(),
                 HttpMethod.GET,
@@ -339,7 +339,7 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     private TrainType getTrainType(String trainTypeId, HttpHeaders headers) {
 
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response<TrainType>> re = restTemplate.exchange(
                 "http://ts-train-service:14567/api/v1/trainservice/trains/" + trainTypeId,
                 HttpMethod.GET,
@@ -351,7 +351,7 @@ public class Travel2ServiceImpl implements Travel2Service {
     }
 
     private String queryForStationId(String stationName, HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response<String>> re = restTemplate.exchange(
                 "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo/" + stationName,
                 HttpMethod.GET,
@@ -365,7 +365,7 @@ public class Travel2ServiceImpl implements Travel2Service {
 
     private Route getRouteByRouteId(String routeId, HttpHeaders headers) {
         Travel2ServiceImpl.LOGGER.info("[Get Route By Id] Route ID：{}", routeId);
-        HttpEntity requestEntity = new HttpEntity(headers);
+        HttpEntity requestEntity = new HttpEntity(null);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-route-service:11178/api/v1/routeservice/routes/" + routeId,
                 HttpMethod.GET,
@@ -395,7 +395,7 @@ public class Travel2ServiceImpl implements Travel2Service {
         seatRequest.setTravelDate(travelDate);
         Travel2ServiceImpl.LOGGER.info("Seat request To String: {}", seatRequest.toString());
 
-        HttpEntity requestEntity = new HttpEntity(seatRequest, headers);
+        HttpEntity requestEntity = new HttpEntity(seatRequest, null);
         ResponseEntity<Response<Integer>> re = restTemplate.exchange(
                 "http://ts-seat-service:18898/api/v1/seatservice/seats/left_tickets",
                 HttpMethod.POST,
