@@ -29,6 +29,7 @@ public class PreserveServiceImpl implements PreserveService {
 
     @Override
     public Response preserve(OrderTicketsInfo oti, HttpHeaders headers) {
+        headers = null;
         //1.detect ticket scalper
         PreserveServiceImpl.LOGGER.info("[Step 1] Check Security");
 

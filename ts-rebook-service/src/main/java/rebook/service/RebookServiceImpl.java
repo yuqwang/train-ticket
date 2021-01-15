@@ -31,6 +31,7 @@ public class RebookServiceImpl implements RebookService {
 
     @Override
     public Response rebook(RebookInfo info, HttpHeaders httpHeaders) {
+        httpHeaders = null;
 
         Response<Order> queryOrderResult = getOrderByRebookInfo(info, httpHeaders);
 
@@ -129,6 +130,7 @@ public class RebookServiceImpl implements RebookService {
 
     @Override
     public Response payDifference(RebookInfo info, HttpHeaders httpHeaders) {
+        httpHeaders = null;
 
         Response queryOrderResult = getOrderByRebookInfo(info, httpHeaders);
 
