@@ -29,7 +29,6 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
 
     @Override
     public Response preserve(OrderTicketsInfo oti, HttpHeaders httpHeaders) {
-        httpHeaders = null;
 
         PreserveOtherServiceImpl.LOGGER.info("[Verify Login] Success");
         //1.detect ticket scalper
