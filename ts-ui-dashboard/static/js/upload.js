@@ -8,6 +8,27 @@
 //     bucket: '<Your bucketName>'
 // });
 
+function guessImageTypeFromBase64(str) {
+    switch (str.charAt(0)) {
+        case '/':
+            return 'image/jpeg';
+        case 'i':
+            return 'image/png';
+        case 'R':
+            return 'image/gif';
+        case 'U':
+            return 'image/webp';
+        case 'Q':
+            return 'image/bmp';
+        default:
+            return null;
+    }
+}
+
+function getCompleteImageBase64(str) {
+    return 'data:' + (guessImageTypeFromBase64(str) || 'image/jpeg') + ';base64,' + str
+}
+
 Vue.component('file-upload', VueUploadComponent)
 
 new Vue({
@@ -80,11 +101,15 @@ new Vue({
                 }),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    sessionStorage.setItem("avatar", data.responseText)
+                    if (data || data != "" || data != null) {
+                        console.log("response: " + data)
+                        url = getCompleteImageBase64(data)
+                        sessionStorage.setItem("avatar", url)
+                        $("#avatar_img").attr("src", url)
+                    }
                 },
                 complete: function (data) {
                     console.log("result: " + data.result)
-                    console.log("response: " + data.responseText)
                 }
             })
         },
@@ -101,10 +126,6 @@ new Vue({
                 // 开始上传
                 if (newFile.active !== oldFile.active) {
                     console.log('Start upload', newFile.active, newFile)
-                }
-                // 上传进度
-                if (newFile.progress !== oldFile.progress) {
-                    console.log('progress', newFile.progress, newFile)
                 }
 
                 // 上传错误
