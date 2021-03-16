@@ -215,8 +215,7 @@
                     <div class="avatar-upload" v-show="!edit">
                         <div class="text-center p-2">
                             <label for="avatar">
-                                <img :src="files.length ? files[0].url : 'assets/img/user01.png'"
-                                    class="rounded-circle" />
+                                <img :src="files.length ? files[0].url : avatarUrl" class="rounded-circle" />
                                 <h4 class="pt-2">or<br />Drop files anywhere to upload</h4>
                             </label>
                         </div>
