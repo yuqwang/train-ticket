@@ -6,6 +6,8 @@ RUN apt update -y
 RUN apt install -y cmake
 RUN apt install -y libgl1-mesa-glx
 
+ENV PYTHONUNBUFFERED=TRUE
+
 RUN mkdir -p /app
 ADD . /app/
 WORKDIR /app

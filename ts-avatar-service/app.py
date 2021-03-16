@@ -22,7 +22,7 @@ app = Flask(__name__)
 receive_path = r"./received/"
 
 
-@app.route('/api/v1/avatar/', methods=["POST"])
+@app.route('/api/v1/avatar', methods=["POST"])
 def hello():
     # receive file
     data = request.get_data().decode('utf-8')
