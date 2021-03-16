@@ -39,7 +39,7 @@ new Vue({
     data: function () {
         return {
             files: [],
-            base64: "",
+            avatarUrl: "assets/img/user01.png",
             edit: false,
             cropper: false,
         }
@@ -69,6 +69,14 @@ new Vue({
             }
         }
     },
+    mounted: function () {
+        this.$nextTick(function () {
+            url = sessionStorage.getItem("avatar")
+            if (url != undefined && url != null && url != "") {
+                this.avatarUrl = url
+            }
+        })
+    },
     methods: {
         editSave() {
             this.edit = false
@@ -91,7 +99,6 @@ new Vue({
             alert(message)
         },
         async upload(file, component) {
-            console.log(this.base64)
             data = this.base64
             return await $.ajax({
                 url: "/api/v1/avatar",
@@ -108,9 +115,6 @@ new Vue({
                         $("#avatar_img").attr("src", url)
                     }
                 },
-                complete: function (data) {
-                    console.log("result: " + data.result)
-                }
             })
         },
         inputFile(newFile, oldFile, prevent) {
