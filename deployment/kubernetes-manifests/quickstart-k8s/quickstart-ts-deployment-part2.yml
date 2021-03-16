@@ -1470,7 +1470,7 @@ spec:
             memory: 500Mi
         readinessProbe:
           tcpSocket:
-            port: 16101
+            port: 17001
           initialDelaySeconds: 160
           periodSeconds: 10
           timeoutSeconds: 5
