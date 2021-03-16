@@ -18,6 +18,7 @@ new Vue({
     data: function () {
         return {
             files: [],
+            base64: "",
             edit: false,
             cropper: false,
         }
@@ -30,8 +31,9 @@ new Vue({
                         return
                     }
                     let cropper = new Cropper(this.$refs.editImage, {
+                        height: 400,
                         aspectRatio: 1 / 1,
-                        viewMode: 3,
+                        viewMode: 1,
                         scalable: false,
                         dragCrop: false,
                         zoomable: false,
@@ -50,7 +52,8 @@ new Vue({
         editSave() {
             this.edit = false
             let oldFile = this.files[0]
-            let binStr = atob(this.cropper.getCroppedCanvas().toDataURL(oldFile.type).split(',')[1])
+            this.base64 = this.cropper.getCroppedCanvas().toDataURL(oldFile.type).split(',')[1]
+            let binStr = atob(this.base64)
             let arr = new Uint8Array(binStr.length)
             for (let i = 0; i < binStr.length; i++) {
                 arr[i] = binStr.charCodeAt(i)
@@ -65,6 +68,25 @@ new Vue({
         },
         alert(message) {
             alert(message)
+        },
+        async upload(file, component) {
+            console.log(this.base64)
+            data = this.base64
+            return await $.ajax({
+                url: "/api/v1/avatar",
+                type: 'POST',
+                data: JSON.stringify({
+                    "img": data
+                }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    sessionStorage.setItem("avatar", data.responseText)
+                },
+                complete: function (data) {
+                    console.log("result: " + data.result)
+                    console.log("response: " + data.responseText)
+                }
+            })
         },
         inputFile(newFile, oldFile, prevent) {
             if (newFile && !oldFile) {
@@ -93,7 +115,6 @@ new Vue({
                 // 上传成功
                 if (newFile.success !== oldFile.success) {
                     console.log('success', newFile.success, newFile)
-                    // 发送给avatar服务获得的图片连接
                     // $.ajax({
                     //   type: 'GET',
                     //   url: '/file/delete?id=' + oldFile.response.id,

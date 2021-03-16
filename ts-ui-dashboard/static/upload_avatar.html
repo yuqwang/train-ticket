@@ -74,8 +74,14 @@
             padding: 0;
         }
 
-        .avatar-edit-image {
-            max-height: 400px;
+        .edit-img {
+            display: block;
+            max-width: 100%;
+            max-height: 500px;
+        }
+
+        .btn-area {
+            margin: 5px;
         }
     </style>
 </head>
@@ -216,19 +222,18 @@
                         </div>
                         <div class="text-center p-2">
                             <file-upload class="btn btn-primary" extensions="gif,jpg,jpeg,png,webp"
-                                accept="image/png,image/gif,image/jpeg,image/webp" post-action="/upload/post"
-                                :drop="!edit" v-model="files" @input-filter="inputFilter" @input-file="inputFile"
-                                ref="upload">
+                                accept="image/png,image/gif,image/jpeg,image/webp" :custom-action="upload" :drop="!edit"
+                                v-model="files" @input-filter="inputFilter" @input-file="inputFile" ref="upload">
                                 Upload Avatar
                             </file-upload>
                         </div>
                     </div>
 
                     <div class="avatar-edit" v-show="files.length && edit">
-                        <div class="avatar-edit-image" v-if="files.length">
-                            <img ref="editImage" :src="files[0].url" />
+                        <div v-if="files.length">
+                            <img class="edit-img" ref="editImage" :src="files[0].url" />
                         </div>
-                        <div class="text-center p-4">
+                        <div class="btn-area text-center p-4">
                             <button type="button" class="btn btn-secondary"
                                 @click.prevent="$refs.upload.clear">Cancel</button>
                             <button type="submit" class="btn btn-primary" @click.prevent="editSave">Save</button>
