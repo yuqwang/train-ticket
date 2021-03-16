@@ -10,6 +10,18 @@ then cut the face down, then return image also in base64 format.
 | `/api/v1/avatar/` | `POST` |
 
 
+##### Requests
+
+POST http://0.0.0.0:17001/api/v1/avatar/
+
+POST Body: base64ed image.
+```
+{
+    "img":"......iVBORw0KGgoAAAANSUhEUgAAAYAAAAFoCAYAAABe0CxQAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAP+lSURBVHhe7L0FXJbptv6/z/+cs2vKGVtROpUSFAzEQkSxuxtbShEJsbt12ukF/i04ba1M9p7OsLLg9uWLjzfGB3buKFTW3f4tmuKzl7N0NW7BXp09ETvzm3Qt2s79OvmpTSwhw8G9+qEoX06Y3i/rhjRv5vSqIE9MHZoH4wb1hfjh/fDxJEDMGnUQEz2G4TACUMROGk4giaPxJSA0QgJGoPpUycifNpkpcjQQESFTcHM8KmYFTGNCsWM6VMRNjUQ04ImYor/OARO9MOEMUMwls85hs89cmhvDBnQFf17d0RPvr+uvi3RyacZvNu7ok1rR7Rs3gAezTR5NrdHW3......"
+}
+```
+
+
 ##### Responses
 
 1. `400 response`
