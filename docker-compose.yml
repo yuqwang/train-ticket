@@ -200,10 +200,10 @@ services:
     networks:
       - my-network
 
-  ts-travel-mongo:
-    image: mongo
-    networks:
-      - my-network
+    ts-travel-mysql:
+      image: ${IMG_REPO}/mysql5:${IMG_TAG}
+      networks:
+        - my-network
 
   ts-travel2-service:
       build: ts-travel2-service
@@ -467,19 +467,19 @@ services:
       networks:
         - my-network
 
-  ts-consign-service:
-            build: ts-consign-service
-            image: ${IMG_REPO}/ts-consign-service:${IMG_TAG}
-            restart: always
-            ports:
-              - 16111:16111
-            networks:
-              - my-network
-
-  ts-consign-mongo:
-            image: mongo
-            networks:
-              - my-network
+#  ts-consign-service:
+#            build: ts-consign-service
+#            image: ${IMG_REPO}/ts-consign-service:${IMG_TAG}
+#            restart: always
+#            ports:
+#              - 16111:16111
+#            networks:
+#              - my-network
+#
+#  ts-consign-mongo:
+#            image: mongo
+#            networks:
+#              - my-network
 
   ts-consign-price-service:
             build: ts-consign-price-service

@@ -384,7 +384,8 @@ public class PreserveServiceImpl implements PreserveService {
 
         HttpEntity requestEntityResultForTravel = new HttpEntity(cr, httpHeaders);
         ResponseEntity<Response> reResultForTravel = restTemplate.exchange(
-                "http://ts-consign-service:16111/api/v1/consignservice/consigns",
+//                "http://ts-consign-service:16111/api/v1/consignservice/consigns",
+                "http://ts-travel-service:12346/api/v1/consignservice/consigns",
                 HttpMethod.POST,
                 requestEntityResultForTravel,
                 Response.class);

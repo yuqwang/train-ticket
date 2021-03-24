@@ -37,7 +37,7 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Response create(TravelInfo info, HttpHeaders headers) {
         TripId ti = new TripId(info.getTripId());
-        if (repository.findByTripId(ti) == null) {
+        if (findByTripId(ti) == null) {
             Trip trip = new Trip(ti, info.getTrainTypeId(), info.getStartingStationId(),
                     info.getStationsId(), info.getTerminalStationId(), info.getStartingTime(), info.getEndTime());
             trip.setRouteId(info.getRouteId());
@@ -54,7 +54,7 @@ public class TravelServiceImpl implements TravelService {
         Route route = null;
         if (null != tripId && tripId.length() >= 2) {
             TripId tripId1 = new TripId(tripId);
-            Trip trip = repository.findByTripId(tripId1);
+            Trip trip = findByTripId(tripId1);
             if (trip != null) {
                 route = getRouteByRouteId(trip.getRouteId(), headers);
             }
@@ -74,7 +74,7 @@ public class TravelServiceImpl implements TravelService {
     public Response getTrainTypeByTripId(String tripId, HttpHeaders headers) {
         TripId tripId1 = new TripId(tripId);
         TrainType trainType = null;
-        Trip trip = repository.findByTripId(tripId1);
+        Trip trip = findByTripId(tripId1);
         if (trip != null) {
             trainType = getTrainType(trip.getTrainTypeId(), headers);
         }
@@ -111,7 +111,7 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Response retrieve(String tripId, HttpHeaders headers) {
         TripId ti = new TripId(tripId);
-        Trip trip = repository.findByTripId(ti);
+        Trip trip = findByTripId(ti);
         if (trip != null) {
             return new Response<>(1, "Search Trip Success by Trip Id " + tripId, trip);
         } else {
@@ -123,10 +123,12 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Response update(TravelInfo info, HttpHeaders headers) {
         TripId ti = new TripId(info.getTripId());
-        if (repository.findByTripId(ti) != null) {
+        Trip oldTrip = findByTripId(ti);
+        if (oldTrip != null) {
             Trip trip = new Trip(ti, info.getTrainTypeId(), info.getStartingStationId(),
                     info.getStationsId(), info.getTerminalStationId(), info.getStartingTime(), info.getEndTime());
             trip.setRouteId(info.getRouteId());
+            trip.setId(oldTrip.getId());
             repository.save(trip);
             return new Response<>(1, "Update trip:" + ti.toString(), trip);
         } else {
@@ -138,8 +140,9 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Response delete(String tripId, HttpHeaders headers) {
         TripId ti = new TripId(tripId);
-        if (repository.findByTripId(ti) != null) {
-            repository.deleteByTripId(ti);
+        Trip trip=findByTripId(ti);
+        if (trip != null) {
+            repository.delete(trip);
             return new Response<>(1, "Delete trip:" + tripId + ".", tripId);
         } else {
             TravelServiceImpl.LOGGER.error("Delete trip error.Trip not found,TripId: {}",tripId);
@@ -184,7 +187,7 @@ public class TravelServiceImpl implements TravelService {
     public Response getTripAllDetailInfo(TripAllDetailInfo gtdi, HttpHeaders headers) {
         TripAllDetail gtdr = new TripAllDetail();
         TravelServiceImpl.LOGGER.info("[TripAllDetailInfo] TripId: {}", gtdi.getTripId());
-        Trip trip = repository.findByTripId(new TripId(gtdi.getTripId()));
+        Trip trip = findByTripId(new TripId(gtdi.getTripId()));
         if (trip == null) {
             gtdr.setTripResponse(null);
             gtdr.setTrip(null);
@@ -203,7 +206,7 @@ public class TravelServiceImpl implements TravelService {
                 TravelServiceImpl.LOGGER.warn("Get trip detail error.Tickets not found,start: {},end: {},time: {}",startingPlaceName,endPlaceName,gtdi.getTravelDate());
             } else {
                 gtdr.setTripResponse(tripResponse);
-                gtdr.setTrip(repository.findByTripId(new TripId(gtdi.getTripId())));
+                gtdr.setTrip(findByTripId(new TripId(gtdi.getTripId())));
             }
         }
         return new Response<>(1, success, gtdr);
@@ -409,6 +412,15 @@ public class TravelServiceImpl implements TravelService {
         } else {
             TravelServiceImpl.LOGGER.warn("Admin query all trips warn: {}","No Content");
             return new Response<>(0, noContent, null);
+        }
+    }
+
+    private Trip findByTripId(TripId tripId){
+        List<Trip> tripList=repository.findByTripId(tripId.toString());
+        if(tripList==null||tripList.size()==0){
+            return null;
+        }else{
+            return tripList.get(0);
         }
     }
 }
