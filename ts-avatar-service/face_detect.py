@@ -8,6 +8,7 @@ path_save = "./images/"
 
 detector = dlib.get_frontal_face_detector()
 
+
 def check(img):
     # Dlib 检测器
     faces = detector(img, 1)
@@ -41,9 +42,11 @@ def check(img):
                 img_blank[i][j] = img[d.top() + i][d.left() + j]
 
         print("Save to:", path_save + "img_face_" + str(k + 1) + ".jpg")
-        cv2.imwrite(path_save + "img_face_" + str(k + 1) + ".jpg", img_blank)
+        path = path_save + "img_face_" + str(k + 1) + ".jpg"
+        cv2.imwrite(path, img_blank)
 
-        base64_str = cv2.imencode('.jpg',img_blank)[1].tostring()
-        base64_str = base64.b64encode(base64_str)
-        return base64_str
+
+        #base64_str = cv2.imencode('.jpg', img_blank)[1].tostring()
+        #base64_str = base64.b64encode(base64_str)
+        return path
 

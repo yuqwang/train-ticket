@@ -8,18 +8,10 @@ import base64
 import traceback
 
 from face_detect import check
+from upload import upload_file
+
 
 app = Flask(__name__)
-
-# TODO:
-# ~~1. 获取图片~~
-#  ~2. 检测图片是否ok
-#  ~3. 人脸检测&切割
-#  ~4. 返回base64格式的图片
-# 5. 前端传文件
-# 6. Dockerfile部署
-
-receive_path = r"./received/"
 
 
 @app.route('/api/v1/avatar', methods=["POST"])
@@ -35,6 +27,7 @@ def hello():
         image_decode = base64.b64decode(image_b64)
         nparr = np.fromstring(image_decode, np.uint8)
         image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        # if normal, result is a path of file, otherwise its a dict of error message.
         result = check(image)
     except Exception as e:
         return jsonify({"msg": "exception:" + str(traceback.format_exc())}), 500
@@ -42,7 +35,15 @@ def hello():
     if type(result) == dict and result.get("msg") is not None:
         return jsonify(result), 400
 
-    return result, 200
+    try:
+        address = upload_file(result)
+    except Exception as e:
+        return jsonify({"msg": "exception:" + str(traceback.format_exc())}), 500
+
+    msg = {
+        "address": address
+    }
+    return jsonify(msg), 200
 
 
 if __name__ == '__main__':
