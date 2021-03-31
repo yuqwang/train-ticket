@@ -1,4 +1,5 @@
-create database `ts` default character set utf8 collate utf8_general_ci;
+create database `ts-travel` default character set utf8 collate utf8_general_ci;
+create database `ts-route` default character set utf8 collate utf8_general_ci;
 
 use mysql;
 SELECT host, user FROM user;

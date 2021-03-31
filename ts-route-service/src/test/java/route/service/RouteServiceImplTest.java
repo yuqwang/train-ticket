@@ -98,7 +98,12 @@ public class RouteServiceImplTest {
         List<Integer> distances = new ArrayList<>();
         distances.add(5);
         distances.add(10);
-        Route route = new Route("id", stations, distances, "shanghai", "nanjing");
+        Route route = new Route();
+        route.setId("id");
+        route.setStations(stations);
+        route.setDistances(distances);
+        route.setStartStationId("shanghai");
+        route.setTerminalStationId("nanjing");
         ArrayList<Route> routes = new ArrayList<>();
         routes.add(route);
         Mockito.when(routeRepository.findAll()).thenReturn(routes);
