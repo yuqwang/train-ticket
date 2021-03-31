@@ -3,7 +3,7 @@ repo_address="registry.cn-shanghai.aliyuncs.com/xywu"
 
 
 service="ts-route-service"
-mytag=":station"
+mytag=""
 
 cd $service
 pwd
