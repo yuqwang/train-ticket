@@ -108,9 +108,10 @@ new Vue({
                 }),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
-                    if (data || data != "" || data != null) {
-                        console.log("response: " + data)
-                        url = getCompleteImageBase64(data)
+                    console.log("response: " + data)
+                    if (data && data != "" && data != null) {
+                        // url = getCompleteImageBase64(data)
+                        url = data
                         sessionStorage.setItem("avatar", url)
                         $("#avatar_img").attr("src", url)
                     }
