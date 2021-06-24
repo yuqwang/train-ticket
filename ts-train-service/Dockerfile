@@ -1,4 +1,4 @@
-FROM codewisdom/java8-skywalking-agent:v2.2
+FROM registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:1.0
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 
