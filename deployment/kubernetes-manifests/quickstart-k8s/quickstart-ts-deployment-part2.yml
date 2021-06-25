@@ -55,13 +55,19 @@ spec:
     spec:
       containers:
       - name: ts-admin-basic-info-service
-        image: kagaya85/ts-admin-basic-info-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-basic-info-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 18767
         resources:
@@ -96,13 +102,19 @@ spec:
     spec:
       containers:
       - name: ts-admin-order-service
-        image: kagaya85/ts-admin-order-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-order-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16112
         resources:
@@ -136,13 +148,19 @@ spec:
     spec:
       containers:
       - name: ts-admin-route-service
-        image: kagaya85/ts-admin-route-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-route-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16113
         resources:
@@ -176,13 +194,19 @@ spec:
     spec:
       containers:
       - name: ts-admin-travel-service
-        image: kagaya85/ts-admin-travel-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-travel-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16114
         resources:
@@ -216,13 +240,19 @@ spec:
     spec:
       containers:
       - name: ts-admin-user-service
-        image: kagaya85/ts-admin-user-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-user-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16115
         resources:
@@ -256,13 +286,19 @@ spec:
     spec:
       containers:
       - name: ts-assurance-service
-        image: kagaya85/ts-assurance-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-assurance-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 18888
         resources:
@@ -296,13 +332,19 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: kagaya85/ts-basic-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-basic-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 15680
         resources:
@@ -336,13 +378,19 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: kagaya85/ts-cancel-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-cancel-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 18885
         resources:
@@ -376,13 +424,19 @@ spec:
     spec:
       containers:
       - name: ts-config-service
-        image: kagaya85/ts-config-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-config-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 15679
         resources:
@@ -416,13 +470,19 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: kagaya85/ts-consign-price-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-price-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16110
         resources:
@@ -456,13 +516,19 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: kagaya85/ts-consign-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16111
         resources:
@@ -496,13 +562,19 @@ spec:
     spec:
       containers:
       - name: ts-contacts-service
-        image: kagaya85/ts-contacts-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-contacts-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 12347
         resources:
@@ -517,7 +589,7 @@ spec:
             port: 12347
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -536,13 +608,19 @@ spec:
     spec:
       containers:
       - name: ts-execute-service
-        image: kagaya85/ts-execute-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-execute-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 12386
         resources:
@@ -576,13 +654,19 @@ spec:
     spec:
       containers:
       - name: ts-food-map-service
-        image: kagaya85/ts-food-map-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-map-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 18855
         resources:
@@ -616,13 +700,19 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: kagaya85/ts-food-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 18856
         resources:
@@ -656,13 +746,19 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: kagaya85/ts-inside-payment-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-inside-payment-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 18673
         resources:
@@ -696,13 +792,19 @@ spec:
     spec:
       containers:
       - name: ts-auth-service
-        image: kagaya85/ts-auth-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-auth-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 12340
         resources:
@@ -717,7 +819,7 @@ spec:
             port: 12340
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -736,13 +838,19 @@ spec:
     spec:
       containers:
       - name: ts-news-service
-        image: kagaya85/ts-news-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-news-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 12862
         resources:
@@ -776,13 +884,19 @@ spec:
     spec:
       containers:
       - name: ts-notification-service
-        image: kagaya85/ts-notification-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-notification-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 17853
         resources:
@@ -816,13 +930,19 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: kagaya85/ts-order-other-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-other-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 12032
         resources:
@@ -856,13 +976,19 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: kagaya85/ts-order-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 12031
         resources:
@@ -896,13 +1022,19 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: kagaya85/ts-payment-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-payment-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 19001
         resources:
@@ -917,7 +1049,7 @@ spec:
             port: 19001
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -936,13 +1068,19 @@ spec:
     spec:
       containers:
       - name: ts-preserve-other-service
-        image: kagaya85/ts-preserve-other-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-other-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 14569
         resources:
@@ -976,13 +1114,19 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: kagaya85/ts-preserve-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 14568
         resources:
@@ -1016,13 +1160,19 @@ spec:
     spec:
       containers:
       - name: ts-price-service
-        image: kagaya85/ts-price-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-price-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16579
         resources:
@@ -1056,13 +1206,19 @@ spec:
     spec:
       containers:
       - name: ts-rebook-service
-        image: kagaya85/ts-rebook-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-rebook-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 18886
         resources:
@@ -1077,7 +1233,7 @@ spec:
             port: 18886
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1096,13 +1252,19 @@ spec:
     spec:
       containers:
       - name: ts-route-plan-service
-        image: kagaya85/ts-route-plan-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-plan-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 14578
         resources:
@@ -1136,13 +1298,19 @@ spec:
     spec:
       containers:
       - name: ts-route-service
-        image: kagaya85/ts-route-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 11178
         resources:
@@ -1157,7 +1325,7 @@ spec:
             port: 11178
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1176,13 +1344,19 @@ spec:
     spec:
       containers:
       - name: ts-seat-service
-        image: kagaya85/ts-seat-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-seat-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 18898
         resources:
@@ -1197,7 +1371,7 @@ spec:
             port: 18898
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1216,13 +1390,19 @@ spec:
     spec:
       containers:
       - name: ts-security-service
-        image: kagaya85/ts-security-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-security-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 11188
         resources:
@@ -1256,13 +1436,19 @@ spec:
     spec:
       containers:
       - name: ts-user-service
-        image: kagaya85/ts-user-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-user-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 12342
         resources:
@@ -1277,7 +1463,7 @@ spec:
             port: 12342
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1296,13 +1482,19 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: kagaya85/ts-station-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-station-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 12345
         resources:
@@ -1332,17 +1524,23 @@ spec:
   template:
     metadata:
       labels:
-        app: ts-ticket-office-service 
+        app: ts-ticket-office-service
     spec:
       containers:
       - name: ts-ticket-office-service
-        image: kagaya85/ts-ticket-office-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ticket-office-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16108
         resources:
@@ -1357,7 +1555,7 @@ spec:
             port: 16108
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1376,13 +1574,19 @@ spec:
     spec:
       containers:
       - name: ts-ticketinfo-service
-        image: kagaya85/ts-ticketinfo-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ticketinfo-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 15681
         resources:
@@ -1397,7 +1601,7 @@ spec:
             port: 15681
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1416,13 +1620,19 @@ spec:
     spec:
       containers:
       - name: ts-train-service
-        image: kagaya85/ts-train-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-train-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 14567
         resources:
@@ -1437,7 +1647,7 @@ spec:
             port: 14567
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1456,13 +1666,19 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: kagaya85/ts-travel2-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel2-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16346
         resources:
@@ -1496,13 +1712,19 @@ spec:
     spec:
       containers:
       - name: ts-travel-plan-service
-        image: kagaya85/ts-travel-plan-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-plan-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 14322
         resources:
@@ -1536,13 +1758,19 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: kagaya85/ts-travel-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 12346
         resources:
@@ -1557,7 +1785,7 @@ spec:
             port: 12346
           initialDelaySeconds: 160
           periodSeconds: 10
-          timeoutSeconds: 5 
+          timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1576,13 +1804,19 @@ spec:
     spec:
       containers:
       - name: ts-verification-code-service
-        image: kagaya85/ts-verification-code-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-verification-code-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 15678
         resources:
@@ -1616,13 +1850,19 @@ spec:
     spec:
       containers:
       - name: ts-voucher-service
-        image: kagaya85/ts-voucher-service:jaeger
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-voucher-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+            value: "10.176.122.6:11800"
+          - name: SW_GRPC_LOG_SERVER_HOST
+            value: "10.176.122.6"
+          - name: SW_GRPC_LOG_SERVER_PORT
+            value: "11800"
         ports:
         - containerPort: 16101
         resources:
