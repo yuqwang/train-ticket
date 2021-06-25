@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ts-ui-dashboard
-        image: kagaya85/ts-ui-dashboard:latest
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ui-dashboard:sw1.6
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
