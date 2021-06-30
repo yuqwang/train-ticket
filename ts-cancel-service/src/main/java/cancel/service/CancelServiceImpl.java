@@ -129,7 +129,8 @@ public class CancelServiceImpl implements CancelService {
 
     public boolean sendEmail(NotifyInfo notifyInfo, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Send Email]");
-        HttpEntity requestEntity = new HttpEntity(notifyInfo, null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+        HttpEntity requestEntity = new HttpEntity(notifyInfo, newHeaders);
         ResponseEntity<Boolean> re = restTemplate.exchange(
                 "http://ts-notification-service:17853/api/v1/notifyservice/notification/order_cancel_success",
                 HttpMethod.POST,
@@ -245,7 +246,8 @@ public class CancelServiceImpl implements CancelService {
 
     private Response cancelFromOtherOrder(Order info, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Change Order Status] Changing....");
-        HttpEntity requestEntity = new HttpEntity(info, null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+        HttpEntity requestEntity = new HttpEntity(info, newHeaders);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther",
                 HttpMethod.PUT,
@@ -272,7 +274,8 @@ public class CancelServiceImpl implements CancelService {
 
     public Response<User> getAccount(String orderId, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Get By Id]");
-        HttpEntity requestEntity = new HttpEntity(null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+        HttpEntity requestEntity = new HttpEntity(newHeaders);
         ResponseEntity<Response<User>> re = restTemplate.exchange(
                 "http://ts-user-service:12342/api/v1/userservice/users/id/" + orderId,
                 HttpMethod.GET,
@@ -284,7 +287,8 @@ public class CancelServiceImpl implements CancelService {
 
     private Response<Order> getOrderByIdFromOrder(String orderId, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Get Order] Getting....");
-        HttpEntity requestEntity = new HttpEntity(null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+        HttpEntity requestEntity = new HttpEntity(newHeaders);
         ResponseEntity<Response<Order>> re = restTemplate.exchange(
                 "http://ts-order-service:12031/api/v1/orderservice/order/" + orderId,
                 HttpMethod.GET,
@@ -296,7 +300,8 @@ public class CancelServiceImpl implements CancelService {
 
     private Response<Order> getOrderByIdFromOrderOther(String orderId, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Get Order] Getting....");
-        HttpEntity requestEntity = new HttpEntity(null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+        HttpEntity requestEntity = new HttpEntity(newHeaders);
         ResponseEntity<Response<Order>> re = restTemplate.exchange(
                 "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/" + orderId,
                 HttpMethod.GET,
