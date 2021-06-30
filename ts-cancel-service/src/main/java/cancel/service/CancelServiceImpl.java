@@ -222,8 +222,9 @@ public class CancelServiceImpl implements CancelService {
 
     private Response cancelFromOrder(Order order, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Change Order Status] Changing....");
-
-        HttpEntity requestEntity = new HttpEntity(order, null);
+        // add authorization header
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+        HttpEntity requestEntity = new HttpEntity(order, newHeaders);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-order-service:12031/api/v1/orderservice/order",
                 HttpMethod.PUT,
@@ -232,6 +233,15 @@ public class CancelServiceImpl implements CancelService {
 
         return re.getBody();
     }
+
+    private HttpHeaders getAuthorizationHeadersFrom(HttpHeaders oldHeaders) {
+        HttpHeaders newHeaders = new HttpHeaders();
+        if (oldHeaders.containsKey(HttpHeaders.AUTHORIZATION)) {
+            newHeaders.add(HttpHeaders.AUTHORIZATION, oldHeaders.getFirst(HttpHeaders.AUTHORIZATION));
+        }
+        return newHeaders;
+    }
+
 
     private Response cancelFromOtherOrder(Order info, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Change Order Status] Changing....");
