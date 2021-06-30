@@ -258,7 +258,8 @@ public class CancelServiceImpl implements CancelService {
     public boolean drawbackMoney(String money, String userId, HttpHeaders headers) {
         CancelServiceImpl.LOGGER.info("[Draw Back Money] Draw back money...");
 
-        HttpEntity requestEntity = new HttpEntity(null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+        HttpEntity requestEntity = new HttpEntity(newHeaders);
         ResponseEntity<Response> re = restTemplate.exchange(
                 "http://ts-inside-payment-service:18673/api/v1/inside_pay_service/inside_payment/drawback/" + userId + "/" + money,
                 HttpMethod.GET,
