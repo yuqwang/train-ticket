@@ -1,5 +1,6 @@
 package cancel.service;
 
+import cancel.async.AsyncTask;
 import cancel.entity.*;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
@@ -16,6 +17,8 @@ import org.springframework.web.client.RestTemplate;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * @author fdse
@@ -26,12 +29,15 @@ public class CancelServiceImpl implements CancelService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private AsyncTask asyncTask;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(CancelServiceImpl.class);
 
     String orderStatusCancelNotPermitted = "Order Status Cancel Not Permitted";
 
     @Override
-    public Response cancelOrder(String orderId, String loginId, HttpHeaders headers) {
+    public Response cancelOrder(String orderId, String loginId, HttpHeaders headers) throws InterruptedException, ExecutionException {
 
         Response<Order> orderResult = getOrderByIdFromOrder(orderId, headers);
         if (orderResult.getStatus() == 1) {
@@ -39,17 +45,24 @@ public class CancelServiceImpl implements CancelService {
             Order order =  orderResult.getData();
             if (order.getStatus() == OrderStatus.NOTPAID.getCode()
                     || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()) {
+                /*********************** Fault Reproduction - Error Process Seq *************************/
+                // 1. cancel order
+                Future<Response> cancelOrderFuture = asyncTask.cancelFromOrder(order, headers);
+                // 2. drawback money
+                String money = calculateRefund(order);
+                Future<Boolean> drawbackMoneyFuture = asyncTask.drawBackMoney(money, loginId, headers);
 
-                // order.setStatus(OrderStatus.CANCEL.getCode());
+                while (!cancelOrderFuture.isDone() || !drawbackMoneyFuture.isDone()) {
+                    // wait for task done.
+                }
 
-                Response changeOrderResult = cancelFromOrder(order, headers);
-                // 0 -- not find order   1 - cancel success
+                Response changeOrderResult = cancelOrderFuture.get();
                 if (changeOrderResult.getStatus() == 1) {
 
                     CancelServiceImpl.LOGGER.info("[Cancel Order] Success.");
                     //Draw back money
-                    String money = calculateRefund(order);
-                    boolean status = drawbackMoney(money, loginId, headers);
+//                    String money = calculateRefund(order);
+                    boolean status = drawbackMoneyFuture.get();
                     if (status) {
                         CancelServiceImpl.LOGGER.info("[Draw Back Money] Success.");
 
