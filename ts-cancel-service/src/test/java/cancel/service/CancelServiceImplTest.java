@@ -17,6 +17,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.concurrent.ExecutionException;
+
 @RunWith(JUnit4.class)
 public class CancelServiceImplTest {
 
@@ -35,7 +37,7 @@ public class CancelServiceImplTest {
     }
 
     @Test
-    public void testCancelOrder1() {
+    public void testCancelOrder1() throws ExecutionException, InterruptedException {
         //mock getOrderByIdFromOrder()
         Order order = new Order();
         order.setStatus(6);
@@ -52,7 +54,7 @@ public class CancelServiceImplTest {
     }
 
     @Test
-    public void testCancelOrder2() {
+    public void testCancelOrder2() throws ExecutionException, InterruptedException {
         //mock getOrderByIdFromOrder()
         Response<Order> response = new Response<>(0, null, null);
         ResponseEntity<Response<Order>> re = new ResponseEntity<>(response, HttpStatus.OK);
