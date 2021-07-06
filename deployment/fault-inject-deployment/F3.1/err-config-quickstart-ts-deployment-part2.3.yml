@@ -714,7 +714,7 @@ spec:
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
           - name: "JAVA_OPTIONS"
-            value: "-Xmx300m"
+            value: "-Xmx700m"
         ports:
         - containerPort: 18856
         resources:
@@ -762,7 +762,7 @@ spec:
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
           - name: "JAVA_OPTIONS"
-            value: "-Xmx300m"
+            value: "-Xmx700m"
         ports:
         - containerPort: 18673
         resources:
@@ -1132,7 +1132,7 @@ spec:
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
           - name: "JAVA_OPTIONS"
-            value: "-Xmx300m"
+            value: "-Xmx700m"
         ports:
         - containerPort: 14568
         resources:

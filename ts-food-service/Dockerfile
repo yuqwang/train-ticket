@@ -4,6 +4,7 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shang
 
 ADD ./target/ts-food-service-1.0.jar /app/
 ENV SW_AGENT_NAME=ts-food-service
-CMD ["java", "$JAVA_OPTIONS", "-javaagent:/skywalking/agent/skywalking-agent.jar", "-jar", "/app/ts-food-service-1.0.jar"]
+#CMD ["java", "$JAVA_OPTIONS", "-javaagent:/skywalking/agent/skywalking-agent.jar", "-jar", "/app/ts-food-service-1.0.jar"]
+CMD java $JAVA_OPTIONS -javaagent:/skywalking/agent/skywalking-agent.jar -jar /app/ts-food-service-1.0.jar
 
 EXPOSE 18856
