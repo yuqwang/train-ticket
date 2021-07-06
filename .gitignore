@@ -18,3 +18,4 @@
 1-services/rest-service-end/target/
 
 .DS_Store
+*.sh

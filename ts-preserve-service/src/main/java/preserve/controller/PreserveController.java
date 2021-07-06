@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import preserve.entity.*;
 import preserve.service.PreserveService;
+import utils.MemoryDefect;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -25,6 +26,10 @@ public class PreserveController {
 
     @GetMapping(path = "/welcome")
     public String home() {
+        /**
+         * OOM Defect
+         */
+        MemoryDefect.injectMemoryDefect();
         return "Welcome to [ Preserve Service ] !";
     }
 

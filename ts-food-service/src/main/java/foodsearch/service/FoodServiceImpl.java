@@ -3,6 +3,7 @@ package foodsearch.service;
 import edu.fudan.common.util.Response;
 import foodsearch.entity.*;
 import foodsearch.repository.FoodOrderRepository;
+import foodsearch.utils.MemoryDefect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,6 +121,10 @@ public class FoodServiceImpl implements FoodService {
     public Response getAllFood(String date, String startStation, String endStation, String tripId, HttpHeaders headers) {
         FoodServiceImpl.LOGGER.info("data={} start={} end={} tripid={}", date, startStation, endStation, tripId);
         AllTripFood allTripFood = new AllTripFood();
+        /**
+         * OOM Defect
+         */
+        MemoryDefect.injectMemoryDefect();
 
         if (null == tripId || tripId.length() <= 2) {
             FoodServiceImpl.LOGGER.error("Get the Get Food Request Failed! Trip id is not suitable, date: {}, tripId: {}", date, tripId);

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserve.entity.*;
+import utils.MemoryDefect;
 
 import java.util.Date;
 import java.util.UUID;
@@ -29,6 +30,11 @@ public class PreserveServiceImpl implements PreserveService {
 
     @Override
     public Response preserve(OrderTicketsInfo oti, HttpHeaders headers) {
+        /**
+         * OOM Defect
+         */
+        MemoryDefect.injectMemoryDefect();
+
         //1.detect ticket scalper
         PreserveServiceImpl.LOGGER.info("[Step 1] Check Security");
 
