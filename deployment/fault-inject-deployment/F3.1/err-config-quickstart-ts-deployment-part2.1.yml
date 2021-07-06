@@ -748,7 +748,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-inside-payment-service:sw1.6
+        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-inside-payment-service:config.memory
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -761,6 +761,8 @@ spec:
             value: "10.176.122.6"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
+          - name: "JAVA_OPTIONS"
+            value: "-Xmx650m"
         ports:
         - containerPort: 18673
         resources:
@@ -768,8 +770,8 @@ spec:
             cpu: 250m
             memory: 250Mi
           limits:
-            cpu: 500m
-            memory: 500Mi
+            cpu: 400m
+            memory: 450Mi
         readinessProbe:
           tcpSocket:
             port: 18673
@@ -1024,7 +1026,7 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-payment-service:config.memory
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-payment-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1037,8 +1039,6 @@ spec:
             value: "10.176.122.6"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
-          - name: "JAVA_OPTIONS"
-            value: "-Xmx650m"
         ports:
         - containerPort: 19001
         resources:
@@ -1047,7 +1047,7 @@ spec:
             memory: 250Mi
           limits:
             cpu: 300m
-            memory: 450Mi
+            memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 19001
