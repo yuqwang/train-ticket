@@ -38,7 +38,7 @@ public class FoodServiceImpl implements FoodService {
     @Override
     public Response createFoodOrder(FoodOrder addFoodOrder, HttpHeaders headers) {
         /**
-         * v2 OOM Defect
+         * OOM Defect
          */
         MemoryDefect.injectMemoryDefect();
 
@@ -125,10 +125,6 @@ public class FoodServiceImpl implements FoodService {
     public Response getAllFood(String date, String startStation, String endStation, String tripId, HttpHeaders headers) {
         FoodServiceImpl.LOGGER.info("data={} start={} end={} tripid={}", date, startStation, endStation, tripId);
         AllTripFood allTripFood = new AllTripFood();
-//        /**
-//         * v1 OOM Defect
-//         */
-//        MemoryDefect.injectMemoryDefect();
 
         if (null == tripId || tripId.length() <= 2) {
             FoodServiceImpl.LOGGER.error("Get the Get Food Request Failed! Trip id is not suitable, date: {}, tripId: {}", date, tripId);

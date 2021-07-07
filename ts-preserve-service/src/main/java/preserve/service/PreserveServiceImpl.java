@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserve.entity.*;
-import utils.MemoryDefect;
 
 import java.util.Date;
 import java.util.UUID;
@@ -30,10 +29,6 @@ public class PreserveServiceImpl implements PreserveService {
 
     @Override
     public Response preserve(OrderTicketsInfo oti, HttpHeaders headers) {
-        /**
-         * OOM Defect
-         */
-        MemoryDefect.injectMemoryDefect();
 
         //1.detect ticket scalper
         PreserveServiceImpl.LOGGER.info("[Step 1] Check Security");
@@ -185,7 +180,7 @@ public class PreserveServiceImpl implements PreserveService {
                 PreserveServiceImpl.LOGGER.info("foodstore= {}   {}   {}", foodOrder.getFoodType(), foodOrder.getStationName(), foodOrder.getStoreName());
             }
             Response afor = createFoodOrder(foodOrder, headers);
-            if (afor.getStatus() == 1) {
+            if (afor!=null&&afor.getStatus() == 1) {
                 PreserveServiceImpl.LOGGER.info("[Step 6] Buy Food Success");
             } else {
                 PreserveServiceImpl.LOGGER.error("[Step 6] Buy Food Fail, OrderId: {}",cor.getData().getId());
@@ -211,7 +206,7 @@ public class PreserveServiceImpl implements PreserveService {
             consignRequest.setWithin(oti.isWithin());
             LOGGER.info("CONSIGN INFO : " +consignRequest.toString());
             Response icresult = createConsign(consignRequest, headers);
-            if (icresult.getStatus() == 1) {
+            if (icresult!=null&&icresult.getStatus() == 1) {
                 PreserveServiceImpl.LOGGER.info("[Step 7] Consign Success");
             } else {
                 PreserveServiceImpl.LOGGER.error("[Step 7] Preserve Consign Fail, OrderId: {}", cor.getData().getId());
@@ -376,25 +371,34 @@ public class PreserveServiceImpl implements PreserveService {
         PreserveServiceImpl.LOGGER.info("[Preserve Service][Add food Order] Creating....");
 
         HttpEntity requestEntityAddFoodOrderResult = new HttpEntity(afi, httpHeaders);
-        ResponseEntity<Response> reAddFoodOrderResult = restTemplate.exchange(
-                "http://ts-food-service:18856/api/v1/foodservice/orders",
-                HttpMethod.POST,
-                requestEntityAddFoodOrderResult,
-                Response.class);
-
-        return reAddFoodOrderResult.getBody();
+        try{
+            ResponseEntity<Response> reAddFoodOrderResult = restTemplate.exchange(
+                    "http://ts-food-service:18856/api/v1/foodservice/orders",
+                    HttpMethod.POST,
+                    requestEntityAddFoodOrderResult,
+                    Response.class);
+            return reAddFoodOrderResult.getBody();
+        }catch (Exception e){
+            PreserveServiceImpl.LOGGER.info("[Preserve Service][Add food Order] Creating failed,msg is {}",e.toString());
+            return null;
+        }
     }
 
     private Response createConsign(Consign cr, HttpHeaders httpHeaders) {
         PreserveServiceImpl.LOGGER.info("[Preserve Service][Add Condign] Creating....");
 
         HttpEntity requestEntityResultForTravel = new HttpEntity(cr, httpHeaders);
-        ResponseEntity<Response> reResultForTravel = restTemplate.exchange(
-                "http://ts-consign-service:16111/api/v1/consignservice/consigns",
-                HttpMethod.POST,
-                requestEntityResultForTravel,
-                Response.class);
-        return reResultForTravel.getBody();
+        try{
+            ResponseEntity<Response> reResultForTravel = restTemplate.exchange(
+                    "http://ts-consign-service:16111/api/v1/consignservice/consigns",
+                    HttpMethod.POST,
+                    requestEntityResultForTravel,
+                    Response.class);
+            return reResultForTravel.getBody();
+        }catch (Exception e){
+            PreserveServiceImpl.LOGGER.error("[Preserve Service][Add Condign] Creating failed, the msg is {}",e.toString());
+            return null;
+        }
     }
 
 }

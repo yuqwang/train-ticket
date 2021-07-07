@@ -34,13 +34,23 @@ public class ConsignController {
     public HttpEntity insertConsign(@RequestBody Consign request,
                                     @RequestHeader HttpHeaders headers) {
         logger.info("Insert consign record, id:{}", request.getId());
-        return ok(service.insertConsignRecord(request, headers));
+        try{
+            return ok(service.insertConsignRecord(request, headers));
+        }catch (Exception e){
+            logger.error("Insert consign record failed {}", e.toString());
+            throw e;
+        }
     }
 
     @PutMapping(value = "/consigns")
     public HttpEntity updateConsign(@RequestBody Consign request, @RequestHeader HttpHeaders headers) {
         logger.info("Update consign record, id: {}", request.getId());
-        return ok(service.updateConsignRecord(request, headers));
+        try{
+            return ok(service.updateConsignRecord(request, headers));
+        }catch (Exception e){
+            logger.error("Update consign record failed {}", e.toString());
+            throw e;
+        }
     }
 
     @GetMapping(value = "/consigns/account/{id}")

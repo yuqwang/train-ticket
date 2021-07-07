@@ -4,7 +4,6 @@ import edu.fudan.common.util.Response;
 import inside_payment.entity.*;
 import inside_payment.repository.AddMoneyRepository;
 import inside_payment.repository.PaymentRepository;
-import inside_payment.utils.MemoryDefect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +37,6 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
 
     @Override
     public Response pay(PaymentInfo info, HttpHeaders headers) {
-        /**
-         * OOM Defect
-         */
-        MemoryDefect.injectMemoryDefect();
 
         String userId = info.getUserId();
 
