@@ -6,6 +6,7 @@ import fdse.microservice.service.StationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -22,6 +24,9 @@ public class StationController {
 
     @Autowired
     private StationService stationService;
+
+    @Value("${sleep_seconds}")
+    private long sleepSeconds;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StationController.class);
 
@@ -59,6 +64,12 @@ public class StationController {
     @GetMapping(value = "/stations/id/{stationNameForId}")
     public HttpEntity queryForStationId(@PathVariable(value = "stationNameForId")
                                                 String stationName, @RequestHeader HttpHeaders headers) {
+        try {
+            TimeUnit.SECONDS.sleep(sleepSeconds);
+        } catch (java.lang.InterruptedException e) {
+            LOGGER.info("slowly executed " + sleepSeconds + " seconds");
+        }
+
         // string
         StationController.LOGGER.info("Query for station id,StationName: {}",stationName);
         return ok(stationService.queryForId(stationName, headers));

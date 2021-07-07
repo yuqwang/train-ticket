@@ -1,5 +1,6 @@
 package travel.controller;
 
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 import travel.entity.*;
 import travel.service.TravelService;
 
 import java.util.ArrayList;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -114,7 +117,14 @@ public class TravelController {
             return ok(errorList);
         }
         TravelController.LOGGER.info(" Query TripResponse");
-        return ok(travelService.query(info, headers));
+
+        try {
+            Response result = travelService.query(info, headers);
+            return ok(result);
+        } catch (RestClientException e) {
+            LOGGER.error("request trips left time out:" + e.toString());
+            return status(500).build();
+        }
     }
 
     /**
