@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ts-ui-dashboard
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ui-dashboard:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ui-dashboard:error-F1
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

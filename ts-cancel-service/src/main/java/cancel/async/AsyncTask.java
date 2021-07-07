@@ -50,7 +50,7 @@ public class AsyncTask {
 
     }
 
-    @Async("mySimpleAsync")
+    @Async("myAsync")
     public Future<Boolean> drawBackMoney(String money, String userId, HttpHeaders headers) throws InterruptedException{
 
         /*********************** Fault Reproduction - Error Process Seq *************************/
