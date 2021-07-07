@@ -700,7 +700,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: registry.cn-shanghai.aliyuncs.com/lavenpok/ts-food-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
