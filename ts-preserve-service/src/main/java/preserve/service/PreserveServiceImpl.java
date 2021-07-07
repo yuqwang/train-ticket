@@ -11,10 +11,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import preserve.async.AsyncTask;
 import preserve.entity.*;
 
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * @author fdse
@@ -25,14 +28,27 @@ public class PreserveServiceImpl implements PreserveService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private AsyncTask asyncTask;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PreserveServiceImpl.class);
 
     @Override
-    public Response preserve(OrderTicketsInfo oti, HttpHeaders headers) {
+    public Response preserve(OrderTicketsInfo oti, HttpHeaders headers) throws InterruptedException, ExecutionException {
+        /*********************** Fault Reproduction - Error Process Seq *************************/
+        // 1. detect ticket scalper
+        Future<Response> checkSecurityFuture = asyncTask.checkSecurity(oti.getAccountId(), headers);
+        // 2. Querying contact information
+        Future<Response<Contacts>> getContactsByIdFuture = asyncTask.getContactsById(oti.getContactsId(), headers);
+
+        while (!checkSecurityFuture.isDone() || !getContactsByIdFuture.isDone()) {
+            // wait for task done.
+        }
+
         //1.detect ticket scalper
         PreserveServiceImpl.LOGGER.info("[Step 1] Check Security");
-
-        Response result = checkSecurity(oti.getAccountId(), headers);
+        Response result = checkSecurityFuture.get();
+//        Response result = checkSecurity(oti.getAccountId(), headers);
         if (result.getStatus() == 0) {
             PreserveServiceImpl.LOGGER.error("[Step 1] Check Security Fail, AccountId: {}",oti.getAccountId());
             return new Response<>(0, result.getMsg(), null);
@@ -41,8 +57,8 @@ public class PreserveServiceImpl implements PreserveService {
         //2.Querying contact information -- modification, mediated by the underlying information micro service
         PreserveServiceImpl.LOGGER.info("[Step 2] Find contacts");
         PreserveServiceImpl.LOGGER.info("[Step 2] Contacts Id: {}", oti.getContactsId());
-
-        Response<Contacts> gcr = getContactsById(oti.getContactsId(), headers);
+        Response<Contacts> gcr = getContactsByIdFuture.get();
+//        Response<Contacts> gcr = getContactsById(oti.getContactsId(), headers);
         if (gcr.getStatus() == 0) {
             PreserveServiceImpl.LOGGER.error("[Get Contacts] Fail,ContactsId: {},message: {}",oti.getContactsId(),gcr.getMsg());
             return new Response<>(0, gcr.getMsg(), null);
