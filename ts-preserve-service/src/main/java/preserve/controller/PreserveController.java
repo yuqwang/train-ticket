@@ -1,5 +1,6 @@
 package preserve.controller;
 
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,12 @@ public class PreserveController {
     public HttpEntity preserve(@RequestBody OrderTicketsInfo oti,
                                @RequestHeader HttpHeaders headers) {
         PreserveController.LOGGER.info("[Preserve] Account  order from {} -----> {} at {}", oti.getFrom(), oti.getTo(), oti.getDate());
-        return ok(preserveService.preserve(oti, headers));
+        try {
+            return ok(preserveService.preserve(oti, headers));
+        } catch (Exception e) {
+            PreserveController.LOGGER.error(e.getMessage());
+            return ok(new Response<>(1, "error", null));
+        }
     }
 
 }
