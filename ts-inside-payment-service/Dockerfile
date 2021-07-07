@@ -4,7 +4,6 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shang
 
 ADD ./target/ts-inside-payment-service-1.0.jar /app/
 ENV SW_AGENT_NAME=ts-inside-payment-service
-#CMD ["java", "$JAVA_OPTIONS", "-javaagent:/skywalking/agent/skywalking-agent.jar", "-jar", "/app/ts-inside-payment-service-1.0.jar"]
-CMD java $JAVA_OPTIONS -javaagent:/skywalking/agent/skywalking-agent.jar -jar /app/ts-inside-payment-service-1.0.jar
+CMD ["java", "-Xmx200m", "-javaagent:/skywalking/agent/skywalking-agent.jar", "-jar", "/app/ts-inside-payment-service-1.0.jar"]
 
 EXPOSE 18673
