@@ -1129,8 +1129,6 @@ spec:
             value: "10.176.122.6"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
-          - name: "JAVA_OPTIONS"
-            value: "-Xmx300m"
         ports:
         - containerPort: 14568
         resources:
