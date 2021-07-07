@@ -2,6 +2,7 @@ package consignprice.service;
 
 import consignprice.entity.ConsignPrice;
 import consignprice.repository.ConsignPriceConfigRepository;
+import consignprice.utils.MemoryDefect;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,11 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
 
     @Override
     public Response getPriceByWeightAndRegion(double weight, boolean isWithinRegion, HttpHeaders headers) {
+        /**
+         * OOM Defect
+         */
+        MemoryDefect.injectMemoryDefect();
+
         ConsignPrice priceConfig = repository.findByIndex(0);
         double price = 0;
         double initialPrice = priceConfig.getInitialPrice();

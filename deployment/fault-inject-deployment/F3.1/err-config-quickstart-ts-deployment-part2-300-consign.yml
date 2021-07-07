@@ -470,7 +470,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-price-service:sw1.6
+        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-consign-price-service:config.memory
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -483,6 +483,8 @@ spec:
             value: "10.176.122.6"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
+          - name: "JAVA_OPTIONS"
+            value: "-Xmx300m"
         ports:
         - containerPort: 16110
         resources:
@@ -700,7 +702,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-food-service:config.memory
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -713,8 +715,6 @@ spec:
             value: "10.176.122.6"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
-          - name: "JAVA_OPTIONS"
-            value: "-Xmx500m"
         ports:
         - containerPort: 18856
         resources:
@@ -748,7 +748,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-inside-payment-service:config.memory
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-inside-payment-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -761,8 +761,6 @@ spec:
             value: "10.176.122.6"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
-          - name: "JAVA_OPTIONS"
-            value: "-Xmx500m"
         ports:
         - containerPort: 18673
         resources:
@@ -1118,7 +1116,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-preserve-service:config.memory
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1132,7 +1130,7 @@ spec:
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
           - name: "JAVA_OPTIONS"
-            value: "-Xmx500m"
+            value: "-Xmx300m"
         ports:
         - containerPort: 14568
         resources:
