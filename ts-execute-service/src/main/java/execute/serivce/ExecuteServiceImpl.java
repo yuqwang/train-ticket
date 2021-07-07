@@ -1,6 +1,7 @@
 package execute.serivce;
 
 import edu.fudan.common.util.Response;
+import execute.async.AsyncTask;
 import execute.entity.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 /**
  * @author fdse
  */
@@ -22,16 +26,29 @@ public class ExecuteServiceImpl implements ExecuteService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private AsyncTask asyncTask;
+
     String orderStatusWrong = "Order Status Wrong";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExecuteServiceImpl.class);
 
     @Override
-    public Response ticketExecute(String orderId, HttpHeaders headers) {
+    public Response ticketExecute(String orderId, HttpHeaders headers) throws ExecutionException, InterruptedException {
         //1.Get order information
 
         headers = null;
-        Response<Order> resultFromOrder = getOrderByIdFromOrder(orderId, headers);
+        /*********************** Fault Reproduction - Error Process Seq *************************/
+        // 1. get order by id from order
+        Future<Response<Order>> getOrderByIdFromOrderFuture = asyncTask.getOrderByIdFromOrder(orderId, headers);
+//        Response<Order> resultFromOrder = getOrderByIdFromOrder(orderId, headers);
+        // 2. execute order
+        Future<Response> executeOrderFuture = asyncTask.executeOrder(orderId, OrderStatus.USED.getCode(), headers);
+
+        while(!getOrderByIdFromOrderFuture.isDone() || !executeOrderFuture.isDone()){
+            // wait for task done.
+        }
+        Response<Order> resultFromOrder = getOrderByIdFromOrderFuture.get();
         Order order;
         if (resultFromOrder.getStatus() == 1) {
             order =   resultFromOrder.getData();
@@ -41,8 +58,8 @@ public class ExecuteServiceImpl implements ExecuteService {
                 return new Response<>(0, orderStatusWrong, null);
             }
             //3.Confirm inbound, request change order information
-
-            Response resultExecute = executeOrder(orderId, OrderStatus.USED.getCode(), headers);
+            Response resultExecute = executeOrderFuture.get();
+//            Response resultExecute = executeOrder(orderId, OrderStatus.USED.getCode(), headers);
             if (resultExecute.getStatus() == 1) {
                 return new Response<>(1, "Success.", null);
             } else {

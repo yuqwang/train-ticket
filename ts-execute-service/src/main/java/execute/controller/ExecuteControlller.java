@@ -1,5 +1,6 @@
 package execute.controller;
 
+import edu.fudan.common.util.Response;
 import execute.serivce.ExecuteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +33,13 @@ public class ExecuteControlller {
     public HttpEntity executeTicket(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         ExecuteControlller.LOGGER.info("[Execute] Id: {}", orderId);
         // null
-        return ok(executeService.ticketExecute(orderId, headers));
+        try {
+            ExecuteControlller.LOGGER.info("[Execute] Verify Success");
+            return ok(executeService.ticketExecute(orderId, headers));
+        } catch (Exception e){
+            ExecuteControlller.LOGGER.error(e.getMessage());
+            return ok(new Response<>(1, "error", e.getMessage()));
+        }
     }
 
     @CrossOrigin(origins = "*")
