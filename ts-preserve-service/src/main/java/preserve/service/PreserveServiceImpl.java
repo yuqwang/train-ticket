@@ -379,8 +379,8 @@ public class PreserveServiceImpl implements PreserveService {
                     Response.class);
             return reAddFoodOrderResult.getBody();
         }catch (Exception e){
-            PreserveServiceImpl.LOGGER.info("[Preserve Service][Add food Order] Creating failed,msg is {}",e.toString());
-            return null;
+            PreserveServiceImpl.LOGGER.error(e.toString());
+            throw  e;
         }
     }
 
@@ -396,8 +396,8 @@ public class PreserveServiceImpl implements PreserveService {
                     Response.class);
             return reResultForTravel.getBody();
         }catch (Exception e){
-            PreserveServiceImpl.LOGGER.error("[Preserve Service][Add Condign] Creating failed, the msg is {}",e.toString());
-            return null;
+            PreserveServiceImpl.LOGGER.error(e.toString());
+            throw  e;
         }
     }
 

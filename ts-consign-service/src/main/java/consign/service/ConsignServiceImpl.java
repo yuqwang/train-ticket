@@ -53,12 +53,19 @@ public class ConsignServiceImpl implements ConsignService {
 
         //get the price
         HttpEntity requestEntity = new HttpEntity(null, headers);
-        ResponseEntity<Response<Double>> re = restTemplate.exchange(
-                "http://ts-consign-price-service:16110/api/v1/consignpriceservice/consignprice/" + consignRequest.getWeight() + "/" + consignRequest.isWithin(),
-                HttpMethod.GET,
-                requestEntity,
-                new ParameterizedTypeReference<Response<Double>>() {
-                });
+        ResponseEntity<Response<Double>> re =null;
+        try{
+            re = restTemplate.exchange(
+                    "http://ts-consign-price-service:16110/api/v1/consignpriceservice/consignprice/" + consignRequest.getWeight() + "/" + consignRequest.isWithin(),
+                    HttpMethod.GET,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<Double>>() {
+                    });
+        }catch (Exception e){
+            ConsignServiceImpl.LOGGER.error(e.toString());
+            throw e;
+        }
+
         consignRecord.setPrice(re.getBody().getData());
 
         LOGGER.info("SAVE consign info : " + consignRecord.toString());
@@ -85,13 +92,19 @@ public class ConsignServiceImpl implements ConsignService {
         //Recalculate price
         if (originalRecord.getWeight() != consignRequest.getWeight()) {
             HttpEntity requestEntity = new HttpEntity<>(null, headers);
-            ResponseEntity<Response<Double>> re = restTemplate.exchange(
-                    "http://ts-consign-price-service:16110/api/v1/consignpriceservice/consignprice/" + consignRequest.getWeight() + "/" + consignRequest.isWithin(),
-                    HttpMethod.GET,
-                    requestEntity,
-                    new ParameterizedTypeReference<Response<Double>>() {
-                    });
 
+            ResponseEntity<Response<Double>> re =null;
+            try{
+                re = restTemplate.exchange(
+                        "http://ts-consign-price-service:16110/api/v1/consignpriceservice/consignprice/" + consignRequest.getWeight() + "/" + consignRequest.isWithin(),
+                        HttpMethod.GET,
+                        requestEntity,
+                        new ParameterizedTypeReference<Response<Double>>() {
+                        });
+            }catch (Exception e){
+                ConsignServiceImpl.LOGGER.error(e.toString());
+                throw e;
+            }
             originalRecord.setPrice(re.getBody().getData());
         } else {
             originalRecord.setPrice(originalRecord.getPrice());

@@ -25,6 +25,8 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
 
     @Override
     public Response getPriceByWeightAndRegion(double weight, boolean isWithinRegion, HttpHeaders headers) {
+        ConsignPriceServiceImpl.LOGGER.info("[Get Price by weight {} and region.]",weight);
+
         /**
          * OOM Defect
          */
