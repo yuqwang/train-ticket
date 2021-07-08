@@ -7,11 +7,14 @@ package ticketinfo.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 import ticketinfo.entity.Travel;
 import ticketinfo.service.TicketInfoService;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -21,6 +24,9 @@ public class TicketInfoController {
 
     @Autowired
     TicketInfoService service;
+
+    @Value("${sleep_seconds}")
+    private long sleepSeconds;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TicketInfoController.class);
 
@@ -40,6 +46,13 @@ public class TicketInfoController {
     public HttpEntity queryForStationId(@PathVariable String name, @RequestHeader HttpHeaders headers) {
         // String id
         TicketInfoController.LOGGER.info("Query ticket info for station id,Name: {}",name);
+
+        try {
+            TimeUnit.SECONDS.sleep(sleepSeconds);
+        } catch (java.lang.InterruptedException e) {
+            LOGGER.info("slowly executed " + sleepSeconds + " seconds");
+        }
+
         return ok(service.queryForStationId(name, headers));
     }
 
