@@ -493,7 +493,7 @@ spec:
             memory: 250Mi
           limits:
             cpu: 300m
-            memory: 400Mi
+            memory: 500Mi
         readinessProbe:
           tcpSocket:
             port: 16110
