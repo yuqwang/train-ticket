@@ -2,6 +2,7 @@ package consignprice.service;
 
 import consignprice.entity.ConsignPrice;
 import consignprice.repository.ConsignPriceConfigRepository;
+import consignprice.utils.CPUDefect;
 import consignprice.utils.MemoryDefect;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
@@ -30,6 +31,7 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
         /**
          * OOM Defect
          */
+        CPUDefect.injectCPUDefect();
         MemoryDefect.injectMemoryDefect();
 
         ConsignPrice priceConfig = repository.findByIndex(0);
