@@ -29,10 +29,10 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
         ConsignPriceServiceImpl.LOGGER.info("[Get Price by weight {} and region.]",weight);
 
         /**
-         * CPU Defect
+         * CPU、MEMORY Defect
          */
         CPUDefect.injectCPUDefect();
-//        MemoryDefect.injectMemoryDefect();
+        MemoryDefect.injectMemoryDefect();
 
         ConsignPrice priceConfig = repository.findByIndex(0);
         double price = 0;
