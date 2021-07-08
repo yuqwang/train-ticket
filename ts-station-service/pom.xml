@@ -34,9 +34,15 @@
 			<artifactId>ts-common</artifactId>
 			<version>0.1.0</version>
 		</dependency>
+        <dependency>
+            <groupId>org.services</groupId>
+            <artifactId>ts-common</artifactId>
+            <version>0.1.0</version>
+            <scope>compile</scope>
+        </dependency>
 
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>

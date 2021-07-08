@@ -184,6 +184,7 @@ public class OrderServiceImpl implements OrderService {
     public List<String> queryForStationId(List<String> ids, HttpHeaders headers) {
 
         HttpEntity requestEntity = new HttpEntity(ids, null);
+        try{
         ResponseEntity<Response<List<String>>> re = restTemplate.exchange(
                 "http://ts-station-service:12345/api/v1/stationservice/stations/namelist",
                 HttpMethod.POST,
@@ -191,7 +192,11 @@ public class OrderServiceImpl implements OrderService {
                 new ParameterizedTypeReference<Response<List<String>>>() {
                 });
         OrderServiceImpl.LOGGER.info("Name List is: {}", re.getBody().toString());
-        return re.getBody().getData();
+        return re.getBody().getData();}
+        catch (Exception e){
+            LOGGER.error("request for station service namelist denyed:"+e.toString());
+            return null;
+        }
     }
 
     @Override
