@@ -2,12 +2,14 @@ package admintravel.controller;
 
 import admintravel.entity.TravelInfo;
 import admintravel.service.AdminTravelService;
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClientException;
 
 import static org.springframework.http.ResponseEntity.*;
 
@@ -31,7 +33,14 @@ public class AdminTravelController {
     @GetMapping(path = "/admintravel")
     public HttpEntity getAllTravels(@RequestHeader HttpHeaders headers) {
         logger.info("Get all travels");
-        return ok(adminTravelService.getAllTravels(headers));
+
+        try {
+            Response result = adminTravelService.getAllTravels(headers);
+            return ok(result);
+        } catch (RestClientException e) {
+            logger.error("Get all travels time out:" + e.toString());
+            return status(500).build();
+        }
     }
 
     @PostMapping(value = "/admintravel")

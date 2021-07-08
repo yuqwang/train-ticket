@@ -3,6 +3,7 @@ package travel2.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import travel2.entity.*;
 import travel2.service.Travel2Service;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -24,6 +26,9 @@ public class Travel2Controller {
 
     @Autowired
     private Travel2Service service;
+
+    @Value("${sleep_seconds}")
+    private long sleepSeconds;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Travel2Controller.class);
 
@@ -143,6 +148,13 @@ public class Travel2Controller {
     public HttpEntity adminQueryAll(@RequestHeader HttpHeaders headers) {
         // ArrayList<AdminTrip>
         Travel2Controller.LOGGER.info("Admin query all trips");
+
+        try {
+            TimeUnit.SECONDS.sleep(sleepSeconds);
+        } catch (java.lang.InterruptedException e) {
+            LOGGER.info("slowly executed " + sleepSeconds + " seconds");
+        }
+
         return ok(service.adminQueryAll(headers));
     }
 
