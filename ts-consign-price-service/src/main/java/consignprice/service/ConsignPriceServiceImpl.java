@@ -2,6 +2,7 @@ package consignprice.service;
 
 import consignprice.entity.ConsignPrice;
 import consignprice.repository.ConsignPriceConfigRepository;
+import consignprice.utils.CPUDefect;
 import consignprice.utils.MemoryDefect;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
@@ -28,9 +29,10 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
         ConsignPriceServiceImpl.LOGGER.info("[Get Price by weight {} and region.]",weight);
 
         /**
-         * OOM Defect
+         * CPU Defect
          */
-        MemoryDefect.injectMemoryDefect();
+        CPUDefect.injectCPUDefect();
+//        MemoryDefect.injectMemoryDefect();
 
         ConsignPrice priceConfig = repository.findByIndex(0);
         double price = 0;

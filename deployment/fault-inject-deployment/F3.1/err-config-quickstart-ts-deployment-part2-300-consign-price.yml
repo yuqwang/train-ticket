@@ -470,7 +470,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-consign-price-service:config.memory
+        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-consign-price-service:config.cpu.f3
         imagePullPolicy: Always
         env:
           - name: NODE_IP
