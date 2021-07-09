@@ -132,12 +132,19 @@ public class FoodServiceImpl implements FoodService {
 
         /**--------------------------------------------------------------------------------------*/
         HttpEntity requestEntityGetTrainFoodListResult = new HttpEntity(null);
-        ResponseEntity<Response<List<TrainFood>>> reGetTrainFoodListResult = restTemplate.exchange(
-                "http://ts-food-map-service:18855/api/v1/foodmapservice/trainfoods/" + tripId,
-                HttpMethod.GET,
-                requestEntityGetTrainFoodListResult,
-                new ParameterizedTypeReference<Response<List<TrainFood>>>() {
-                });
+        ResponseEntity<Response<List<TrainFood>>> reGetTrainFoodListResult = null;
+        try{
+            reGetTrainFoodListResult = restTemplate.exchange(
+                    "http://ts-food-map-service:18855/api/v1/foodmapservice/trainfoods/" + tripId,
+                    HttpMethod.GET,
+                    requestEntityGetTrainFoodListResult,
+                    new ParameterizedTypeReference<Response<List<TrainFood>>>() {
+                    });
+        }catch (Exception e){
+            FoodServiceImpl.LOGGER.error(e.toString());
+            throw e;
+        }
+
 
         List<TrainFood> trainFoodListResult = reGetTrainFoodListResult.getBody().getData();
 
@@ -203,12 +210,19 @@ public class FoodServiceImpl implements FoodService {
             }
 
             HttpEntity requestEntityFoodStoresListResult = new HttpEntity(stations, null);
-            ResponseEntity<Response<List<FoodStore>>> reFoodStoresListResult = restTemplate.exchange(
-                    "http://ts-food-map-service:18855/api/v1/foodmapservice/foodstores",
-                    HttpMethod.POST,
-                    requestEntityFoodStoresListResult,
-                    new ParameterizedTypeReference<Response<List<FoodStore>>>() {
-                    });
+            ResponseEntity<Response<List<FoodStore>>> reFoodStoresListResult = null;
+            try{
+                reFoodStoresListResult = restTemplate.exchange(
+                        "http://ts-food-map-service:18855/api/v1/foodmapservice/foodstores",
+                        HttpMethod.POST,
+                        requestEntityFoodStoresListResult,
+                        new ParameterizedTypeReference<Response<List<FoodStore>>>() {
+                        });
+            }catch (Exception e){
+                FoodServiceImpl.LOGGER.error(e.toString());
+                throw e;
+            }
+
             List<FoodStore> foodStoresListResult = reFoodStoresListResult.getBody().getData();
             if (foodStoresListResult != null && !foodStoresListResult.isEmpty()) {
                 for (String stationId : stations) {

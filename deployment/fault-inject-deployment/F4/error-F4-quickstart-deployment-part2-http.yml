@@ -656,7 +656,7 @@ spec:
     spec:
       containers:
       - name: ts-food-map-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-map-service:sw1.6
+        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-food-map-service:error.F4
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -669,6 +669,8 @@ spec:
             value: "10.176.122.6"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
+          - name: KEY_STORE_PASSWORD
+            value: "passw0rd"
         ports:
         - containerPort: 18855
         resources:
@@ -702,7 +704,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:sw1.6
+        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-food-service:log.error
         imagePullPolicy: Always
         env:
           - name: NODE_IP
