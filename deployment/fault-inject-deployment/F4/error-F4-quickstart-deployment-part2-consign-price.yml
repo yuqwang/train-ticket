@@ -518,7 +518,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-service:sw1.6
+        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-consign-service:log.error
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1116,7 +1116,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:sw1.6
+        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-preserve-service:log.error
         imagePullPolicy: Always
         env:
           - name: NODE_IP
