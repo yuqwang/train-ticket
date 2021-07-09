@@ -976,7 +976,7 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f8.1-order-service
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1482,7 +1482,7 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-station-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f8.1-station-service
         imagePullPolicy: Always
         env:
           - name: NODE_IP
