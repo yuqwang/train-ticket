@@ -8,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -34,6 +39,14 @@ public class FoodController {
     @PostMapping(path = "/orders")
     public HttpEntity createFoodOrder(@RequestBody FoodOrder addFoodOrder, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[Food Service]Try to Create a FoodOrder!");
+
+        List<String> unavailableFoods = new ArrayList<>();
+        unavailableFoods.add("Soup");
+        if(unavailableFoods.contains(addFoodOrder.getFoodName())){
+            LOGGER.info("[Food Service] Fail. Create unavailable food: {}", addFoodOrder.getFoodName());
+            return ResponseEntity.badRequest().build();
+        }
+
         return ok(foodService.createFoodOrder(addFoodOrder, headers));
     }
 
