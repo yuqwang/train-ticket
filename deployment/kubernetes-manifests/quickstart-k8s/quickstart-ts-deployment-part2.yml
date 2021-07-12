@@ -930,7 +930,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-other-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f8.1-order-other-service
         imagePullPolicy: Always
         env:
           - name: NODE_IP
