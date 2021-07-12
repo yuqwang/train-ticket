@@ -12,6 +12,7 @@ import travel.entity.*;
 import travel.service.TravelService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -113,6 +114,14 @@ public class TravelController {
             ArrayList<TripResponse> errorList = new ArrayList<>();
             return ok(errorList);
         }
+
+        List<String> lockedStations = List.of();
+        if (lockedStations.contains(info.getStartingPlace()) || lockedStations.contains(info.getEndPlace())) {
+            LOGGER.info("[Travel Query] Fail. Query locked stations: from {} to {}.", info.getStartingPlace(),
+                    info.getEndPlace());
+            return ResponseEntity.badRequest().build();
+        }
+
         TravelController.LOGGER.info(" Query TripResponse");
         return ok(travelService.query(info, headers));
     }
