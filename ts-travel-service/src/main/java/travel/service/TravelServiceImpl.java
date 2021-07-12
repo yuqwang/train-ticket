@@ -223,13 +223,21 @@ public class TravelServiceImpl implements TravelService {
         query.setDepartureTime(departureTime);
 
         HttpEntity requestEntity = new HttpEntity(query, null);
-        ResponseEntity<Response> re = restTemplate.exchange(
-                "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo",
-                HttpMethod.POST,
-                requestEntity,
-                Response.class);
-        TravelServiceImpl.LOGGER.info("Ts-basic-service ticket info is: {}", re.getBody().toString());
-        TravelResult resultForTravel = JsonUtils.conveterObject(re.getBody().getData(), TravelResult.class);
+        TravelResult resultForTravel;
+        try {
+            ResponseEntity<Response> re = restTemplate.exchange(
+                    "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo",
+                    HttpMethod.POST,
+                    requestEntity,
+                    Response.class);
+            TravelServiceImpl.LOGGER.info("Ts-basic-service ticket info is: {}", re.getBody().toString());
+            resultForTravel = JsonUtils.conveterObject(re.getBody().getData(), TravelResult.class);
+        }
+        catch (Exception e){
+            TravelServiceImpl.LOGGER.error("request for ticket info service namelist denyed:"+e.toString());
+            resultForTravel = null;
+        }
+
 
         //Ticket order _ high-speed train (number of tickets purchased)
         requestEntity = new HttpEntity(null);

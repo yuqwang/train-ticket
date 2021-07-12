@@ -930,7 +930,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f8.1-order-other-service
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-other-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -976,7 +976,7 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f8.1-order-service
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1482,7 +1482,7 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f8.1-station-service
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-station-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1574,7 +1574,7 @@ spec:
     spec:
       containers:
       - name: ts-ticketinfo-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ticketinfo-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f8.2-ticketinfo-service
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1666,7 +1666,7 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel2-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f8.2-travel2-service
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1758,7 +1758,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f8.2-travel-service
         imagePullPolicy: Always
         env:
           - name: NODE_IP

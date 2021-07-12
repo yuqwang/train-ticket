@@ -225,14 +225,20 @@ public class Travel2ServiceImpl implements Travel2Service {
         query.setDepartureTime(departureTime);
 
         HttpEntity requestEntity = new HttpEntity(query, null);
-        ResponseEntity<Response<TravelResult>> re = restTemplate.exchange(
-                "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo",
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<Response<TravelResult>>() {
-                });
-        Travel2ServiceImpl.LOGGER.info("Ticket info  is: {}", re.getBody().toString());
-        TravelResult resultForTravel =  re.getBody().getData();
+        TravelResult resultForTravel;
+        try {
+            ResponseEntity<Response> re = restTemplate.exchange(
+                    "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo",
+                    HttpMethod.POST,
+                    requestEntity,
+                    Response.class);
+            Travel2ServiceImpl.LOGGER.info("Ts-basic-service ticket info is: {}", re.getBody().toString());
+            resultForTravel = JsonUtils.conveterObject(re.getBody().getData(), TravelResult.class);
+        }
+        catch (Exception e){
+            LOGGER.error("request for ticket info service namelist denyed:"+e.toString());
+            resultForTravel = null;
+        }
 
 
 
@@ -244,7 +250,7 @@ public class Travel2ServiceImpl implements Travel2Service {
                 requestEntity,
                 new ParameterizedTypeReference<Response<SoldTicket>>() {
                 });
-        Travel2ServiceImpl.LOGGER.info("Order other Ticket info  is: {}", re.getBody().toString());
+        Travel2ServiceImpl.LOGGER.info("Order other Ticket info  is: {}", re2.getBody().toString());
         SoldTicket result = re2.getBody().getData();
 
         if (result == null) {
