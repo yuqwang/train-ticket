@@ -345,15 +345,21 @@ public class TravelServiceImpl implements TravelService {
 
     private String queryForStationId(String stationName, HttpHeaders headers) {
         HttpEntity requestEntity = new HttpEntity(null);
-        ResponseEntity<Response<String>> re = restTemplate.exchange(
-                "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo/" + stationName,
-                HttpMethod.GET,
-                requestEntity,
-                new ParameterizedTypeReference<Response<String>>() {
-                });
-        TravelServiceImpl.LOGGER.info("Query for Station id is: {}", re.getBody().toString());
+        try {
+            ResponseEntity<Response<String>> re = restTemplate.exchange(
+                    "http://ts-ticketinfo-service:15681/api/v1/ticketinfoservice/ticketinfo/" + stationName,
+                    HttpMethod.GET,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<String>>() {
+                    });
+            TravelServiceImpl.LOGGER.info("Query for Station id is: {}", re.getBody().toString());
 
-        return re.getBody().getData();
+            return re.getBody().getData();
+        }catch (Exception e){
+            TravelServiceImpl.LOGGER.error("request for ticket info service namelist denyed:"+e.toString());
+            return null;
+        }
+
     }
 
     private Route getRouteByRouteId(String routeId, HttpHeaders headers) {
