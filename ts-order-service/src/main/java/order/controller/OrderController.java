@@ -7,9 +7,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -74,6 +77,14 @@ public class OrderController {
     public HttpEntity calculateSoldTicket(@PathVariable Date travelDate, @PathVariable String trainNumber,
                                           @RequestHeader HttpHeaders headers) {
         OrderController.LOGGER.info("[Calculate Sold Tickets] Date: {} TrainNumber: {}", travelDate, trainNumber);
+
+        List<String> lockedTrainNumbers = new ArrayList<>();
+        lockedTrainNumbers.add("D1345");
+        if(lockedTrainNumbers.contains(trainNumber)){
+            LOGGER.info("[Calculate Sold Tickets] Fail. Query locked Train Number: {}", trainNumber);
+            return ResponseEntity.badRequest().build();
+        }
+
         return ok(orderService.queryAlreadySoldOrders(travelDate, trainNumber, headers));
     }
 
