@@ -3,6 +3,8 @@ package cancel.service;
 import edu.fudan.common.util.Response;
 import org.springframework.http.HttpHeaders;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author fdse
  */
@@ -17,7 +19,7 @@ public interface CancelService {
      * @throws  Exception
      * @return Response
      */
-    Response cancelOrder(String orderId, String loginId, HttpHeaders headers);
+    Response cancelOrder(String orderId, String loginId, HttpHeaders headers) throws InterruptedException, ExecutionException;
 
     /**
      * calculate refund by login id

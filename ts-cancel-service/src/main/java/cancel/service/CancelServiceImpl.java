@@ -31,7 +31,7 @@ public class CancelServiceImpl implements CancelService {
     String orderStatusCancelNotPermitted = "Order Status Cancel Not Permitted";
 
     @Override
-    public Response cancelOrder(String orderId, String loginId, HttpHeaders headers) {
+    public Response cancelOrder(String orderId, String loginId, HttpHeaders headers){
 
         Response<Order> orderResult = getOrderByIdFromOrder(orderId, headers);
         if (orderResult.getStatus() == 1) {
@@ -41,18 +41,26 @@ public class CancelServiceImpl implements CancelService {
                     || order.getStatus() == OrderStatus.PAID.getCode() || order.getStatus() == OrderStatus.CHANGE.getCode()) {
 
                 // order.setStatus(OrderStatus.CANCEL.getCode());
+                //Draw back money
+                boolean status = false;
+                try {
+                    String money = calculateRefund(order);
+                    status = drawbackMoney(money, loginId, headers);
+                }catch (Exception e){
+                    CancelServiceImpl.LOGGER.error("[Draw Back Money] Fail, loginId: {}, orderId: {}", loginId, orderId);
+                }
+
+                CancelServiceImpl.LOGGER.error("[Cancel Order] Draw back money but not update status.");
 
                 Response changeOrderResult = cancelFromOrder(order, headers);
                 // 0 -- not find order   1 - cancel success
+
                 if (changeOrderResult.getStatus() == 1) {
 
                     CancelServiceImpl.LOGGER.info("[Cancel Order] Success.");
-                    //Draw back money
-                    String money = calculateRefund(order);
-                    boolean status = drawbackMoney(money, loginId, headers);
+
                     if (status) {
                         CancelServiceImpl.LOGGER.info("[Draw Back Money] Success.");
-
 
 
                         Response<User> result = getAccount(order.getAccountId().toString(), headers);
