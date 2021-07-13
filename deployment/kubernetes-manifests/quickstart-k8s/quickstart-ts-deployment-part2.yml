@@ -55,7 +55,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-basic-info-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-basic-info-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-basic-info-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -63,9 +63,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -102,7 +102,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-order-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-order-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-order-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -110,9 +110,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -148,7 +148,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-route-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-route-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-route-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -156,9 +156,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -194,7 +194,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-travel-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-travel-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-travel-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -202,9 +202,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -240,7 +240,7 @@ spec:
     spec:
       containers:
       - name: ts-admin-user-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-user-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-user-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -248,9 +248,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -286,7 +286,7 @@ spec:
     spec:
       containers:
       - name: ts-assurance-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-assurance-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-assurance-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -294,9 +294,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -332,7 +332,7 @@ spec:
     spec:
       containers:
       - name: ts-basic-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-basic-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-basic-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -340,9 +340,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -378,7 +378,7 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-cancel-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-cancel-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -386,9 +386,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -424,7 +424,7 @@ spec:
     spec:
       containers:
       - name: ts-config-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-config-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-config-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -432,9 +432,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -470,7 +470,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-price-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-price-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-price-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -478,9 +478,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -516,7 +516,7 @@ spec:
     spec:
       containers:
       - name: ts-consign-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -524,9 +524,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -562,7 +562,7 @@ spec:
     spec:
       containers:
       - name: ts-contacts-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-contacts-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-contacts-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -570,9 +570,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -608,7 +608,7 @@ spec:
     spec:
       containers:
       - name: ts-execute-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-execute-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-execute-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -616,9 +616,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -654,7 +654,7 @@ spec:
     spec:
       containers:
       - name: ts-food-map-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-map-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-map-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -662,9 +662,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -700,7 +700,7 @@ spec:
     spec:
       containers:
       - name: ts-food-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -708,9 +708,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -746,7 +746,7 @@ spec:
     spec:
       containers:
       - name: ts-inside-payment-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-inside-payment-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-inside-payment-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -754,9 +754,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -792,7 +792,7 @@ spec:
     spec:
       containers:
       - name: ts-auth-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-auth-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-auth-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -800,9 +800,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -838,7 +838,7 @@ spec:
     spec:
       containers:
       - name: ts-news-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-news-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-news-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -846,9 +846,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -884,7 +884,7 @@ spec:
     spec:
       containers:
       - name: ts-notification-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-notification-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-notification-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -892,9 +892,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -930,7 +930,7 @@ spec:
     spec:
       containers:
       - name: ts-order-other-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-other-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-other-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -938,9 +938,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -976,7 +976,7 @@ spec:
     spec:
       containers:
       - name: ts-order-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -984,9 +984,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1022,7 +1022,7 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-payment-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-payment-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1030,9 +1030,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1068,7 +1068,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-other-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-other-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-other-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1076,9 +1076,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1114,7 +1114,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1122,9 +1122,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1160,7 +1160,7 @@ spec:
     spec:
       containers:
       - name: ts-price-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-price-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-price-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1168,9 +1168,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1206,7 +1206,7 @@ spec:
     spec:
       containers:
       - name: ts-rebook-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-rebook-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-rebook-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1214,9 +1214,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1252,7 +1252,7 @@ spec:
     spec:
       containers:
       - name: ts-route-plan-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-plan-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-plan-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1260,9 +1260,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1298,7 +1298,7 @@ spec:
     spec:
       containers:
       - name: ts-route-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1306,9 +1306,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1344,7 +1344,7 @@ spec:
     spec:
       containers:
       - name: ts-seat-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-seat-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-seat-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1352,9 +1352,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1390,7 +1390,7 @@ spec:
     spec:
       containers:
       - name: ts-security-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-security-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-security-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1398,9 +1398,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1436,7 +1436,7 @@ spec:
     spec:
       containers:
       - name: ts-user-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-user-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-user-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1444,9 +1444,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1482,7 +1482,7 @@ spec:
     spec:
       containers:
       - name: ts-station-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-station-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-station-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1490,9 +1490,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1528,7 +1528,7 @@ spec:
     spec:
       containers:
       - name: ts-ticket-office-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ticket-office-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ticket-office-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1536,9 +1536,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1574,7 +1574,7 @@ spec:
     spec:
       containers:
       - name: ts-ticketinfo-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ticketinfo-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ticketinfo-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1582,9 +1582,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1620,7 +1620,7 @@ spec:
     spec:
       containers:
       - name: ts-train-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-train-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-train-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1628,9 +1628,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1666,7 +1666,7 @@ spec:
     spec:
       containers:
       - name: ts-travel2-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel2-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel2-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1674,9 +1674,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1712,7 +1712,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-plan-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-plan-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-plan-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1720,9 +1720,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1758,7 +1758,7 @@ spec:
     spec:
       containers:
       - name: ts-travel-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1766,9 +1766,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1804,7 +1804,7 @@ spec:
     spec:
       containers:
       - name: ts-verification-code-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-verification-code-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-verification-code-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1812,9 +1812,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
@@ -1850,7 +1850,7 @@ spec:
     spec:
       containers:
       - name: ts-voucher-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-voucher-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-voucher-service:error-F13
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1858,9 +1858,9 @@ spec:
               fieldRef:
                 fieldPath: status.hostIP
           - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
+            value: "10.176.122.1:11800"
           - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
+            value: "10.176.122.1"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
         ports:
