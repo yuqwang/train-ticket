@@ -49,6 +49,9 @@ public class ExecuteServiceImpl implements ExecuteService {
                 LOGGER.error("executeOrder error: {}, orderId: {}", resultExecute.getMsg(), orderId);
                 return new Response<>(0, resultExecute.getMsg(), null);
             }
+
+
+
         } else {
             resultFromOrder = getOrderByIdFromOrderOther(orderId, headers);
             if (resultFromOrder.getStatus() == 1) {
@@ -83,34 +86,48 @@ public class ExecuteServiceImpl implements ExecuteService {
         Order order;
         if (resultFromOrder.getStatus() == 1) {
             order =  resultFromOrder.getData();
-            //2.Check if the order can come in
-            if (order.getStatus() != OrderStatus.PAID.getCode() && order.getStatus() != OrderStatus.CHANGE.getCode()) {
-                LOGGER.error("ticket collect error: {}, orderId: {}", orderStatusWrong, orderId);
-                return new Response<>(0, orderStatusWrong, null);
-            }
-            //3.Confirm inbound, request change order information
 
+            //3.Confirm inbound, request change order information
+            LOGGER.error("Not check if the order can come in.");
             Response resultExecute = executeOrder(orderId, OrderStatus.COLLECTED.getCode(), headers);
+
             if (resultExecute.getStatus() == 1) {
+                //2.Check if the order can come in
+                if (order.getStatus() != OrderStatus.PAID.getCode() && order.getStatus() != OrderStatus.CHANGE.getCode()) {
+                    LOGGER.error("ticket collect error: {}, orderId: {}", orderStatusWrong, orderId);
+                    return new Response<>(0, orderStatusWrong, null);
+                }
                 return new Response<>(1, "Success", null);
             } else {
                 LOGGER.error("ticket collect error: {}, orderId: {}", resultExecute.getMsg(), orderId);
+                //2.Check if the order can come in
+                if (order.getStatus() != OrderStatus.PAID.getCode() && order.getStatus() != OrderStatus.CHANGE.getCode()) {
+                    LOGGER.error("ticket collect error: {}, orderId: {}", orderStatusWrong, orderId);
+                    return new Response<>(0, orderStatusWrong, null);
+                }
                 return new Response<>(0, resultExecute.getMsg(), null);
             }
         } else {
             resultFromOrder = getOrderByIdFromOrderOther(orderId, headers);
             if (resultFromOrder.getStatus() == 1) {
                 order = (Order) resultFromOrder.getData();
-                //2.Check if the order can come in
-                if (order.getStatus() != OrderStatus.PAID.getCode() && order.getStatus() != OrderStatus.CHANGE.getCode()) {
-                    LOGGER.error("ticket collect error: {}, orderId: {}", orderStatusWrong, orderId);
-                    return new Response<>(0, orderStatusWrong, null);
-                }
+
                 //3.Confirm inbound, request change order information
+                LOGGER.error("Not check if the order can come in.");
                 Response resultExecute = executeOrderOther(orderId, OrderStatus.COLLECTED.getCode(), headers);
                 if (resultExecute.getStatus() == 1) {
+                    //2.Check if the order can come in
+                    if (order.getStatus() != OrderStatus.PAID.getCode() && order.getStatus() != OrderStatus.CHANGE.getCode()) {
+                        LOGGER.error("ticket collect error: {}, orderId: {}", orderStatusWrong, orderId);
+                        return new Response<>(0, orderStatusWrong, null);
+                    }
                     return new Response<>(1, "Success.", null);
                 } else {
+                    //2.Check if the order can come in
+                    if (order.getStatus() != OrderStatus.PAID.getCode() && order.getStatus() != OrderStatus.CHANGE.getCode()) {
+                        LOGGER.error("ticket collect error: {}, orderId: {}", orderStatusWrong, orderId);
+                        return new Response<>(0, orderStatusWrong, null);
+                    }
                     LOGGER.error("ticket collect error: {}, orderId: {}", resultExecute.getMsg(), orderId);
                     return new Response<>(0, resultExecute.getMsg(), null);
                 }

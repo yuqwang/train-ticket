@@ -378,7 +378,7 @@ spec:
     spec:
       containers:
       - name: ts-cancel-service
-        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f11.1-cancel-service
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-cancel-service:sw1.6
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -608,7 +608,7 @@ spec:
     spec:
       containers:
       - name: ts-execute-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-execute-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/klouyge/fault-inject:f11.2-execute-service
         imagePullPolicy: Always
         env:
           - name: NODE_IP
