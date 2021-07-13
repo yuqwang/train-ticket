@@ -31,7 +31,6 @@ public class RebookServiceImpl implements RebookService {
 
     @Override
     public Response rebook(RebookInfo info, HttpHeaders httpHeaders) {
-        httpHeaders = null;
 
         Response<Order> queryOrderResult = getOrderByRebookInfo(info, httpHeaders);
 
