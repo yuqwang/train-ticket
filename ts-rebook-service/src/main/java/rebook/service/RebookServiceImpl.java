@@ -1,6 +1,10 @@
 package rebook.service;
 
+import static rebook.service.RebookServiceImpl.getAuthorizationHeadersFrom;
 import edu.fudan.common.util.Response;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +13,8 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import rebook.entity.*;
@@ -30,7 +36,7 @@ public class RebookServiceImpl implements RebookService {
     private static final Logger LOGGER = LoggerFactory.getLogger(RebookServiceImpl.class);
 
     @Override
-    public Response rebook(RebookInfo info, HttpHeaders httpHeaders) {
+    public Response rebook(RebookInfo info, HttpHeaders httpHeaders) throws InterruptedException {
 
         Response<Order> queryOrderResult = getOrderByRebookInfo(info, httpHeaders);
 
@@ -109,11 +115,24 @@ public class RebookServiceImpl implements RebookService {
         if (priceOld.compareTo(priceNew) > 0) {
             //Refund the difference
             String difference = priceOld.subtract(priceNew).toString();
-            if (!drawBackMoney(info.getLoginId(), difference, httpHeaders)) {
-                RebookServiceImpl.LOGGER.warn("Rebook warn.Can't draw back the difference money,OrderId: {},LoginId: {},difference: {}",info.getOrderId(),info.getLoginId(),difference);
-                return new Response<>(0, "Can't draw back the difference money, please try again!", null);
+            Future<Boolean> drawbackResult = asyncDrawBackMoney(info.getLoginId(), difference, httpHeaders);
+            Future<Response> updateOrderResult = asyncUpdateOrder(order, info, gtdr.getData(), ticketPrice, httpHeaders);
+            Response res = null;
+            try {
+                if (!drawbackResult.get()) {
+                    RebookServiceImpl.LOGGER.warn("Rebook warn.Can't draw back the difference money,OrderId: {},LoginId: {},difference: {}",info.getOrderId(),info.getLoginId(),difference);
+                }
+                res = updateOrderResult.get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+                res = new Response(0, "Internal Error", null);
             }
-            return updateOrder(order, info, (TripAllDetail) gtdr.getData(), ticketPrice, httpHeaders);
+            return res;
+//            if (!drawBackMoney(info.getLoginId(), difference, httpHeaders)) {
+//                RebookServiceImpl.LOGGER.warn("Rebook warn.Can't draw back the difference money,OrderId: {},LoginId: {},difference: {}",info.getOrderId(),info.getLoginId(),difference);
+//                return new Response<>(0, "Can't draw back the difference money, please try again!", null);
+//            }
+//            return updateOrder(order, info, (TripAllDetail) gtdr.getData(), ticketPrice, httpHeaders);
 
         } else if (priceOld.compareTo(priceNew) == 0) {
             //do nothing
@@ -212,6 +231,12 @@ public class RebookServiceImpl implements RebookService {
             createOrder(order, order.getTrainNumber(), httpHeaders);
             return new Response<>(1, "Success", order);
         }
+    }
+
+    @Async("myAsync")
+    public Future<Response> asyncUpdateOrder(Order order, RebookInfo info, TripAllDetail gtdr, String ticketPrice, HttpHeaders httpHeaders) {
+        Response response = updateOrder(order, info, gtdr, ticketPrice, httpHeaders);
+        return new AsyncResult<>(response);
     }
 
     public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId, int seatType, HttpHeaders httpHeaders) {
@@ -407,6 +432,22 @@ public class RebookServiceImpl implements RebookService {
                 Response.class);
         Response result = reDrawBackMoney.getBody();
         return result.getStatus() == 1;
+    }
+
+    @Async("myAsync")
+    public Future<Boolean> asyncDrawBackMoney(String userId, String money, HttpHeaders httpHeaders)
+            throws InterruptedException {
+        /*********************** Fault Reproduction - Error Process Seq *************************/
+        double op = new Random().nextDouble();
+        if (op < 1.0) {
+            LOGGER.info("[Cancel Order Service] Delay Process，Wrong Cancel Process");
+            Thread.sleep(4000);
+        } else {
+            LOGGER.info("[Cancel Order Service] Normal Process，Normal Cancel Process");
+        }
+
+        boolean res = drawBackMoney(userId, money, httpHeaders);
+        return new AsyncResult<>(res);
     }
 
     public static HttpHeaders getAuthorizationHeadersFrom(HttpHeaders oldHeaders) {
