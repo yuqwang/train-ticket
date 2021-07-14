@@ -3,6 +3,7 @@ package rebook.service;
 import static rebook.service.RebookServiceImpl.getAuthorizationHeadersFrom;
 import edu.fudan.common.util.Response;
 import java.util.Random;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import rebook.entity.*;
@@ -32,6 +34,9 @@ public class RebookServiceImpl implements RebookService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private ThreadPoolTaskExecutor myExecutor;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RebookServiceImpl.class);
 
@@ -115,8 +120,9 @@ public class RebookServiceImpl implements RebookService {
         if (priceOld.compareTo(priceNew) > 0) {
             //Refund the difference
             String difference = priceOld.subtract(priceNew).toString();
-            Future<Boolean> drawbackResult = asyncDrawBackMoney(info.getLoginId(), difference, httpHeaders);
-            Future<Response> updateOrderResult = asyncUpdateOrder(order, info, gtdr.getData(), ticketPrice, httpHeaders);
+            Future<Boolean> drawbackResult = myExecutor.submit(new AsyncDrawBackMoney(info.getLoginId(), difference, httpHeaders));
+//            Future<Boolean> drawbackResult = asyncDrawBackMoney(info.getLoginId(), difference, httpHeaders);
+            Future<Response> updateOrderResult = myExecutor.submit(new AsyncUpdateOrder(order, info, gtdr.getData(), ticketPrice, httpHeaders));
             Response res = null;
             try {
                 if (!drawbackResult.get()) {
@@ -233,11 +239,30 @@ public class RebookServiceImpl implements RebookService {
         }
     }
 
-    @Async("myAsync")
-    public Future<Response> asyncUpdateOrder(Order order, RebookInfo info, TripAllDetail gtdr, String ticketPrice, HttpHeaders httpHeaders) {
-        Response response = updateOrder(order, info, gtdr, ticketPrice, httpHeaders);
-        return new AsyncResult<>(response);
+    class AsyncUpdateOrder implements Callable<Response> {
+        private Order order;
+        private RebookInfo info;
+        private TripAllDetail gtdr;
+        private String ticketPrice;
+        private HttpHeaders httpHeaders;
+
+        public AsyncUpdateOrder(Order order, RebookInfo info, TripAllDetail gtdr, String ticketPrice, HttpHeaders httpHeaders) {
+            this.order = order;
+            this.info = info;
+            this.gtdr = gtdr;
+            this.ticketPrice = ticketPrice;
+            this.httpHeaders = httpHeaders;
+        }
+        @Override
+        public Response call() throws Exception {
+            return updateOrder(order, info, gtdr, ticketPrice, httpHeaders);
+        }
     }
+
+//    public Future<Response> asyncUpdateOrder(Order order, RebookInfo info, TripAllDetail gtdr, String ticketPrice, HttpHeaders httpHeaders) {
+//        Response response = updateOrder(order, info, gtdr, ticketPrice, httpHeaders);
+//        return new AsyncResult<>(response);
+//    }
 
     public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId, int seatType, HttpHeaders httpHeaders) {
         Seat seatRequest = new Seat();
@@ -450,6 +475,34 @@ public class RebookServiceImpl implements RebookService {
         return new AsyncResult<>(res);
     }
 
+    class AsyncDrawBackMoney implements Callable<Boolean> {
+        private String loginId;
+        private String difference;
+        private HttpHeaders httpHeaders;
+
+        public AsyncDrawBackMoney(String loginId, String difference,
+                                  HttpHeaders httpHeaders) {
+            this.loginId = loginId;
+            this.difference = difference;
+            this.httpHeaders = httpHeaders;
+        }
+
+        @Override
+        public Boolean call() throws Exception {
+            /*********************** Fault Reproduction - Error Process Seq *************************/
+            double op = new Random().nextDouble();
+            if (op < 1.0) {
+                LOGGER.info("[Cancel Order Service] Delay Process，Wrong Cancel Process");
+                Thread.sleep(4000);
+            } else {
+                LOGGER.info("[Cancel Order Service] Normal Process，Normal Cancel Process");
+            }
+
+            boolean res = drawBackMoney(loginId, difference, httpHeaders);
+            return res;
+        }
+    }
+
     public static HttpHeaders getAuthorizationHeadersFrom(HttpHeaders oldHeaders) {
         HttpHeaders newHeaders = new HttpHeaders();
         if (oldHeaders.containsKey(HttpHeaders.AUTHORIZATION)) {
@@ -457,4 +510,6 @@ public class RebookServiceImpl implements RebookService {
         }
         return newHeaders;
     }
+
+
 }
