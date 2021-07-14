@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import org.apache.skywalking.apm.toolkit.trace.TraceCrossThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -239,6 +240,7 @@ public class RebookServiceImpl implements RebookService {
         }
     }
 
+    @TraceCrossThread
     class AsyncUpdateOrder implements Callable<Response> {
         private Order order;
         private RebookInfo info;
@@ -459,22 +461,23 @@ public class RebookServiceImpl implements RebookService {
         return result.getStatus() == 1;
     }
 
-    @Async("myAsync")
-    public Future<Boolean> asyncDrawBackMoney(String userId, String money, HttpHeaders httpHeaders)
-            throws InterruptedException {
-        /*********************** Fault Reproduction - Error Process Seq *************************/
-        double op = new Random().nextDouble();
-        if (op < 1.0) {
-            LOGGER.info("[Cancel Order Service] Delay Process，Wrong Cancel Process");
-            Thread.sleep(4000);
-        } else {
-            LOGGER.info("[Cancel Order Service] Normal Process，Normal Cancel Process");
-        }
+//    @Async("myAsync")
+//    public Future<Boolean> asyncDrawBackMoney(String userId, String money, HttpHeaders httpHeaders)
+//            throws InterruptedException {
+//        /*********************** Fault Reproduction - Error Process Seq *************************/
+//        double op = new Random().nextDouble();
+//        if (op < 1.0) {
+//            LOGGER.info("[Cancel Order Service] Delay Process，Wrong Cancel Process");
+//            Thread.sleep(4000);
+//        } else {
+//            LOGGER.info("[Cancel Order Service] Normal Process，Normal Cancel Process");
+//        }
+//
+//        boolean res = drawBackMoney(userId, money, httpHeaders);
+//        return new AsyncResult<>(res);
+//    }
 
-        boolean res = drawBackMoney(userId, money, httpHeaders);
-        return new AsyncResult<>(res);
-    }
-
+    @TraceCrossThread
     class AsyncDrawBackMoney implements Callable<Boolean> {
         private String loginId;
         private String difference;
