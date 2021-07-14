@@ -223,7 +223,7 @@ public class RebookServiceImpl implements RebookService {
         //Update order information
         //If the original order and the new order are located in the high-speed train and other orders respectively, the original order should be deleted and created on the other side with a new id.
         if ((tripGD(oldTripId) && tripGD(info.getTripId())) || (!tripGD(oldTripId) && !tripGD(info.getTripId()))) {
-
+            LOGGER.info("Update order information: {}", order.getId());
             Response changeOrderResult = updateOrder(order, info.getTripId(), httpHeaders);
             if (changeOrderResult.getStatus() == 1) {
                 return new Response<>(1, "Success!", order);
