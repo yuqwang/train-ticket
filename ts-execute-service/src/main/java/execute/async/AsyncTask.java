@@ -1,8 +1,10 @@
 package execute.async;
 
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import edu.fudan.common.util.Response;
 import execute.entity.Order;
+import execute.entity.OrderStatus;
 import execute.serivce.ExecuteServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +60,10 @@ public class AsyncTask {
 
     @Async("myAsync")
     public Future<Response> executeOrder(String orderId, int status, HttpHeaders headers) {
-        AsyncTask.LOGGER.info("[Execute Service][Execute Order] Executing....");
+        if(status == OrderStatus.USED.getCode())
+            AsyncTask.LOGGER.info("[Execute Service][Execute Order] Executing....");
+        else if (status == OrderStatus.COLLECTED.getCode())
+            AsyncTask.LOGGER.info("[Execute Service][Collect Order] Collecting....");
         headers = null;
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<Response> re = restTemplate.exchange(
