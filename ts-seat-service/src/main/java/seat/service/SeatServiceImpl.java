@@ -345,7 +345,7 @@ public class SeatServiceImpl implements SeatService {
             }
 
             ResponseEntity<Response<Route>> re = restTemplate.exchange(
-                    "http://ts-travel2-service:16346/api/v1/travel2service/routes/" + trainNumber,
+                    "http://ts-travel-service:12346/api/v1/travelservice/routes/" + trainNumber,
                     HttpMethod.GET,
                     requestEntity,
                     new ParameterizedTypeReference<Response<Route>>() {
