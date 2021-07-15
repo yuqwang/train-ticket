@@ -3,6 +3,8 @@ package execute.serivce;
 import edu.fudan.common.util.Response;
 import org.springframework.http.HttpHeaders;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author fdse
  */
@@ -24,6 +26,6 @@ public interface ExecuteService {
      * @param headers headers
      * @return Response
      */
-    Response ticketCollect(String orderId, HttpHeaders headers);
+    Response ticketCollect(String orderId, HttpHeaders headers) throws ExecutionException, InterruptedException;
 
 }

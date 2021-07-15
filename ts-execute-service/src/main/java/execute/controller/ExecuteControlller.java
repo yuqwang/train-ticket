@@ -1,5 +1,6 @@
 package execute.controller;
 
+import edu.fudan.common.util.Response;
 import execute.serivce.ExecuteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,13 @@ public class ExecuteControlller {
     public HttpEntity collectTicket(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         ExecuteControlller.LOGGER.info("[Collect] Id: {}", orderId);
         // null
-        return ok(executeService.ticketCollect(orderId, headers));
+        try {
+            ExecuteControlller.LOGGER.info("[Collect] Verify Success");
+            return ok(executeService.ticketCollect(orderId, headers));
+        } catch (Exception e){
+            ExecuteControlller.LOGGER.error(e.getMessage());
+            return ok(new Response<>(1, "error", e.getMessage()));
+        }
     }
 
 }
