@@ -9,13 +9,18 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import seat.entity.*;
+import org.apache.skywalking.apm.toolkit.trace.TraceCrossThread;
 
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * @author fdse
@@ -24,6 +29,9 @@ import java.util.Set;
 public class SeatServiceImpl implements SeatService {
     @Autowired
     RestTemplate restTemplate;
+
+    @Autowired
+    private ThreadPoolTaskExecutor myExecutor;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SeatServiceImpl.class);
 
@@ -168,7 +176,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
-    public Response getLeftTicketOfInterval(Seat seatRequest, HttpHeaders headers) {
+    public Response getLeftTicketOfInterval(Seat seatRequest, HttpHeaders headers) throws InterruptedException {
         int numOfLeftTicket = 0;
         Response<Route> routeResult;
         TrainType trainTypeResult;
@@ -186,13 +194,22 @@ public class SeatServiceImpl implements SeatService {
 
             //Call the micro service to query all the station information for the trains
             HttpEntity requestEntity = new HttpEntity(null);
-            re = restTemplate.exchange(
-                    "http://ts-travel-service:12346/api/v1/travelservice/routes/" + trainNumber,
-                    HttpMethod.GET,
-                    requestEntity,
-                    new ParameterizedTypeReference<Response<Route>>() {
-                    });
-            routeResult = re.getBody();
+//            re = restTemplate.exchange(
+//                    "http://ts-travel-service:12346/api/v1/travelservice/routes/" + trainNumber,
+//                    HttpMethod.GET,
+//                    requestEntity,
+//                    new ParameterizedTypeReference<Response<Route>>() {
+//                    });
+//            routeResult = re.getBody();
+            Future<Response<Route>> queryStationResult = myExecutor.submit(new AsyncQueryStation(trainNumber, requestEntity));
+            requestEntity = new HttpEntity(seatRequest, null);
+            Future<Response<TrainType>> queryTotalNumber = myExecutor.submit(new AsyncQueryTotalNumber(trainNumber, requestEntity));
+            try {
+                routeResult = queryStationResult.get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+                return new Response(0, "Internal Error", null);
+            }
             SeatServiceImpl.LOGGER.info("[ getLeftTicketOfInterval] The result of getRouteResult is {}", routeResult.getMsg());
 
             //Call the micro service to query for residual Ticket information: the set of the Ticket sold for the specified seat type
@@ -209,14 +226,20 @@ public class SeatServiceImpl implements SeatService {
 
             //Calls the microservice to query the total number of seats specified for that vehicle
             requestEntity = new HttpEntity(null);
-            re2 = restTemplate.exchange(
-                    "http://ts-travel-service:12346/api/v1/travelservice/train_types/" + seatRequest.getTrainNumber(),
-                    HttpMethod.GET,
-                    requestEntity,
-                    new ParameterizedTypeReference<Response<TrainType>>() {
-                    });
-            Response<TrainType> trainTypeResponse = re2.getBody();
-
+//            re2 = restTemplate.exchange(
+//                    "http://ts-travel-service:12346/api/v1/travelservice/train_types/" + seatRequest.getTrainNumber(),
+//                    HttpMethod.GET,
+//                    requestEntity,
+//                    new ParameterizedTypeReference<Response<TrainType>>() {
+//                    });
+//            Response<TrainType> trainTypeResponse = re2.getBody();
+            Response<TrainType> trainTypeResponse = null;
+            try {
+                trainTypeResponse = queryTotalNumber.get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+                return new Response(0, "Internal Error", null);
+            }
 
             trainTypeResult = trainTypeResponse.getData();
             SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The result of getTrainTypeResult is {}", trainTypeResponse.toString());
@@ -299,6 +322,57 @@ public class SeatServiceImpl implements SeatService {
         numOfLeftTicket += unusedNum;
 
         return new Response<>(1, "Get Left Ticket of Internal Success", numOfLeftTicket);
+    }
+
+    @TraceCrossThread
+    class AsyncQueryStation implements Callable<Response<Route>> {
+        private String trainNumber;
+        private HttpEntity requestEntity;
+
+        public AsyncQueryStation(String trainNumber, HttpEntity httpEntity) {
+            this.trainNumber = trainNumber;
+            this.requestEntity = httpEntity;
+        }
+        @Override
+        public Response<Route> call() throws Exception {
+            /*********************** Fault Reproduction - Error Process Seq *************************/
+            double op = new Random().nextDouble();
+            if (op < 1.0) {
+                LOGGER.info("[getLeftTicketOfInterval] Delay Process，Wrong Query Process");
+                Thread.sleep(4000);
+            } else {
+                LOGGER.info("[getLeftTicketOfInterval] Normal Process，Normal Query Process");
+            }
+
+            ResponseEntity<Response<Route>> re = restTemplate.exchange(
+                    "http://ts-travel2-service:16346/api/v1/travel2service/routes/" + trainNumber,
+                    HttpMethod.GET,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<Route>>() {
+                    });
+            return re.getBody();
+        }
+    }
+
+    @TraceCrossThread
+    class AsyncQueryTotalNumber implements Callable<Response<TrainType>> {
+        private String trainNumber;
+        private HttpEntity requestEntity;
+
+        public AsyncQueryTotalNumber(String trainNumber, HttpEntity httpEntity) {
+            this.trainNumber = trainNumber;
+            this.requestEntity = httpEntity;
+        }
+        @Override
+        public Response<TrainType> call() throws Exception {
+            ResponseEntity<Response<TrainType>> re = restTemplate.exchange(
+                    "http://ts-travel-service:12346/api/v1/travelservice/train_types/" + trainNumber,
+                    HttpMethod.GET,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<TrainType>>() {
+                    });
+            return re.getBody();
+        }
     }
 
     private double getDirectProportion(HttpHeaders headers) {

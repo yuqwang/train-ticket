@@ -52,7 +52,7 @@ public class SeatController {
      */
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/seats/left_tickets")
-    public HttpEntity getLeftTicketOfInterval(@RequestBody Seat seatRequest, @RequestHeader HttpHeaders headers) {
+    public HttpEntity getLeftTicketOfInterval(@RequestBody Seat seatRequest, @RequestHeader HttpHeaders headers) throws InterruptedException  {
         // int
         SeatController.LOGGER.info("Get left ticket of interval,TravelDate: {},TrainNumber: {},SeatType: {}",seatRequest.getTravelDate(),seatRequest.getTrainNumber(),seatRequest.getSeatType());
         return ok(seatService.getLeftTicketOfInterval(seatRequest, headers));
