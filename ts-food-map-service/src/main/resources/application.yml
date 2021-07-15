@@ -1,6 +1,10 @@
 server:
   port: 18855
-
+  ssl:
+    key-store: classpath:keystore.p12
+    keyStoreType: PKCS12
+    keyAlias: tomcat
+    key-store-password: ${KEY_STORE_PASSWORD}
 spring:
   application:
     name: ts-food-map-service
@@ -11,11 +15,6 @@ spring:
 #      password: ${MONGODB_PASSWORD}
       database: ts
       port: 27017
-  ssl:
-    key-store: classpath:keystore.p12
-    keyStoreType: PKCS12
-    keyAlias: tomcat
-    key-store-password: ${KEY_STORE_PASSWORD}
 http:
   client:
     ssl:
