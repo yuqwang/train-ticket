@@ -18,6 +18,7 @@ import preserveOther.entity.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 @RunWith(JUnit4.class)
 public class PreserveOtherServiceImplTest {
@@ -37,7 +38,7 @@ public class PreserveOtherServiceImplTest {
     }
 
     @Test
-    public void testPreserve() {
+    public void testPreserve() throws ExecutionException, InterruptedException {
         OrderTicketsInfo oti = OrderTicketsInfo.builder()
                 .accountId(UUID.randomUUID().toString())
                 .contactsId(UUID.randomUUID().toString())

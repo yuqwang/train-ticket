@@ -1,5 +1,6 @@
 package preserveOther.controller;
 
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class PreserveOtherController {
 
     @Autowired
-    private PreserveOtherService preserveService;
+    private PreserveOtherService preserveOtherService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PreserveOtherController.class);
 
@@ -33,7 +34,13 @@ public class PreserveOtherController {
     public HttpEntity preserve(@RequestBody OrderTicketsInfo oti,
                                @RequestHeader HttpHeaders headers) {
         PreserveOtherController.LOGGER.info("[Preserve] Account  order from {} -----> {} at {}", oti.getFrom(), oti.getTo(), oti.getDate());
-        return ok(preserveService.preserve(oti, headers));
+        try{
+            PreserveOtherController.LOGGER.info("[Preserve] Verify Success");
+            return ok(preserveOtherService.preserve(oti, headers));
+        }catch (Exception e){
+            PreserveOtherController.LOGGER.error(e.getMessage());
+            return ok(new Response<>(1, "error", e.getMessage()));
+        }
     }
 
 }

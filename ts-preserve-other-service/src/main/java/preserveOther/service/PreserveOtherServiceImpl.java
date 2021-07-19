@@ -1,6 +1,7 @@
 package preserveOther.service;
 
 import edu.fudan.common.util.Response;
+import io.swagger.models.Contact;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import preserveOther.async.AsyncTask;
 import preserveOther.entity.*;
 
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * @author fdse
@@ -25,12 +29,69 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private AsyncTask asyncTask;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(PreserveOtherServiceImpl.class);
 
     @Override
-    public Response preserve(OrderTicketsInfo oti, HttpHeaders httpHeaders) {
+    public Response preserve(OrderTicketsInfo oti, HttpHeaders httpHeaders) throws ExecutionException, InterruptedException {
 
         PreserveOtherServiceImpl.LOGGER.info("[Verify Login] Success");
+        //Error Sequence
+        //1.detect ticket scalper
+        PreserveOtherServiceImpl.LOGGER.info("[Step 1] Check Security");
+
+        Future<Response> checkSecurityFuture = asyncTask.checkSecurity(oti.getAccountId(), httpHeaders);
+        //2.Querying contact information -- modification, mediated by the underlying information micro service
+        PreserveOtherServiceImpl.LOGGER.info("[Step 2] Find contacts");
+
+        PreserveOtherServiceImpl.LOGGER.info("[Step 2] Contacts Id: {}", oti.getContactsId());
+
+        Future<Response<Contacts>> getContactsByIdFuture = asyncTask.getContactsById(oti.getContactsId(), httpHeaders);
+
+        while(!checkSecurityFuture.isDone()&&!getContactsByIdFuture.isDone())
+        {
+            // wait for one task done
+        }
+        Response<Contacts> gcr;
+        if(checkSecurityFuture.isDone()) {
+            Response result = checkSecurityFuture.get();
+            if (result.getStatus() == 0) {
+                PreserveOtherServiceImpl.LOGGER.error("[Step 1] Check Security Fail, AccountId: {}",oti.getAccountId());
+                return new Response<>(0, result.getMsg(), null);
+            }
+            PreserveOtherServiceImpl.LOGGER.info("[Step 1] Check Security Complete. ");
+            while(!getContactsByIdFuture.isDone()){
+                // wait for the other task done
+            }
+            gcr = getContactsByIdFuture.get();
+            if (gcr.getStatus() == 0) {
+                PreserveOtherServiceImpl.LOGGER.error("[Get Contacts] Fail,ContactsId: {},message: {}",oti.getContactsId(),gcr.getMsg());
+                return new Response<>(0, gcr.getMsg(), null);
+            }
+
+            PreserveOtherServiceImpl.LOGGER.info("[Step 2] Complete");
+        }else{
+            gcr = getContactsByIdFuture.get();
+            if (gcr.getStatus() == 0) {
+                PreserveOtherServiceImpl.LOGGER.error("[Get Contacts] Fail,ContactsId: {},message: {}",oti.getContactsId(),gcr.getMsg());
+                return new Response<>(0, gcr.getMsg(), null);
+            }
+
+            PreserveOtherServiceImpl.LOGGER.info("[Step 2] Complete");
+            while(!checkSecurityFuture.isDone()){
+                // wait for the other task done
+            }
+            Response result = checkSecurityFuture.get();
+            if (result.getStatus() == 0) {
+                PreserveOtherServiceImpl.LOGGER.error("[Step 1] Check Security Fail, AccountId: {}",oti.getAccountId());
+                return new Response<>(0, result.getMsg(), null);
+            }
+            PreserveOtherServiceImpl.LOGGER.info("[Step 1] Check Security Complete. ");
+        }
+        /*
+        //Normal sequence
         //1.detect ticket scalper
         PreserveOtherServiceImpl.LOGGER.info("[Step 1] Check Security");
 
@@ -53,6 +114,8 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         }
 
         PreserveOtherServiceImpl.LOGGER.info("[Step 2] Complete");
+
+         */
         //3.Check the info of train and the number of remaining tickets
         PreserveOtherServiceImpl.LOGGER.info("[Step 3] Check tickets num");
         TripAllDetailInfo gtdi = new TripAllDetailInfo();
