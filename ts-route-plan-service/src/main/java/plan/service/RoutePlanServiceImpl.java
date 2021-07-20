@@ -102,7 +102,7 @@ public class RoutePlanServiceImpl implements RoutePlanService {
     }
 
     @Override
-    public Response searchQuickestResult(RoutePlanInfo info, HttpHeaders headers) {
+    public Response searchQuickestResult(RoutePlanInfo info, HttpHeaders headers) throws ExecutionException, InterruptedException{
 
         //1.Violence pulls out all the results of travel-service and travle2-service
         TripInfo queryInfo = new TripInfo();
@@ -110,8 +110,18 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         queryInfo.setEndPlace(info.getToStationName());
         queryInfo.setDepartureTime(info.getTravelDate());
 
-        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServive(queryInfo, headers);
-        ArrayList<TripResponse> normalTrain = getTripFromNormalTrainTravelService(queryInfo, headers);
+        /*********************** Fault Reproduction - Error Process Seq *************************/
+        // 1. get trip from high speed travel service (ts-travel-service)
+        Future<ArrayList<TripResponse>> getTripFromHighSpeedTravelServiceFuture = asyncTask.getTripFromHighSpeedTravelService(queryInfo, headers);
+        // 2. get trip from normal travel service (ts-travel2-service)
+        Future<ArrayList<TripResponse>> getTripFromNormalTravelServiceFuture = asyncTask.getTripFromNormalTravelService(queryInfo, headers);
+        while(!getTripFromHighSpeedTravelServiceFuture.isDone()||!getTripFromNormalTravelServiceFuture.isDone()){
+            // wait for al task done.
+        }
+        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServiceFuture.get();
+        ArrayList<TripResponse> normalTrain = getTripFromNormalTravelServiceFuture.get();
+//        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServive(queryInfo, headers);
+//        ArrayList<TripResponse> normalTrain = getTripFromNormalTrainTravelService(queryInfo, headers);
 
         //2.Sort by time
         ArrayList<TripResponse> finalResult = new ArrayList<>();

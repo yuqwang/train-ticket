@@ -27,7 +27,7 @@ public interface RoutePlanService {
      * @param headers headers
      * @return Response
      */
-    Response searchQuickestResult(RoutePlanInfo info, HttpHeaders headers);
+    Response searchQuickestResult(RoutePlanInfo info, HttpHeaders headers) throws InterruptedException, ExecutionException;
 
     /**
      * search min stop-station with route plan info

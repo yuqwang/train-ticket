@@ -56,7 +56,7 @@ public class RoutePlanServiceImplTest {
     }
 
     @Test
-    public void testSearchQuickestResult() {
+    public void testSearchQuickestResult() throws ExecutionException, InterruptedException {
         RoutePlanInfo info = new RoutePlanInfo("form_station", "to_station", new Date(), 1);
         //mock getTripFromHighSpeedTravelServive() and getTripFromNormalTrainTravelService()
         ArrayList<TripResponse> tripResponses = new ArrayList<>();

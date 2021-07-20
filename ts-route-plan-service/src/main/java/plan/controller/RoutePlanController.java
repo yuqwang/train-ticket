@@ -45,7 +45,13 @@ public class RoutePlanController {
     @PostMapping(value = "/routePlan/quickestRoute")
     public HttpEntity getQuickestRoutes(@RequestBody RoutePlanInfo info, @RequestHeader HttpHeaders headers) {
         RoutePlanController.LOGGER.info("[Get Quickest Routes] From: {} To: {} Num: {} Date: {}", info.getFormStationName(), info.getToStationName(), info.getNum(), info.getTravelDate());
-        return ok(routePlanService.searchQuickestResult(info, headers));
+        try{
+            RoutePlanController.LOGGER.info("[Get Quickest Routes] Verify Success");
+            return ok(routePlanService.searchQuickestResult(info, headers));
+        }catch (Exception e){
+            RoutePlanController.LOGGER.error(e.getMessage());
+            return ok(new Response<>(1, "error", e.getMessage()));
+        }
     }
 
     @PostMapping(value = "/routePlan/minStopStations")
