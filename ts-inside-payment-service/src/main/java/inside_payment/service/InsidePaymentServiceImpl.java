@@ -106,7 +106,8 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
                             Response.class);
                     outsidePaySuccess = reOutsidePaySuccess.getBody();
                 }catch (Exception e){
-                    InsidePaymentServiceImpl.LOGGER.error(e.getMessage());
+                    InsidePaymentServiceImpl.LOGGER.error(e.toString());
+                    throw e;
                 }
 
                 InsidePaymentServiceImpl.LOGGER.info("Out pay result: {}", outsidePaySuccess.toString());
