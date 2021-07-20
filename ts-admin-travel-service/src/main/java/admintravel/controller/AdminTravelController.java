@@ -2,12 +2,15 @@ package admintravel.controller;
 
 import admintravel.entity.TravelInfo;
 import admintravel.service.AdminTravelService;
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.ExecutionException;
 
 import static org.springframework.http.ResponseEntity.*;
 
@@ -31,7 +34,13 @@ public class AdminTravelController {
     @GetMapping(path = "/admintravel")
     public HttpEntity getAllTravels(@RequestHeader HttpHeaders headers) {
         logger.info("Get all travels");
-        return ok(adminTravelService.getAllTravels(headers));
+        try{
+            logger.info("[AdminTravel] Verify Success");
+            return ok(adminTravelService.getAllTravels(headers));
+        } catch (Exception e){
+            logger.error(e.getMessage());
+            return ok(new Response<>(1, "error", e.getMessage()));
+        }
     }
 
     @PostMapping(value = "/admintravel")

@@ -169,7 +169,7 @@ public class RebookServiceImpl implements RebookService {
         gtdi.setTo(queryForStationName(order.getTo(), httpHeaders));
         gtdi.setTravelDate(info.getDate());
         gtdi.setTripId(info.getTripId());
-        // TripAllDetail
+        // TripAllDetai
         Response gtdrResposne = getTripAllDetailInformation(gtdi, info.getTripId(), httpHeaders);
         TripAllDetail gtdr = (TripAllDetail) gtdrResposne.getData();
 
@@ -495,10 +495,10 @@ public class RebookServiceImpl implements RebookService {
             /*********************** Fault Reproduction - Error Process Seq *************************/
             double op = new Random().nextDouble();
             if (op < 1.0) {
-                LOGGER.info("[Cancel Order Service] Delay Process，Wrong Cancel Process");
+                LOGGER.info("[Rebook Service] Delay Process，Wrong Rebook Process");
                 Thread.sleep(4000);
             } else {
-                LOGGER.info("[Cancel Order Service] Normal Process，Normal Cancel Process");
+                LOGGER.info("[Rebook Service] Normal Process，Normal Rebook Process");
             }
 
             boolean res = drawBackMoney(loginId, difference, httpHeaders);

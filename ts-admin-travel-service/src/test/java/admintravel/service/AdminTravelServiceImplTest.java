@@ -17,6 +17,7 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 @RunWith(JUnit4.class)
 public class AdminTravelServiceImplTest {
@@ -36,7 +37,7 @@ public class AdminTravelServiceImplTest {
     }
 
     @Test
-    public void testGetAllTravels1() {
+    public void testGetAllTravels1() throws ExecutionException, InterruptedException {
         Response<ArrayList<AdminTrip>> response = new Response<>(0, null, null);
         ResponseEntity<Response<ArrayList<AdminTrip>>> re = new ResponseEntity<>(response, HttpStatus.OK);
         Mockito.when(restTemplate.exchange(
@@ -56,7 +57,7 @@ public class AdminTravelServiceImplTest {
     }
 
     @Test
-    public void testGetAllTravels2() {
+    public void testGetAllTravels2() throws ExecutionException, InterruptedException {
         ArrayList<AdminTrip> adminTrips = new ArrayList<>();
         adminTrips.add(new AdminTrip());
         Response<ArrayList<AdminTrip>> response = new Response<>(1, null, adminTrips);

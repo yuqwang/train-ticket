@@ -1,5 +1,6 @@
 package admintravel.service;
 
+import admintravel.async.AsyncTask;
 import admintravel.entity.AdminTrip;
 import admintravel.entity.TravelInfo;
 import edu.fudan.common.util.Response;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * @author fdse
@@ -24,14 +27,51 @@ public class AdminTravelServiceImpl implements AdminTravelService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private AsyncTask asyncTask;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminTravelServiceImpl.class);
 
     @Override
-    public Response getAllTravels(HttpHeaders headers) {
-        Response<ArrayList<AdminTrip>> result;
+    public Response getAllTravels(HttpHeaders headers) throws InterruptedException, ExecutionException {
+        Response<ArrayList<AdminTrip>> result = new Response<>();
         ArrayList<AdminTrip> trips = new ArrayList<>();
 
         AdminTravelServiceImpl.LOGGER.info("[Get All Travels]");
+        /*********************** Fault Reproduction - Error Process Seq *************************/
+        // 1. get travels from ts-travel-service
+        Future<Response<ArrayList<AdminTrip>>> getTravelsFuture = asyncTask.getTravels(headers);
+        // 2. get travel2s from ts-travel2-service
+        Future<Response<ArrayList<AdminTrip>>> getTravel2sFuture = asyncTask.getTravel2s(headers);
+        boolean travelFlag= false, travel2Flag = false;
+        while(!getTravelsFuture.isDone()||!getTravel2sFuture.isDone()){
+            // wait for all task done.
+            if(!travelFlag && getTravelsFuture.isDone()){
+                result = getTravelsFuture.get();
+                if (result.getStatus() == 1) {
+                    ArrayList<AdminTrip> adminTrips = result.getData();
+                    AdminTravelServiceImpl.LOGGER.info("[Get Travel From ts-travel-service successfully!]");
+                    trips.addAll(adminTrips);
+                } else {
+                    AdminTravelServiceImpl.LOGGER.error("[Get Travel From ts-travel-service fail!]");
+                }
+                travelFlag = true;
+            }
+            if(!travel2Flag && getTravel2sFuture.isDone()){
+                result = getTravel2sFuture.get();
+                if (result.getStatus() == 1) {
+                    AdminTravelServiceImpl.LOGGER.info("[Get Travel From ts-travel2-service successfully!]");
+                    ArrayList<AdminTrip> adminTrips = result.getData();
+                    trips.addAll(adminTrips);
+                } else {
+                    AdminTravelServiceImpl.LOGGER.error("[Get Travel From ts-travel2-service fail!]");
+                }
+                travel2Flag = true;
+            }
+        }
+
+        /*
         HttpEntity requestEntity = new HttpEntity(headers);
         ResponseEntity<Response<ArrayList<AdminTrip>>> re = restTemplate.exchange(
                 "http://ts-travel-service:12346/api/v1/travelservice/admin_trip",
@@ -65,6 +105,8 @@ public class AdminTravelServiceImpl implements AdminTravelService {
         } else {
             AdminTravelServiceImpl.LOGGER.error("[Get Travel From ts-travel2-service fail!]");
         }
+
+         */
         result.setData(trips);
 
         return result;

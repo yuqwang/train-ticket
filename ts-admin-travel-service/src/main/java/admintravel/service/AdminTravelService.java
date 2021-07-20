@@ -4,6 +4,8 @@ import admintravel.entity.TravelInfo;
 import edu.fudan.common.util.Response;
 import org.springframework.http.HttpHeaders;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * @author fdse
  */
@@ -15,7 +17,7 @@ public interface AdminTravelService {
      * @param headers headers
      * @return Response
      */
-    Response getAllTravels(  HttpHeaders headers);
+    Response getAllTravels(  HttpHeaders headers) throws InterruptedException, ExecutionException;
 
     /**
      * add travel by traver information
