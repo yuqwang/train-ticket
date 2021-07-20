@@ -9,12 +9,16 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import plan.async.AsyncTask;
 import plan.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * @author fdse
@@ -24,10 +28,14 @@ public class RoutePlanServiceImpl implements RoutePlanService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private AsyncTask asyncTask;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(RoutePlanServiceImpl.class);
 
     @Override
-    public Response searchCheapestResult(RoutePlanInfo info, HttpHeaders headers) {
+    public Response searchCheapestResult(RoutePlanInfo info, HttpHeaders headers) throws InterruptedException, ExecutionException {
 
         //1.Violence pulls out all the results of travel-service and travle2-service
         TripInfo queryInfo = new TripInfo();
@@ -35,8 +43,18 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         queryInfo.setEndPlace(info.getToStationName());
         queryInfo.setDepartureTime(info.getTravelDate());
 
-        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServive(queryInfo, headers);
-        ArrayList<TripResponse> normalTrain = getTripFromNormalTrainTravelService(queryInfo, headers);
+        /*********************** Fault Reproduction - Error Process Seq *************************/
+        // 1. get trip from high speed travel service (ts-travel-service)
+        Future<ArrayList<TripResponse>> getTripFromHighSpeedTravelServiceFuture = asyncTask.getTripFromHighSpeedTravelService(queryInfo, headers);
+        // 2. get trip from normal travel service (ts-travel2-service)
+        Future<ArrayList<TripResponse>> getTripFromNormalTravelServiceFuture = asyncTask.getTripFromNormalTravelService(queryInfo, headers);
+        while(!getTripFromHighSpeedTravelServiceFuture.isDone()||!getTripFromNormalTravelServiceFuture.isDone()){
+            // wait for al task done.
+        }
+        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServiceFuture.get();
+        ArrayList<TripResponse> normalTrain = getTripFromNormalTravelServiceFuture.get();
+//        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServive(queryInfo, headers);
+//        ArrayList<TripResponse> normalTrain = getTripFromNormalTrainTravelService(queryInfo, headers);
 
         //2.Sort by second-class seats
         ArrayList<TripResponse> finalResult = new ArrayList<>();

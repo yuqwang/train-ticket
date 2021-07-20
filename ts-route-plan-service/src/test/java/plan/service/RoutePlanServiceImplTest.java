@@ -20,6 +20,7 @@ import plan.entity.TripResponse;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 @RunWith(JUnit4.class)
 public class RoutePlanServiceImplTest {
@@ -38,7 +39,7 @@ public class RoutePlanServiceImplTest {
     }
 
     @Test
-    public void testSearchCheapestResult() {
+    public void testSearchCheapestResult() throws ExecutionException, InterruptedException {
         RoutePlanInfo info = new RoutePlanInfo("form_station", "to_station", new Date(), 1);
         //mock getTripFromHighSpeedTravelServive() and getTripFromNormalTrainTravelService()
         ArrayList<TripResponse> tripResponses = new ArrayList<>();
