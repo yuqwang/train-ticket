@@ -148,7 +148,7 @@ spec:
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
             - name: KEY_STORE_PASSWORD
-                value: "passw0rd"
+              value: "passw0rd"
           ports:
             - containerPort: 15679
           resources:
@@ -209,7 +209,7 @@ spec:
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
             - name: KEY_STORE_PASSWORD
-                value: "passw0rd"
+              value: "passw0rd"
           ports:
             - containerPort: 16579
           resources:
