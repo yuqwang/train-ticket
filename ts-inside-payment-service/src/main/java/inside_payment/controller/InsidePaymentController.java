@@ -1,5 +1,6 @@
 package inside_payment.controller;
 
+import edu.fudan.common.util.Response;
 import inside_payment.entity.*;
 import inside_payment.service.InsidePaymentService;
 import org.slf4j.Logger;
@@ -31,7 +32,12 @@ public class InsidePaymentController {
     @PostMapping(value = "/inside_payment")
     public HttpEntity pay(@RequestBody PaymentInfo info, @RequestHeader HttpHeaders headers) {
         InsidePaymentController.LOGGER.info("[Inside Payment Service][Pay] Pay for: {}", info.getOrderId());
-        return ok(service.pay(info, headers));
+        try {
+            return ok(service.pay(info, headers));
+        }catch (Exception e){
+            InsidePaymentController.LOGGER.error(e.toString());
+            return ok(new Response<>(1, "error", e.toString()));
+        }
     }
 
     @PostMapping(value = "/inside_payment/account")

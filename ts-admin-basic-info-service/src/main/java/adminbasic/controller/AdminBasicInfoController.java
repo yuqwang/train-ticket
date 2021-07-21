@@ -2,6 +2,7 @@ package adminbasic.controller;
 
 import adminbasic.entity.*;
 import adminbasic.service.AdminBasicInfoService;
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,7 +116,12 @@ public class AdminBasicInfoController {
     @GetMapping(path = "/adminbasic/configs")
     public HttpEntity getAllConfigs(@RequestHeader HttpHeaders headers) {
         AdminBasicInfoController.LOGGER.info("[Admin Basic Info Service][Find All Config by admin  ");
-        return ok(adminBasicInfoService.getAllConfigs(headers));
+        try{
+            return ok(adminBasicInfoService.getAllConfigs(headers));
+        }catch (Exception e){
+            AdminBasicInfoController.LOGGER.error(e.toString());
+            return ok(new Response<>(1, "error", e.toString()));
+        }
     }
 
     @CrossOrigin(origins = "*")
@@ -143,7 +149,12 @@ public class AdminBasicInfoController {
     @GetMapping(path = "/adminbasic/prices")
     public HttpEntity getAllPrices(@RequestHeader HttpHeaders headers) {
         AdminBasicInfoController.LOGGER.info("[Admin Basic Info Service][Find All Price by admin ");
-        return ok(adminBasicInfoService.getAllPrices(headers));
+        try {
+            return ok(adminBasicInfoService.getAllPrices(headers));
+        }catch (Exception e){
+            AdminBasicInfoController.LOGGER.error(e.toString());
+            return ok(new Response<>(1, "error", e.toString()));
+        }
     }
 
     @CrossOrigin(origins = "*")
