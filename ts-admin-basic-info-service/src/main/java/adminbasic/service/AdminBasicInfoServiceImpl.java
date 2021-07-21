@@ -212,12 +212,17 @@ public class AdminBasicInfoServiceImpl implements AdminBasicInfoService {
 
 
         HttpEntity requestEntity = new HttpEntity(headers);
-        ResponseEntity<Response> re = restTemplate.exchange(
-                configs,
-                HttpMethod.GET,
-                requestEntity,
-                Response.class);
-
+        ResponseEntity<Response> re = null;
+        try {
+            re = restTemplate.exchange(
+                    configs,
+                    HttpMethod.GET,
+                    requestEntity,
+                    Response.class);
+        }catch(Exception e){
+            AdminBasicInfoServiceImpl.LOGGER.error(e.getMessage());
+            throw e;
+        }
         return re.getBody();
     }
 
