@@ -1026,7 +1026,7 @@ spec:
     spec:
       containers:
       - name: ts-payment-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-payment-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-payment-service:error-F4
         imagePullPolicy: Always
         env:
           - name: NODE_IP
@@ -1039,6 +1039,8 @@ spec:
             value: "10.176.122.6"
           - name: SW_GRPC_LOG_SERVER_PORT
             value: "11800"
+          - name: KEY_STORE_PASSWORD
+            value: "passw0rd"
         ports:
         - containerPort: 19001
         resources:

@@ -1,6 +1,17 @@
 # HTTP Server
 server:
   port: 19001  # HTTP (Tomcat) port
+ssl:
+  key-store: classpath:keystore.p12
+  keyStoreType: PKCS12
+  keyAlias: tomcat
+  key-store-password: ${KEY_STORE_PASSWORD}
+http:
+  client:
+    ssl:
+      key-store: classpath:keystore.p12
+      trust-store: classpath:keystore.p12
+      trust-store-password: ${KEY_STORE_PASSWORD}
 
 spring:
   application:

@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-inside-payment-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-inside-payment-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-inside-payment-service
+    spec:
+      containers:
+        - name: ts-inside-payment-service
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-inside-payment-service:error-F4
+          imagePullPolicy: Always
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "10.176.122.6:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "10.176.122.6"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+          ports:
+            - containerPort: 18673
+          resources:
+            requests:
+              cpu: 250m
+              memory: 250Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          readinessProbe:
+            tcpSocket:
+              port: 18673
+            initialDelaySeconds: 160
+            periodSeconds: 10
+            timeoutSeconds: 5
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-payment-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-payment-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-payment-service
+    spec:
+      containers:
+        - name: ts-payment-service
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-payment-service:error-F4
+          imagePullPolicy: Always
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "10.176.122.6:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "10.176.122.6"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+            - name: KEY_STORE_PASSWORD
+              value: "passw0rd"
+          ports:
+            - containerPort: 19001
+          resources:
+            requests:
+              cpu: 250m
+              memory: 250Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          readinessProbe:
+            tcpSocket:
+              port: 19001
+            initialDelaySeconds: 160
+            periodSeconds: 10
+            timeoutSeconds: 5
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-inside-payment-service
+spec:
+  ports:
+    - name: http
+      port: 18673
+  selector:
+    app: ts-inside-payment-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-payment-service
+spec:
+  ports:
+    - name: http
+      port: 19001
+  selector:
+    app: ts-payment-service
+
+---
