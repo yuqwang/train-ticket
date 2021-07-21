@@ -154,7 +154,7 @@ public class AdminBasicInfoController {
             return ok(adminBasicInfoService.getAllPrices(headers));
         }catch (Exception e){
             AdminBasicInfoController.LOGGER.error(e.toString());
-            return ok(new Response<>(1, "error", e,toString()));
+            return ok(new Response<>(1, "error", e.toString()));
         }
     }
 
