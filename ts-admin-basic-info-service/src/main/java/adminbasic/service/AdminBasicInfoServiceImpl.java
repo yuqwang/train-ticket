@@ -264,13 +264,18 @@ public class AdminBasicInfoServiceImpl implements AdminBasicInfoService {
 
 
         HttpEntity requestEntity = new HttpEntity(headers);
-        ResponseEntity<Response> re = restTemplate.exchange(
-                prices,
-                HttpMethod.GET,
-                requestEntity,
-                Response.class);
-
-        AdminBasicInfoServiceImpl.LOGGER.info("[!!!!GetAllPriceResult] ");
+        ResponseEntity<Response> re = null;
+        try {
+            re = restTemplate.exchange(
+                    prices,
+                    HttpMethod.GET,
+                    requestEntity,
+                    Response.class);
+            AdminBasicInfoServiceImpl.LOGGER.info("[!!!!GetAllPriceResult] ");
+        }catch (Exception e) {
+            AdminBasicInfoServiceImpl.LOGGER.error(e.getMessage());
+            throw e;
+        }
         return re.getBody();
     }
 
