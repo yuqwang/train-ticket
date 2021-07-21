@@ -97,12 +97,19 @@ public class InsidePaymentServiceImpl implements InsidePaymentService {
                 /****这里调用第三方支付***/
 
                 HttpEntity requestEntityOutsidePaySuccess = new HttpEntity(outsidePaymentInfo, headers);
-                ResponseEntity<Response> reOutsidePaySuccess = restTemplate.exchange(
-                        "http://ts-payment-service:19001/api/v1/paymentservice/payment",
-                        HttpMethod.POST,
-                        requestEntityOutsidePaySuccess,
-                        Response.class);
-                Response outsidePaySuccess = reOutsidePaySuccess.getBody();
+                ResponseEntity<Response> reOutsidePaySuccess;
+                Response outsidePaySuccess;
+                try {
+                    reOutsidePaySuccess = restTemplate.exchange(
+                            "http://ts-payment-service:19001/api/v1/paymentservice/payment",
+                            HttpMethod.POST,
+                            requestEntityOutsidePaySuccess,
+                            Response.class);
+                    outsidePaySuccess = reOutsidePaySuccess.getBody();
+                }catch (Exception e){
+                    InsidePaymentServiceImpl.LOGGER.error(e.getMessage());
+                    throw e;
+                }
 
                 InsidePaymentServiceImpl.LOGGER.info("Out pay result: {}", outsidePaySuccess.toString());
                 if (outsidePaySuccess.getStatus() == 1) {

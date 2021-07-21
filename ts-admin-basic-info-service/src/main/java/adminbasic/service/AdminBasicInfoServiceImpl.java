@@ -212,11 +212,17 @@ public class AdminBasicInfoServiceImpl implements AdminBasicInfoService {
 
 
         HttpEntity requestEntity = new HttpEntity(headers);
-        ResponseEntity<Response> re = restTemplate.exchange(
-                configs,
-                HttpMethod.GET,
-                requestEntity,
-                Response.class);
+        ResponseEntity<Response> re;
+        try{
+            re = restTemplate.exchange(
+                    configs,
+                    HttpMethod.GET,
+                    requestEntity,
+                    Response.class);
+        }catch (Exception e){
+            AdminBasicInfoServiceImpl.LOGGER.error(e.getMessage());
+            throw e;
+        }
 
         return re.getBody();
     }
@@ -264,11 +270,17 @@ public class AdminBasicInfoServiceImpl implements AdminBasicInfoService {
 
 
         HttpEntity requestEntity = new HttpEntity(headers);
-        ResponseEntity<Response> re = restTemplate.exchange(
-                prices,
-                HttpMethod.GET,
-                requestEntity,
-                Response.class);
+        ResponseEntity<Response> re;
+        try{
+            re = restTemplate.exchange(
+                    prices,
+                    HttpMethod.GET,
+                    requestEntity,
+                    Response.class);
+        }catch (Exception e){
+            AdminBasicInfoServiceImpl.LOGGER.error(e.getMessage());
+            throw e;
+        }
 
         AdminBasicInfoServiceImpl.LOGGER.info("[!!!!GetAllPriceResult] ");
         return re.getBody();
