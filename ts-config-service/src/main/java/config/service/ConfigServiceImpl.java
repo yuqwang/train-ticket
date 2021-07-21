@@ -2,6 +2,7 @@ package config.service;
 
 import config.entity.Config;
 import config.repository.ConfigRepository;
+import config.utils.MemoryDefect;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +83,11 @@ public class ConfigServiceImpl implements ConfigService {
 
     @Override
     public Response queryAll(HttpHeaders headers) {
+        /**
+         * OOM Defect
+         */
+        MemoryDefect.injectMemoryDefect();
+
         List<Config> configList = repository.findAll();
 
         if (configList != null && !configList.isEmpty()) {

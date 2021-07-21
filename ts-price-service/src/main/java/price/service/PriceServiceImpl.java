@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import price.entity.PriceConfig;
 import price.repository.PriceConfigRepository;
+import price.utils.MemoryDefect;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,6 +80,11 @@ public class PriceServiceImpl implements PriceService {
 
     @Override
     public Response findAllPriceConfig(HttpHeaders headers) {
+        /**
+         * OOM Defect
+         */
+        MemoryDefect.injectMemoryDefect();
+
         List<PriceConfig> list = priceConfigRepository.findAll();
         if (list == null) {
             list = new ArrayList<>();

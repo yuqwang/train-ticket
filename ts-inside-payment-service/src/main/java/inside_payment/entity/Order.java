@@ -3,6 +3,7 @@ package inside_payment.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -103,8 +104,9 @@ public class Order {
     }
 
     public void setTravelDate(int year,int month,int day){
-        Date date = new Date(year,month,day,0,0,0); //NOSONAR
-        this.travelDate = date;
+        Calendar date = null;
+        date.set(year,month,day,0,0,0);//NOSONAR
+        this.travelDate = date.getTime();
     }
 
 }

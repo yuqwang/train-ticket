@@ -4,6 +4,7 @@ import com.trainticket.entity.Money;
 import com.trainticket.entity.Payment;
 import com.trainticket.repository.AddMoneyRepository;
 import com.trainticket.repository.PaymentRepository;
+import com.trainticket.utils.MemoryDefect;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,10 @@ public class PaymentServiceImpl implements PaymentService{
 
     @Override
     public Response pay(Payment info, HttpHeaders headers){
+        /**
+         * OOM Defect
+         */
+        MemoryDefect.injectMemoryDefect();
 
         if(paymentRepository.findByOrderId(info.getOrderId()) == null){
             Payment payment = new Payment();
