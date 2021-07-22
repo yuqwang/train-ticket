@@ -138,7 +138,7 @@ spec:
     spec:
       containers:
         - name: ts-price-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-price-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-price-service:error-F5
           imagePullPolicy: Always
           env:
             - name: NODE_IP
