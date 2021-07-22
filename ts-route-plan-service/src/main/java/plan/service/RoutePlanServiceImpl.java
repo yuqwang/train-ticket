@@ -153,8 +153,10 @@ public class RoutePlanServiceImpl implements RoutePlanService {
 
     @Override
     public Response searchMinStopStations(RoutePlanInfo info, HttpHeaders headers) {
-        String fromStationId = queryForStationId(info.getFormStationName(), headers);
+//        String fromStationId = queryForStationId(info.getFormStationName(), headers);
         String toStationId = queryForStationId(info.getToStationName(), headers);
+        String fromStationId = queryForStationId(info.getFormStationName(), headers);
+        LOGGER.error("[Route Plan Service] query for station id sequence error.");
         RoutePlanServiceImpl.LOGGER.info("From Id: {} To: {}", fromStationId , toStationId);
         //1.Get the route through the two stations
 
