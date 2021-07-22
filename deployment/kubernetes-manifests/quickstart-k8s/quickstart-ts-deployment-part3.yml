@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: ts-ui-dashboard
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ui-dashboard:sw1.6
+        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-ui-dashboard:bugfix.food
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
