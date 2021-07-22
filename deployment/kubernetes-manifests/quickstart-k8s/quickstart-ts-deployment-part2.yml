@@ -1,44 +1,3 @@
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: rest-service-collect
-#   labels:
-#     app: rest-service-collect
-# spec:
-#   type: NodePort
-#   ports:
-#     - port: 9413
-#   selector:
-#     app: rest-service-collect
-# ---
-
-# apiVersion: extensions/v1beta1
-# kind: Deployment
-# metadata:
-#   name: rest-service-collect
-# spec:
-#   replicas: 1
-#   template:
-#     metadata:
-#       labels:
-#         app: rest-service-collect
-#         version: v1
-#     spec:
-#       nodeName: k8snode3
-#       containers:
-#       - name: rest-service-collect
-#         image: header/rest-service-collect
-#         imagePullPolicy: IfNotPresent
-#         ports:
-#         - containerPort: 9413
-#         volumeMounts:
-#         - name: collect
-#           mountPath: /parquet
-#       volumes:
-#       - name: collect
-#         hostPath:
-#           path: /home/parquet
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -73,14 +32,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 18767
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -120,14 +79,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16112
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -166,14 +125,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16113
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -194,7 +153,7 @@ spec:
     spec:
       containers:
         - name: ts-admin-travel-service
-          image: registry.cn-hangzhou.aliyuncs.com/microservicedemos/f5-fault03-admin-travel-service:0.1
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-travel-service:sw1.6
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -207,21 +166,19 @@ spec:
               value: "172.19.109.144"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
-            - name: rest_template_timeout
-              value: "30000"
           ports:
             - containerPort: 16114
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16114
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -260,14 +217,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16115
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -306,14 +263,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 18888
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -352,14 +309,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 15680
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -398,14 +355,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 18885
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -444,14 +401,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 15679
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -490,14 +447,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16110
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -536,14 +493,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16111
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -582,14 +539,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 12347
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -628,14 +585,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 12386
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -674,14 +631,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 18855
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -702,7 +659,7 @@ spec:
     spec:
       containers:
         - name: ts-food-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-food-service:1.0
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -715,19 +672,23 @@ spec:
               value: "172.19.109.144"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
+            - name: rabbitmq_host
+              value: "rabbitmq"
+            - name: rabbitmq_port
+              value: "5672"
           ports:
             - containerPort: 18856
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 18856
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -766,14 +727,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 18673
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -812,14 +773,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 12340
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -858,14 +819,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 12862
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -886,7 +847,7 @@ spec:
     spec:
       containers:
         - name: ts-notification-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-notification-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-notification-service:1.0
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -899,19 +860,27 @@ spec:
               value: "172.19.109.144"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
+            - name: email_address
+              value: "trainticket_notify@163.com"
+            - name: email_password
+              value: "GZKSCXHBOLKMCLDQ"
+            - name: rabbitmq_host
+              value: "rabbitmq"
+            - name: rabbitmq_port
+              value: "5672"
           ports:
             - containerPort: 17853
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 17853
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -950,14 +919,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 12032
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -996,14 +965,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 12031
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1042,14 +1011,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 19001
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1070,7 +1039,7 @@ spec:
     spec:
       containers:
         - name: ts-preserve-other-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-other-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-preserve-other-service:1.0
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -1083,19 +1052,23 @@ spec:
               value: "172.19.109.144"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
+            - name: rabbitmq_host
+              value: "rabbitmq"
+            - name: rabbitmq_port
+              value: "5672"
           ports:
             - containerPort: 14569
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 14569
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1116,7 +1089,7 @@ spec:
     spec:
       containers:
         - name: ts-preserve-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-preserve-service:1.0
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -1129,19 +1102,23 @@ spec:
               value: "172.19.109.144"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
+            - name: rabbitmq_host
+              value: "rabbitmq"
+            - name: rabbitmq_port
+              value: "5672"
           ports:
             - containerPort: 14568
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 14568
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1180,14 +1157,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16579
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1226,14 +1203,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 18886
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1272,14 +1249,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 14578
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1318,14 +1295,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 11178
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1364,14 +1341,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 18898
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1410,14 +1387,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 11188
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1438,7 +1415,7 @@ spec:
     spec:
       containers:
         - name: ts-user-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-user-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-user-service:1.0
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -1456,14 +1433,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 12342
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1502,14 +1479,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 12345
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1548,14 +1525,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16108
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1589,20 +1566,19 @@ spec:
               value: "172.19.109.144"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
-
           ports:
             - containerPort: 15681
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 15681
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1641,14 +1617,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 14567
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1669,7 +1645,7 @@ spec:
     spec:
       containers:
         - name: ts-travel2-service
-          image: registry.cn-hangzhou.aliyuncs.com/microservicedemos/f5-fault03-travel2-service:0.1
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel2-service:sw1.6
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -1682,23 +1658,19 @@ spec:
               value: "172.19.109.144"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
-            - name: sleep_seconds
-              value: "10"
-            - name: tomcat_maxthread
-              value: "1"
           ports:
             - containerPort: 16346
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16346
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1737,14 +1709,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 14322
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1778,22 +1750,72 @@ spec:
               value: "172.19.109.144"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
-
           ports:
             - containerPort: 12346
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 12346
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-delivery-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-delivery-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-delivery-service
+    spec:
+      containers:
+        - name: ts-delivery-service
+          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-delivery-service:1.0
+          imagePullPolicy: Always
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "172.19.109.144:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "172.19.109.144"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+            - name: rabbitmq_host
+              value: "rabbitmq"
+            - name: rabbitmq_port
+              value: "5672"
+          ports:
+            - containerPort: 18808
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          readinessProbe:
+            tcpSocket:
+              port: 18808
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+
 ---
 
 apiVersion: apps/v1
@@ -1830,14 +1852,14 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 15678
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
@@ -1876,18 +1898,17 @@ spec:
           resources:
             requests:
               cpu: 100m
-              memory: 250Mi
+              memory: 100Mi
             limits:
               cpu: 500m
               memory: 500Mi
           readinessProbe:
             tcpSocket:
               port: 16101
-            initialDelaySeconds: 160
+            initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -1898,6 +1919,18 @@ spec:
       port: 18767
   selector:
     app: ts-admin-basic-info-service
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-delivery-service
+spec:
+  ports:
+    - name: http
+      port: 18808
+  selector:
+    app: ts-delivery-service
 
 ---
 
@@ -2409,3 +2442,4 @@ spec:
       port: 16101
   selector:
     app: ts-voucher-service
+
