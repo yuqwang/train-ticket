@@ -1252,7 +1252,7 @@ spec:
     spec:
       containers:
       - name: ts-route-plan-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-plan-service:sw1.6
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-plan-service:error-F11
         imagePullPolicy: Always
         env:
           - name: NODE_IP

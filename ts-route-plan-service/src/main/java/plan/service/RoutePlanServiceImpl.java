@@ -35,8 +35,11 @@ public class RoutePlanServiceImpl implements RoutePlanService {
         queryInfo.setEndPlace(info.getToStationName());
         queryInfo.setDepartureTime(info.getTravelDate());
 
-        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServive(queryInfo, headers);
+//        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServive(queryInfo, headers);
         ArrayList<TripResponse> normalTrain = getTripFromNormalTrainTravelService(queryInfo, headers);
+        ArrayList<TripResponse> highSpeed = getTripFromHighSpeedTravelServive(queryInfo, headers);
+        LOGGER.error("[Route Plan Service] Get Trip Sequence Error.");
+
 
         //2.Sort by second-class seats
         ArrayList<TripResponse> finalResult = new ArrayList<>();
