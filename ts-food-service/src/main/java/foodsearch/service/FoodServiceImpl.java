@@ -1,7 +1,9 @@
 package foodsearch.service;
 
+import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
 import foodsearch.entity.*;
+import foodsearch.mq.RabbitSend;
 import foodsearch.repository.FoodOrderRepository;
 import foodsearch.utils.MemoryDefect;
 import org.slf4j.Logger;
@@ -29,6 +31,9 @@ public class FoodServiceImpl implements FoodService {
 
     @Autowired
     private FoodOrderRepository foodOrderRepository;
+
+    @Autowired
+    private RabbitSend sender;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FoodServiceImpl.class);
 
@@ -59,6 +64,21 @@ public class FoodServiceImpl implements FoodService {
             fo.setPrice(addFoodOrder.getPrice());
             foodOrderRepository.save(fo);
             FoodServiceImpl.LOGGER.info("[AddFoodOrder] Success.");
+
+            Delivery delivery = new Delivery();
+            delivery.setFoodName(addFoodOrder.getFoodName());
+            delivery.setOrderId(addFoodOrder.getOrderId());
+            delivery.setStationName(addFoodOrder.getStationName());
+            delivery.setStoreName(addFoodOrder.getStoreName());
+
+            String deliveryJson = JsonUtils.object2Json(delivery);
+            LOGGER.info("[AddFoodOrder] delivery info [{}] send to mq", deliveryJson);
+            try {
+                sender.send(deliveryJson);
+            } catch (Exception e) {
+                LOGGER.error("[AddFoodOrder] send delivery info to mq error, exception is [{}]", e.toString());
+            }
+
             return new Response<>(1, success, fo);
         }
     }
