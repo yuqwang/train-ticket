@@ -3,6 +3,7 @@ package price.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -10,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import price.entity.PriceConfig;
 import price.service.PriceService;
+
+import java.util.concurrent.TimeUnit;
+
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -21,6 +25,9 @@ public class PriceController {
 
     @Autowired
     PriceService service;
+
+    @Value("${sleep_seconds}")
+    private long sleepSeconds;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PriceController.class);
 
@@ -39,6 +46,11 @@ public class PriceController {
     @GetMapping(value = "/prices")
     public HttpEntity queryAll(@RequestHeader HttpHeaders headers) {
         PriceController.LOGGER.info("Query all prices");
+        try {
+            TimeUnit.SECONDS.sleep(sleepSeconds);
+        } catch (java.lang.InterruptedException e) {
+            LOGGER.info("slowly executed " + sleepSeconds + " seconds");
+        }
         return ok(service.findAllPriceConfig(headers));
     }
 

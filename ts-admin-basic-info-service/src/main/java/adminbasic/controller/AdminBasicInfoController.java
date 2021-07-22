@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -115,7 +116,12 @@ public class AdminBasicInfoController {
     @GetMapping(path = "/adminbasic/configs")
     public HttpEntity getAllConfigs(@RequestHeader HttpHeaders headers) {
         AdminBasicInfoController.LOGGER.info("[Admin Basic Info Service][Find All Config by admin  ");
-        return ok(adminBasicInfoService.getAllConfigs(headers));
+        try{
+            return ok(adminBasicInfoService.getAllConfigs(headers));
+        }catch(Exception e){
+            AdminBasicInfoController.LOGGER.error("[Admin Basic Info Service] Get all configs time out:" + e.toString());
+            return status(500).build();
+        }
     }
 
     @CrossOrigin(origins = "*")
@@ -143,7 +149,12 @@ public class AdminBasicInfoController {
     @GetMapping(path = "/adminbasic/prices")
     public HttpEntity getAllPrices(@RequestHeader HttpHeaders headers) {
         AdminBasicInfoController.LOGGER.info("[Admin Basic Info Service][Find All Price by admin ");
-        return ok(adminBasicInfoService.getAllPrices(headers));
+        try {
+            return ok(adminBasicInfoService.getAllPrices(headers));
+        }catch (Exception e){
+            AdminBasicInfoController.LOGGER.error("[Admin Basic Info Service] Get all prices time out:" + e.toString());
+            return status(500).build();
+        }
     }
 
     @CrossOrigin(origins = "*")

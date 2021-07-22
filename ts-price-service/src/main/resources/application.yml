@@ -13,6 +13,7 @@ spring:
 # HTTP Server
 server:
   port: 16579  # HTTP (Tomcat) port
-
+  tomcat:
+    max-threads: ${tomcat_maxthread}
 swagger:
   controllerPackage: price.controller

@@ -1,5 +1,6 @@
 package adminbasic;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -19,6 +20,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @IntegrationComponentScan
 @EnableSwagger2
 public class AdminBasicInfoApplication {
+    @Value("${rest_template_timeout}")
+    private int readTimeout;
 
     public static void main(String[] args) {
         SpringApplication.run(AdminBasicInfoApplication.class, args);
@@ -26,6 +29,9 @@ public class AdminBasicInfoApplication {
 
     @Bean
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
+        if (readTimeout > 0) {
+            return builder.setReadTimeout(readTimeout).build();
+        }
         return builder.build();
     }
 }

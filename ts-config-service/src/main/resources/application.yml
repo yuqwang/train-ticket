@@ -12,6 +12,8 @@ spring:
 # HTTP Server
 server:
   port: 15679  # HTTP (Tomcat) port
+  tomcat:
+    max-threads: ${tomcat_maxthread}
 
 swagger:
   controllerPackage: config.controller
