@@ -1,5 +1,6 @@
 package preserve.service;
 
+import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import preserve.async.AsyncTask;
 import preserve.entity.*;
+import preserve.mq.RabbitSend;
 
 import java.util.Date;
 import java.util.UUID;
@@ -30,6 +32,9 @@ public class PreserveServiceImpl implements PreserveService {
 
     @Autowired
     private AsyncTask asyncTask;
+
+    @Autowired
+    private RabbitSend sendService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PreserveServiceImpl.class);
 
@@ -273,15 +278,17 @@ public class PreserveServiceImpl implements PreserveService {
     }
 
     public boolean sendEmail(NotifyInfo notifyInfo, HttpHeaders httpHeaders) {
-        PreserveServiceImpl.LOGGER.info("[Preserve Service][Send Email]");
-        HttpEntity requestEntitySendEmail = new HttpEntity(notifyInfo, httpHeaders);
-        ResponseEntity<Boolean> reSendEmail = restTemplate.exchange(
-                "http://ts-notification-service:17853/api/v1/notifyservice/notification/preserve_success",
-                HttpMethod.POST,
-                requestEntitySendEmail,
-                Boolean.class);
+        PreserveServiceImpl.LOGGER.info("[Preserve Service][Send Email] send email to mq");
 
-        return reSendEmail.getBody();
+        try {
+            String infoJson = JsonUtils.object2Json(notifyInfo);
+            sendService.send(infoJson);
+        } catch (Exception e) {
+            PreserveServiceImpl.LOGGER.error("[Preserve Service] send email to mq error, exception is:" + e);
+            return false;
+        }
+
+        return true;
     }
 
     public User getAccount(String accountId, HttpHeaders httpHeaders) {
