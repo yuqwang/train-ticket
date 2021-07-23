@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -31,7 +32,12 @@ public class InsidePaymentController {
     @PostMapping(value = "/inside_payment")
     public HttpEntity pay(@RequestBody PaymentInfo info, @RequestHeader HttpHeaders headers) {
         InsidePaymentController.LOGGER.info("[Inside Payment Service][Pay] Pay for: {}", info.getOrderId());
-        return ok(service.pay(info, headers));
+        try {
+            return ok(service.pay(info, headers));
+        }catch (Exception e){
+            InsidePaymentController.LOGGER.error("request for paying denied: " + e.toString());
+            return status(500).build();
+        }
     }
 
     @PostMapping(value = "/inside_payment/account")
