@@ -73,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/api/v1/priceservice/**").permitAll()
+                .antMatchers(HttpMethod.GET, prices).denyAll()
                 .antMatchers(HttpMethod.POST, prices).hasAnyRole(admin)
                 .antMatchers(HttpMethod.DELETE, prices).hasAnyRole(admin)
                 .antMatchers(HttpMethod.PUT, prices).hasAnyRole(admin)
