@@ -310,7 +310,7 @@ spec:
     spec:
       containers:
         - name: ts-food-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-config-service:error-F3
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:error-F3
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -388,7 +388,7 @@ spec:
     spec:
       containers:
         - name: ts-preserve-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-config-service:error-F3
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:error-F3
           imagePullPolicy: Always
           env:
             - name: NODE_IP
