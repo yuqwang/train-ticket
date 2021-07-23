@@ -328,7 +328,7 @@ spec:
             - name: rabbitmq_port
               value: "5672"
             - name: "JAVA_OPTIONS"
-                value: "-Xmx300m"
+              value: "-Xmx300m"
           ports:
             - containerPort: 18856
           resources:
