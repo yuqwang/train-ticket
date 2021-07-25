@@ -45,7 +45,7 @@ public class OrderServiceImpl implements OrderService {
             }
             LeftTicketInfo leftTicketInfo = new LeftTicketInfo();
             leftTicketInfo.setSoldTickets(ticketSet);
-            OrderServiceImpl.LOGGER.info("Left ticket info is: {}", leftTicketInfo.toString());
+            OrderServiceImpl.LOGGER.info("Left ticket length is: {}", leftTicketInfo.getSoldTickets().size());
             return new Response<>(1, success, leftTicketInfo);
         } else {
             OrderServiceImpl.LOGGER.error("Left ticket info is empty, seat from date: {}, train number: {}",seatRequest.getTravelDate(),seatRequest.getTrainNumber());

@@ -49,7 +49,7 @@ public class OrderOtherServiceImpl implements OrderOtherService {
 
             LeftTicketInfo leftTicketInfo = new LeftTicketInfo();
             leftTicketInfo.setSoldTickets(ticketSet);
-            OrderOtherServiceImpl.LOGGER.info("Left ticket info is: {}", leftTicketInfo.toString());
+            OrderOtherServiceImpl.LOGGER.info("Left ticket length is: {}", leftTicketInfo.getSoldTickets().size());
 
             return new Response<>(1, success, leftTicketInfo);
         } else {
