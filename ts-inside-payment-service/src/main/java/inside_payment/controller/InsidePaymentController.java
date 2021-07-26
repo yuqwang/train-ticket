@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -36,7 +37,7 @@ public class InsidePaymentController {
             return ok(service.pay(info, headers));
         }catch (Exception e){
             InsidePaymentController.LOGGER.error(e.toString());
-            return ok(new Response<>(1, "error", e.toString()));
+            return status(500).build();
         }
     }
 

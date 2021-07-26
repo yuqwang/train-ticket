@@ -10,6 +10,7 @@ import preserve.entity.*;
 import preserve.service.PreserveService;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -33,7 +34,12 @@ public class PreserveController {
     public HttpEntity preserve(@RequestBody OrderTicketsInfo oti,
                                @RequestHeader HttpHeaders headers) {
         PreserveController.LOGGER.info("[Preserve] Account  order from {} -----> {} at {}", oti.getFrom(), oti.getTo(), oti.getDate());
-        return ok(preserveService.preserve(oti, headers));
+        try {
+            return ok(preserveService.preserve(oti, headers));
+        }catch (Exception e){
+            PreserveController.LOGGER.error(e.toString());
+            return status(500).build();
+        }
     }
 
 }

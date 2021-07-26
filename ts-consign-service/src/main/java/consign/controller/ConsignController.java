@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -34,13 +35,23 @@ public class ConsignController {
     public HttpEntity insertConsign(@RequestBody Consign request,
                                     @RequestHeader HttpHeaders headers) {
         logger.info("Insert consign record, id:{}", request.getId());
-        return ok(service.insertConsignRecord(request, headers));
+        try {
+            return ok(service.insertConsignRecord(request, headers));
+        }catch (Exception e){
+            logger.error(e.toString());
+            return status(500).build();
+        }
     }
 
     @PutMapping(value = "/consigns")
     public HttpEntity updateConsign(@RequestBody Consign request, @RequestHeader HttpHeaders headers) {
         logger.info("Update consign record, id: {}", request.getId());
-        return ok(service.updateConsignRecord(request, headers));
+        try {
+            return ok(service.updateConsignRecord(request, headers));
+        }catch (Exception e){
+            logger.error(e.toString());
+            return status(500).build();
+        }
     }
 
     @GetMapping(value = "/consigns/account/{id}")

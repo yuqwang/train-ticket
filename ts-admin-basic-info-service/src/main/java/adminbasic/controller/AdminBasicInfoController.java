@@ -12,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -121,7 +122,7 @@ public class AdminBasicInfoController {
             return ok(adminBasicInfoService.getAllConfigs(headers));
         }catch (Exception e){
             AdminBasicInfoController.LOGGER.error(e.toString());
-            return ok(new Response<>(1, "error", e.toString()));
+            return status(500).build();
         }
     }
 
@@ -154,7 +155,7 @@ public class AdminBasicInfoController {
             return ok(adminBasicInfoService.getAllPrices(headers));
         }catch (Exception e){
             AdminBasicInfoController.LOGGER.error(e.toString());
-            return ok(new Response<>(1, "error", e.toString()));
+            return status(500).build();
         }
     }
 

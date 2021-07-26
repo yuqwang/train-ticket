@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.UUID;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("/api/v1/foodservice")
@@ -83,7 +84,12 @@ public class FoodController {
                                  @PathVariable String endStation, @PathVariable String tripId,
                                  @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[Food Service]Get the Get Food Request!");
-        return ok(foodService.getAllFood(date, startStation, endStation, tripId, headers));
+        try {
+            return ok(foodService.getAllFood(date, startStation, endStation, tripId, headers));
+        }catch (Exception e){
+            FoodController.LOGGER.error(e.toString());
+            return status(500).build();
+        }
     }
 
 }
