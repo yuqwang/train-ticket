@@ -1116,7 +1116,7 @@ spec:
     spec:
       containers:
       - name: ts-preserve-service
-        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-preserve-service:log.error
+        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:error-F3
         imagePullPolicy: Always
         env:
           - name: NODE_IP
