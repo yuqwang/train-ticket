@@ -46,7 +46,12 @@ public class ConsignController {
     @PutMapping(value = "/consigns")
     public HttpEntity updateConsign(@RequestBody Consign request, @RequestHeader HttpHeaders headers) {
         logger.info("Update consign record, id: {}", request.getId());
-        return ok(service.updateConsignRecord(request, headers));
+        try {
+            return ok(service.updateConsignRecord(request, headers));
+        }catch (Exception e){
+            logger.info(e.toString());
+            return status(500).build();
+        }
     }
 
     @GetMapping(value = "/consigns/account/{id}")
