@@ -13,6 +13,7 @@ import plan.service.RoutePlanService;
 import java.util.concurrent.ExecutionException;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -38,7 +39,7 @@ public class RoutePlanController {
             return ok(routePlanService.searchCheapestResult(info, headers));
         }catch (Exception e){
             RoutePlanController.LOGGER.error(e.getMessage());
-            return ok(new Response<>(1, "error", e.getMessage()));
+            return status(500).build();
         }
     }
 
@@ -50,7 +51,7 @@ public class RoutePlanController {
             return ok(routePlanService.searchQuickestResult(info, headers));
         }catch (Exception e){
             RoutePlanController.LOGGER.error(e.getMessage());
-            return ok(new Response<>(1, "error", e.getMessage()));
+            return status(500).build();
         }
     }
 

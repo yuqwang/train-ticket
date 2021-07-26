@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -47,7 +48,7 @@ public class CancelController {
             return ok(cancelService.cancelOrder(orderId, loginId, headers));
         } catch (Exception e) {
             CancelController.LOGGER.error(e.getMessage());
-            return ok(new Response<>(1, "error", null));
+            return status(500).build();
         }
     }
 

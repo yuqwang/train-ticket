@@ -1089,7 +1089,7 @@ spec:
     spec:
       containers:
         - name: ts-preserve-service
-          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-preserve-service:1.0
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:error-F1
           imagePullPolicy: Always
           env:
             - name: NODE_IP

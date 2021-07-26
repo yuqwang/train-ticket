@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -38,7 +39,7 @@ public class ExecuteControlller {
             return ok(executeService.ticketExecute(orderId, headers));
         } catch (Exception e){
             ExecuteControlller.LOGGER.error(e.getMessage());
-            return ok(new Response<>(1, "error", e.getMessage()));
+            return status(500).build();
         }
     }
 

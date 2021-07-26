@@ -11,6 +11,7 @@ import preserve.entity.*;
 import preserve.service.PreserveService;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -38,7 +39,7 @@ public class PreserveController {
             return ok(preserveService.preserve(oti, headers));
         } catch (Exception e) {
             PreserveController.LOGGER.error(e.getMessage());
-            return ok(new Response<>(1, "error", null));
+            return status(500).build();
         }
     }
 
