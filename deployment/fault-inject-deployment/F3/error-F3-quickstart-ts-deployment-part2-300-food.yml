@@ -699,37 +699,39 @@ spec:
         app: ts-food-service
     spec:
       containers:
-      - name: ts-food-service
-        image: registry.cn-shanghai.aliyuncs.com/xywu/ts-food-service:error.F3
-        imagePullPolicy: Always
-        env:
-          - name: NODE_IP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.hostIP
-          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
-          - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
-          - name: SW_GRPC_LOG_SERVER_PORT
-            value: "11800"
-          - name: "JAVA_OPTIONS"
-            value: "-Xmx300m"
-        ports:
-        - containerPort: 18856
-        resources:
-          requests:
-            cpu: 250m
-            memory: 250Mi
-          limits:
-            cpu: 300m
-            memory: 500Mi
-        readinessProbe:
-          tcpSocket:
-            port: 18856
-          initialDelaySeconds: 160
-          periodSeconds: 10
-          timeoutSeconds: 5
+        - name: ts-food-service
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:error-F3
+          imagePullPolicy: Always
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "172.19.109.144:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "172.19.109.144"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+            - name: rabbitmq_host
+              value: "rabbitmq"
+            - name: rabbitmq_port
+              value: "5672"
+          ports:
+            - containerPort: 18856
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          readinessProbe:
+            tcpSocket:
+              port: 18856
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -885,35 +887,43 @@ spec:
         app: ts-notification-service
     spec:
       containers:
-      - name: ts-notification-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-notification-service:sw1.6
-        imagePullPolicy: Always
-        env:
-          - name: NODE_IP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.hostIP
-          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
-          - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
-          - name: SW_GRPC_LOG_SERVER_PORT
-            value: "11800"
-        ports:
-        - containerPort: 17853
-        resources:
-          requests:
-            cpu: 250m
-            memory: 250Mi
-          limits:
-            cpu: 500m
-            memory: 500Mi
-        readinessProbe:
-          tcpSocket:
-            port: 17853
-          initialDelaySeconds: 160
-          periodSeconds: 10
-          timeoutSeconds: 5
+        - name: ts-notification-service
+          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-notification-service:1.0
+          imagePullPolicy: Always
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "172.19.109.144:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "172.19.109.144"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+            - name: email_address
+              value: "trainticket_notify@163.com"
+            - name: email_password
+              value: "GZKSCXHBOLKMCLDQ"
+            - name: rabbitmq_host
+              value: "rabbitmq"
+            - name: rabbitmq_port
+              value: "5672"
+          ports:
+            - containerPort: 17853
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          readinessProbe:
+            tcpSocket:
+              port: 17853
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1069,35 +1079,39 @@ spec:
         app: ts-preserve-other-service
     spec:
       containers:
-      - name: ts-preserve-other-service
-        image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-other-service:sw1.6
-        imagePullPolicy: Always
-        env:
-          - name: NODE_IP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.hostIP
-          - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-            value: "10.176.122.6:11800"
-          - name: SW_GRPC_LOG_SERVER_HOST
-            value: "10.176.122.6"
-          - name: SW_GRPC_LOG_SERVER_PORT
-            value: "11800"
-        ports:
-        - containerPort: 14569
-        resources:
-          requests:
-            cpu: 250m
-            memory: 250Mi
-          limits:
-            cpu: 500m
-            memory: 500Mi
-        readinessProbe:
-          tcpSocket:
-            port: 14569
-          initialDelaySeconds: 160
-          periodSeconds: 10
-          timeoutSeconds: 5
+        - name: ts-preserve-other-service
+          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-preserve-other-service:1.0
+          imagePullPolicy: Always
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "172.19.109.144:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "172.19.109.144"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+            - name: rabbitmq_host
+              value: "rabbitmq"
+            - name: rabbitmq_port
+              value: "5672"
+          ports:
+            - containerPort: 14569
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          readinessProbe:
+            tcpSocket:
+              port: 14569
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
 ---
 
 apiVersion: apps/v1
@@ -1793,6 +1807,57 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 5
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-delivery-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-delivery-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-delivery-service
+    spec:
+      containers:
+        - name: ts-delivery-service
+          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-delivery-service:1.0
+          imagePullPolicy: Always
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "172.19.109.144:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "172.19.109.144"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+            - name: rabbitmq_host
+              value: "rabbitmq"
+            - name: rabbitmq_port
+              value: "5672"
+          ports:
+            - containerPort: 18808
+          resources:
+            requests:
+              cpu: 100m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          readinessProbe:
+            tcpSocket:
+              port: 18808
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+
+---
+
 
 apiVersion: apps/v1
 kind: Deployment
@@ -1896,6 +1961,19 @@ spec:
       port: 18767
   selector:
    app: ts-admin-basic-info-service
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-delivery-service
+spec:
+  ports:
+    - name: http
+      port: 18808
+  selector:
+    app: ts-delivery-service
 
 ---
 
