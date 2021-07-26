@@ -39,7 +39,7 @@ public class AdminTravelController {
             return ok(adminTravelService.getAllTravels(headers));
         } catch (Exception e){
             logger.error(e.getMessage());
-            return ok(new Response<>(1, "error", e.getMessage()));
+            return status(500).build();
         }
     }
 

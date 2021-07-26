@@ -37,7 +37,7 @@ public class AsyncTask {
         /*********************** Fault Reproduction - Error Process Seq *************************/
         double op = new Random().nextDouble();
         if(op < 1.0){
-            AsyncTask.LOGGER.info("[Preserve Other Service] Delay Process，Wrong Preserve Other Process");
+            AsyncTask.LOGGER.error("[Preserve Other Service] Delay Process，Wrong Preserve Other Process");
             Thread.sleep(4000);
         } else {
             AsyncTask.LOGGER.info("[Preserve Other Service] Normal Process，Normal Preserve Other Process");

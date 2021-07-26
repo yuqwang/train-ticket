@@ -11,6 +11,7 @@ import preserveOther.entity.OrderTicketsInfo;
 import preserveOther.service.PreserveOtherService;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -39,7 +40,7 @@ public class PreserveOtherController {
             return ok(preserveOtherService.preserve(oti, headers));
         }catch (Exception e){
             PreserveOtherController.LOGGER.error(e.getMessage());
-            return ok(new Response<>(1, "error", e.getMessage()));
+            return status(500).build();
         }
     }
 

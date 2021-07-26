@@ -39,7 +39,7 @@ public class AsyncTask {
         /*********************** Fault Reproduction - Error Process Seq *************************/
         double op = new Random().nextDouble();
         if(op < 1.0){
-            AsyncTask.LOGGER.info("[Execute Service] Delay Process，Wrong Execute Process");
+            AsyncTask.LOGGER.error("[Execute Service] Delay Process，Wrong Execute Process");
             Thread.sleep(4000);
         } else {
             AsyncTask.LOGGER.info("[Execute Service] Normal Process，Normal Execute Process");

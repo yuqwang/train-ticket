@@ -38,7 +38,7 @@ public class AsyncTask {
         /*********************** Fault Reproduction - Error Process Seq *************************/
         double op = new Random().nextDouble();
         if(op < 1.0){
-            AsyncTask.LOGGER.info("[Admin Travel Service] Delay Process，Wrong Admin Travel Process");
+            AsyncTask.LOGGER.error("[Admin Travel Service] Delay Process，Wrong Admin Travel Process");
             Thread.sleep(4000);
         } else {
             AsyncTask.LOGGER.info("[Admin Travel Service] Normal Process，Normal Admin Travel Process");

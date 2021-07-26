@@ -10,6 +10,7 @@ import seat.entity.Seat;
 import seat.service.SeatService;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -55,7 +56,12 @@ public class SeatController {
     public HttpEntity getLeftTicketOfInterval(@RequestBody Seat seatRequest, @RequestHeader HttpHeaders headers) throws InterruptedException  {
         // int
         SeatController.LOGGER.info("Get left ticket of interval,TravelDate: {},TrainNumber: {},SeatType: {}",seatRequest.getTravelDate(),seatRequest.getTrainNumber(),seatRequest.getSeatType());
-        return ok(seatService.getLeftTicketOfInterval(seatRequest, headers));
+        try {
+            return ok(seatService.getLeftTicketOfInterval(seatRequest, headers));
+        }catch (Exception e){
+            SeatController.LOGGER.error(e.toString());
+            return status(500).build();
+        }
     }
 
 }

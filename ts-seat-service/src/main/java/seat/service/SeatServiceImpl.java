@@ -338,7 +338,7 @@ public class SeatServiceImpl implements SeatService {
             /*********************** Fault Reproduction - Error Process Seq *************************/
             double op = new Random().nextDouble();
             if (op < 1.0) {
-                LOGGER.info("[getLeftTicketOfInterval] Delay Process，Wrong Query Process");
+                LOGGER.error("[getLeftTicketOfInterval] Delay Process，Wrong Query Process");
                 Thread.sleep(4000);
             } else {
                 LOGGER.info("[getLeftTicketOfInterval] Normal Process，Normal Query Process");

@@ -153,7 +153,7 @@ spec:
     spec:
       containers:
         - name: ts-admin-travel-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-travel-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-travel-service:error-F13
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -567,7 +567,7 @@ spec:
     spec:
       containers:
         - name: ts-execute-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-execute-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-execute-service:error-F13
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -1039,7 +1039,7 @@ spec:
     spec:
       containers:
         - name: ts-preserve-other-service
-          image: registry.cn-hangzhou.aliyuncs.com/h10g/ts-preserve-other-service:1.0
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-other-service:error-F13
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -1185,7 +1185,7 @@ spec:
     spec:
       containers:
         - name: ts-rebook-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-rebook-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-rebook-service:error-F13
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -1323,7 +1323,7 @@ spec:
     spec:
       containers:
         - name: ts-seat-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-seat-service:sw1.6
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-seat-service:error-F13
           imagePullPolicy: Always
           env:
             - name: NODE_IP

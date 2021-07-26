@@ -10,6 +10,7 @@ import rebook.entity.RebookInfo;
 import rebook.service.RebookService;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -39,7 +40,12 @@ public class RebookController {
     public HttpEntity rebook(@RequestBody RebookInfo info, @RequestHeader HttpHeaders headers)
             throws InterruptedException {
         RebookController.LOGGER.info("Rebook,OrderId: {}  Old Trip Id: {}  New Trip Id: {}  Date: {}  Seat Type: {}", info.getOrderId(), info.getOldTripId(), info.getTripId(), info.getDate(), info.getSeatType());
-        return ok(service.rebook(info, headers));
+        try {
+            return ok(service.rebook(info, headers));
+        }catch (Exception e){
+            RebookController.LOGGER.error(e.toString());
+            return status(500).build();
+        }
     }
 
 }

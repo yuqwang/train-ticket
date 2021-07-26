@@ -495,7 +495,7 @@ public class RebookServiceImpl implements RebookService {
             /*********************** Fault Reproduction - Error Process Seq *************************/
             double op = new Random().nextDouble();
             if (op < 1.0) {
-                LOGGER.info("[Rebook Service] Delay Process，Wrong Rebook Process");
+                LOGGER.error("[Rebook Service] Delay Process，Wrong Rebook Process");
                 Thread.sleep(4000);
             } else {
                 LOGGER.info("[Rebook Service] Normal Process，Normal Rebook Process");
