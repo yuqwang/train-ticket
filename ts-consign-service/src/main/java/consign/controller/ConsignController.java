@@ -49,7 +49,7 @@ public class ConsignController {
         try {
             return ok(service.updateConsignRecord(request, headers));
         }catch (Exception e){
-            logger.info(e.toString());
+            logger.error(e.toString());
             return status(500).build();
         }
     }
