@@ -14,6 +14,7 @@ import travel.service.TravelService;
 import java.util.ArrayList;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -106,15 +107,20 @@ public class TravelController {
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/trips/left")
     public HttpEntity queryInfo(@RequestBody TripInfo info, @RequestHeader HttpHeaders headers) {
-        if (info.getStartingPlace() == null || info.getStartingPlace().length() == 0 ||
-                info.getEndPlace() == null || info.getEndPlace().length() == 0 ||
-                info.getDepartureTime() == null) {
-            TravelController.LOGGER.info("[[Travel Query] Fail.Something null.");
-            ArrayList<TripResponse> errorList = new ArrayList<>();
-            return ok(errorList);
+        try {
+            if (info.getStartingPlace() == null || info.getStartingPlace().length() == 0 ||
+                    info.getEndPlace() == null || info.getEndPlace().length() == 0 ||
+                    info.getDepartureTime() == null) {
+                TravelController.LOGGER.info("[[Travel Query] Fail.Something null.");
+                ArrayList<TripResponse> errorList = new ArrayList<>();
+                return ok(errorList);
+            }
+            TravelController.LOGGER.info(" Query TripResponse");
+            return ok(travelService.query(info, headers));
+        }catch (Exception e){
+            TravelController.LOGGER.error(e.toString());
+            return status(500).build();
         }
-        TravelController.LOGGER.info(" Query TripResponse");
-        return ok(travelService.query(info, headers));
     }
 
     /**
@@ -130,7 +136,12 @@ public class TravelController {
         // TripAllDetailInfo
         // TripAllDetail tripAllDetail
         TravelController.LOGGER.info("Get trip detail,TripId: {}",gtdi.getTripId());
-        return ok(travelService.getTripAllDetailInfo(gtdi, headers));
+        try {
+            return ok(travelService.getTripAllDetailInfo(gtdi, headers));
+        }catch (Exception e){
+            TravelController.LOGGER.error(e.toString());
+            return status(500).build();
+        }
     }
 
     @CrossOrigin(origins = "*")

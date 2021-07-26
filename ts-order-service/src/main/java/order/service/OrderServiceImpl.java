@@ -195,7 +195,7 @@ public class OrderServiceImpl implements OrderService {
         return re.getBody().getData();}
         catch (Exception e){
             LOGGER.error("request for station service namelist denyed:"+e.toString());
-            return null;
+            throw e;
         }
     }
 

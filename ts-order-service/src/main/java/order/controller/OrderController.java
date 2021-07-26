@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -66,7 +67,12 @@ public class OrderController {
     public HttpEntity queryOrdersForRefresh(@RequestBody OrderInfo qi,
                                             @RequestHeader HttpHeaders headers) {
         OrderController.LOGGER.info("[Query Orders] Query Orders for {}", qi.getLoginId());
-        return ok(orderService.queryOrdersForRefresh(qi, qi.getLoginId(), headers));
+        try {
+            return ok(orderService.queryOrdersForRefresh(qi, qi.getLoginId(), headers));
+        }catch (Exception e){
+            OrderController.LOGGER.error(e.toString());
+            return status(500).build();
+        }
     }
 
     @CrossOrigin(origins = "*")

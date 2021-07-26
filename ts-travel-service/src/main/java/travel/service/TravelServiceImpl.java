@@ -235,7 +235,8 @@ public class TravelServiceImpl implements TravelService {
         }
         catch (Exception e){
             TravelServiceImpl.LOGGER.error("request for ticket info service namelist denyed:"+e.toString());
-            resultForTravel = null;
+//            resultForTravel = null;
+            throw e;
         }
 
 
