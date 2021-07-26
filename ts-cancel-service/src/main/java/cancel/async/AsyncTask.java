@@ -36,7 +36,7 @@ public class AsyncTask {
         /*********************** Fault Reproduction - Error Process Seq *************************/
         double op = new Random().nextDouble();
         if (op < 1.0) {
-            AsyncTask.LOGGER.info("[Cancel Order Service] Delay Process，Wrong Cancel Process");
+            AsyncTask.LOGGER.error("[Cancel Order Service] Delay Process，Wrong Cancel Process");
             Thread.sleep(4000);
         } else {
             AsyncTask.LOGGER.info("[Cancel Order Service] Normal Process，Normal Cancel Process");

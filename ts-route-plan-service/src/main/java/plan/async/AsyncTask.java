@@ -39,7 +39,7 @@ public class AsyncTask {
         /*********************** Fault Reproduction - Error Process Seq *************************/
         double op = new Random().nextDouble();
         if(op < 1.0){
-            AsyncTask.LOGGER.info("[Route Plan Service] Delay Process，Wrong Route Plan Process");
+            AsyncTask.LOGGER.error("[Route Plan Service] Delay Process，Wrong Route Plan Process");
             Thread.sleep(4000);
         } else {
             AsyncTask.LOGGER.info("[Route Plan Service] Normal Process，Normal Route Plan Process");
