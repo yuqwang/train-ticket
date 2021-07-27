@@ -115,7 +115,8 @@ public class TravelController {
             return ok(errorList);
         }
 
-        List<String> lockedStations = List.of();
+        List<String> lockedStations = new ArrayList<>();
+        lockedStations.add("Shanghai");
         if (lockedStations.contains(info.getStartingPlace()) || lockedStations.contains(info.getEndPlace())) {
             LOGGER.info("[Travel Query] Fail. Query locked stations: from {} to {}.", info.getStartingPlace(),
                     info.getEndPlace());
