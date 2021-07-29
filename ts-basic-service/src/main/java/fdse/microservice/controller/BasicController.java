@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author Chenjie
@@ -34,7 +35,12 @@ public class BasicController {
     public HttpEntity queryForTravel(@RequestBody Travel info, @RequestHeader HttpHeaders headers) {
         // TravelResult
         logger.info("Query for travel: {}", info.toString());
-        return ok(service.queryForTravel(info, headers));
+        try {
+            return ok(service.queryForTravel(info, headers));
+        } catch (Exception e) {
+            logger.info(e.toString());
+            return status(400).build();
+        }
     }
 
     @GetMapping(value = "/basic/{stationName}")
