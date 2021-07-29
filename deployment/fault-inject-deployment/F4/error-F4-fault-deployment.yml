@@ -384,9 +384,9 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-              value: "172.19.109.144:11800"
+              value: "10.176.122.6:11800"
             - name: SW_GRPC_LOG_SERVER_HOST
-              value: "172.19.109.144"
+              value: "10.176.122.6"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
           ports:
@@ -504,9 +504,9 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-              value: "172.19.109.144:11800"
+              value: "10.176.122.6:11800"
             - name: SW_GRPC_LOG_SERVER_HOST
-              value: "172.19.109.144"
+              value: "10.176.122.6"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
             - name: rabbitmq_host
@@ -567,9 +567,9 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
             - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
-              value: "172.19.109.144:11800"
+              value: "10.176.122.6:11800"
             - name: SW_GRPC_LOG_SERVER_HOST
-              value: "172.19.109.144"
+              value: "10.176.122.6"
             - name: SW_GRPC_LOG_SERVER_PORT
               value: "11800"
             - name: rabbitmq_host
