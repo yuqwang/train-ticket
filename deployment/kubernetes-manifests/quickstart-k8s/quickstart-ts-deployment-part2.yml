@@ -675,7 +675,7 @@ spec:
             - name: rabbitmq_host
               value: "rabbitmq"
             - name: rabbitmq_port
-              value: "5673"
+              value: "5672"
           ports:
             - containerPort: 18856
           resources:
@@ -1799,7 +1799,7 @@ spec:
             - name: rabbitmq_host
               value: "rabbitmq"
             - name: rabbitmq_port
-              value: "5672"
+              value: "5673"
           ports:
             - containerPort: 18808
           resources:
