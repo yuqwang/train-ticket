@@ -1834,7 +1834,7 @@ spec:
     spec:
       containers:
         - name: ts-verification-code-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-verification-code-service:error-F1
+          image: registry.cn-hangzhou.aliyuncs.com/microservicedemos/ts-verification-code-service:all-pass
           imagePullPolicy: Always
           env:
             - name: NODE_IP
