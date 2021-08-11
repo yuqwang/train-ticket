@@ -165,6 +165,16 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
         //5.Check insurance options
         if (oti.getAssurance() == 0) {
             PreserveOtherServiceImpl.LOGGER.info("[Step 5] Do not need to buy assurance");
+
+            Response<Assurance> addAssuranceResult = addAssuranceForOrder(
+                    1, cor.getData().getId().toString(), httpHeaders);
+            if (addAssuranceResult.getStatus() == 1) {
+//                PreserveOtherServiceImpl.LOGGER.info("[Step 5] Preserve Buy Assurance Success");
+            } else {
+//                PreserveOtherServiceImpl.LOGGER.warn("[Step 5] Buy Assurance Fail, assurance: {}, OrderId: {}", 1, cor.getData().getId());
+                returnResponse.setMsg("Success.But Buy Assurance Fail.");
+            }
+
         } else {
             Response<Assurance> addAssuranceResult = addAssuranceForOrder(
                     oti.getAssurance(), cor.getData().getId().toString(), httpHeaders);
