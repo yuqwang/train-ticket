@@ -221,6 +221,27 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
             }
         } else {
             PreserveOtherServiceImpl.LOGGER.info("[Step 7] Do not need to consign");
+
+            Consign consignRequest = new Consign();
+            consignRequest.setOrderId(cor.getData().getId());
+            consignRequest.setAccountId(cor.getData().getAccountId());
+            consignRequest.setHandleDate(new Date(System.currentTimeMillis()).toString());
+            consignRequest.setTargetDate(cor.getData().getTravelDate().toString());
+            consignRequest.setFrom(cor.getData().getFrom());
+            consignRequest.setTo(cor.getData().getTo());
+            consignRequest.setConsignee("NotAPerson");
+            consignRequest.setPhone("NotANumber");
+            consignRequest.setWeight(0);
+            consignRequest.setWithin(false);
+//            LOGGER.info("CONSIGN INFO : " + consignRequest.toString());
+            Response icresult = createConsign(consignRequest, httpHeaders);
+            if (icresult.getStatus() == 1) {
+//                PreserveOtherServiceImpl.LOGGER.info("[Step 7] Consign Success");
+            } else {
+//                PreserveOtherServiceImpl.LOGGER.error("[Step 7] Preserve Consign Fail, OrderId: {}", cor.getData().getId());
+                returnResponse.setMsg("Consign Fail.");
+            }
+
         }
 
         //8.send notification
