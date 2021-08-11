@@ -196,6 +196,24 @@ public class PreserveOtherServiceImpl implements PreserveOtherService {
             }
         } else {
             PreserveOtherServiceImpl.LOGGER.info("[Step 6] Do not need to buy food");
+
+            FoodOrder foodOrder = new FoodOrder();
+            foodOrder.setOrderId(cor.getData().getId());
+            foodOrder.setFoodType((int) (1 + System.currentTimeMillis() % 2));
+            foodOrder.setFoodName("NotAFood");
+            foodOrder.setPrice(0.0);
+            if (oti.getFoodType() == 2) {
+                foodOrder.setStationName(oti.getStationName());
+                foodOrder.setStoreName(oti.getStoreName());
+            }
+            Response afor = createFoodOrder(foodOrder, httpHeaders);
+            if (afor.getStatus() == 1) {
+//                PreserveOtherServiceImpl.LOGGER.info("[Step 6] Buy Food Success");
+            } else {
+//                PreserveOtherServiceImpl.LOGGER.error("[Step 6] Buy Food Fail, OrderId: {}", cor.getData().getId());
+                returnResponse.setMsg("Success.But Buy Food Fail.");
+            }
+
         }
 
         //7.add consign
