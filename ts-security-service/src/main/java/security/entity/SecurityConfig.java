@@ -15,7 +15,6 @@ import java.util.UUID;
  * @author fdse
  */
 @Data
-//@Document(collection = "security_config")
 @Entity
 @GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(ignoreUnknown = true)
