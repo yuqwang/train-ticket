@@ -3,8 +3,12 @@ package order.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.Proxy;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.UUID;
 
@@ -12,11 +16,12 @@ import java.util.UUID;
  * @author fdse
  */
 @Data
-@Document(collection = "orders")
+@Table(name = "orders")
+@Entity
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
-
+    //orders
     @Id
     private UUID id;
 
@@ -50,8 +55,10 @@ public class Order {
 
     private String seatNumber;
 
+    @Column(name = "startPoint")
     private String from;
 
+    @Column(name = "endPoint")
     private String to;
 
     private int status;
@@ -113,5 +120,6 @@ public class Order {
         Date date = new Date(year,month,day,0,0,0); //NOSONAR
         this.travelDate = date;
     }
+
 
 }
