@@ -53,7 +53,7 @@ public class SecurityServiceImpl implements SecurityService {
             return new Response<>(0, "Security Config Already Exist", null);
         } else {
             SecurityConfig config = new SecurityConfig();
-            config.setId(UUID.randomUUID());
+//            config.setId(UUID.randomUUID().toString());
             config.setName(info.getName());
             config.setValue(info.getValue());
             config.setDescription(info.getDescription());
@@ -79,8 +79,10 @@ public class SecurityServiceImpl implements SecurityService {
 
     @Override
     public Response deleteSecurityConfig(String id, HttpHeaders headers) {
-        securityRepository.deleteById(UUID.fromString(id));
-        SecurityConfig sc = securityRepository.findById(UUID.fromString(id));
+//        securityRepository.deleteById(UUID.fromString(id));
+        securityRepository.deleteById(id);
+//        SecurityConfig sc = securityRepository.findById(UUID.fromString(id));
+        SecurityConfig sc = securityRepository.findById(id);
         if (sc == null) {
             return new Response<>(1, success, id);
         } else {
