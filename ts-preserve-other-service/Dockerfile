@@ -1,4 +1,4 @@
-FROM java:8-jre
+FROM apache/skywalking-java-agent:8.5.0-jdk8
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
 
