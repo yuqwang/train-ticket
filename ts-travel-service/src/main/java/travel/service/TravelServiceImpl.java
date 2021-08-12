@@ -15,12 +15,14 @@ import org.springframework.web.client.RestTemplate;
 import travel.entity.*;
 import travel.repository.TripRepository;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 /**
  * @author fdse
  */
 @Service
+@Transactional
 public class TravelServiceImpl implements TravelService {
 
     @Autowired
@@ -123,10 +125,12 @@ public class TravelServiceImpl implements TravelService {
     @Override
     public Response update(TravelInfo info, HttpHeaders headers) {
         TripId ti = new TripId(info.getTripId());
-        if (repository.findByTripId(ti) != null) {
+        Trip trip_old = repository.findByTripId(ti);
+        if (trip_old != null) {
             Trip trip = new Trip(ti, info.getTrainTypeId(), info.getStartingStationId(),
                     info.getStationsId(), info.getTerminalStationId(), info.getStartingTime(), info.getEndTime());
             trip.setRouteId(info.getRouteId());
+            trip.setId(trip_old.getId());
             repository.save(trip);
             return new Response<>(1, "Update trip:" + ti.toString(), trip);
         } else {

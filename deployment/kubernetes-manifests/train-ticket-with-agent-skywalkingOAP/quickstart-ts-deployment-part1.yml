@@ -256,24 +256,29 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ts-travel-mongo
+  name: ts-travel-mysql
   namespace: h10g
 spec:
   selector:
     matchLabels:
-      app: ts-travel-mongo
+      app: ts-travel-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-travel-mongo
+        app: ts-travel-mysql
     spec:
       containers:
-      - name: ts-travel-mongo
-        image: mongo
+      - name: ts-travel-mysql
+        image: mysql:5.7
         imagePullPolicy: IfNotPresent
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+          - name: MYSQL_DATABASE
+            value: ts-travel-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
@@ -759,13 +764,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-travel-mongo
+  name: ts-travel-mysql
   namespace: h10g
 spec:
   ports:
-    - port: 27017
+    - port: 3306
   selector:
-   app: ts-travel-mongo
+   app: ts-travel-mysql
 
 ---
 
