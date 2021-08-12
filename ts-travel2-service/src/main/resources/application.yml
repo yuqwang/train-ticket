@@ -5,12 +5,15 @@ server:
 spring:
   application:
     name: ts-travel2-service
-  data:
-    mongodb:
-      host: ts-travel2-mongo
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-      database: ts
-      port: 27017
+  datasource:
+    url: jdbc:mysql://ts-travel2-service:3306/ts-travel2-mysql?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: org.gjt.mm.mysql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
 swagger:
   controllerPackage: travel2.controller
