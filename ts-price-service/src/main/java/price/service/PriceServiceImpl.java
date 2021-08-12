@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import price.entity.PriceConfig;
 import price.repository.PriceConfigRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import java.util.UUID;
  * @author fdse
  */
 @Service
+@Transactional
 public class PriceServiceImpl implements PriceService {
 
     @Autowired
@@ -32,9 +34,9 @@ public class PriceServiceImpl implements PriceService {
         PriceServiceImpl.LOGGER.info("[Create New Price Config]");
         PriceConfig priceConfig = null;
         // create
-        if (createAndModifyPriceConfig.getId() == null || createAndModifyPriceConfig.getId().toString().length() < 10) {
+        if (createAndModifyPriceConfig.getId() == null || createAndModifyPriceConfig.getId().length() < 10) {
             priceConfig = new PriceConfig();
-            priceConfig.setId(UUID.randomUUID());
+//            priceConfig.setId(UUID.randomUUID());
             priceConfig.setBasicPriceRate(createAndModifyPriceConfig.getBasicPriceRate());
             priceConfig.setFirstClassPriceRate(createAndModifyPriceConfig.getFirstClassPriceRate());
             priceConfig.setRouteId(createAndModifyPriceConfig.getRouteId());
@@ -59,7 +61,7 @@ public class PriceServiceImpl implements PriceService {
     @Override
     public PriceConfig findById(String id, HttpHeaders headers) {
         PriceServiceImpl.LOGGER.info("[Find By Id] ID: {}", id);
-        return priceConfigRepository.findById(UUID.fromString(id));
+        return priceConfigRepository.findById(id);
     }
 
     @Override
