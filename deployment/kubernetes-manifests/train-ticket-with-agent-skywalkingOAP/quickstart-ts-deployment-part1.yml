@@ -1,24 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ts-user-mongo
+  name: ts-user-mysql
   namespace: h10g
 spec:
   selector:
     matchLabels:
-      app: ts-user-mongo
+      app: ts-user-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-user-mongo
+        app: ts-user-mysql
     spec:
       containers:
-      - name: ts-user-mongo
-        image: mongo
+      - name: ts-user-mysql
+        image: mysql:5.7
         imagePullPolicy: IfNotPresent
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+          - name: MYSQL_DATABASE
+            value: ts-user-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
@@ -693,13 +698,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-user-mongo
+  name: ts-user-mysql
   namespace: h10g
 spec:
   ports:
     - port: 27017
   selector:
-   app: ts-user-mongo
+   app: ts-user-mysql
 
 ---
 apiVersion: v1
