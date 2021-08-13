@@ -2,20 +2,26 @@ package consignprice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.GenericGenerator;
 
-import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 /**
  * @author fdse
  */
 @Data
 @AllArgsConstructor
-@Document(collection = "consign_price")
+@Entity
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class ConsignPrice {
     @Id
-    private UUID id;
+    @GeneratedValue(generator = "jpa-uuid")
+    @Column(length = 32)
+    private String id;
+    @Column(name = "consign_index")
     private int index;
     private double initialWeight;
     private double initialPrice;

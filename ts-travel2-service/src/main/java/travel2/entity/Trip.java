@@ -1,9 +1,9 @@
 package travel2.entity;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -12,10 +12,16 @@ import java.util.Date;
  * @author fdse
  */
 @Data
-@Document(collection="trip")
+@Entity
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class Trip {
     @Valid
     @Id
+    @GeneratedValue(generator = "jpa-uuid")
+    @Column(length = 32)
+    private String id;
+
+    @Embedded
     private TripId tripId;
 
     @Valid

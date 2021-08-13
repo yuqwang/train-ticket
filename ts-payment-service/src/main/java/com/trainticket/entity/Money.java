@@ -2,15 +2,20 @@ package com.trainticket.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 /**
  * @author fdse
  */
 @Data
 @AllArgsConstructor
-@Document(collection="addMoney")
+@Entity
 public class Money {
+    @Id
+    private String id;
+
     private String userId;
     private String money; //NOSONAR
 

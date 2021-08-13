@@ -15,12 +15,14 @@ import org.springframework.web.client.RestTemplate;
 import travel2.entity.*;
 import travel2.repository.TripRepository;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 /**
  * @author fdse
  */
 @Service
+@Transactional
 public class Travel2ServiceImpl implements Travel2Service {
 
     @Autowired
@@ -122,9 +124,11 @@ public class Travel2ServiceImpl implements Travel2Service {
     @Override
     public Response update(TravelInfo info, HttpHeaders headers) {
         TripId ti = new TripId(info.getTripId());
-        if (repository.findByTripId(ti) != null) {
+        Trip trip_old = repository.findByTripId(ti);
+        if (trip_old != null) {
             Trip trip = new Trip(ti, info.getTrainTypeId(), info.getStartingStationId(),
                     info.getStationsId(), info.getTerminalStationId(), info.getStartingTime(), info.getEndTime());
+            trip.setId(trip_old.getId());
             trip.setRouteId(info.getRouteId());
             repository.save(trip);
             return new Response<>(1, "Update trip info:" + ti.toString(), trip);

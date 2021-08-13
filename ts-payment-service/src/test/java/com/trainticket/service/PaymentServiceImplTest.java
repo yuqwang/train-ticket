@@ -60,7 +60,7 @@ public class PaymentServiceImplTest {
         Payment info = new Payment();
         Mockito.when(addMoneyRepository.save(Mockito.any(Money.class))).thenReturn(null);
         Response result = paymentServiceImpl.addMoney(info, headers);
-        Assert.assertEquals(new Response<>(1,"Add Money Success", new Money("", "")), result);
+        Assert.assertEquals(new Response<>(1,"Add Money Success", new Money("","", "")), result);
     }
 
     @Test

@@ -34,7 +34,7 @@ public class InitData implements CommandLineRunner{
             while( line != null ){
                 if( !line.trim().equals("") ){
                     FoodStore fs = new FoodStore();
-                    fs.setId(UUID.randomUUID());
+                    fs.setId(UUID.randomUUID().toString());
                     String[] lineTemp = line.trim().split("=");
                     fs.setStationId(lineTemp[1]);
 
@@ -70,7 +70,7 @@ public class InitData implements CommandLineRunner{
             while( line2 != null ){
                 if( !line2.trim().equals("") ){
                     TrainFood tf = new TrainFood();
-                    tf.setId(UUID.randomUUID());
+                    tf.setId(UUID.randomUUID().toString());
                     String[] lineTemp = line2.trim().split("=");
                     tf.setTripId(lineTemp[1]);
                     lineTemp = br2.readLine().trim().split("=");

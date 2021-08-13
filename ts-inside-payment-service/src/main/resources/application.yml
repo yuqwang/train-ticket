@@ -5,13 +5,15 @@ spring:
   application:
     name: ts-inside-payment-service
 
-  data:
-    mongodb:
-      host: ts-inside-payment-mongo
-#     username: user
-#     password: ${MONGODB_PASSWORD}
-      database: ts
-      port: 27017
+  datasource:
+    url: jdbc:mysql://ts-inside-payment-mysql:3306/ts-inside-payment-mysql?useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
 
+
+  jpa:
+    hibernate:
+      ddl-auto: update
 swagger:
   controllerPackage: inside_payment.controller

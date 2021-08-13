@@ -2,9 +2,9 @@ spring:
   application:
     name: ts-security-service
   datasource:
-    url: jdbc:mysql://ts-security-mysql:3306/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://ts-security-mysql:3306/ts-security-mysql?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
-    password: ${MYSQL_ROOT_PASSWORD}
+    password: root
     driver-class-name: com.mysql.jdbc.Driver
 
   jpa:

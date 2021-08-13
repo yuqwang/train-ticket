@@ -1,12 +1,15 @@
 spring:
   application:
     name: ts-consign-service
-  data:
-    mongodb:
-      host: ts-consign-mongo
-      database: ts
-      port: 27017
+  datasource:
+    url: jdbc:mysql://ts-consign-mysql:3306/ts-consign-mysql?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
 
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 # HTTP Server
 server:

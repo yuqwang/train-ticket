@@ -2,21 +2,21 @@ package food.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 @Entity
+@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FoodStore {
 
     @Id
-    private UUID id;
+    @GeneratedValue(generator = "jpa-uuid")
+    private String id;
 
     @NotNull
     private String stationId;
@@ -29,7 +29,7 @@ public class FoodStore {
 
     private double deliveryFee;
 
-    @ElementCollection(targetClass = Food.class)
+    @ElementCollection(targetClass = Food.class, fetch = FetchType.EAGER)
     private List<Food> foodList;
 
     public FoodStore(){
