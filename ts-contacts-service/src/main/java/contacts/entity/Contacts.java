@@ -3,8 +3,8 @@ package contacts.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.UUID;
 
 /**
@@ -12,14 +12,14 @@ import java.util.UUID;
  */
 @Data
 @AllArgsConstructor
-@Document(collection = "contacts")
+@Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Contacts {
 
     @Id
-    private UUID id;
+    private String id;
 
-    private UUID accountId;
+    private String accountId;
 
     private String name;
 

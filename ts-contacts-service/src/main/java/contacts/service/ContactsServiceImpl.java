@@ -27,7 +27,7 @@ public class ContactsServiceImpl implements ContactsService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactsServiceImpl.class);
 
     @Override
-    public Response findContactsById(UUID id, HttpHeaders headers) {
+    public Response findContactsById(String id, HttpHeaders headers) {
         LOGGER.info("FIND CONTACTS BY ID: " + id);
         Contacts contacts = contactsRepository.findById(id);
         if (contacts != null) {
@@ -39,7 +39,7 @@ public class ContactsServiceImpl implements ContactsService {
     }
 
     @Override
-    public Response findContactsByAccountId(UUID accountId, HttpHeaders headers) {
+    public Response findContactsByAccountId(String accountId, HttpHeaders headers) {
         ArrayList<Contacts> arr = contactsRepository.findByAccountId(accountId);
         ContactsServiceImpl.LOGGER.info("[Contacts-Query-Service][Query-Contacts] Result Size: {}", arr.size());
         return new Response<>(1, success, arr);
@@ -60,7 +60,7 @@ public class ContactsServiceImpl implements ContactsService {
     @Override
     public Response create(Contacts addContacts, HttpHeaders headers) {
         Contacts contacts = new Contacts();
-        contacts.setId(UUID.randomUUID());
+        contacts.setId(UUID.randomUUID().toString());
         contacts.setName(addContacts.getName());
         contacts.setPhoneNumber(addContacts.getPhoneNumber());
         contacts.setDocumentNumber(addContacts.getDocumentNumber());
@@ -80,7 +80,7 @@ public class ContactsServiceImpl implements ContactsService {
     }
 
     @Override
-    public Response delete(UUID contactsId, HttpHeaders headers) {
+    public Response delete(String contactsId, HttpHeaders headers) {
         contactsRepository.deleteById(contactsId);
         Contacts contacts = contactsRepository.findById(contactsId);
         if (contacts == null) {

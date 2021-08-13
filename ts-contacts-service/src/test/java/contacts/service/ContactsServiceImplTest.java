@@ -35,26 +35,26 @@ public class ContactsServiceImplTest {
 
     @Test
     public void testFindContactsById1() {
-        UUID id = UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
         Contacts contacts = new Contacts();
-        Mockito.when(contactsRepository.findById(Mockito.any(UUID.class))).thenReturn(contacts);
+        Mockito.when(contactsRepository.findById(Mockito.any(String.class))).thenReturn(contacts);
         Response result = contactsServiceImpl.findContactsById(id, headers);
         Assert.assertEquals(new Response<>(1, "Success", contacts), result);
     }
 
     @Test
     public void testFindContactsById2() {
-        UUID id = UUID.randomUUID();
-        Mockito.when(contactsRepository.findById(Mockito.any(UUID.class))).thenReturn(null);
+        String id = UUID.randomUUID().toString();
+        Mockito.when(contactsRepository.findById(Mockito.any(String.class))).thenReturn(null);
         Response result = contactsServiceImpl.findContactsById(id, headers);
         Assert.assertEquals(new Response<>(0, "No contacts according to contacts id", null), result);
     }
 
     @Test
     public void testFindContactsByAccountId() {
-        UUID accountId = UUID.randomUUID();
+        String accountId = UUID.randomUUID().toString();
         ArrayList<Contacts> arr = new ArrayList<>();
-        Mockito.when(contactsRepository.findByAccountId(Mockito.any(UUID.class))).thenReturn(arr);
+        Mockito.when(contactsRepository.findByAccountId(Mockito.any(String.class))).thenReturn(arr);
         Response result = contactsServiceImpl.findContactsByAccountId(accountId, headers);
         Assert.assertEquals(new Response<>(1, "Success", arr), result);
     }
@@ -62,7 +62,7 @@ public class ContactsServiceImplTest {
     @Test
     public void testCreateContacts1() {
         Contacts contacts = new Contacts();
-        Mockito.when(contactsRepository.findById(Mockito.any(UUID.class))).thenReturn(contacts);
+        Mockito.when(contactsRepository.findById(Mockito.any(String.class))).thenReturn(contacts);
         Response result = contactsServiceImpl.createContacts(contacts, headers);
         Assert.assertEquals(new Response<>(0, "Already Exists", contacts), result);
     }
@@ -70,7 +70,7 @@ public class ContactsServiceImplTest {
     @Test
     public void testCreateContacts2() {
         Contacts contacts = new Contacts();
-        Mockito.when(contactsRepository.findById(Mockito.any(UUID.class))).thenReturn(null);
+        Mockito.when(contactsRepository.findById(Mockito.any(String.class))).thenReturn(null);
         Mockito.when(contactsRepository.save(Mockito.any(Contacts.class))).thenReturn(null);
         Response result = contactsServiceImpl.createContacts(contacts, headers);
         Assert.assertEquals(new Response<>(1, "Create Success", null), result);
@@ -78,19 +78,19 @@ public class ContactsServiceImplTest {
 
     @Test
     public void testCreate1() {
-        Contacts addContacts = new Contacts(UUID.randomUUID(), UUID.randomUUID(), "name", 1, "12", "10001");
+        Contacts addContacts = new Contacts(UUID.randomUUID().toString(), UUID.randomUUID().toString(), "name", 1, "12", "10001");
         ArrayList<Contacts> accountContacts = new ArrayList<>();
         accountContacts.add(addContacts);
-        Mockito.when(contactsRepository.findByAccountId(Mockito.any(UUID.class))).thenReturn(accountContacts);
+        Mockito.when(contactsRepository.findByAccountId(Mockito.any(String.class))).thenReturn(accountContacts);
         Response result = contactsServiceImpl.create(addContacts, headers);
         Assert.assertEquals(new Response<>(0, "Contacts already exists", null), result);
     }
 
     @Test
     public void testCreate2() {
-        Contacts addContacts = new Contacts(UUID.randomUUID(), UUID.randomUUID(), "name", 1, "12", "10001");
+        Contacts addContacts = new Contacts(UUID.randomUUID().toString(), UUID.randomUUID().toString(), "name", 1, "12", "10001");
         ArrayList<Contacts> accountContacts = new ArrayList<>();
-        Mockito.when(contactsRepository.findByAccountId(Mockito.any(UUID.class))).thenReturn(accountContacts);
+        Mockito.when(contactsRepository.findByAccountId(Mockito.any(String.class))).thenReturn(accountContacts);
         Mockito.when(contactsRepository.save(Mockito.any(Contacts.class))).thenReturn(null);
         Response result = contactsServiceImpl.create(addContacts, headers);
         Assert.assertEquals(new Response<>(1, "Create contacts success", addContacts), result);
@@ -98,35 +98,35 @@ public class ContactsServiceImplTest {
 
     @Test
     public void testDelete1() {
-        UUID contactsId = UUID.randomUUID();
-        Mockito.doNothing().doThrow(new RuntimeException()).when(contactsRepository).deleteById(Mockito.any(UUID.class));
-        Mockito.when(contactsRepository.findById(Mockito.any(UUID.class))).thenReturn(null);
+        String contactsId = UUID.randomUUID().toString();
+        Mockito.doNothing().doThrow(new RuntimeException()).when(contactsRepository).deleteById(Mockito.any(String.class));
+        Mockito.when(contactsRepository.findById(Mockito.any(String.class))).thenReturn(null);
         Response result = contactsServiceImpl.delete(contactsId, headers);
         Assert.assertEquals(new Response<>(1, "Delete success", contactsId), result);
     }
 
     @Test
     public void testDelete2() {
-        UUID contactsId = UUID.randomUUID();
+        String contactsId = UUID.randomUUID().toString();
         Contacts contacts = new Contacts();
-        Mockito.doNothing().doThrow(new RuntimeException()).when(contactsRepository).deleteById(Mockito.any(UUID.class));
-        Mockito.when(contactsRepository.findById(Mockito.any(UUID.class))).thenReturn(contacts);
+        Mockito.doNothing().doThrow(new RuntimeException()).when(contactsRepository).deleteById(Mockito.any(String.class));
+        Mockito.when(contactsRepository.findById(Mockito.any(String.class))).thenReturn(contacts);
         Response result = contactsServiceImpl.delete(contactsId, headers);
         Assert.assertEquals(new Response<>(0, "Delete failed", contactsId), result);
     }
 
     @Test
     public void testModify1() {
-        Contacts contacts = new Contacts(UUID.randomUUID(), UUID.randomUUID(), "name", 1, "12", "10001");
-        Mockito.when(contactsRepository.findById(Mockito.any(UUID.class))).thenReturn(null);
+        Contacts contacts = new Contacts(UUID.randomUUID().toString(), UUID.randomUUID().toString(), "name", 1, "12", "10001");
+        Mockito.when(contactsRepository.findById(Mockito.any(String.class))).thenReturn(null);
         Response result = contactsServiceImpl.modify(contacts, headers);
         Assert.assertEquals(new Response<>(0, "Contacts not found", null), result);
     }
 
     @Test
     public void testModify2() {
-        Contacts contacts = new Contacts(UUID.randomUUID(), UUID.randomUUID(), "name", 1, "12", "10001");
-        Mockito.when(contactsRepository.findById(Mockito.any(UUID.class))).thenReturn(contacts);
+        Contacts contacts = new Contacts(UUID.randomUUID().toString(), UUID.randomUUID().toString(), "name", 1, "12", "10001");
+        Mockito.when(contactsRepository.findById(Mockito.any(String.class))).thenReturn(contacts);
         Mockito.when(contactsRepository.save(Mockito.any(Contacts.class))).thenReturn(null);
         Response result = contactsServiceImpl.modify(contacts, headers);
         Assert.assertEquals(new Response<>(1, "Modify success", contacts), result);

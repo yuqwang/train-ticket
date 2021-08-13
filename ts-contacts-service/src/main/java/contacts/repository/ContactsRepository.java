@@ -1,17 +1,16 @@
 package contacts.repository;
 
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
-import org.springframework.stereotype.Repository;
 import contacts.entity.Contacts;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * @author fdse
  */
 @Repository
-public interface ContactsRepository extends MongoRepository<Contacts, String> {
+public interface ContactsRepository extends JpaRepository<Contacts, String> {
 
     /**
      * find by id
@@ -19,7 +18,7 @@ public interface ContactsRepository extends MongoRepository<Contacts, String> {
      * @param id id
      * @return Contacts
      */
-    Contacts findById(UUID id);
+    Contacts findById(String id);
 
     /**
      * find by account id
@@ -27,8 +26,7 @@ public interface ContactsRepository extends MongoRepository<Contacts, String> {
      * @param accountId account id
      * @return ArrayList<Contacts>
      */
-    @Query("{ 'accountId' : ?0 }")
-    ArrayList<Contacts> findByAccountId(UUID accountId);
+    ArrayList<Contacts> findByAccountId(String accountId);
 
     /**
      * delete by id
@@ -36,7 +34,7 @@ public interface ContactsRepository extends MongoRepository<Contacts, String> {
      * @param id id
      * @return null
      */
-    void deleteById(UUID id);
+    void deleteById(String id);
 
     /**
      * find all
