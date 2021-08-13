@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author fdse
  */
-public enum  PaymentType implements Serializable {
+public enum PaymentType implements Serializable {
 
     /**
      * payment

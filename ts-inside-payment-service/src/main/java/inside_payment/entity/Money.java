@@ -1,9 +1,11 @@
 package inside_payment.entity;
 
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
@@ -12,7 +14,7 @@ import java.util.UUID;
  * @author fdse
  */
 @Data
-@Document(collection="addMoney")
+@Entity
 public class Money {
 
     @Valid
@@ -30,6 +32,7 @@ public class Money {
 
     @Valid
     @NotNull
+    @Enumerated(EnumType.STRING)
     private MoneyType type;
 
     public Money(){
