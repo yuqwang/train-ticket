@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,14 +22,17 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class User implements UserDetails {
 
-    private UUID userId;
+    @Id
+    private String userId;
 
     private String username;
 
     private String password;
 
+    @ElementCollection
     private Set<String> roles = new HashSet<>();
 
     @Override

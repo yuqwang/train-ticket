@@ -33,24 +33,29 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ts-auth-mongo
+  name: ts-auth-mysql
   namespace: h10g
 spec:
   selector:
     matchLabels:
-      app: ts-auth-mongo
+      app: ts-auth-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-auth-mongo
+        app: ts-auth-mysql
     spec:
       containers:
-      - name: ts-auth-mongo
-        image: mongo
+      - name: ts-auth-mysql
+        image: mysql:5.7
         imagePullPolicy: IfNotPresent
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+          - name: MYSQL_DATABASE
+            value: ts-auth-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
@@ -715,13 +720,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-auth-mongo
+  name: ts-auth-mysql
   namespace: h10g
 spec:
   ports:
     - port: 27017
   selector:
-   app: ts-auth-mongo
+   app: ts-auth-mysql
 ---
 
 apiVersion: v1

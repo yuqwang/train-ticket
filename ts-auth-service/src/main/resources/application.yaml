@@ -3,11 +3,15 @@ server:
 spring:
   application:
     name: ts-auth-service
-  data:
-    mongodb:
-      host: ts-auth-mongo
-      database: ts-auth-mongo
-      port: 27017
+  datasource:
+    url: jdbc:mysql://ts-auth-mysql:3306/ts-auth-mysql?useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 swagger:
   controllerPackage: auth.controller

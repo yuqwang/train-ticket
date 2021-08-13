@@ -62,7 +62,7 @@ public class UserServiceImplTest {
 
     @Test
     public void testDeleteByUserId() {
-        UUID userId = UUID.randomUUID();
+        String userId = UUID.randomUUID().toString();
         Mockito.doNothing().doThrow(new RuntimeException()).when(userRepository).deleteByUserId(userId);
         Assert.assertEquals(new Response(1, "DELETE USER SUCCESS", null), userServiceImpl.deleteByUserId(userId, headers));
     }

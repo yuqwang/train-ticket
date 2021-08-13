@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
     public User createDefaultAuthUser(AuthDto dto) {
         LOGGER.info("Register User Info is:  " + dto.getUserName());
         User user = User.builder()
-                .userId(UUID.fromString(dto.getUserId()))
+                .userId(dto.getUserId())
                 .username(dto.getUserName())
                 .password(passwordEncoder.encode(dto.getPassword()))
                 .roles(new HashSet<>(Arrays.asList(AuthConstant.ROLE_USER)))
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response deleteByUserId(UUID userId, HttpHeaders headers) {
+    public Response deleteByUserId(String userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER :" + userId);
         userRepository.deleteByUserId(userId);
         return new Response(1, "DELETE USER SUCCESS", null);
