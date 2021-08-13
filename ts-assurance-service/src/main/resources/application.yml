@@ -4,13 +4,15 @@ server:
 spring:
   application:
     name: ts-assurance-service
-  data:
-    mongodb:
-      host: ts-assurance-mongo
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-      database: ts
-      port: 27017
+  datasource:
+    url: jdbc:mysql://ts-assurance-mysql:3306/ts-assurance-mysql?useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 swagger:
   controllerPackage: assurance.controller
