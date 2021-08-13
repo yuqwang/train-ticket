@@ -39,7 +39,7 @@ public class FoodMapServiceImplTest {
     @Test
     public void testCreateFoodStore1() {
         FoodStore fs = new FoodStore();
-        Mockito.when(foodStoreRepository.findById(Mockito.any(UUID.class))).thenReturn(fs);
+        Mockito.when(foodStoreRepository.findById(Mockito.anyString())).thenReturn(fs);
         Response result = foodMapServiceImpl.createFoodStore(fs, headers);
         Assert.assertEquals(new Response<>(0, "Already Exists Id", null), result);
     }
@@ -47,7 +47,7 @@ public class FoodMapServiceImplTest {
     @Test
     public void testCreateFoodStore2() {
         FoodStore fs = new FoodStore();
-        Mockito.when(foodStoreRepository.findById(Mockito.any(UUID.class))).thenReturn(null);
+        Mockito.when(foodStoreRepository.findById(Mockito.anyString())).thenReturn(null);
         Mockito.when(foodStoreRepository.save(Mockito.any(FoodStore.class))).thenReturn(null);
         Response result = foodMapServiceImpl.createFoodStore(fs, headers);
         Assert.assertEquals(new Response<>(1, "Save Success", fs), result);
@@ -56,7 +56,7 @@ public class FoodMapServiceImplTest {
     @Test
     public void testCreateTrainFood1() {
         TrainFood tf = new TrainFood();
-        Mockito.when(trainFoodRepository.findById(Mockito.any(UUID.class))).thenReturn(tf);
+        Mockito.when(trainFoodRepository.findById(Mockito.anyString())).thenReturn(tf);
         TrainFood result = foodMapServiceImpl.createTrainFood(tf, headers);
         Assert.assertEquals(tf, result);
     }
@@ -64,7 +64,7 @@ public class FoodMapServiceImplTest {
     @Test
     public void testCreateTrainFood2() {
         TrainFood tf = new TrainFood();
-        Mockito.when(trainFoodRepository.findById(Mockito.any(UUID.class))).thenReturn(null);
+        Mockito.when(trainFoodRepository.findById(Mockito.anyString())).thenReturn(null);
         Mockito.when(trainFoodRepository.save(Mockito.any(TrainFood.class))).thenReturn(null);
         TrainFood result = foodMapServiceImpl.createTrainFood(tf, headers);
         Assert.assertEquals(tf, result);
