@@ -20,7 +20,7 @@ public interface OrderOtherRepository extends CrudRepository<Order, String> {
      * @param id id
      * @return Order
      */
-    Order findById(UUID id);
+    Order findById(String id);
 
     /**
      * find all orders
@@ -36,7 +36,7 @@ public interface OrderOtherRepository extends CrudRepository<Order, String> {
      * @param accountId account id
      * @return ArrayList<Order>
      */
-    ArrayList<Order> findByAccountId(UUID accountId);
+    ArrayList<Order> findByAccountId(String accountId);
 
     /**
      * find orders by travel date and train number
@@ -53,5 +53,5 @@ public interface OrderOtherRepository extends CrudRepository<Order, String> {
      * @param id id
      * @return null
      */
-    void deleteById(UUID id);
+    void deleteById(String id);
 }

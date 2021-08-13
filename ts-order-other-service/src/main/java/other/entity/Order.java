@@ -2,12 +2,10 @@ package other.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.annotations.GenericGenerator;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,11 +15,14 @@ import java.util.UUID;
 @Data
 @Table(name = "orderOther")
 @Entity
+@GenericGenerator(name = "jpa-uuid",strategy="uuid")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
     //orders
     @Id
-    private UUID id;
+    @GeneratedValue(generator = "jpa-uuid")
+    @Column(length = 32)
+    private String id;
 
     private Date boughtDate;
 
@@ -32,7 +33,9 @@ public class Order {
     /**
      * Which Account Bought it
      */
-    private UUID accountId;
+    @GeneratedValue(generator = "jpa-uuid")
+    @Column(length = 32)
+    private String accountId;
 
     /**
      * Tickets bought for whom
