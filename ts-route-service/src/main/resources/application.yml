@@ -1,13 +1,14 @@
 spring:
   application:
     name: ts-route-service
-  data:
-    mongodb:
-      host: ts-route-mongo
-#      username: user
-#      password: ${MONGODB_PASSWORD}
-      database: ts
-      port: 27017
+  datasource:
+    url: jdbc:mysql://ts-route-service:3306/ts-route-mysql?useSSL=false
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 # HTTP Server
 server:

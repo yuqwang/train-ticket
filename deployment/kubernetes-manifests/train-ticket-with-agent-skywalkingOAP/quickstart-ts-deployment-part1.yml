@@ -65,24 +65,29 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ts-route-mongo
+  name: ts-route-mysql
   namespace: h10g
 spec:
   selector:
     matchLabels:
-      app: ts-route-mongo
+      app: ts-route-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-route-mongo
+        app: ts-route-mysql
     spec:
       containers:
-      - name: ts-route-mongo
-        image: mongo
+      - name: ts-route-mysql
+        image: mysql:5.7
         imagePullPolicy: IfNotPresent
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+          - name: MYSQL_DATABASE
+            value: ts-route-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
@@ -732,13 +737,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-route-mongo
+  name: ts-route-mysql
   namespace: h10g
 spec:
   ports:
     - port: 27017
   selector:
-   app: ts-route-mongo
+   app: ts-route-mysql
 
 ---
 
