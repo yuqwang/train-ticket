@@ -26,14 +26,48 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.17</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.hibernate</groupId>-->
+        <!--            <artifactId>hibernate-entitymanager</artifactId>-->
+        <!--            <version>4.3.8.Final</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <artifactId>hibernate-core</artifactId>-->
+        <!--            <groupId>org.hibernate</groupId>-->
+        <!--            <version>4.3.5.Final</version>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.hibernate</groupId>-->
+        <!--            <artifactId>hibernate-search</artifactId>-->
+        <!--            <version>5.0.0.Alpha3</version>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.hibernate.common</groupId>-->
+        <!--            <artifactId>hibernate-commons-annotations</artifactId>-->
+        <!--            <version>4.0.4.Final</version>-->
+        <!--        </dependency>-->
+
+
         <dependency>
             <groupId>org.services</groupId>
             <artifactId>ts-common</artifactId>
             <version>0.1.0</version>
         </dependency>
-
 
     </dependencies>
 

@@ -1,8 +1,8 @@
 package other.repository;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import other.entity.Order;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,7 +12,7 @@ import java.util.UUID;
  * @author fdse
  */
 @Repository
-public interface OrderOtherRepository extends MongoRepository<Order, String> {
+public interface OrderOtherRepository extends CrudRepository<Order, String> {
 
     /**
      * find order by id
@@ -20,8 +20,7 @@ public interface OrderOtherRepository extends MongoRepository<Order, String> {
      * @param id id
      * @return Order
      */
-    @Query("{ 'id': ?0 }")
-    Order findById(UUID id);
+    Order findById(String id);
 
     /**
      * find all orders
@@ -37,8 +36,7 @@ public interface OrderOtherRepository extends MongoRepository<Order, String> {
      * @param accountId account id
      * @return ArrayList<Order>
      */
-    @Query("{ 'accountId' : ?0 }")
-    ArrayList<Order> findByAccountId(UUID accountId);
+    ArrayList<Order> findByAccountId(String accountId);
 
     /**
      * find orders by travel date and train number
@@ -47,7 +45,6 @@ public interface OrderOtherRepository extends MongoRepository<Order, String> {
      * @param trainNumber train number
      * @return ArrayList<Order>
      */
-    @Query("{ 'travelDate' : ?0 , trainNumber : ?1 }")
     ArrayList<Order> findByTravelDateAndTrainNumber(Date travelDate, String trainNumber);
 
     /**
@@ -56,5 +53,5 @@ public interface OrderOtherRepository extends MongoRepository<Order, String> {
      * @param id id
      * @return null
      */
-    void deleteById(UUID id);
+    void deleteById(String id);
 }

@@ -9,6 +9,7 @@ import user.repository.UserRepository;
 import user.service.UserService;
 
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -23,22 +24,22 @@ public class InitUser implements CommandLineRunner {
     @Autowired
     protected PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private UserService userService;
-
     @Override
     public void run(String... strings) throws Exception {
         User whetherExistUser = userRepository.findByUserName("fdse_microservice");
-        User user = User.builder()
-                .userId(UUID.fromString("4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"))
-                .userName("fdse_microservice")
-                .password("111111")
-                .gender(1)
-                .documentType(1)
-                .documentNum("2135488099312X")
-                .email("fdse_microservice@163.com").build();
         if (whetherExistUser == null) {
+            User user = User.builder()
+                    .userId(UUID.fromString("4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"))
+                    .userName("fdse_microservice")
+                    .password("111111")
+                    .gender(1)
+                    .documentType(1)
+                    .documentNum("2135488099312X")
+                    .email("fdse_microservice@163.com").build();
             userRepository.save(user);
+
         }
+        List<User> users = userRepository.findAll();
+        System.out.println(users);
     }
 }

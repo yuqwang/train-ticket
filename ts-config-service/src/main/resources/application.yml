@@ -1,13 +1,21 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
     application:
       name: ts-config-service
-    data:
-      mongodb:
-        host: ts-config-mongo
-#       username: user
-#       password: ${MONGODB_PASSWORD}
-        database: ts
-        port: 27017
+    datasource:
+      url: jdbc:mysql://ts-config-mysql:3306/ts-config-mysql?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      #      url: jdbc:mysql://10.176.122.80:25997/ts-config-mysql?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+#      jpa:
+#        hibernate:
+#          naming:
+#            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#          ddl-auto: update
+#        database-platform: org.hibernate.dialect.MySQL5Dialect
 
 # HTTP Server
 server:
