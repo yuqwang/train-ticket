@@ -388,24 +388,29 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: ts-inside-payment-mongo
+  name: ts-inside-payment-mysql
   namespace: h10g
 spec:
   selector:
     matchLabels:
-      app: ts-inside-payment-mongo
+      app: ts-inside-payment-mysql
   replicas: 1
   template:
     metadata:
       labels:
-        app: ts-inside-payment-mongo
+        app: ts-inside-payment-mysql
     spec:
       containers:
-      - name: ts-inside-payment-mongo
-        image: mongo
+      - name: ts-inside-payment-mysql
+        image: mysql:5.7
         imagePullPolicy: IfNotPresent
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+          - name: MYSQL_DATABASE
+            value: ts-inside-payment-mysql
         ports:
-        - containerPort: 27017
+        - containerPort: 3306
         resources:
           requests:
             cpu: 50m
@@ -821,13 +826,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: ts-inside-payment-mongo
+  name: ts-inside-payment-mysql
   namespace: h10g
 spec:
   ports:
-    - port: 27017
+    - port: 3306
   selector:
-   app: ts-inside-payment-mongo
+   app: ts-inside-payment-mysql
 
 ---
 
