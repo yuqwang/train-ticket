@@ -14,14 +14,14 @@ import java.util.UUID;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, String> {
 
-    Order findById(UUID id);
+    Order findById(String id);
 
     @Override
     ArrayList<Order> findAll();
 
-    ArrayList<Order> findByAccountId(UUID accountId);
+    ArrayList<Order> findByAccountId(String accountId);
 
     ArrayList<Order> findByTravelDateAndTrainNumber(Date travelDate,String trainNumber);
 
-    void deleteById(UUID id);
+    void deleteById(String id);
 }
