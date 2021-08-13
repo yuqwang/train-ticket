@@ -26,7 +26,7 @@ public class AssuranceServiceImpl implements AssuranceService {
 
     @Override
     public Response findAssuranceById(UUID id, HttpHeaders headers) {
-        Assurance assurance = assuranceRepository.findById(id);
+        Assurance assurance = assuranceRepository.findById(id.toString());
         if (assurance == null) {
             AssuranceServiceImpl.LOGGER.warn("No content, id: {}", id);
             return new Response<>(0, "No Content by this id", null);
@@ -38,7 +38,7 @@ public class AssuranceServiceImpl implements AssuranceService {
 
     @Override
     public Response findAssuranceByOrderId(UUID orderId, HttpHeaders headers) {
-        Assurance assurance = assuranceRepository.findByOrderId(orderId);
+        Assurance assurance = assuranceRepository.findByOrderId(orderId.toString());
         if (assurance == null) {
             AssuranceServiceImpl.LOGGER.warn("No content, orderId: {}", orderId);
             return new Response<>(0, "No Content by this orderId", null);
@@ -50,7 +50,7 @@ public class AssuranceServiceImpl implements AssuranceService {
 
     @Override
     public Response create(int typeIndex, String orderId, HttpHeaders headers) {
-        Assurance a = assuranceRepository.findByOrderId(UUID.fromString(orderId));
+        Assurance a = assuranceRepository.findByOrderId(orderId);
         AssuranceType at = AssuranceType.getTypeByIndex(typeIndex);
         if (a != null) {
             AssuranceServiceImpl.LOGGER.error("[AddAssurance] Fail.Assurance already exists, typeIndex: {}, orderId: {}", typeIndex, orderId);
@@ -59,7 +59,7 @@ public class AssuranceServiceImpl implements AssuranceService {
             AssuranceServiceImpl.LOGGER.warn("[AddAssurance] Fail.Assurance type doesn't exist, typeIndex: {}, orderId: {}", typeIndex, orderId);
             return new Response<>(0, "Fail.Assurance type doesn't exist", null);
         } else {
-            Assurance assurance = new Assurance(UUID.randomUUID(), UUID.fromString(orderId), at);
+            Assurance assurance = new Assurance(UUID.randomUUID().toString(), orderId, at);
             assuranceRepository.save(assurance);
             AssuranceServiceImpl.LOGGER.info("[AddAssurance] Success.");
             return new Response<>(1, "Success", assurance);
@@ -68,8 +68,8 @@ public class AssuranceServiceImpl implements AssuranceService {
 
     @Override
     public Response deleteById(UUID assuranceId, HttpHeaders headers) {
-        assuranceRepository.deleteById(assuranceId);
-        Assurance a = assuranceRepository.findById(assuranceId);
+        assuranceRepository.deleteById(assuranceId.toString());
+        Assurance a = assuranceRepository.findById(assuranceId.toString());
         if (a == null) {
             AssuranceServiceImpl.LOGGER.info("[DeleteAssurance] Success, assuranceId: {}", assuranceId);
             return new Response<>(1, "Delete Success with Assurance id", null);
@@ -81,8 +81,8 @@ public class AssuranceServiceImpl implements AssuranceService {
 
     @Override
     public Response deleteByOrderId(UUID orderId, HttpHeaders headers) {
-        assuranceRepository.removeAssuranceByOrderId(orderId);
-        Assurance isExistAssurace = assuranceRepository.findByOrderId(orderId);
+        assuranceRepository.removeAssuranceByOrderId(orderId.toString());
+        Assurance isExistAssurace = assuranceRepository.findByOrderId(orderId.toString());
         if (isExistAssurace == null) {
             AssuranceServiceImpl.LOGGER.info("[DeleteAssurance] Success, orderId: {}", orderId);
             return new Response<>(1, "Delete Success with Order Id", null);

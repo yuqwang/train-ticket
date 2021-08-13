@@ -1,8 +1,7 @@
 package assurance.repository;
 
 import assurance.entity.Assurance;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -11,7 +10,7 @@ import java.util.UUID;
  * @author fdse
  */
 @Repository
-public interface AssuranceRepository  extends MongoRepository<Assurance, String> {
+public interface AssuranceRepository  extends CrudRepository<Assurance, String> {
 
     /**
      * find by id
@@ -19,7 +18,7 @@ public interface AssuranceRepository  extends MongoRepository<Assurance, String>
      * @param id id
      * @return Assurance
      */
-    Assurance findById(UUID id);
+    Assurance findById(String id);
 
     /**
      * find by order id
@@ -27,8 +26,7 @@ public interface AssuranceRepository  extends MongoRepository<Assurance, String>
      * @param orderId order id
      * @return Assurance
      */
-    @Query("{ 'orderId' : ?0 }")
-    Assurance findByOrderId(UUID orderId);
+    Assurance findByOrderId(String orderId);
 
     /**
      * delete by id
@@ -36,7 +34,7 @@ public interface AssuranceRepository  extends MongoRepository<Assurance, String>
      * @param id id
      * @return null
      */
-    void deleteById(UUID id);
+    void deleteById(String id);
 
     /**
      * remove assurance by order id
@@ -44,7 +42,7 @@ public interface AssuranceRepository  extends MongoRepository<Assurance, String>
      * @param orderId order id
      * @return null
      */
-    void removeAssuranceByOrderId(UUID orderId);
+    void removeAssuranceByOrderId(String orderId);
 
     /**
      * find all
