@@ -29,17 +29,18 @@ public class InitUser implements CommandLineRunner {
         User whetherExistUser = userRepository.findByUserName("fdse_microservice");
         if (whetherExistUser == null) {
             User user = User.builder()
-                    .userId(UUID.fromString("4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f"))
+                    .userId("4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f")
                     .userName("fdse_microservice")
                     .password("111111")
                     .gender(1)
                     .documentType(1)
                     .documentNum("2135488099312X")
                     .email("fdse_microservice@163.com").build();
-            userRepository.save(user);
+            User savedUser = userRepository.save(user);
+            System.out.println("saved user: " + user);
 
         }
-        List<User> users = userRepository.findAll();
-        System.out.println(users);
+        User user = userRepository.findByUserId("4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f");
+        System.out.println(user);
     }
 }

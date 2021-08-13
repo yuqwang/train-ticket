@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response saveUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("Save User Name id：" + userDto.getUserName());
-        UUID userId = userDto.getUserId();
+        String userId = userDto.getUserId();
         if (userDto.getUserId() == null) {
-            userId = UUID.randomUUID();
+            userId = UUID.randomUUID().toString();
         }
 
         User user = User.builder()
@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response findByUserId(String userId, HttpHeaders headers) {
-        User user = userRepository.findByUserId(UUID.fromString(userId));
+        User user = userRepository.findByUserId(userId);
         if (user != null) {
             return new Response<>(1, "Find User Success", user);
         }
@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Response deleteUser(UUID userId, HttpHeaders headers) {
+    public Response deleteUser(String userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER BY ID :" + userId);
         User user = userRepository.findByUserId(userId);
         if (user != null) {
@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void deleteUserAuth(UUID userId, HttpHeaders headers) {
+    public void deleteUserAuth(String userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER BY ID :" + userId);
 
         HttpEntity<Response> httpEntity = new HttpEntity<>(null);
