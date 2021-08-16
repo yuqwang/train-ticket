@@ -108,8 +108,8 @@ public class PreserveServiceImplTest {
 
         //response for createOrder()
         Order order = new Order();
-        order.setId(UUID.randomUUID());
-        order.setAccountId(UUID.randomUUID());
+        order.setId(UUID.randomUUID().toString());
+        order.setAccountId(UUID.randomUUID().toString());
         order.setTravelDate(new Date());
         order.setFrom("from_station");
         order.setTo("to_station");

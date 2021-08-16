@@ -85,10 +85,10 @@ public class PreserveServiceImpl implements PreserveService {
         PreserveServiceImpl.LOGGER.info("[Step 4] Do Order");
         Contacts contacts = gcr.getData();
         Order order = new Order();
-        UUID orderId = UUID.randomUUID();
+        String orderId = UUID.randomUUID().toString();
         order.setId(orderId);
         order.setTrainNumber(oti.getTripId());
-        order.setAccountId(UUID.fromString(oti.getAccountId()));
+        order.setAccountId(oti.getAccountId());
 
         String fromStationId = queryForStationId(oti.getFrom(), headers);
         String toStationId = queryForStationId(oti.getTo(), headers);

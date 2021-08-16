@@ -14,9 +14,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Consign {
 
-    private UUID id;
-    private UUID orderId;
-    private UUID accountId;
+    private String id;
+    private String orderId;
+    private String accountId;
     private String handleDate;
     private String targetDate;
     private String from;

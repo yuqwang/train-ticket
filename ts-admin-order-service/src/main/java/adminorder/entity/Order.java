@@ -18,7 +18,7 @@ import java.util.UUID;
 public class Order {
 
 
-    private UUID id;
+    private String id;
 
     private Date boughtDate;
 
@@ -29,7 +29,7 @@ public class Order {
     /**
      * Which Account Bought it
      */
-    private UUID accountId;
+    private String accountId;
 
     /**
      * Tickets bought for whom

@@ -13,7 +13,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Order {
 
-    private UUID id;
+    private String id;
 
     private Date boughtDate;
 
@@ -24,7 +24,7 @@ public class Order {
     /**
      * Which Account Bought it
      */
-    private UUID accountId;
+    private String accountId;
 
     /**
      * Tickets bought for whom...
@@ -90,7 +90,7 @@ public class Order {
                 && from.equals(other.getFrom())
                 && to.equals(other.getTo())
                 && status == other.getStatus()
-                && price == other.price;
+                && price.equals(other.price);
     }
 
     @Override

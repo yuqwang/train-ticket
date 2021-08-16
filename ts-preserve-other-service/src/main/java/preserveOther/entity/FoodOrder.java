@@ -10,9 +10,9 @@ import java.util.UUID;
 @Data
 public class FoodOrder {
 
-    private UUID id;
+    private String id;
 
-    private UUID orderId;
+    private String orderId;
 
     /**
      * 1:train food;2:food store
