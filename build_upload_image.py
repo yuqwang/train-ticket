@@ -11,12 +11,12 @@ def main():
     if not mvn_build():
         print("mvn build failed")
     init_docker_build_paths()
-    docker_login()
+#    docker_login()
     docker_build_and_push()
 
 
 def mvn_build():
-    mvn_status = os.system("mvn clean package")
+    mvn_status = os.system("mvn clean package -DskipTests")
     return mvn_status == 0
 
 
