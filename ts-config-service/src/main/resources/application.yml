@@ -1,7 +1,4 @@
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: update
     application:
       name: ts-config-service
     datasource:
@@ -10,6 +7,9 @@ spring:
       username: root
       password: root
       driver-class-name: com.mysql.cj.jdbc.Driver
+    jpa:
+      hibernate:
+        ddl-auto: update
 #      jpa:
 #        hibernate:
 #          naming:

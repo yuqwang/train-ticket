@@ -6,7 +6,7 @@ spring:
   application:
     name: ts-travel2-service
   datasource:
-    url: jdbc:mysql://ts-travel2-service:3306/ts-travel2-mysql?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://ts-travel2-mysql:3306/ts-travel2-mysql?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
     password: root
     driver-class-name: org.gjt.mm.mysql.Driver

@@ -513,7 +513,7 @@ spec:
           - name: MYSQL_ROOT_PASSWORD
             value: root
           - name: MYSQL_DATABASE
-            value: ts-mysql-mysql        
+            value: ts-assurance-mysql
         ports:
         - containerPort: 3306
         resources:
