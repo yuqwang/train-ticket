@@ -722,7 +722,7 @@ metadata:
   namespace: h10g
 spec:
   ports:
-    - port: 27017
+    - port: 3306
   selector:
    app: ts-user-mysql
 
@@ -734,7 +734,7 @@ metadata:
   namespace: h10g
 spec:
   ports:
-    - port: 27017
+    - port: 3306
   selector:
    app: ts-auth-mysql
 ---
@@ -746,7 +746,7 @@ metadata:
   namespace: h10g
 spec:
   ports:
-    - port: 27017
+    - port: 3306
   selector:
    app: ts-route-mysql
 
@@ -759,7 +759,7 @@ metadata:
   namespace: h10g
 spec:
   ports:
-    - port: 27017
+    - port: 3306
   selector:
    app: ts-contacts-mysql
 
@@ -771,10 +771,8 @@ metadata:
   name: ts-order-mysql
   namespace: h10g
 spec:
-  #  type: NodePort
   ports:
     - port: 3306
-  #      nodePort: 25765
   selector:
     app: ts-order-mysql
 
@@ -786,10 +784,8 @@ metadata:
   name: ts-order-other-mysql
   namespace: h10g
 spec:
-  #  type: NodePort
   ports:
     - port: 3306
-  #      nodePort: 25998
   selector:
     app: ts-order-other-mysql
 ---
@@ -799,10 +795,8 @@ metadata:
   name: ts-config-mysql
   namespace: h10g
 spec:
-  #  type: NodePort
   ports:
     - port: 3306
-  #      nodePort: 25997
   selector:
     app: ts-config-mysql
 
@@ -828,10 +822,8 @@ metadata:
   name: ts-train-mysql
   namespace: h10g
 spec:
-  #  type: NodePort
   ports:
     - port: 3306
-  #      nodePort: 25996
   selector:
     app: ts-train-mysql
 
