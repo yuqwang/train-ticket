@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -19,6 +20,7 @@ import java.util.List;
 public class Route {
 
     @Id
+    @Column(name = "routeId")
     private String id;
 
     @ElementCollection
@@ -27,6 +29,7 @@ public class Route {
     @ElementCollection
     private List<Integer> distances;
 
+    @Column(name = "startingStationId")
     private String startStationId;
 
     private String terminalStationId;

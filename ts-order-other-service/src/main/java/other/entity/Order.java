@@ -20,11 +20,13 @@ import java.util.UUID;
 public class Order {
     //orders
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
+    @Column(name = "orderId")
+//    @GeneratedValue(generator = "jpa-uuid")
     private String id;
 
     private Date boughtDate;
 
+    @Column(name = "startingTime")
     private Date travelDate;
 
     private Date travelTime;
@@ -32,7 +34,8 @@ public class Order {
     /**
      * Which Account Bought it
      */
-    @GeneratedValue(generator = "jpa-uuid")
+//    @GeneratedValue(generator = "jpa-uuid")
+    @Column(name = "userId")
     private String accountId;
 
     /**
@@ -40,10 +43,12 @@ public class Order {
      */
     private String contactsName;
 
+    @Column(name = "contactsDocumentType")
     private int documentType;
 
     private String contactsDocumentNumber;
 
+    @Column(name = "trainTypeId")
     private String trainNumber;
 
     private int coachNumber;
@@ -52,14 +57,15 @@ public class Order {
 
     private String seatNumber;
 
-    @Column(name = "startPoint")
+    @Column(name = "orderStartingStationId")
     private String from;
 
-    @Column(name = "endPoint")
+    @Column(name = "orderTerminalStationId")
     private String to;
 
     private int status;
 
+    @Column(name = "orderPrice")
     private String price;
 
     public Order(){

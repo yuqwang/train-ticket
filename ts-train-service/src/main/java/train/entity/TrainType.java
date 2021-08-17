@@ -3,10 +3,7 @@ package train.entity;
 import lombok.Data;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.Valid;
 
 @Data
@@ -15,6 +12,7 @@ public class TrainType {
     //trainType
     @Valid
     @Id
+    @Column(name = "trainTypeId")
     //@GeneratedValue(strategy= GenerationType.IDENTITY)
     private String id;
 
