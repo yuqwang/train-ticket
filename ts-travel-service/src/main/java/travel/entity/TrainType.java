@@ -2,6 +2,7 @@ package travel.entity;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.Valid;
@@ -14,6 +15,7 @@ import javax.validation.Valid;
 public class TrainType {
     @Valid
     @Id
+    @Column(name = "trainTypeId")
     private String id;
 
     @Valid

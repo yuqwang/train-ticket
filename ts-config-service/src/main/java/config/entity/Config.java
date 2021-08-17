@@ -3,6 +3,7 @@ package config.entity;
 import lombok.Data;
 
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.Valid;
@@ -17,13 +18,16 @@ public class Config {
     @Valid
     @Id
     @NotNull
+    @Column(name = "configName")
     private String name;
 
     @Valid
     @NotNull
+    @Column(name = "configValue")
     private String value;
 
     @Valid
+    @Column(name = "configDescription")
     private String description;
 
     public Config() {

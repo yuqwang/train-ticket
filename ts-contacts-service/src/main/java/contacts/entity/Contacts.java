@@ -3,6 +3,8 @@ package contacts.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.UUID;
@@ -17,14 +19,19 @@ import java.util.UUID;
 public class Contacts {
 
     @Id
+    @Column(name = "contactsId")
     private String id;
 
+    @Column(name = "userId")
     private String accountId;
 
+    @Column(name = "contactsName")
     private String name;
 
+    @Column(name = "contactsDocumentType")
     private int documentType;
 
+    @Column(name = "contactsDocumentNumber")
     private String documentNumber;
 
     private String phoneNumber;

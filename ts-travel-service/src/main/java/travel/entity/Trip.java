@@ -18,8 +18,8 @@ import java.util.Date;
 public class Trip {
     @Valid
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 32)
+//    @GeneratedValue(generator = "jpa-uuid")
+    @Column(name = "tripUuid",length = 32)
     private String id;
 
     @Embedded
