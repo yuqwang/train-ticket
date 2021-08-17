@@ -11,9 +11,11 @@ import java.util.List;
 @Data
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Table(schema = "ts-food-map-mysql")
 public class FoodStore {
 
     @Id
+    @Column(name = "store_id")
     private String id;
 
     @NotNull
@@ -21,6 +23,7 @@ public class FoodStore {
 
     private String storeName;
 
+    @Column(name = "store_telephone")
     private String telephone;
 
     private String businessTime;
@@ -28,6 +31,8 @@ public class FoodStore {
     private double deliveryFee;
 
     @ElementCollection(targetClass = Food.class, fetch = FetchType.EAGER)
+    @CollectionTable(joinColumns = @JoinColumn(name = "store_id"))
+    @Column(name = "store_food_list")
     private List<Food> foodList;
 
     public FoodStore(){

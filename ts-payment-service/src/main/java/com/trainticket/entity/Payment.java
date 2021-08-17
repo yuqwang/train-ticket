@@ -2,6 +2,7 @@ package com.trainticket.entity;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.validation.Valid;
@@ -17,6 +18,7 @@ public class Payment {
     @Id
     @NotNull
     @Valid
+    @Column(name = "payment_id")
     private String id;
 
     @NotNull
@@ -29,6 +31,7 @@ public class Payment {
 
     @NotNull
     @Valid
+    @Column(name = "payment_price")
     private String price;
 
     public Payment(){

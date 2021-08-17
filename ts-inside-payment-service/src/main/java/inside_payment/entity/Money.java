@@ -2,10 +2,7 @@ package inside_payment.entity;
 
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.UUID;
@@ -20,6 +17,7 @@ public class Money {
     @Valid
     @NotNull
     @Id
+    @Column(name = "money_id")
     private String id;
 
     @Valid
@@ -33,6 +31,7 @@ public class Money {
     @Valid
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "money_type")
     private MoneyType type;
 
     public Money(){

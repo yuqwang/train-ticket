@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 //import org.springframework.data.mongodb.core.mapping.Document;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 /**
@@ -17,11 +14,14 @@ import java.util.UUID;
 @AllArgsConstructor
 //@Document(collection="price_config")
 @Entity
+@Table(schema = "ts-price-mysql")
 public class PriceConfig {
 
     @Id
+    @Column(name = "price_config_id")
     private String id;
 
+    @Column(name = "train_type_id")
     private String trainType;
 
     private String routeId;

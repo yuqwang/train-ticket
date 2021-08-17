@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @author fdse
@@ -19,11 +16,14 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Table(schema = "ts-consign-mysql")
 public class ConsignRecord {
 
     @Id
+    @Column(name = "consign_record_id")
     private String id;
     private String orderId;
+    @Column(name = "user_id")
     private String accountId;
     private String handleDate;
     private String targetDate;
@@ -32,8 +32,10 @@ public class ConsignRecord {
     @Column(name = "to_place")
     private String to;
     private String consignee;
+    @Column(name = "consign_record_phone")
     private String phone;
     private double weight;
+    @Column(name = "consign_record_price")
     private double price;
 
 }

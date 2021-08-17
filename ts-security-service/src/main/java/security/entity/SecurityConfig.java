@@ -5,10 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 //import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 /**
@@ -17,14 +14,19 @@ import java.util.UUID;
 @Data
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Table(schema = "ts-security-mysql")
 public class SecurityConfig {
     @Id
+    @Column(name = "security_config_id")
     private String id;
 
+    @Column(name = "security_config_name")
     private String name;
 
+    @Column(name = "security_config_value")
     private String value;
 
+    @Column(name = "security_config_description")
     private String description;
 
     public SecurityConfig() {

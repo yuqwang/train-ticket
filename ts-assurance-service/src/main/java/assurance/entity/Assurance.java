@@ -17,6 +17,7 @@ import java.util.UUID;
 public class Assurance {
 
     @Id
+    @Column(name = "assurance_id")
     private String id;
 
     /**
@@ -29,6 +30,7 @@ public class Assurance {
      * the type of assurance
      */
     @Enumerated(EnumType.STRING)
+    @Column(name = "assurance_type")
     private AssuranceType type;
 
     public Assurance(){

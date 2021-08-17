@@ -14,9 +14,11 @@ import java.util.UUID;
  */
 @Data
 @Entity
+@Table(schema = "ts-travel2-mysql")
 public class Trip {
     @Valid
     @Id
+    @Column(name = "trip_uuid")
     private String id;
 
     @Embedded

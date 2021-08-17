@@ -5,17 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
 @Entity
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Table(schema = "ts-food-mysql")
 public class FoodOrder {
 
     @Id
+    @Column(name = "food_order_id")
     private String id;
 
     private String orderId;
@@ -29,6 +29,7 @@ public class FoodOrder {
 
     private String foodName;
 
+    @Column(name = "food_order_price")
     private double price;
 
     public FoodOrder(){

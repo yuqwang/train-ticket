@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * @author fdse
@@ -15,8 +12,10 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor
 @Entity
+@Table(schema = "ts-consign-price-mysql")
 public class ConsignPrice {
     @Id
+    @Column(name = "consign_price_id")
     private String id;
     @Column(name = "consign_index")
     private int index;
