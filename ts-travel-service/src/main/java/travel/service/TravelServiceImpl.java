@@ -214,9 +214,13 @@ public class TravelServiceImpl implements TravelService {
                 response = getTickets(tempTrip, tempRoute, startingPlaceId, endPlaceId, startingPlaceName, endPlaceName, info.getDepartureTime(), headers);
             }
             if (response == null) {
-                TravelServiceImpl.LOGGER.warn("tripId: [{}], routeId: [{}]. Query trip error. Tickets not found,start: {},end: {},time: {}", tempTrip.getTripId().toString(), tempTrip.getRouteId(), startingPlaceName, endPlaceName, info.getDepartureTime());
+                for (int i = 0; i < 3; i++) {
+                    TravelServiceImpl.LOGGER.warn("tripId: [{}], routeId: [{}]. Query trip error. Tickets not found,start: {},end: {},time: {}", tempTrip.getTripId().toString(), tempTrip.getRouteId(), startingPlaceName, endPlaceName, info.getDepartureTime());
+                }
             } else {
-                TravelServiceImpl.LOGGER.info("tripId: [{}], routeId: [{}]. Query success", tempTrip.getTripId().toString(), tempTrip.getRouteId());
+                for (int i = 0; i < 3; i++) {
+                    TravelServiceImpl.LOGGER.info("tripId: [{}], routeId: [{}]. Query success", tempTrip.getTripId().toString(), tempTrip.getRouteId());
+                }
             }
             return response;
         }
@@ -309,7 +313,10 @@ public class TravelServiceImpl implements TravelService {
                 HttpMethod.POST,
                 requestEntity,
                 Response.class);
-        TravelServiceImpl.LOGGER.info("Ts-basic-service ticket info is: {}", re.getBody().toString());
+        for (int i = 0; i < 3; i++) {
+            TravelServiceImpl.LOGGER.info("Ts-basic-service ticket info is: {}", re.getBody().toString());
+        }
+
         TravelResult resultForTravel = JsonUtils.conveterObject(re.getBody().getData(), TravelResult.class);
 
         //Ticket order _ high-speed train (number of tickets purchased)
@@ -322,7 +329,9 @@ public class TravelServiceImpl implements TravelService {
                 });
 
         Response<SoldTicket> result = re2.getBody();
-        TravelServiceImpl.LOGGER.info("Order info is: {}", result.toString());
+        for (int i = 0; i < 3; i++) {
+            TravelServiceImpl.LOGGER.info("Order info is: {}", result.toString());
+        }
 
 
         //Set the returned ticket information
@@ -355,13 +364,17 @@ public class TravelServiceImpl implements TravelService {
         calendarStart.setTime(trip.getStartingTime());
         calendarStart.add(Calendar.MINUTE, minutesStart);
         response.setStartingTime(calendarStart.getTime());
-        TravelServiceImpl.LOGGER.info("calculate time：{}  time: {}", minutesStart, calendarStart.getTime());
+        for (int i = 0; i < 3; i++) {
+            TravelServiceImpl.LOGGER.info("calculate time：{}  time: {}", minutesStart, calendarStart.getTime());
+        }
 
         Calendar calendarEnd = Calendar.getInstance();
         calendarEnd.setTime(trip.getStartingTime());
         calendarEnd.add(Calendar.MINUTE, minutesEnd);
         response.setEndTime(calendarEnd.getTime());
-        TravelServiceImpl.LOGGER.info("calculate time：{}  time: {}", minutesEnd, calendarEnd.getTime());
+        for (int i = 0; i < 3; i++) {
+            TravelServiceImpl.LOGGER.info("calculate time：{}  time: {}", minutesEnd, calendarEnd.getTime());
+        }
 
         response.setTripId(new TripId(result.getData().getTrainNumber()));
         response.setTrainTypeId(trip.getTrainTypeId());
