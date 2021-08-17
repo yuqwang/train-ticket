@@ -1737,7 +1737,7 @@ spec:
     spec:
       containers:
         - name: ts-travel-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-service:sw1.6
+          image: registry.cn-shanghai.aliyuncs.com/xywu/ts-travel-service:parallel
           imagePullPolicy: Always
           env:
             - name: NODE_IP
