@@ -182,6 +182,7 @@ public class TravelServiceImpl implements TravelService {
         return new Response<>(1, success, list);
     }
 
+    @TraceCrossThread
     class MyCallable implements Callable<TripResponse> {
         private TripInfo info;
         private Trip tempTrip;
@@ -197,6 +198,7 @@ public class TravelServiceImpl implements TravelService {
             this.endPlaceId = endPlaceId;
         }
 
+        @Override
         public TripResponse call() throws Exception {
             TravelServiceImpl.LOGGER.info("tripId: [{}], routeId: [{}]. Start to query", tempTrip.getTripId().toString(), tempTrip.getRouteId());
 
