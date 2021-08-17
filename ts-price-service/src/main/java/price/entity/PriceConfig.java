@@ -17,12 +17,9 @@ import java.util.UUID;
 @AllArgsConstructor
 //@Document(collection="price_config")
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class PriceConfig {
 
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 32)
     private String id;
 
     private String trainType;

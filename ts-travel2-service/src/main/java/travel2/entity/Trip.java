@@ -7,18 +7,16 @@ import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * @author fdse
  */
 @Data
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class Trip {
     @Valid
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 32)
     private String id;
 
     @Embedded
@@ -51,6 +49,7 @@ public class Trip {
     private Date endTime;
 
     public Trip(TripId tripId, String trainTypeId, String startingStationId, String stationsId, String terminalStationId, Date startingTime, Date endTime) {
+        this.id = UUID.randomUUID().toString();
         this.tripId = tripId;
         this.trainTypeId = trainTypeId;
         this.startingStationId = startingStationId;
@@ -61,6 +60,7 @@ public class Trip {
     }
 
     public Trip(TripId tripId, String trainTypeId, String routeId) {
+        this.id = UUID.randomUUID().toString();
         this.tripId = tripId;
         this.trainTypeId = trainTypeId;
         this.routeId = routeId;
@@ -72,6 +72,7 @@ public class Trip {
 
     public Trip(){
         //Default Constructor
+        this.id = UUID.randomUUID().toString();
         this.trainTypeId = "";
         this.startingStationId = "";
         this.terminalStationId = "";

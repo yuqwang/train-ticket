@@ -15,11 +15,8 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 public class ConsignPrice {
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 32)
     private String id;
     @Column(name = "consign_index")
     private int index;

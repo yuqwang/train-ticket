@@ -12,12 +12,10 @@ import javax.persistence.Id;
 @Data
 @AllArgsConstructor
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FoodOrder {
 
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
     private String id;
 
     private String orderId;

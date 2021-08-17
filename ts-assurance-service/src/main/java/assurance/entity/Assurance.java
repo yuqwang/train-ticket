@@ -13,13 +13,10 @@ import java.util.UUID;
  */
 @Data
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Assurance {
 
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 32)
     private String id;
 
     /**
