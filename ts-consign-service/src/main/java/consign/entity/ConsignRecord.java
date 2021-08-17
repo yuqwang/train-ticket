@@ -18,12 +18,10 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConsignRecord {
 
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
     private String id;
     private String orderId;
     private String accountId;

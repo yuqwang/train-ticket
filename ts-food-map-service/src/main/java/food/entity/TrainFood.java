@@ -10,12 +10,10 @@ import java.util.List;
 
 @Data
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TrainFood {
 
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
     private String id;
 
     @NotNull

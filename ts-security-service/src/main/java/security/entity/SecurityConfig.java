@@ -16,12 +16,9 @@ import java.util.UUID;
  */
 @Data
 @Entity
-@GenericGenerator(name = "jpa-uuid", strategy = "uuid")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SecurityConfig {
     @Id
-    @GeneratedValue(generator = "jpa-uuid")
-    @Column(length = 32)
     private String id;
 
     private String name;
