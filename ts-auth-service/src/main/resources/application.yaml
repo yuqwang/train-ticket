@@ -5,6 +5,7 @@ spring:
     name: ts-auth-service
   datasource:
     url: jdbc:mysql://ts-auth-mysql:3306/ts-auth-mysql?useSSL=false
+#    url: jdbc:mysql://10.176.122.80:25776/ts-auth-mysql?useSSL=false
     username: root
     password: root
     driver-class-name: com.mysql.jdbc.Driver

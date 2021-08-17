@@ -19,7 +19,7 @@ public class Trip {
     @Valid
     @Id
 //    @GeneratedValue(generator = "jpa-uuid")
-    @Column(name = "tripUuid",length = 32)
+    @Column(name = "tripUuid")
     private String id;
 
     @Embedded

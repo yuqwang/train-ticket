@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -20,16 +17,18 @@ import java.util.List;
 public class Route {
 
     @Id
-    @Column(name = "routeId")
+    @Column(name = "route_id")
     private String id;
 
     @ElementCollection
+    @CollectionTable(joinColumns = @JoinColumn(name = "route_id"))
     private List<String> stations;
 
     @ElementCollection
+    @CollectionTable(joinColumns = @JoinColumn(name = "route_id"))
     private List<Integer> distances;
 
-    @Column(name = "startingStationId")
+    @Column(name = "starting_station_id")
     private String startStationId;
 
     private String terminalStationId;

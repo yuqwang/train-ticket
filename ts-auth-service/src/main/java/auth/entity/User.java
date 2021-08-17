@@ -33,6 +33,7 @@ public class User implements UserDetails {
     private String password;
 
     @ElementCollection
+    @CollectionTable(joinColumns = @JoinColumn(name = "user_id"))
     private Set<String> roles = new HashSet<>();
 
     @Override
