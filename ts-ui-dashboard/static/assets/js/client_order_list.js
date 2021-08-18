@@ -121,6 +121,7 @@ var appConsign = new Vue({
                     var info = new Object();
                     info.orderId = that.orderId;
                     info.tripId = that.tripId;
+                    info.userId = sessionStorage.getItem("client_id");
                     var data = JSON.stringify(info);
                     $.ajax({
                         type: "post",
