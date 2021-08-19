@@ -58,4 +58,19 @@ public class SeatController {
         return ok(seatService.getLeftTicketOfInterval(seatRequest, headers));
     }
 
+    /**
+     * get left ticket of interval
+     * query specific interval residual
+     *
+     * @param seatRequest seat request
+     * @param headers headers
+     * @return HttpEntity
+     */
+    @CrossOrigin(origins = "*")
+    @PostMapping(value = "/seats/left_tickets_parallel")
+    public HttpEntity getLeftTicketOfIntervalParallel(@RequestBody Seat seatRequest, @RequestHeader HttpHeaders headers) {
+        // int
+        SeatController.LOGGER.info("Get left ticket of interval,TravelDate: {},TrainNumber: {},SeatType: {}",seatRequest.getTravelDate(),seatRequest.getTrainNumber(),seatRequest.getSeatType());
+        return ok(seatService.getLeftTicketOfIntervalParallel(seatRequest, headers));
+    }
 }

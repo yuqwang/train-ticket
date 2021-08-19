@@ -10,5 +10,8 @@ import seat.entity.Seat;
 public interface SeatService {
 
     Response distributeSeat(Seat seatRequest, HttpHeaders headers);
+
     Response getLeftTicketOfInterval(Seat seatRequest, HttpHeaders headers);
+
+    Response getLeftTicketOfIntervalParallel(Seat seatRequest, HttpHeaders headers);
 }

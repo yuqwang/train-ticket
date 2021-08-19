@@ -180,13 +180,9 @@ public class SeatServiceImpl implements SeatService {
 
         //Distinguish G\D from other trains
         String trainNumber = seatRequest.getTrainNumber();
-        for (int i = 0; i < 3; i++) {
-            SeatServiceImpl.LOGGER.info("Seat request To String: {}", seatRequest.toString());
-        }
+        SeatServiceImpl.LOGGER.info("Seat request To String: {}", seatRequest.toString());
         if (trainNumber.startsWith("G") || trainNumber.startsWith("D")) {
-            for (int i = 0; i < 3; i++) {
-                SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] TrainNumber start with G|D {}", trainNumber);
-            }
+            SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] TrainNumber start with G|D {}", trainNumber);
 
             //Call the micro service to query all the station information for the trains
             HttpEntity requestEntity = new HttpEntity(null);
@@ -197,9 +193,6 @@ public class SeatServiceImpl implements SeatService {
                     new ParameterizedTypeReference<Response<Route>>() {
                     });
             routeResult = re.getBody();
-            for (int i = 0; i < 3; i++) {
-                SeatServiceImpl.LOGGER.info("[ getLeftTicketOfInterval] The result of getRouteResult is {}", routeResult.getMsg());
-            }
             SeatServiceImpl.LOGGER.info("[ getLeftTicketOfInterval] The result of getRouteResult is {}", routeResult.getMsg());
 
             //Call the micro service to query for residual Ticket information: the set of the Ticket sold for the specified seat type
@@ -210,9 +203,7 @@ public class SeatServiceImpl implements SeatService {
                     requestEntity,
                     new ParameterizedTypeReference<Response<LeftTicketInfo>>() {
                     });
-            for (int i = 0; i < 3; i++) {
-                SeatServiceImpl.LOGGER.info("Get Order tickets result is : {}.", re3.getStatusCode());
-            }
+
             SeatServiceImpl.LOGGER.info("Get Order tickets result is : {}.", re3.getStatusCode());
             leftTicketInfo = re3.getBody().getData();
 
@@ -231,7 +222,152 @@ public class SeatServiceImpl implements SeatService {
             SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The result of getTrainTypeResult is {}", trainTypeResponse.toString());
         } else {
             SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] TrainNumber start with other capital");
+            //Call the micro service to query all the station information for the trains
+            HttpEntity requestEntity = new HttpEntity(null);
+            re = restTemplate.exchange(
+                    "http://ts-travel2-service:16346/api/v1/travel2service/routes/" + seatRequest.getTrainNumber(),
+                    HttpMethod.GET,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<Route>>() {
+                    });
+            routeResult = re.getBody();
+            SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The result of getRouteResult is {}", routeResult.toString());
+
+            //Call the micro service to query for residual Ticket information: the set of the Ticket sold for the specified seat type
+            requestEntity = new HttpEntity(seatRequest, null);
+            re3 = restTemplate.exchange(
+                    "http://ts-order-other-service:12032/api/v1/orderOtherService/orderOther/tickets",
+                    HttpMethod.POST,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<LeftTicketInfo>>() {
+                    });
+            SeatServiceImpl.LOGGER.info("Get Order tickets result is : {}", re3.getStatusCode());
+            leftTicketInfo = re3.getBody().getData();
+
+
+            //Calls the microservice to query the total number of seats specified for that vehicle
+            requestEntity = new HttpEntity(null);
+            re2 = restTemplate.exchange(
+                    "http://ts-travel2-service:16346/api/v1/travel2service/train_types/" + seatRequest.getTrainNumber(),
+                    HttpMethod.GET,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<TrainType>>() {
+                    });
+            Response<TrainType> trainTypeResponse = re2.getBody();
+            trainTypeResult = trainTypeResponse.getData();
+            SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The result of getTrainTypeResult is {}", trainTypeResponse.toString());
+        }
+
+        //Counting the seats remaining in certain sections
+        List<String> stationList = routeResult.getData().getStations();
+        int seatTotalNum;
+        if (seatRequest.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
+            seatTotalNum = trainTypeResult.getConfortClass();
+            SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The request seat type is confortClass and the total num is {}", seatTotalNum);
+        } else {
+            seatTotalNum = trainTypeResult.getEconomyClass();
+            SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The request seat type is economyClass and the total num is {}", seatTotalNum);
+        }
+
+        int solidTicketSize = 0;
+        if (leftTicketInfo != null) {
+            String startStation = seatRequest.getStartStation();
+            Set<Ticket> soldTickets = leftTicketInfo.getSoldTickets();
+            solidTicketSize = soldTickets.size();
+            //To find out if tickets already sold are available
+            for (Ticket soldTicket : soldTickets) {
+                String soldTicketDestStation = soldTicket.getDestStation();
+                //Tickets can be allocated if the sold ticket's end station before the start station of the request
+                if (stationList.indexOf(soldTicketDestStation) < stationList.indexOf(startStation)) {
+                    SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The previous distributed seat number is usable! {}", soldTicket.getSeatNo());
+                    numOfLeftTicket++;
+                }
+            }
+        }
+        //Count the unsold tickets
+
+        double direstPart = getDirectProportion(headers);
+        Route route = routeResult.getData();
+        if (route.getStations().get(0).equals(seatRequest.getStartStation()) &&
+                route.getStations().get(route.getStations().size() - 1).equals(seatRequest.getDestStation())) {
+            //do nothing
+        } else {
+            direstPart = 1.0 - direstPart;
+        }
+
+        int unusedNum = (int) (seatTotalNum * direstPart) - solidTicketSize;
+        numOfLeftTicket += unusedNum;
+
+        return new Response<>(1, "Get Left Ticket of Internal Success", numOfLeftTicket);
+    }
+
+    @Override
+    public Response getLeftTicketOfIntervalParallel(Seat seatRequest, HttpHeaders headers) {
+        int numOfLeftTicket = 0;
+        Response<Route> routeResult;
+        TrainType trainTypeResult;
+        LeftTicketInfo leftTicketInfo;
+
+        ResponseEntity<Response<Route>> re;
+        ResponseEntity<Response<TrainType>> re2;
+        ResponseEntity<Response<LeftTicketInfo>> re3;
+
+        //Distinguish G\D from other trains
+        String trainNumber = seatRequest.getTrainNumber();
+        for (int i = 0; i < 3; i++) {
+            SeatServiceImpl.LOGGER.info("Seat request To String: {}", seatRequest.toString());
+        }
+        if (trainNumber.startsWith("G") || trainNumber.startsWith("D")) {
             for (int i = 0; i < 3; i++) {
+                SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] TrainNumber start with G|D {}", trainNumber);
+            }
+
+            //Call the micro service to query all the station information for the trains
+            HttpEntity requestEntity = new HttpEntity(null);
+            re = restTemplate.exchange(
+                    "http://ts-travel-service:12346/api/v1/travelservice/routes/" + trainNumber,
+                    HttpMethod.GET,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<Route>>() {
+                    });
+            routeResult = re.getBody();
+            for (int i = 0; i < 2; i++) {
+                SeatServiceImpl.LOGGER.info("[ getLeftTicketOfInterval] The result of getRouteResult is {}", routeResult.getMsg());
+            }
+            SeatServiceImpl.LOGGER.info("[ getLeftTicketOfInterval] The result of getRouteResult is {}", routeResult.getMsg());
+
+            //Call the micro service to query for residual Ticket information: the set of the Ticket sold for the specified seat type
+            requestEntity = new HttpEntity(seatRequest, null);
+            re3 = restTemplate.exchange(
+                    "http://ts-order-service:12031/api/v1/orderservice/order/tickets",
+                    HttpMethod.POST,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<LeftTicketInfo>>() {
+                    });
+            for (int i = 0; i < 2; i++) {
+                SeatServiceImpl.LOGGER.info("Get Order tickets result is : {}.", re3.getStatusCode());
+            }
+            SeatServiceImpl.LOGGER.info("Get Order tickets result is : {}.", re3.getStatusCode());
+            leftTicketInfo = re3.getBody().getData();
+
+            //Calls the microservice to query the total number of seats specified for that vehicle
+            requestEntity = new HttpEntity(null);
+            re2 = restTemplate.exchange(
+                    "http://ts-travel-service:12346/api/v1/travelservice/train_types/" + seatRequest.getTrainNumber(),
+                    HttpMethod.GET,
+                    requestEntity,
+                    new ParameterizedTypeReference<Response<TrainType>>() {
+                    });
+            Response<TrainType> trainTypeResponse = re2.getBody();
+
+
+            trainTypeResult = trainTypeResponse.getData();
+            for (int i = 0; i < 2; i++) {
+                SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The result of getTrainTypeResult is {}", trainTypeResponse.toString());
+            }
+        } else {
+            SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] TrainNumber start with other capital");
+            for (int i = 0; i < 2; i++) {
                 SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] TrainNumber start with other capital");
             }
             //Call the micro service to query all the station information for the trains
@@ -267,7 +403,7 @@ public class SeatServiceImpl implements SeatService {
                     });
             Response<TrainType> trainTypeResponse = re2.getBody();
             trainTypeResult = trainTypeResponse.getData();
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
                 SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The result of getTrainTypeResult is {}", trainTypeResponse.toString());
             }
             SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The result of getTrainTypeResult is {}", trainTypeResponse.toString());
@@ -278,13 +414,13 @@ public class SeatServiceImpl implements SeatService {
         int seatTotalNum;
         if (seatRequest.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
             seatTotalNum = trainTypeResult.getConfortClass();
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
                 SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The request seat type is confortClass and the total num is {}", seatTotalNum);
             }
             SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The request seat type is confortClass and the total num is {}", seatTotalNum);
         } else {
             seatTotalNum = trainTypeResult.getEconomyClass();
-            for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 2; i++) {
                 SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The request seat type is economyClass and the total num is {}", seatTotalNum);
             }
             SeatServiceImpl.LOGGER.info("[getLeftTicketOfInterval] The request seat type is economyClass and the total num is {}", seatTotalNum);

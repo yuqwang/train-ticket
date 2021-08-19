@@ -40,26 +40,14 @@ public class BasicServiceImpl implements BasicService {
             result.setStatus(false);
             response.setStatus(0);
             response.setMsg("Start place or end place not exist!");
-            for (int i = 0; i < 3; i++) {
-                response.setMsg("Start place or end place not exist!");
-            }
             if (!startingPlaceExist)
-                for (int i = 0; i < 3; i++) {
-                    BasicServiceImpl.LOGGER.warn("Start place {} not exist", info.getStartingPlace());
-                }
-            BasicServiceImpl.LOGGER.warn("Start place {} not exist", info.getStartingPlace());
+                BasicServiceImpl.LOGGER.warn("Start place {} not exist", info.getStartingPlace());
             if (!endPlaceExist)
-                for (int i = 0; i < 3; i++) {
-                    BasicServiceImpl.LOGGER.warn("End place {} not exist", info.getEndPlace());
-                }
-            BasicServiceImpl.LOGGER.warn("End place {} not exist", info.getEndPlace());
+                BasicServiceImpl.LOGGER.warn("End place {} not exist", info.getEndPlace());
         }
 
         TrainType trainType = queryTrainType(info.getTrip().getTrainTypeId(), headers);
         if (trainType == null) {
-            for (int i = 0; i < 3; i++) {
-                BasicServiceImpl.LOGGER.warn("traintype doesn't exist, trainTypeId: {}", info.getTrip().getTrainTypeId());
-            }
             BasicServiceImpl.LOGGER.warn("traintype doesn't exist, trainTypeId: {}", info.getTrip().getTrainTypeId());
             result.setStatus(false);
             response.setStatus(0);
@@ -79,9 +67,6 @@ public class BasicServiceImpl implements BasicService {
         String startingPlaceId = (String) queryForStationId(info.getStartingPlace(), headers).getData();
         String endPlaceId = (String) queryForStationId(info.getEndPlace(), headers).getData();
 
-        for (int i = 0; i < 3; i++) {
-            LOGGER.info("startingPlaceId: " + startingPlaceId + "endPlaceId: " + endPlaceId);
-        }
         LOGGER.info("startingPlaceId: " + startingPlaceId + "endPlaceId: " + endPlaceId);
 
         int indexStart = 0;
@@ -91,14 +76,8 @@ public class BasicServiceImpl implements BasicService {
             indexEnd = route.getStations().indexOf(endPlaceId);
         }
 
-        for (int i = 0; i < 3; i++) {
-            LOGGER.info("indexStart: " + indexStart + " __ " + "indexEnd: " + indexEnd);
-        }
         LOGGER.info("indexStart: " + indexStart + " __ " + "indexEnd: " + indexEnd);
         if (route != null) {
-            for (int i = 0; i < 3; i++) {
-                LOGGER.info("route.getDistances().size: " + route.getDistances().size());
-            }
             LOGGER.info("route.getDistances().size: " + route.getDistances().size());
         }
         HashMap<String, String> prices = new HashMap<>();
