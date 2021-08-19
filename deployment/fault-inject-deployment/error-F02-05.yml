@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ts-seat-service
-          image: registry.cn-shanghai.aliyuncs.com/xywu/ts-seat-service:error.F02-04
+          image: registry.cn-shanghai.aliyuncs.com/xywu/ts-seat-service:error.F02-05
           imagePullPolicy: Always
           env:
             - name: NODE_IP
@@ -63,7 +63,7 @@ spec:
     spec:
       containers:
         - name: ts-travel-service
-          image: registry.cn-shanghai.aliyuncs.com/xywu/ts-travel-service:error.F02-04
+          image: registry.cn-shanghai.aliyuncs.com/xywu/ts-travel-service:error.F02-05
           imagePullPolicy: Always
           env:
             - name: NODE_IP
