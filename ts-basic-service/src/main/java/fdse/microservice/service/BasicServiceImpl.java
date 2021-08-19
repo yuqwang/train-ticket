@@ -40,14 +40,26 @@ public class BasicServiceImpl implements BasicService {
             result.setStatus(false);
             response.setStatus(0);
             response.setMsg("Start place or end place not exist!");
+            for (int i = 0; i < 3; i++) {
+                response.setMsg("Start place or end place not exist!");
+            }
             if (!startingPlaceExist)
-                BasicServiceImpl.LOGGER.warn("Start place {} not exist", info.getStartingPlace());
+                for (int i = 0; i < 3; i++) {
+                    BasicServiceImpl.LOGGER.warn("Start place {} not exist", info.getStartingPlace());
+                }
+            BasicServiceImpl.LOGGER.warn("Start place {} not exist", info.getStartingPlace());
             if (!endPlaceExist)
-                BasicServiceImpl.LOGGER.warn("End place {} not exist", info.getEndPlace());
+                for (int i = 0; i < 3; i++) {
+                    BasicServiceImpl.LOGGER.warn("End place {} not exist", info.getEndPlace());
+                }
+            BasicServiceImpl.LOGGER.warn("End place {} not exist", info.getEndPlace());
         }
 
         TrainType trainType = queryTrainType(info.getTrip().getTrainTypeId(), headers);
         if (trainType == null) {
+            for (int i = 0; i < 3; i++) {
+                BasicServiceImpl.LOGGER.warn("traintype doesn't exist, trainTypeId: {}", info.getTrip().getTrainTypeId());
+            }
             BasicServiceImpl.LOGGER.warn("traintype doesn't exist, trainTypeId: {}", info.getTrip().getTrainTypeId());
             result.setStatus(false);
             response.setStatus(0);
@@ -58,7 +70,7 @@ public class BasicServiceImpl implements BasicService {
 
         String routeId = info.getTrip().getRouteId();
         String trainTypeString = "";
-        if (trainType != null){
+        if (trainType != null) {
             trainTypeString = trainType.getId();
         }
         Route route = getRouteByRouteId(routeId, headers);
@@ -67,6 +79,9 @@ public class BasicServiceImpl implements BasicService {
         String startingPlaceId = (String) queryForStationId(info.getStartingPlace(), headers).getData();
         String endPlaceId = (String) queryForStationId(info.getEndPlace(), headers).getData();
 
+        for (int i = 0; i < 3; i++) {
+            LOGGER.info("startingPlaceId: " + startingPlaceId + "endPlaceId: " + endPlaceId);
+        }
         LOGGER.info("startingPlaceId: " + startingPlaceId + "endPlaceId: " + endPlaceId);
 
         int indexStart = 0;
@@ -76,14 +91,20 @@ public class BasicServiceImpl implements BasicService {
             indexEnd = route.getStations().indexOf(endPlaceId);
         }
 
+        for (int i = 0; i < 3; i++) {
+            LOGGER.info("indexStart: " + indexStart + " __ " + "indexEnd: " + indexEnd);
+        }
         LOGGER.info("indexStart: " + indexStart + " __ " + "indexEnd: " + indexEnd);
-        if (route != null){
+        if (route != null) {
+            for (int i = 0; i < 3; i++) {
+                LOGGER.info("route.getDistances().size: " + route.getDistances().size());
+            }
             LOGGER.info("route.getDistances().size: " + route.getDistances().size());
         }
         HashMap<String, String> prices = new HashMap<>();
         try {
             int distance = 0;
-            if (route != null){
+            if (route != null) {
                 distance = route.getDistances().get(indexEnd) - route.getDistances().get(indexStart);
             }
 
@@ -94,7 +115,7 @@ public class BasicServiceImpl implements BasicService {
             double priceForConfortClass = distance * priceConfig.getFirstClassPriceRate();
             prices.put("economyClass", "" + priceForEconomyClass);
             prices.put("confortClass", "" + priceForConfortClass);
-        }catch (Exception e){
+        } catch (Exception e) {
             prices.put("economyClass", "95.0");
             prices.put("confortClass", "120.0");
         }
@@ -119,7 +140,7 @@ public class BasicServiceImpl implements BasicService {
             BasicServiceImpl.LOGGER.warn("Query for stationId error, stationName: {}, message: {}", stationName, msg);
             return new Response<>(0, msg, null);
         }
-        return  re.getBody();
+        return re.getBody();
     }
 
     public boolean checkStationExists(String stationName, HttpHeaders headers) {
@@ -143,7 +164,7 @@ public class BasicServiceImpl implements BasicService {
                 HttpMethod.GET,
                 requestEntity,
                 Response.class);
-        Response  response = re.getBody();
+        Response response = re.getBody();
 
         return JsonUtils.conveterObject(response.getData(), TrainType.class);
     }
@@ -157,7 +178,7 @@ public class BasicServiceImpl implements BasicService {
                 requestEntity,
                 Response.class);
         Response result = re.getBody();
-        if ( result.getStatus() == 0) {
+        if (result.getStatus() == 0) {
             BasicServiceImpl.LOGGER.warn("[Get Route By Id] Fail. {}", result.getMsg());
             return null;
         } else {
@@ -177,7 +198,7 @@ public class BasicServiceImpl implements BasicService {
         Response result = re.getBody();
 
         BasicServiceImpl.LOGGER.info("Response Resutl to String {}", result.toString());
-        return  JsonUtils.conveterObject(result.getData(), PriceConfig.class);
+        return JsonUtils.conveterObject(result.getData(), PriceConfig.class);
     }
 
 }
