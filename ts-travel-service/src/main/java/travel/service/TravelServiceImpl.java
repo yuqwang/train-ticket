@@ -346,21 +346,11 @@ public class TravelServiceImpl implements TravelService {
         response.setConfortClass(50);
         response.setEconomyClass(50);
 
-        int first = 0;
-        int second = 0;
-        if (ifParallel) {
-            first = getRestTicketNumberParallel(departureTime, trip.getTripId().toString(),
-                    startingPlaceName, endPlaceName, SeatClass.FIRSTCLASS.getCode(), headers);
+        int first = getRestTicketNumber(departureTime, trip.getTripId().toString(),
+                startingPlaceName, endPlaceName, SeatClass.FIRSTCLASS.getCode(), headers, ifParallel);
 
-            second = getRestTicketNumberParallel(departureTime, trip.getTripId().toString(),
-                    startingPlaceName, endPlaceName, SeatClass.SECONDCLASS.getCode(), headers);
-        } else {
-            first = getRestTicketNumber(departureTime, trip.getTripId().toString(),
-                    startingPlaceName, endPlaceName, SeatClass.FIRSTCLASS.getCode(), headers);
-
-            second = getRestTicketNumber(departureTime, trip.getTripId().toString(),
-                    startingPlaceName, endPlaceName, SeatClass.SECONDCLASS.getCode(), headers);
-        }
+        int second = getRestTicketNumber(departureTime, trip.getTripId().toString(),
+                startingPlaceName, endPlaceName, SeatClass.SECONDCLASS.getCode(), headers, ifParallel);
 
         response.setConfortClass(first);
         response.setEconomyClass(second);
@@ -478,7 +468,7 @@ public class TravelServiceImpl implements TravelService {
         return route1;
     }
 
-    private int getRestTicketNumber(Date travelDate, String trainNumber, String startStationName, String endStationName, int seatType, HttpHeaders headers) {
+    private int getRestTicketNumber(Date travelDate, String trainNumber, String startStationName, String endStationName, int seatType, HttpHeaders headers, boolean ifParallel) {
         Seat seatRequest = new Seat();
 
         String fromId = queryForStationId(startStationName, headers);
@@ -489,38 +479,13 @@ public class TravelServiceImpl implements TravelService {
         seatRequest.setTrainNumber(trainNumber);
         seatRequest.setTravelDate(travelDate);
         seatRequest.setSeatType(seatType);
+        seatRequest.setIfParallel(ifParallel);
 
         TravelServiceImpl.LOGGER.info("Seat request To String: {}", seatRequest.toString());
 
         HttpEntity requestEntity = new HttpEntity(seatRequest, null);
         ResponseEntity<Response<Integer>> re = restTemplate.exchange(
                 "http://ts-seat-service:18898/api/v1/seatservice/seats/left_tickets",
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<Response<Integer>>() {
-                });
-        TravelServiceImpl.LOGGER.info("Get Rest tickets num is: {}", re.getBody().toString());
-
-        return re.getBody().getData();
-    }
-
-    private int getRestTicketNumberParallel(Date travelDate, String trainNumber, String startStationName, String endStationName, int seatType, HttpHeaders headers) {
-        Seat seatRequest = new Seat();
-
-        String fromId = queryForStationId(startStationName, headers);
-        String toId = queryForStationId(endStationName, headers);
-
-        seatRequest.setDestStation(toId);
-        seatRequest.setStartStation(fromId);
-        seatRequest.setTrainNumber(trainNumber);
-        seatRequest.setTravelDate(travelDate);
-        seatRequest.setSeatType(seatType);
-
-        TravelServiceImpl.LOGGER.info("Seat request To String: {}", seatRequest.toString());
-
-        HttpEntity requestEntity = new HttpEntity(seatRequest, null);
-        ResponseEntity<Response<Integer>> re = restTemplate.exchange(
-                "http://ts-seat-service:18898/api/v1/seatservice/seats/left_tickets_parallel",
                 HttpMethod.POST,
                 requestEntity,
                 new ParameterizedTypeReference<Response<Integer>>() {
