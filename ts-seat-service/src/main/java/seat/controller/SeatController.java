@@ -32,13 +32,13 @@ public class SeatController {
      * Assign seats by seat request
      *
      * @param seatRequest seat request
-     * @param headers headers
+     * @param headers     headers
      * @return HttpEntity
      */
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/seats")
     public HttpEntity create(@RequestBody Seat seatRequest, @RequestHeader HttpHeaders headers) {
-        SeatController.LOGGER.info("Create seat,TravelDate: {},TrainNumber: {},SeatType: {}",seatRequest.getTravelDate(),seatRequest.getTrainNumber(),seatRequest.getSeatType());
+        SeatController.LOGGER.info("Create seat,TravelDate: {},TrainNumber: {},SeatType: {}", seatRequest.getTravelDate(), seatRequest.getTrainNumber(), seatRequest.getSeatType());
         return ok(seatService.distributeSeat(seatRequest, headers));
     }
 
@@ -47,30 +47,18 @@ public class SeatController {
      * query specific interval residual
      *
      * @param seatRequest seat request
-     * @param headers headers
+     * @param headers     headers
      * @return HttpEntity
      */
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/seats/left_tickets")
     public HttpEntity getLeftTicketOfInterval(@RequestBody Seat seatRequest, @RequestHeader HttpHeaders headers) {
         // int
-        SeatController.LOGGER.info("Get left ticket of interval,TravelDate: {},TrainNumber: {},SeatType: {}",seatRequest.getTravelDate(),seatRequest.getTrainNumber(),seatRequest.getSeatType());
-        return ok(seatService.getLeftTicketOfInterval(seatRequest, headers));
-    }
-
-    /**
-     * get left ticket of interval
-     * query specific interval residual
-     *
-     * @param seatRequest seat request
-     * @param headers headers
-     * @return HttpEntity
-     */
-    @CrossOrigin(origins = "*")
-    @PostMapping(value = "/seats/left_tickets_parallel")
-    public HttpEntity getLeftTicketOfIntervalParallel(@RequestBody Seat seatRequest, @RequestHeader HttpHeaders headers) {
-        // int
-        SeatController.LOGGER.info("Get left ticket of interval,TravelDate: {},TrainNumber: {},SeatType: {}",seatRequest.getTravelDate(),seatRequest.getTrainNumber(),seatRequest.getSeatType());
-        return ok(seatService.getLeftTicketOfIntervalParallel(seatRequest, headers));
+        SeatController.LOGGER.info("Get left ticket of interval,TravelDate: {},TrainNumber: {},SeatType: {}", seatRequest.getTravelDate(), seatRequest.getTrainNumber(), seatRequest.getSeatType());
+        if (seatRequest.isIfParallel()) {
+            return ok(seatService.getLeftTicketOfIntervalParallel(seatRequest, headers));
+        } else {
+            return ok(seatService.getLeftTicketOfInterval(seatRequest, headers));
+        }
     }
 }
