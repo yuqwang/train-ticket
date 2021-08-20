@@ -32,13 +32,16 @@ public class Seat {
     @NotNull
     private int seatType;
 
-    public Seat(){
+    private boolean ifParallel;
+
+    public Seat() {
         //Default Constructor
         this.travelDate = new Date();
         this.trainNumber = "";
         this.startStation = "";
         this.destStation = "";
         this.seatType = 0;
+        this.ifParallel = false;
     }
 
     @Override
@@ -48,6 +51,7 @@ public class Seat {
                 ", trainNumber='" + trainNumber + '\'' +
                 ", startStation='" + startStation + '\'' +
                 ", destStation='" + destStation + '\'' +
+                ", ifParallel='" + ifParallel + '\'' +
                 ", seatType=" + seatType +
                 '}';
     }
