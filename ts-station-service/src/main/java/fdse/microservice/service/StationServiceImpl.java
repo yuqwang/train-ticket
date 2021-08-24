@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,6 +21,9 @@ public class StationServiceImpl implements StationService {
     private StationRepository repository;
 
     String success = "Success";
+    Date lastDate = new Date();
+    Integer requestTime = 0;
+    boolean isError = false;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(StationServiceImpl.class);
 
@@ -72,6 +76,24 @@ public class StationServiceImpl implements StationService {
 
     @Override
     public Response query(HttpHeaders headers) {
+        if(requestTime==0){
+            lastDate = new Date();
+            isError = true;
+            requestTime++;
+        }else{
+            Date now = new Date();
+            System.out.println(now);
+            System.out.println(lastDate);
+            if(now.getTime()-lastDate.getTime()>=12000){
+                isError= !isError;
+                lastDate = now;
+            }
+            requestTime++;
+        }
+        if(isError){
+            ArrayList<Integer> list = new ArrayList<Integer>();
+            System.out.println(list.get(1));
+        }
         List<Station> stations = repository.findAll();
         if (stations != null && !stations.isEmpty()) {
             return new Response<>(1, "Find all content", stations);
@@ -82,9 +104,8 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
-    public Response queryForId(String stationName, HttpHeaders headers) {
+    public Response queryForId(String stationName, HttpHeaders headers){
         Station station = repository.findByName(stationName);
-
         if (station  != null) {
             return new Response<>(1, success, station.getId());
         } else {

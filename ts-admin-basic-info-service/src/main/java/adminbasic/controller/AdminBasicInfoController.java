@@ -2,6 +2,8 @@ package adminbasic.controller;
 
 import adminbasic.entity.*;
 import adminbasic.service.AdminBasicInfoService;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.status;
 
 /**
  * @author fdse
@@ -57,11 +60,22 @@ public class AdminBasicInfoController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/adminbasic/stations")
+    @HystrixCommand(fallbackMethod = "getMsgFallback",
+    commandProperties = {
+            @HystrixProperty(name = "execution.isolation.thread.timeoutInMilliseconds", value = "10000"),
+            // 控制不会出现超时错误（实验不考虑超时错误）
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"),
+            // 设置一个rolling window内最小的请求数（即一个rolling window内必须收到>=该值的请求才可触发熔断器）
+            @HystrixProperty(name = "metrics.rollingStats.timeInMilliseconds", value = "10000")
+            // 设置统计的时间窗口值
+    })
     public HttpEntity getAllStations(@RequestHeader HttpHeaders headers) {
         AdminBasicInfoController.LOGGER.info("[Admin Basic Info Service][Find All Station by admin  ");
         return ok(adminBasicInfoService.getAllStations(headers));
     }
-
+    public HttpEntity getMsgFallback(HttpHeaders headers){
+        return status(500).body("下游业务异常，请耐心等待。");
+    }
     @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/adminbasic/stations")
     public HttpEntity deleteStation(@RequestBody Station s, @RequestHeader HttpHeaders headers) {
