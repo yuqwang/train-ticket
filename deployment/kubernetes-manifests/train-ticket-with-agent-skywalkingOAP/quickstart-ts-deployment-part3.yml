@@ -42,7 +42,7 @@ spec:
   ports:
     - name: http
       port: 8080
-      nodePort: 32777
+      nodePort: 31777
   selector:
    app: ts-ui-dashboard
 ---

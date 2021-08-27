@@ -198,6 +198,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-config-mysql
+  namespace: h10g
 spec:
   selector:
     matchLabels:
@@ -263,6 +264,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: ts-train-mysql
+  namespace: h10g
 spec:
   selector:
     matchLabels:

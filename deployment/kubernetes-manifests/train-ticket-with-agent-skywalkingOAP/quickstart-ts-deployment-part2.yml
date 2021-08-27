@@ -1498,7 +1498,7 @@ spec:
     spec:
       containers:
         - name: ts-verification-code-service
-          image: registry.cn-hangzhou.aliyuncs.com/maturity/ts-verification-code-service:mysql
+          image: registry.cn-hangzhou.aliyuncs.com/microservicedemos/ts-verification-code-service:all-pass
           imagePullPolicy: Always
           env:
             - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
