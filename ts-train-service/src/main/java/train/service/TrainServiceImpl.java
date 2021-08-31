@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import train.entity.TrainType;
 import train.repository.TrainTypeRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -25,6 +26,7 @@ public class TrainServiceImpl implements TrainService {
             TrainType type = new TrainType(trainType.getId(), trainType.getEconomyClass(), trainType.getConfortClass());
             type.setAverageSpeed(trainType.getAverageSpeed());
             repository.save(type);
+            result = true;
             result = true;
         }
         else {
@@ -59,6 +61,7 @@ public class TrainServiceImpl implements TrainService {
     }
 
     @Override
+    @Transactional
     public boolean delete(String id, HttpHeaders headers) {
         boolean result = false;
         if (repository.findById(id) != null) {

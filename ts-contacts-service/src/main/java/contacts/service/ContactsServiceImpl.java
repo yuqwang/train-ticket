@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import contacts.repository.ContactsRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -80,6 +81,7 @@ public class ContactsServiceImpl implements ContactsService {
     }
 
     @Override
+    @Transactional
     public Response delete(String contactsId, HttpHeaders headers) {
         contactsRepository.deleteById(contactsId);
         Contacts contacts = contactsRepository.findById(contactsId);

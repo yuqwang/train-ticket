@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class StationServiceImpl implements StationService {
     }
 
     @Override
+    @Transactional
     public Response delete(Station info, HttpHeaders headers) {
 
         if (repository.findById(info.getId()) != null) {
