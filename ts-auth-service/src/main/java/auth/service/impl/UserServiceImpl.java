@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -65,6 +66,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Response deleteByUserId(String userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER :" + userId);
         userRepository.deleteByUserId(userId);
