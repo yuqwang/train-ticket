@@ -15,6 +15,7 @@ import user.repository.UserRepository;
 import user.service.UserService;
 
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -110,6 +111,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Response deleteUser(String userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER BY ID :" + userId);
         User user = userRepository.findByUserId(userId);
@@ -127,6 +129,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Response updateUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("UPDATE USER :" + userDto.toString());
         User oldUser = userRepository.findByUserName(userDto.getUserName());
@@ -150,11 +153,21 @@ public class UserServiceImpl implements UserService {
     public void deleteUserAuth(String userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER BY ID :" + userId);
 
-        HttpEntity<Response> httpEntity = new HttpEntity<>(null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+
+        HttpEntity<Response> httpEntity = new HttpEntity<>(newHeaders);
         restTemplate.exchange(AUTH_SERVICE_URI + "/users/" + userId,
                 HttpMethod.DELETE,
                 httpEntity,
                 Response.class);
         LOGGER.info("DELETE USER AUTH SUCCESS");
+    }
+
+    public static HttpHeaders getAuthorizationHeadersFrom(HttpHeaders oldHeaders) {
+        HttpHeaders newHeaders = new HttpHeaders();
+        if (oldHeaders.containsKey(HttpHeaders.AUTHORIZATION)) {
+            newHeaders.add(HttpHeaders.AUTHORIZATION, oldHeaders.getFirst(HttpHeaders.AUTHORIZATION));
+        }
+        return newHeaders;
     }
 }

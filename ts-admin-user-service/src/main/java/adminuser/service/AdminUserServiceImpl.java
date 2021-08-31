@@ -28,10 +28,19 @@ public class AdminUserServiceImpl implements AdminUserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(AdminUserServiceImpl.class);
     private static final String USER_SERVICE_IP_URI = "http://ts-user-service:12342/api/v1/userservice/users";
 
+    public static HttpHeaders getAuthorizationHeadersFrom(HttpHeaders oldHeaders) {
+        HttpHeaders newHeaders = new HttpHeaders();
+        if (oldHeaders.containsKey(HttpHeaders.AUTHORIZATION)) {
+            newHeaders.add(HttpHeaders.AUTHORIZATION, oldHeaders.getFirst(HttpHeaders.AUTHORIZATION));
+        }
+        return newHeaders;
+    }
 
     @Override
     public Response getAllUsers(HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+
+        HttpEntity requestEntity = new HttpEntity(newHeaders);
         ResponseEntity<Response<List<User>>> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI,
                 HttpMethod.GET,
@@ -49,7 +58,9 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public Response deleteUser(String userId, HttpHeaders headers) {
-        HttpEntity requestEntity = new HttpEntity(null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+
+        HttpEntity requestEntity = new HttpEntity(newHeaders);
         ResponseEntity<Response> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI + "/" + userId,
                 HttpMethod.DELETE,
@@ -66,7 +77,9 @@ public class AdminUserServiceImpl implements AdminUserService {
     @Override
     public Response updateUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("UPDATE USER: " + userDto.toString());
-        HttpEntity requestEntity = new HttpEntity(userDto, null);
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+
+        HttpEntity requestEntity = new HttpEntity(userDto, newHeaders);
         ResponseEntity<Response> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI,
                 HttpMethod.PUT,
@@ -84,8 +97,10 @@ public class AdminUserServiceImpl implements AdminUserService {
 
     @Override
     public Response addUser(UserDto userDto, HttpHeaders headers) {
+        HttpHeaders newHeaders = getAuthorizationHeadersFrom(headers);
+
         LOGGER.info("ADD USER INFO : "+userDto.toString());
-        HttpEntity requestEntity = new HttpEntity(userDto, null);
+        HttpEntity requestEntity = new HttpEntity(userDto, newHeaders);
         ResponseEntity<Response<User>> re = restTemplate.exchange(
                 USER_SERVICE_IP_URI + "/register",
                 HttpMethod.POST,
