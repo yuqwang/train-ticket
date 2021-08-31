@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 /**
@@ -369,6 +370,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Response deleteOrder(String orderId, HttpHeaders headers) {
         String orderUuid = UUID.fromString(orderId).toString();
         Order order = orderRepository.findById(orderUuid);
