@@ -10,6 +10,7 @@ import route.entity.Route;
 import route.entity.RouteInfo;
 import route.repository.RouteRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -72,6 +73,7 @@ public class RouteServiceImpl implements RouteService {
     }
 
     @Override
+    @Transactional
     public Response deleteRoute(String routeId, HttpHeaders headers) {
         routeRepository.removeRouteById(routeId);
         Route route = routeRepository.findById(routeId);
