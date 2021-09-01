@@ -36,7 +36,7 @@ public class PriceServiceImpl implements PriceService {
         // create
         if (createAndModifyPriceConfig.getId() == null || createAndModifyPriceConfig.getId().length() < 10) {
             priceConfig = new PriceConfig();
-//            priceConfig.setId(UUID.randomUUID());
+            priceConfig.setId(UUID.randomUUID().toString());
             priceConfig.setBasicPriceRate(createAndModifyPriceConfig.getBasicPriceRate());
             priceConfig.setFirstClassPriceRate(createAndModifyPriceConfig.getFirstClassPriceRate());
             priceConfig.setRouteId(createAndModifyPriceConfig.getRouteId());
@@ -96,6 +96,7 @@ public class PriceServiceImpl implements PriceService {
     }
 
     @Override
+    @Transactional
     public Response deletePriceConfig(PriceConfig c, HttpHeaders headers) {
         PriceConfig priceConfig = priceConfigRepository.findById(c.getId());
         if (priceConfig == null) {
