@@ -22,6 +22,8 @@ public interface TravelService {
 
     Response query(TripInfo info, HttpHeaders headers);
 
+    Response queryInParallel(TripInfo info, HttpHeaders headers);
+
     Response getTripAllDetailInfo(TripAllDetailInfo gtdi, HttpHeaders headers);
 
     Response getRouteByTripId(String tripId, HttpHeaders headers);

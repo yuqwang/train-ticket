@@ -118,6 +118,27 @@ public class TravelController {
     }
 
     /**
+     * Return Trips and the remaining tickets
+     *
+     * @param info    trip info
+     * @param headers headers
+     * @return HttpEntity
+     */
+    @CrossOrigin(origins = "*")
+    @PostMapping(value = "/trips/left_parallel")
+    public HttpEntity queryInfoInparallel(@RequestBody TripInfo info, @RequestHeader HttpHeaders headers) {
+        if (info.getStartingPlace() == null || info.getStartingPlace().length() == 0 ||
+                info.getEndPlace() == null || info.getEndPlace().length() == 0 ||
+                info.getDepartureTime() == null) {
+            TravelController.LOGGER.info("[[Travel Query] Fail.Something null.");
+            ArrayList<TripResponse> errorList = new ArrayList<>();
+            return ok(errorList);
+        }
+        TravelController.LOGGER.info(" Query TripResponse");
+        return ok(travelService.queryInParallel(info, headers));
+    }
+
+    /**
      * Return a Trip and the remaining
      *
      * @param gtdi    trip all detail info

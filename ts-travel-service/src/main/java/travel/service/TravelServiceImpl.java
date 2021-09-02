@@ -2,6 +2,7 @@ package travel.service;
 
 import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
+import org.apache.skywalking.apm.toolkit.trace.TraceCrossThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +11,14 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import travel.entity.*;
 import travel.repository.TripRepository;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * @author fdse
@@ -30,6 +33,8 @@ public class TravelServiceImpl implements TravelService {
     private RestTemplate restTemplate;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TravelServiceImpl.class);
+
+    private static final ExecutorService executorService = Executors.newFixedThreadPool(20, new CustomizableThreadFactory("HttpClientThreadPool-"));
 
     String success = "Success";
     String noContent = "No Content";
@@ -176,6 +181,84 @@ public class TravelServiceImpl implements TravelService {
             }
         }
         return new Response<>(1, success, list);
+    }
+
+    @TraceCrossThread
+    class MyCallable implements Callable<TripResponse> {
+        private TripInfo info;
+        private Trip tempTrip;
+        private HttpHeaders headers;
+        private String startingPlaceId;
+        private String endPlaceId;
+
+        MyCallable(TripInfo info, String startingPlaceId, String endPlaceId, Trip tempTrip, HttpHeaders headers) {
+            this.info = info;
+            this.tempTrip = tempTrip;
+            this.headers = headers;
+            this.startingPlaceId = startingPlaceId;
+            this.endPlaceId = endPlaceId;
+        }
+
+        @Override
+        public TripResponse call() throws Exception {
+            TravelServiceImpl.LOGGER.info("tripId: [{}], routeId: [{}]. Start to query", tempTrip.getTripId().toString(), tempTrip.getRouteId());
+
+            String startingPlaceName = info.getStartingPlace();
+            String endPlaceName = info.getEndPlace();
+            Route tempRoute = getRouteByRouteId(tempTrip.getRouteId(), headers);
+
+            TripResponse response = null;
+            if (tempRoute.getStations().contains(startingPlaceId) &&
+                    tempRoute.getStations().contains(endPlaceId) &&
+                    tempRoute.getStations().indexOf(startingPlaceId) < tempRoute.getStations().indexOf(endPlaceId)) {
+                response = getTickets(tempTrip, tempRoute, startingPlaceId, endPlaceId, startingPlaceName, endPlaceName, info.getDepartureTime(), headers);
+            }
+            if (response == null) {
+                TravelServiceImpl.LOGGER.warn("tripId: [{}], routeId: [{}]. Query trip error. Tickets not found,start: {},end: {},time: {}", tempTrip.getTripId().toString(), tempTrip.getRouteId(), startingPlaceName, endPlaceName, info.getDepartureTime());
+            } else {
+                TravelServiceImpl.LOGGER.info("tripId: [{}], routeId: [{}]. Query success", tempTrip.getTripId().toString(), tempTrip.getRouteId());
+            }
+            return response;
+        }
+    }
+
+    @Override
+    public Response queryInParallel(TripInfo info, HttpHeaders headers) {
+        //Gets the start and arrival stations of the train number to query. The originating and arriving stations received here are both station names, so two requests need to be sent to convert to station ids
+        String startingPlaceName = info.getStartingPlace();
+        String endPlaceName = info.getEndPlace();
+        String startingPlaceId = queryForStationId(startingPlaceName, headers);
+        String endPlaceId = queryForStationId(endPlaceName, headers);
+
+        //This is the final result
+        List<TripResponse> list = new ArrayList<>();
+
+        //Check all train info
+        List<Trip> allTripList = repository.findAll();
+        List<Future<TripResponse>> futureList = new ArrayList<>();
+
+        for (Trip tempTrip : allTripList) {
+            MyCallable callable = new MyCallable(info, startingPlaceId, endPlaceId, tempTrip, headers);
+            Future<TripResponse> future = executorService.submit(callable);
+            futureList.add(future);
+        }
+
+        for (Future<TripResponse> future : futureList) {
+            try {
+                TripResponse response = future.get();
+                if (response != null) {
+                    list.add(response);
+                }
+            } catch (Exception e) {
+                TravelServiceImpl.LOGGER.error(e.toString());
+            }
+        }
+
+        if (list.isEmpty()) {
+            return new Response<>(0, "No Trip info content", null);
+        } else {
+            return new Response<>(1, success, list);
+        }
     }
 
     @Override
