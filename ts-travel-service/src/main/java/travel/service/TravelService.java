@@ -7,7 +7,7 @@ import travel.entity.*;
 import java.util.ArrayList;
 
 /**
- * @author  Chenjie Xu
+ * @author Chenjie Xu
  * @date 2017/5/9.
  */
 public interface TravelService {
@@ -30,7 +30,7 @@ public interface TravelService {
 
     Response queryAll(HttpHeaders headers);
 
-    Response  getTripByRoute(ArrayList<String> routeIds, HttpHeaders headers);
+    Response getTripByRoute(ArrayList<String> routeIds, HttpHeaders headers);
 
     Response adminQueryAll(HttpHeaders headers);
 }
