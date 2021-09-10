@@ -1078,11 +1078,11 @@ spec:
             - containerPort: 11178
           resources:
             requests:
-              cpu: 250m
-              memory: 250Mi
-            limits:
               cpu: 500m
               memory: 500Mi
+            limits:
+              cpu: 700m
+              memory: 700Mi
           readinessProbe:
             tcpSocket:
               port: 11178
@@ -1234,11 +1234,11 @@ spec:
             - containerPort: 12345
           resources:
             requests:
-              cpu: 250m
-              memory: 250Mi
-            limits:
               cpu: 500m
               memory: 500Mi
+            limits:
+              cpu: 700m
+              memory: 700Mi
           readinessProbe:
             tcpSocket:
               port: 12345
@@ -1468,11 +1468,11 @@ spec:
             - containerPort: 12346
           resources:
             requests:
-              cpu: 250m
-              memory: 250Mi
-            limits:
               cpu: 500m
               memory: 500Mi
+            limits:
+              cpu: 700m
+              memory: 700Mi
           readinessProbe:
             tcpSocket:
               port: 12346
@@ -1498,7 +1498,7 @@ spec:
     spec:
       containers:
         - name: ts-verification-code-service
-          image: registry.cn-hangzhou.aliyuncs.com/microservicedemos/ts-verification-code-service:all-pass
+          image: registry.cn-hangzhou.aliyuncs.com/maturity/ts-verification-code-service:mysql
           imagePullPolicy: Always
           env:
             - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
