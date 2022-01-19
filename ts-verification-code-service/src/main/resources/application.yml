@@ -2,7 +2,10 @@ server:
   port: 15678  # HTTP (Tomcat) port
 
 spring:
-
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.176.122.80
   application:
     name: ts-verification-code-service
 

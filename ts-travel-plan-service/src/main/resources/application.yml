@@ -3,6 +3,10 @@ server:
   port: 14322  # HTTP (Tomcat) port
 
 spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.176.122.80
   application:
     name: ts-travel-plan-service
 

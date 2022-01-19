@@ -2,6 +2,10 @@ server:
   port: 18673
 
 spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.176.122.80
   application:
     name: ts-inside-payment-service
 

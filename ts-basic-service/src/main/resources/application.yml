@@ -2,6 +2,10 @@ server:
   port: 15680
 
 spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.176.122.80
   application:
     name: ts-basic-service
 

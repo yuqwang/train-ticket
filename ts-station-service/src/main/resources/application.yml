@@ -1,4 +1,8 @@
 spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.176.122.80
   application:
     name: ts-station-service
   data:

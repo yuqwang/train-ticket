@@ -1,6 +1,10 @@
 server:
   port: 12340
 spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 10.176.122.80
   application:
     name: ts-auth-service
   data:

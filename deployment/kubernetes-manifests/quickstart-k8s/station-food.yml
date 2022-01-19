@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-station-food-mongo
+spec:
+  selector:
+    matchLabels:
+      app: ts-station-food-mongo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-station-food-mongo
+    spec:
+      containers:
+        - name: ts-station-food-mongo
+          image: mongo
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 27017
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ts-station-food-mongo
+spec:
+  ports:
+    - port: 27017
+  selector:
+    app: ts-station-food-mongo
