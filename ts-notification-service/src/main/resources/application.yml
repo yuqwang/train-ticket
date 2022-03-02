@@ -6,7 +6,7 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 10.176.122.80
+        server-addr: ${NACOS_SERVER_ADDR:10.176.122.77}
   application:
     name: ts-notification-service
   mail:
