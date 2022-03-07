@@ -57,7 +57,7 @@
         <module>ts-delivery-service</module>
 
         <module>ts-trainfood-service</module>
-        <module>ts-nacos</module>
+<!--        <module>ts-nacos</module>-->
         <!--<module>ts-ticket-advance-service</module>-->
         <!--<module>1_services_analysis_mvn</module>-->
     </modules>
