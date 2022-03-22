@@ -23,6 +23,9 @@ spec:
                   fieldPath: status.hostIP
           ports:
             - containerPort: 18767
+          envFrom:
+            - configMapRef:
+                name: config
           resources:
             requests:
               cpu: 100m
@@ -2301,3 +2304,10 @@ spec:
   selector:
    app: ts-avatar-service
 
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config
+data:
+  NACOS_ADDR: nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local
