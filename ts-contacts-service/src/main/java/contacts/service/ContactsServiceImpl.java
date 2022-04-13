@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import contacts.repository.ContactsRepository;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -25,6 +27,20 @@ public class ContactsServiceImpl implements ContactsService {
     String success = "Success";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ContactsServiceImpl.class);
+
+    @Override
+    public Response sleep(HttpHeaders headers) {
+        try {
+            Random r=new Random();
+            Integer sec= r.nextInt(10)+5;
+            TimeUnit.SECONDS.sleep(sec);
+            return new Response<>(1, "sleep "+sec.toString()+"second", null);
+        } catch (InterruptedException e) {
+            System.out.println("InterruptedException");
+            e.printStackTrace();
+            return new Response<>(0, "fail to sleep:InterruptedException", null);
+        }
+    }
 
     @Override
     public Response findContactsById(UUID id, HttpHeaders headers) {

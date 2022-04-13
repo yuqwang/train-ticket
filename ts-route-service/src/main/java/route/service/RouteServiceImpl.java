@@ -4,8 +4,13 @@ import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import route.entity.Route;
 import route.entity.RouteInfo;
 import route.repository.RouteRepository;
@@ -21,6 +26,8 @@ import java.util.UUID;
 public class RouteServiceImpl implements RouteService {
 
     @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
     private RouteRepository routeRepository;
     private static final Logger LOGGER = LoggerFactory.getLogger(RouteServiceImpl.class);
 
@@ -28,6 +35,16 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response createAndModify(RouteInfo info, HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(null);
+        ResponseEntity<Response> re = restTemplate.exchange(
+                "http://ts-contacts-service:12347/api/v1/contactservice/contacts/sleep",
+                HttpMethod.GET,
+                requestEntity,
+                Response.class);
+        System.out.println("sleep:"+re.getBody());
+        RouteServiceImpl.LOGGER.info("sleep:"+re.getBody());
+
+//        return re.getBody();
         RouteServiceImpl.LOGGER.info("Create And Modify Start: {} End: {}", info.getStartStation(), info.getEndStation());
 
         String[] stations = info.getStationList().split(",");
@@ -73,6 +90,15 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response deleteRoute(String routeId, HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(null);
+        ResponseEntity<Response> re = restTemplate.exchange(
+                "http://ts-contacts-service:12347/api/v1/contactservice/contacts/sleep",
+                HttpMethod.GET,
+                requestEntity,
+                Response.class);
+        System.out.println("sleep:"+re.getBody());
+        RouteServiceImpl.LOGGER.info("sleep:"+re.getBody());
+
         routeRepository.removeRouteById(routeId);
         Route route = routeRepository.findById(routeId);
         if (route == null) {
@@ -85,6 +111,15 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response getRouteById(String routeId, HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(null);
+        ResponseEntity<Response> re = restTemplate.exchange(
+                "http://ts-contacts-service:12347/api/v1/contactservice/contacts/sleep",
+                HttpMethod.GET,
+                requestEntity,
+                Response.class);
+        System.out.println("sleep:"+re.getBody());
+        RouteServiceImpl.LOGGER.info("sleep:"+re.getBody());
+
         Route route = routeRepository.findById(routeId);
         if (route == null) {
             RouteServiceImpl.LOGGER.error("Find route error.Route not found,RouteId: {}",routeId);
@@ -97,6 +132,15 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response getRouteByStartAndTerminal(String startId, String terminalId, HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(null);
+        ResponseEntity<Response> re = restTemplate.exchange(
+                "http://ts-contacts-service:12347/api/v1/contactservice/contacts/sleep",
+                HttpMethod.GET,
+                requestEntity,
+                Response.class);
+        System.out.println("sleep:"+re.getBody());
+        RouteServiceImpl.LOGGER.info("sleep:"+re.getBody());
+
         ArrayList<Route> routes = routeRepository.findAll();
         RouteServiceImpl.LOGGER.info("Find All: {}", routes.size());
         List<Route> resultList = new ArrayList<>();
@@ -117,6 +161,15 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response getAllRoutes(HttpHeaders headers) {
+        HttpEntity requestEntity = new HttpEntity(null);
+        ResponseEntity<Response> re = restTemplate.exchange(
+                "http://ts-contacts-service:12347/api/v1/contactservice/contacts/sleep",
+                HttpMethod.GET,
+                requestEntity,
+                Response.class);
+        System.out.println("sleep:"+re.getBody());
+        RouteServiceImpl.LOGGER.info("sleep:"+re.getBody());
+
         ArrayList<Route> routes = routeRepository.findAll();
         if (routes != null && !routes.isEmpty()) {
             return new Response<>(1, success, routes);

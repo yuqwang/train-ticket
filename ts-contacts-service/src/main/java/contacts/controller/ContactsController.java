@@ -32,6 +32,13 @@ public class ContactsController {
     }
 
     @CrossOrigin(origins = "*")
+    @GetMapping(path = "/contacts/sleep")
+    public HttpEntity sleep(@RequestHeader HttpHeaders headers) {
+        ContactsController.LOGGER.info("[Contacts Service][sleep for a while]");
+        return ok(contactsService.sleep(headers));
+    }
+
+    @CrossOrigin(origins = "*")
     @GetMapping(path = "/contacts")
     public HttpEntity getAllContacts(@RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[Contacts Service][Get All Contacts]");

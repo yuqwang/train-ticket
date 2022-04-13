@@ -15,7 +15,7 @@ public interface ContactsService {
      * create contacts
      *
      * @param contacts contacts
-     * @param headers headers
+     * @param headers  headers
      * @return Reaponse
      */
     Response createContacts(Contacts contacts, HttpHeaders headers);
@@ -24,7 +24,7 @@ public interface ContactsService {
      * create
      *
      * @param addContacts add contacts
-     * @param headers headers
+     * @param headers     headers
      * @return Reaponse
      */
     Response create(Contacts addContacts, HttpHeaders headers);
@@ -33,7 +33,7 @@ public interface ContactsService {
      * delete
      *
      * @param contactsId contacts id
-     * @param headers headers
+     * @param headers    headers
      * @return Reaponse
      */
     Response delete(UUID contactsId, HttpHeaders headers);
@@ -42,7 +42,7 @@ public interface ContactsService {
      * modify
      *
      * @param contacts contacts
-     * @param headers headers
+     * @param headers  headers
      * @return Reaponse
      */
     Response modify(Contacts contacts, HttpHeaders headers);
@@ -58,7 +58,7 @@ public interface ContactsService {
     /**
      * find contacts by id
      *
-     * @param id id
+     * @param id      id
      * @param headers headers
      * @return Reaponse
      */
@@ -68,9 +68,14 @@ public interface ContactsService {
      * find contacts by account id
      *
      * @param accountId account id
-     * @param headers headers
+     * @param headers   headers
      * @return Reaponse
      */
     Response findContactsByAccountId(UUID accountId, HttpHeaders headers);
 
+    /**
+     * sleep for a while(5s~15s)
+     * @return
+     */
+    Response sleep(HttpHeaders headers);
 }

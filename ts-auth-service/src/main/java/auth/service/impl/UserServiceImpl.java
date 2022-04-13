@@ -11,9 +11,13 @@ import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.text.MessageFormat;
 import java.util.*;
@@ -26,18 +30,34 @@ public class UserServiceImpl implements UserService {
     private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
+    private RestTemplate restTemplate;
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
     protected PasswordEncoder passwordEncoder;
 
+    void inv_order(){
+        HttpEntity requestEntity = new HttpEntity(null);
+        ResponseEntity<Response> re = restTemplate.exchange(
+                "http://ts-order-service:12031/api/v1/orderservice/order",
+                HttpMethod.GET,
+                requestEntity,
+                Response.class);
+        System.out.println("sleep:"+re.getBody());
+        LOGGER.info("sleep:"+re.getBody());
+    }
     @Override
     public User saveUser(User user) {
+        inv_order();
+
         return null;
     }
 
     @Override
     public List<User> getAllUser(HttpHeaders headers) {
+        inv_order();
+
         return userRepository.findAll();
     }
 
@@ -49,6 +69,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User createDefaultAuthUser(AuthDto dto) {
+        inv_order();
+
         LOGGER.info("Register User Info is:  " + dto.getUserName());
         User user = User.builder()
                 .userId(UUID.fromString(dto.getUserId()))
@@ -66,6 +88,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response deleteByUserId(UUID userId, HttpHeaders headers) {
+        inv_order();
+
         LOGGER.info("DELETE USER :" + userId);
         userRepository.deleteByUserId(userId);
         return new Response(1, "DELETE USER SUCCESS", null);
@@ -77,6 +101,8 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     private void checkUserCreateInfo(User user) throws UserOperationException {
+        inv_order();
+
         LOGGER.info("Check user create info, userId: {}, userName: {}", user.getUserId(), user.getUsername());
         List<String> infos = new ArrayList<>();
 

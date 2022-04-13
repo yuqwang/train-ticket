@@ -33,8 +33,22 @@ public class OrderServiceImpl implements OrderService {
     String success = "Success";
     String orderNotFound = "Order Not Found";
 
+    //调用cintacts的延时接口
+    public void invContacts(){
+        HttpEntity requestEntity = new HttpEntity(null);
+        ResponseEntity<Response> re = restTemplate.exchange(
+                "http://ts-contacts-service:12347/api/v1/contactservice/contacts/sleep",
+                HttpMethod.GET,
+                requestEntity,
+                Response.class);
+        System.out.println("sleep:"+re.getBody());
+        OrderServiceImpl.LOGGER.info("sleep:"+re.getBody());
+    }
+
     @Override
     public Response getSoldTickets(Seat seatRequest, HttpHeaders headers) {
+        invContacts();
+
         ArrayList<Order> list = orderRepository.findByTravelDateAndTrainNumber(seatRequest.getTravelDate(),
                 seatRequest.getTrainNumber());
         if (list != null && !list.isEmpty()) {
@@ -55,6 +69,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response findOrderById(UUID id, HttpHeaders headers) {
+        invContacts();
+
         Order order = orderRepository.findById(id);
         if (order == null) {
             OrderServiceImpl.LOGGER.error("No content, id: {}",id);
@@ -66,6 +82,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response create(Order order, HttpHeaders headers) {
+        invContacts();
+
         OrderServiceImpl.LOGGER.info("[Create Order] Ready Create Order.");
         ArrayList<Order> accountOrders = orderRepository.findByAccountId(order.getAccountId());
         if (accountOrders.contains(order)) {
@@ -82,6 +100,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response alterOrder(OrderAlterInfo oai, HttpHeaders headers) {
+        invContacts();
 
         UUID oldOrderId = oai.getPreviousOrderId();
         Order oldOrder = orderRepository.findById(oldOrderId);
@@ -105,6 +124,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response<ArrayList<Order>> queryOrders(OrderInfo qi, String accountId, HttpHeaders headers) {
+        invContacts();
+
         //1.Get all orders of the user
         ArrayList<Order> list = orderRepository.findByAccountId(UUID.fromString(accountId));
         OrderServiceImpl.LOGGER.info("[Query Order][Step 1] Get Orders Number of Account: {}", list.size());
@@ -166,6 +187,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response queryOrdersForRefresh(OrderInfo qi, String accountId, HttpHeaders headers) {
+        invContacts();
+
         ArrayList<Order> orders =   queryOrders(qi, accountId, headers).getData();
         ArrayList<String> stationIds = new ArrayList<>();
         for (Order order : orders) {
@@ -196,6 +219,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response saveChanges(Order order, HttpHeaders headers) {
+        invContacts();
 
         Order oldOrder = orderRepository.findById(order.getId());
         if (oldOrder == null) {
@@ -225,6 +249,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response cancelOrder(UUID accountId, UUID orderId, HttpHeaders headers) {
+        invContacts();
+
         Order oldOrder = orderRepository.findById(orderId);
         if (oldOrder == null) {
             OrderServiceImpl.LOGGER.error("[Cancel Order] Fail.Order not found, OrderId: {}", orderId);
@@ -239,6 +265,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response queryAlreadySoldOrders(Date travelDate, String trainNumber, HttpHeaders headers) {
+        invContacts();
+
         ArrayList<Order> orders = orderRepository.findByTravelDateAndTrainNumber(travelDate, trainNumber);
         SoldTicket cstr = new SoldTicket();
         cstr.setTravelDate(travelDate);
@@ -275,6 +303,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response getAllOrders(HttpHeaders headers) {
+        invContacts();
+
         ArrayList<Order> orders = orderRepository.findAll();
         if (orders != null && !orders.isEmpty()) {
             return new Response<>(1, "Success.", orders);
@@ -286,6 +316,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response modifyOrder(String orderId, int status, HttpHeaders headers) {
+        invContacts();
+
         Order order = orderRepository.findById(UUID.fromString(orderId));
         if (order == null) {
             OrderServiceImpl.LOGGER.error("Modify order error.Order not found, OrderId: {}",orderId);
@@ -299,6 +331,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response getOrderPrice(String orderId, HttpHeaders headers) {
+        invContacts();
+
         Order order = orderRepository.findById(UUID.fromString(orderId));
         if (order == null) {
             OrderServiceImpl.LOGGER.error("Get order price error.Order not found, OrderId: {}",orderId);
@@ -311,6 +345,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response payOrder(String orderId, HttpHeaders headers) {
+        invContacts();
+
         Order order = orderRepository.findById(UUID.fromString(orderId));
         if (order == null) {
             OrderServiceImpl.LOGGER.error("Pay order error.Order not found, OrderId: {}",orderId);
@@ -324,6 +360,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response getOrderById(String orderId, HttpHeaders headers) {
+        invContacts();
+
         Order order = orderRepository.findById(UUID.fromString(orderId));
         if (order == null) {
             OrderServiceImpl.LOGGER.error("Order not found, OrderId: {}",orderId);
@@ -335,6 +373,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void initOrder(Order order, HttpHeaders headers) {
+        invContacts();
+
         Order orderTemp = orderRepository.findById(order.getId());
         if (orderTemp == null) {
             orderRepository.save(order);
@@ -345,6 +385,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response checkSecurityAboutOrder(Date dateFrom, String accountId, HttpHeaders headers) {
+        invContacts();
+
         OrderSecurity result = new OrderSecurity();
         ArrayList<Order> orders = orderRepository.findByAccountId(UUID.fromString(accountId));
         int countOrderInOneHour = 0;
@@ -370,6 +412,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response deleteOrder(String orderId, HttpHeaders headers) {
+        invContacts();
+
         UUID orderUuid = UUID.fromString(orderId);
         Order order = orderRepository.findById(orderUuid);
 
@@ -384,6 +428,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response addNewOrder(Order order, HttpHeaders headers) {
+        invContacts();
+
         OrderServiceImpl.LOGGER.info("[Admin Add Order] Ready Add Order.");
         ArrayList<Order> accountOrders = orderRepository.findByAccountId(order.getAccountId());
         if (accountOrders.contains(order)) {
@@ -400,6 +446,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response updateOrder(Order order, HttpHeaders headers) {
+        invContacts();
+
         LOGGER.info("UPDATE ORDER INFO: " + order.toString());
         Order oldOrder = orderRepository.findById(order.getId());
         if (oldOrder == null) {
