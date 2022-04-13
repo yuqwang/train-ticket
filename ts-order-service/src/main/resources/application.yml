@@ -11,7 +11,8 @@ spring:
 #      username: user
 #      password: ${MONGODB_PASSWORD}
       database: ts
-      port: 27017
+      port: 27016
+#      port: 27017
 
 swagger:
   controllerPackage: order.controller
