@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author fdse
@@ -31,13 +32,32 @@ public class UserServiceImpl implements UserService {
     @Autowired
     protected PasswordEncoder passwordEncoder;
 
+    //引入错误,sleep一段时间
+    public void anomaly() {
+        LOGGER.info("inject anomaly");
+        try {
+            Random r=new Random();
+            Integer sec= r.nextInt(10)+5;
+            TimeUnit.SECONDS.sleep(sec);
+            LOGGER.info("sleep "+sec.toString()+"s");
+        } catch (InterruptedException e) {
+            System.out.println("InterruptedException");
+            e.printStackTrace();
+            LOGGER.error("fail to sleep:InterruptedException");
+        }
+    }
+
     @Override
     public User saveUser(User user) {
+        anomaly();
+
         return null;
     }
 
     @Override
     public List<User> getAllUser(HttpHeaders headers) {
+        anomaly();
+
         return userRepository.findAll();
     }
 
@@ -49,6 +69,8 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public User createDefaultAuthUser(AuthDto dto) {
+        anomaly();
+
         LOGGER.info("Register User Info is:  " + dto.getUserName());
         User user = User.builder()
                 .userId(UUID.fromString(dto.getUserId()))
@@ -66,6 +88,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response deleteByUserId(UUID userId, HttpHeaders headers) {
+        anomaly();
+
         LOGGER.info("DELETE USER :" + userId);
         userRepository.deleteByUserId(userId);
         return new Response(1, "DELETE USER SUCCESS", null);
@@ -77,6 +101,8 @@ public class UserServiceImpl implements UserService {
      * @param user
      */
     private void checkUserCreateInfo(User user) throws UserOperationException {
+        anomaly();
+
         LOGGER.info("Check user create info, userId: {}, userName: {}", user.getUserId(), user.getUsername());
         List<String> infos = new ArrayList<>();
 

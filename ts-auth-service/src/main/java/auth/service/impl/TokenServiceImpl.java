@@ -24,6 +24,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.MessageFormat;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author fdse
@@ -44,8 +46,25 @@ public class TokenServiceImpl implements TokenService {
     @Autowired
     private RestTemplate restTemplate;
 
+    //引入错误,sleep一段时间
+    public void anomaly() {
+        LOGGER.info("inject anomaly");
+        try {
+            Random r=new Random();
+            Integer sec= r.nextInt(10)+5;
+            TimeUnit.SECONDS.sleep(sec);
+            LOGGER.info("sleep "+sec.toString()+"s");
+        } catch (InterruptedException e) {
+            System.out.println("InterruptedException");
+            e.printStackTrace();
+            LOGGER.error("fail to sleep:InterruptedException");
+        }
+    }
+
     @Override
     public Response getToken(BasicAuthDto dto, HttpHeaders headers) throws UserOperationException {
+        anomaly();
+
         String username = dto.getUsername();
         String password = dto.getPassword();
         String verifyCode = dto.getVerificationCode();

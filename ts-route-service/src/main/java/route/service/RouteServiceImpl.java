@@ -12,7 +12,9 @@ import route.repository.RouteRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author fdse
@@ -26,8 +28,25 @@ public class RouteServiceImpl implements RouteService {
 
     String success = "Success";
 
+    //引入错误,sleep一段时间
+    public void anomaly() {
+        RouteServiceImpl.LOGGER.info("inject anomaly");
+        try {
+            Random r=new Random();
+            Integer sec= r.nextInt(10)+5;
+            TimeUnit.SECONDS.sleep(sec);
+            RouteServiceImpl.LOGGER.info("sleep "+sec.toString()+"s");
+        } catch (InterruptedException e) {
+            System.out.println("InterruptedException");
+            e.printStackTrace();
+            RouteServiceImpl.LOGGER.error("fail to sleep:InterruptedException");
+        }
+    }
+
     @Override
     public Response createAndModify(RouteInfo info, HttpHeaders headers) {
+        anomaly();
+
         RouteServiceImpl.LOGGER.info("Create And Modify Start: {} End: {}", info.getStartStation(), info.getEndStation());
 
         String[] stations = info.getStationList().split(",");
@@ -73,6 +92,8 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response deleteRoute(String routeId, HttpHeaders headers) {
+        anomaly();
+
         routeRepository.removeRouteById(routeId);
         Route route = routeRepository.findById(routeId);
         if (route == null) {
@@ -85,6 +106,8 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response getRouteById(String routeId, HttpHeaders headers) {
+        anomaly();
+
         Route route = routeRepository.findById(routeId);
         if (route == null) {
             RouteServiceImpl.LOGGER.error("Find route error.Route not found,RouteId: {}",routeId);
@@ -97,6 +120,8 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response getRouteByStartAndTerminal(String startId, String terminalId, HttpHeaders headers) {
+        anomaly();
+
         ArrayList<Route> routes = routeRepository.findAll();
         RouteServiceImpl.LOGGER.info("Find All: {}", routes.size());
         List<Route> resultList = new ArrayList<>();
@@ -117,6 +142,8 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response getAllRoutes(HttpHeaders headers) {
+        anomaly();
+
         ArrayList<Route> routes = routeRepository.findAll();
         if (routes != null && !routes.isEmpty()) {
             return new Response<>(1, success, routes);
