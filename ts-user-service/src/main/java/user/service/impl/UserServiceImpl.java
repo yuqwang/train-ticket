@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
                 .email(userDto.getEmail()).build();
 
         // avoid same user name
-        User user1 = userRepository.findByUserName(userDto.getUserName());
+        User user1 = userRepository.findByUserNamee(userDto.getUserName());
         if (user1 == null) {
 
             createDefaultAuthUser(AuthDto.builder().userId(userId + "")
@@ -81,7 +81,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response getAllUsers(HttpHeaders headers) {
-        List<User> users = userRepository.findAll();
+//        List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAllById("8177ac5a-61ac-42f4-83f4-bd7b394d0531");
         if (users != null && !users.isEmpty()) {
             return new Response<>(1, "Success", users);
         }
@@ -91,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response findByUserName(String userName, HttpHeaders headers) {
-        User user = userRepository.findByUserName(userName);
+        User user = userRepository.findByUserNamee(userName);
         if (user != null) {
             return new Response<>(1, "Find User Success", user);
         }
@@ -101,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response findByUserId(String userId, HttpHeaders headers) {
-        User user = userRepository.findByUserId(UUID.fromString(userId));
+        User user = userRepository.findByUserIde(UUID.fromString(userId));
         if (user != null) {
             return new Response<>(1, "Find User Success", user);
         }
@@ -112,12 +113,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response deleteUser(UUID userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER BY ID :" + userId);
-        User user = userRepository.findByUserId(userId);
+        User user = userRepository.findByUserIde(userId);
         if (user != null) {
             // first  only admin token can delete success
             deleteUserAuth(userId, headers);
             // second
-            userRepository.deleteByUserId(userId);
+            userRepository.deleteByUserIde(userId);
             LOGGER.info("DELETE SUCCESS");
             return new Response<>(1, "DELETE SUCCESS", null);
         } else {
@@ -129,7 +130,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response updateUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("UPDATE USER :" + userDto.toString());
-        User oldUser = userRepository.findByUserName(userDto.getUserName());
+        User oldUser = userRepository.findByUserNamee(userDto.getUserName());
         if (oldUser != null) {
             User newUser = User.builder().email(userDto.getEmail())
                     .password(userDto.getPassword())
@@ -138,7 +139,7 @@ public class UserServiceImpl implements UserService {
                     .gender(userDto.getGender())
                     .documentNum(userDto.getDocumentNum())
                     .documentType(userDto.getDocumentType()).build();
-            userRepository.deleteByUserId(oldUser.getUserId());
+            userRepository.deleteByUserIde(oldUser.getUserId());
             userRepository.save(newUser);
             return new Response<>(1, "SAVE USER SUCCESS", newUser);
         } else {

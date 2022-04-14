@@ -13,17 +13,23 @@ import java.util.UUID;
  */
 @Repository
 public interface OrderRepository extends MongoRepository<Order, String> {
-
-    @Query("{ 'id': ?0 }")
+//    @Query("{ 'id': ?0 }")
+    @Query("{ 'ID': ?0 }")
     Order findById(UUID id);
+
+//    新添加，替换getAllOrders函数中的getAll
+    @Query("{ 'ID': ?0 }")
+    ArrayList<Order> findOrdersById(UUID id);
 
     @Override
     ArrayList<Order> findAll();
 
-    @Query("{ 'accountId' : ?0 }")
+//    @Query("{ 'accountId' : ?0 }")
+    @Query("{ 'AccountId' : ?0 }")
     ArrayList<Order> findByAccountId(UUID accountId);
 
-    @Query("{ 'travelDate' : ?0 , trainNumber : ?1 }")
+//    @Query("{ 'travelDate' : ?0 , trainNumber : ?1 }")
+    @Query("{ 'TravelDate' : ?0 , TrainNumber : ?1 }")
     ArrayList<Order> findByTravelDateAndTrainNumber(Date travelDate,String trainNumber);
 
     void deleteById(UUID id);

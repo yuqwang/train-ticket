@@ -275,7 +275,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response getAllOrders(HttpHeaders headers) {
-        ArrayList<Order> orders = orderRepository.findAll();
+//        ArrayList<Order> orders=orderRepository.findAll();
+        ArrayList<Order> orders = orderRepository.findOrdersById(UUID.fromString("8177ac5a-61ac-42f4-83f4-bd7b394d0531"));
         if (orders != null && !orders.isEmpty()) {
             return new Response<>(1, "Success.", orders);
         } else {

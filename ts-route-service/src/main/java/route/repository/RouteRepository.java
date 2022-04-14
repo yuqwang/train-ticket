@@ -18,9 +18,13 @@ public interface RouteRepository extends MongoRepository<Route, String> {
      * @param id id
      * @return Route
      */
-    @Query("{ 'id': ?0 }")
+//    @Query("{ 'id': ?0 }")
+    @Query("{ 'ID': ?0 }")
     Route findById(String id);
 
+
+    @Query("{ 'ID': ?0 }")
+    ArrayList<Route> findAllById(String id);
     /**
      * find all routes
      *
@@ -34,7 +38,7 @@ public interface RouteRepository extends MongoRepository<Route, String> {
      *
      * @param id id
      */
-    void removeRouteById(String id);
+    void removeRouteByIde(String id);
 
     /**
      * return route with id from StartStationId to TerminalStationId
@@ -43,7 +47,8 @@ public interface RouteRepository extends MongoRepository<Route, String> {
      * @param terminalId  Terminal Station Id
      * @return ArrayList<Route>
      */
-    @Query("{ 'startStationId': ?0 , 'terminalStationId': ?1 }")
+//    @Query("{ 'startStationId': ?0 , 'terminalStationId': ?1 }")
+    @Query("{ 'StartStationId': ?0 , 'TerminalStationId': ?1 }")
     ArrayList<Route> findByStartStationIdAndTerminalStationId(String startingId, String terminalId);
 
 }

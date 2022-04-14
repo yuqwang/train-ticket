@@ -45,7 +45,8 @@ public class RouteServiceImpl implements RouteService {
         int maxIdArrayLen = 10;
         if (info.getId() == null || info.getId().length() < maxIdArrayLen) {
             Route route = new Route();
-            route.setId(UUID.randomUUID().toString());
+//            去掉这一行会让save报错
+//            route.setId(UUID.randomUUID().toString());
             route.setStartStationId(info.getStartStation());
             route.setTerminalStationId(info.getEndStation());
             route.setStations(stationList);
@@ -73,7 +74,7 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response deleteRoute(String routeId, HttpHeaders headers) {
-        routeRepository.removeRouteById(routeId);
+        routeRepository.removeRouteByIde(routeId);
         Route route = routeRepository.findById(routeId);
         if (route == null) {
             return new Response<>(1, "Delete Success", routeId);
@@ -97,7 +98,7 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response getRouteByStartAndTerminal(String startId, String terminalId, HttpHeaders headers) {
-        ArrayList<Route> routes = routeRepository.findAll();
+        ArrayList<Route> routes = routeRepository.findAllById("8177ac5a-61ac-42f4-83f4-bd7b394d0531");
         RouteServiceImpl.LOGGER.info("Find All: {}", routes.size());
         List<Route> resultList = new ArrayList<>();
         for (Route route : routes) {
@@ -117,7 +118,8 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response getAllRoutes(HttpHeaders headers) {
-        ArrayList<Route> routes = routeRepository.findAll();
+//        ArrayList<Route> routes = routeRepository.findAll();
+        ArrayList<Route> routes = routeRepository.findAllById("8177ac5a-61ac-42f4-83f4-bd7b394d0531");
         if (routes != null && !routes.isEmpty()) {
             return new Response<>(1, success, routes);
         } else {
