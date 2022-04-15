@@ -39,8 +39,19 @@ public class TravelServiceImpl implements TravelService {
     String success = "Success";
     String noContent = "No Content";
 
+    //    申请内存引发OOM
+    void anomaly() {
+        LOGGER.info("start allocate");
+        ArrayList<byte[]> list = new ArrayList<>(500);
+        for (int i = 0; i < 200; i++) {
+            list.add(new byte[1024 * 1024]);
+        }
+    }
+
     @Override
     public Response create(TravelInfo info, HttpHeaders headers) {
+        anomaly();
+
         TripId ti = new TripId(info.getTripId());
         if (repository.findByTripId(ti) == null) {
             Trip trip = new Trip(ti, info.getTrainTypeId(), info.getStartingStationId(),
@@ -56,6 +67,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response getRouteByTripId(String tripId, HttpHeaders headers) {
+        anomaly();
+
         Route route = null;
         if (null != tripId && tripId.length() >= 2) {
             TripId tripId1 = new TripId(tripId);
@@ -76,6 +89,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response getTrainTypeByTripId(String tripId, HttpHeaders headers) {
+        anomaly();
+
         TripId tripId1 = new TripId(tripId);
         TrainType trainType = null;
         Trip trip = repository.findByTripId(tripId1);
@@ -94,6 +109,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response getTripByRoute(ArrayList<String> routeIds, HttpHeaders headers) {
+        anomaly();
+
         ArrayList<ArrayList<Trip>> tripList = new ArrayList<>();
         for (String routeId : routeIds) {
             ArrayList<Trip> tempTripList = repository.findByRouteId(routeId);
@@ -113,6 +130,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response retrieve(String tripId, HttpHeaders headers) {
+        anomaly();
+
         TripId ti = new TripId(tripId);
         Trip trip = repository.findByTripId(ti);
         if (trip != null) {
@@ -125,6 +144,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response update(TravelInfo info, HttpHeaders headers) {
+        anomaly();
+
         TripId ti = new TripId(info.getTripId());
         if (repository.findByTripId(ti) != null) {
             Trip trip = new Trip(ti, info.getTrainTypeId(), info.getStartingStationId(),
@@ -140,6 +161,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response delete(String tripId, HttpHeaders headers) {
+        anomaly();
+
         TripId ti = new TripId(tripId);
         if (repository.findByTripId(ti) != null) {
             repository.deleteByTripId(ti);
@@ -152,6 +175,7 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response query(TripInfo info, HttpHeaders headers) {
+        anomaly();
 
         //Gets the start and arrival stations of the train number to query. The originating and arriving stations received here are both station names, so two requests need to be sent to convert to station ids
         String startingPlaceName = info.getStartingPlace();
@@ -224,6 +248,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response queryInParallel(TripInfo info, HttpHeaders headers) {
+        anomaly();
+
         //Gets the start and arrival stations of the train number to query. The originating and arriving stations received here are both station names, so two requests need to be sent to convert to station ids
         String startingPlaceName = info.getStartingPlace();
         String endPlaceName = info.getEndPlace();
@@ -263,6 +289,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response getTripAllDetailInfo(TripAllDetailInfo gtdi, HttpHeaders headers) {
+        anomaly();
+
         TripAllDetail gtdr = new TripAllDetail();
         TravelServiceImpl.LOGGER.info("[TripAllDetailInfo] TripId: {}", gtdi.getTripId());
         Trip trip = repository.findByTripId(new TripId(gtdi.getTripId()));
@@ -291,6 +319,7 @@ public class TravelServiceImpl implements TravelService {
     }
 
     private TripResponse getTickets(Trip trip, Route route, String startingPlaceId, String endPlaceId, String startingPlaceName, String endPlaceName, Date departureTime, HttpHeaders headers) {
+        anomaly();
 
         //Determine if the date checked is the same day and after
         if (!afterToday(departureTime)) {
@@ -373,6 +402,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response queryAll(HttpHeaders headers) {
+        anomaly();
+
         List<Trip> tripList = repository.findAll();
         if (tripList != null && !tripList.isEmpty()) {
             return new Response<>(1, success, tripList);
@@ -476,6 +507,8 @@ public class TravelServiceImpl implements TravelService {
 
     @Override
     public Response adminQueryAll(HttpHeaders headers) {
+        anomaly();
+
         List<Trip> trips = repository.findAll();
         ArrayList<AdminTrip> adminTrips = new ArrayList<>();
         for (Trip trip : trips) {

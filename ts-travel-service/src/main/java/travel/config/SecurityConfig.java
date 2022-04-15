@@ -62,24 +62,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.httpBasic().disable()
-                // close default csrf
-                .csrf().disable()
-                // close session
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-
-                .antMatchers(HttpMethod.PUT, "/api/v1/travelservice/trips").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/api/v1/travelservice/trips/*").hasAnyRole("ADMIN")
-                .antMatchers("/api/v1/travelservice/**").permitAll()
-                .antMatchers("/swagger-ui.html", "/webjars/**", "/images/**",
-                        "/configuration/**", "/swagger-resources/**", "/v2/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class);
-
-        // close cache
-        httpSecurity.headers().cacheControl();
+//        httpSecurity.httpBasic().disable()
+//                // close default csrf
+//                .csrf().disable()
+//                // close session
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//
+//                .antMatchers(HttpMethod.PUT, "/api/v1/travelservice/trips").hasAnyRole("ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/api/v1/travelservice/trips/*").hasAnyRole("ADMIN")
+//                .antMatchers("/api/v1/travelservice/**").permitAll()
+//                .antMatchers("/swagger-ui.html", "/webjars/**", "/images/**",
+//                        "/configuration/**", "/swagger-resources/**", "/v2/**").permitAll()
+//                .anyRequest().authenticated()
+//                .and()
+//                .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class);
+//
+//        // close cache
+//        httpSecurity.headers().cacheControl();
     }
 }
