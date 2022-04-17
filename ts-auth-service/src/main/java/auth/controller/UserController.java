@@ -11,9 +11,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,6 +27,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private UserService userService;
@@ -38,8 +44,21 @@ public class UserController {
         return "Hello";
     }
 
+    void inv_order(){
+        HttpEntity requestEntity = new HttpEntity(null);
+        ResponseEntity<Response> re = restTemplate.exchange(
+                "http://ts-order-service:12031/api/v1/orderservice/order",
+                HttpMethod.GET,
+                requestEntity,
+                Response.class);
+        System.out.println("inv_order:"+re.getBody());
+        logger.info("inv_order:"+re.getBody());
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Response> getToken(@RequestBody BasicAuthDto dao , @RequestHeader HttpHeaders headers) {
+//        inv_order();
+
         logger.info("Login request of username: {}", dao.getUsername());
         try {
             Response<?> res = tokenService.getToken(dao, headers);
