@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
                 .email(userDto.getEmail()).build();
 
         // avoid same user name
-        User user1 = userRepository.findByUserNamee(userDto.getUserName());
+        User user1 = userRepository.findByUserName(userDto.getUserName());
         if (user1 == null) {
 
             createDefaultAuthUser(AuthDto.builder().userId(userId + "")
@@ -58,7 +58,6 @@ public class UserServiceImpl implements UserService {
 
             User userSaveResult = userRepository.save(user);
             LOGGER.info("Send authorization message to ts-auth-service....");
-
             return new Response<>(1, "REGISTER USER SUCCESS", userSaveResult);
         } else {
             UserServiceImpl.LOGGER.error("Save user error.User already exists,UserId: {}",userDto.getUserId());
@@ -92,7 +91,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response findByUserName(String userName, HttpHeaders headers) {
-        User user = userRepository.findByUserNamee(userName);
+        User user = userRepository.findByUserName(userName);
         if (user != null) {
             return new Response<>(1, "Find User Success", user);
         }
@@ -102,7 +101,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Response findByUserId(String userId, HttpHeaders headers) {
-        User user = userRepository.findByUserIde(UUID.fromString(userId));
+        User user = userRepository.findByUserId(UUID.fromString(userId));
         if (user != null) {
             return new Response<>(1, "Find User Success", user);
         }
@@ -113,12 +112,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response deleteUser(UUID userId, HttpHeaders headers) {
         LOGGER.info("DELETE USER BY ID :" + userId);
-        User user = userRepository.findByUserIde(userId);
+        User user = userRepository.findByUserId(userId);
         if (user != null) {
             // first  only admin token can delete success
             deleteUserAuth(userId, headers);
             // second
-            userRepository.deleteByUserIde(userId);
+            userRepository.deleteByUserId(userId);
             LOGGER.info("DELETE SUCCESS");
             return new Response<>(1, "DELETE SUCCESS", null);
         } else {
@@ -130,7 +129,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Response updateUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("UPDATE USER :" + userDto.toString());
-        User oldUser = userRepository.findByUserNamee(userDto.getUserName());
+        User oldUser = userRepository.findByUserName(userDto.getUserName());
         if (oldUser != null) {
             User newUser = User.builder().email(userDto.getEmail())
                     .password(userDto.getPassword())
@@ -139,7 +138,7 @@ public class UserServiceImpl implements UserService {
                     .gender(userDto.getGender())
                     .documentNum(userDto.getDocumentNum())
                     .documentType(userDto.getDocumentType()).build();
-            userRepository.deleteByUserIde(oldUser.getUserId());
+            userRepository.deleteByUserId(oldUser.getUserId());
             userRepository.save(newUser);
             return new Response<>(1, "SAVE USER SUCCESS", newUser);
         } else {

@@ -74,7 +74,7 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response deleteRoute(String routeId, HttpHeaders headers) {
-        routeRepository.removeRouteByIde(routeId);
+        routeRepository.removeRouteById(routeId);
         Route route = routeRepository.findById(routeId);
         if (route == null) {
             return new Response<>(1, "Delete Success", routeId);

@@ -14,14 +14,15 @@ import java.util.UUID;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
 
-    @Query("{ 'ID': ?0 }")
+    @Query("{ 'IDe': ?0 }")
     ArrayList<User> findAllById(String id);
 
+    @Query("{ 'UserNamee': ?0 }")
     User findByUserName(String userName);
 
-    User findByUserNamee(String userName);
+//    User findByUserNamee(String userName);
+    @Query("{ 'UserIde': ?0 }")
+    User findByUserId(UUID userId);
 
-    User findByUserIde(UUID userId);
-
-    void deleteByUserIde(UUID userId);
+    void deleteByUserId(UUID userId);
 }
