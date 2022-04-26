@@ -77,24 +77,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-//        httpSecurity
-//                .httpBasic().disable()
-//                .csrf().disable()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/api/v1/auth", "/api/v1/auth/hello", "/api/v1/user/hello").permitAll()
-//                .antMatchers("/api/v1/users/login").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/api/v1/users/*").hasRole("ADMIN")
-//                // create user and role while user register
-//                .antMatchers("/user/**").permitAll()
-//                .antMatchers("/swagger-ui.html", "/webjars/**", "/images/**",
-//                        "/configuration/**", "/swagger-resources/**", "/v2/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class);
-//
-//        httpSecurity.headers().cacheControl();
+        httpSecurity
+                .httpBasic().disable()
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers("/api/v1/auth", "/api/v1/auth/hello", "/api/v1/user/hello").permitAll()
+                .antMatchers("/api/v1/users/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/api/v1/users/*").hasRole("ADMIN")
+                // create user and role while user register
+                .antMatchers("/user/**").permitAll()
+                .antMatchers("/swagger-ui.html", "/webjars/**", "/images/**",
+                        "/configuration/**", "/swagger-resources/**", "/v2/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .addFilterBefore(new JWTFilter(), UsernamePasswordAuthenticationFilter.class);
+
+        httpSecurity.headers().cacheControl();
     }
 }
