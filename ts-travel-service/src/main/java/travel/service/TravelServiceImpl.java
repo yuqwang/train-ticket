@@ -169,16 +169,16 @@ public class TravelServiceImpl implements TravelService {
             Route tempRoute = getRouteByRouteId(tempTrip.getRouteId(), headers);
             //Check the route list for this train. Check that the required start and arrival stations are in the list of stops that are not on the route, and check that the location of the start station is before the stop
             //Trains that meet the above criteria are added to the return list
-            if (tempRoute.getStations().contains(startingPlaceId) &&
-                    tempRoute.getStations().contains(endPlaceId) &&
-                    tempRoute.getStations().indexOf(startingPlaceId) < tempRoute.getStations().indexOf(endPlaceId)) {
-                TripResponse response = getTickets(tempTrip, tempRoute, startingPlaceId, endPlaceId, startingPlaceName, endPlaceName, info.getDepartureTime(), headers);
-                if (response == null) {
-                    TravelServiceImpl.LOGGER.warn("Query trip error.Tickets not found,start: {},end: {},time: {}", startingPlaceName, endPlaceName, info.getDepartureTime());
-                    return new Response<>(0, "No Trip info content", null);
-                }
-                list.add(response);
-            }
+//            if (tempRoute.getStations().contains(startingPlaceId) &&
+//                    tempRoute.getStations().contains(endPlaceId) &&
+//                    tempRoute.getStations().indexOf(startingPlaceId) < tempRoute.getStations().indexOf(endPlaceId)) {
+//                TripResponse response = getTickets(tempTrip, tempRoute, startingPlaceId, endPlaceId, startingPlaceName, endPlaceName, info.getDepartureTime(), headers);
+//                if (response == null) {
+//                    TravelServiceImpl.LOGGER.warn("Query trip error.Tickets not found,start: {},end: {},time: {}", startingPlaceName, endPlaceName, info.getDepartureTime());
+//                    return new Response<>(0, "No Trip info content", null);
+//                }
+//                list.add(response);
+//            }
         }
         return new Response<>(1, success, list);
     }

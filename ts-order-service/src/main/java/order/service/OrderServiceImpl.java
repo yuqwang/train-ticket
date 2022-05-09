@@ -48,7 +48,8 @@ public class OrderServiceImpl implements OrderService {
             OrderServiceImpl.LOGGER.info("Left ticket info is: {}", leftTicketInfo.toString());
             return new Response<>(1, success, leftTicketInfo);
         } else {
-            OrderServiceImpl.LOGGER.error("Left ticket info is empty, seat from date: {}, train number: {}",seatRequest.getTravelDate(),seatRequest.getTrainNumber());
+            OrderServiceImpl.LOGGER.error("Left ticket info is empty, seat from date: {}, train number: {}",
+                    seatRequest.getTravelDate(), seatRequest.getTrainNumber());
             return new Response<>(0, "Order is Null.", null);
         }
     }
@@ -57,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
     public Response findOrderById(UUID id, HttpHeaders headers) {
         Order order = orderRepository.findById(id);
         if (order == null) {
-            OrderServiceImpl.LOGGER.error("No content, id: {}",id);
+            OrderServiceImpl.LOGGER.error("No content, id: {}", id);
             return new Response<>(0, "No Content by this id", null);
         } else {
             return new Response<>(1, success, order);
@@ -105,17 +106,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response<ArrayList<Order>> queryOrders(OrderInfo qi, String accountId, HttpHeaders headers) {
-        //1.Get all orders of the user
+        // 1.Get all orders of the user
         ArrayList<Order> list = orderRepository.findByAccountId(UUID.fromString(accountId));
         OrderServiceImpl.LOGGER.info("[Query Order][Step 1] Get Orders Number of Account: {}", list.size());
-        //2.Check is these orders fit the requirement/
+        // 2.Check is these orders fit the requirement/
         if (qi.isEnableStateQuery() || qi.isEnableBoughtDateQuery() || qi.isEnableTravelDateQuery()) {
             ArrayList<Order> finalList = new ArrayList<>();
             for (Order tempOrder : list) {
                 boolean statePassFlag = false;
                 boolean boughtDatePassFlag = false;
                 boolean travelDatePassFlag = false;
-                //3.Check order state requirement.
+                // 3.Check order state requirement.
                 if (qi.isEnableStateQuery()) {
                     if (tempOrder.getStatus() != qi.getState()) {
                         statePassFlag = false;
@@ -126,7 +127,7 @@ public class OrderServiceImpl implements OrderService {
                     statePassFlag = true;
                 }
                 OrderServiceImpl.LOGGER.info("[Query Order][Step 2][Check Status Fits End]");
-                //4.Check order travel date requirement.
+                // 4.Check order travel date requirement.
                 if (qi.isEnableTravelDateQuery()) {
                     if (tempOrder.getTravelDate().before(qi.getTravelDateEnd()) &&
                             tempOrder.getTravelDate().after(qi.getBoughtDateStart())) {
@@ -138,7 +139,7 @@ public class OrderServiceImpl implements OrderService {
                     travelDatePassFlag = true;
                 }
                 OrderServiceImpl.LOGGER.info("[Query Order][Step 2][Check Travel Date End]");
-                //5.Check order bought date requirement.
+                // 5.Check order bought date requirement.
                 if (qi.isEnableBoughtDateQuery()) {
                     if (tempOrder.getBoughtDate().before(qi.getBoughtDateEnd()) &&
                             tempOrder.getBoughtDate().after(qi.getBoughtDateStart())) {
@@ -150,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
                     boughtDatePassFlag = true;
                 }
                 OrderServiceImpl.LOGGER.info("[Query Order][Step 2][Check Bought Date End]");
-                //6.check if all requirement fits.
+                // 6.check if all requirement fits.
                 if (statePassFlag && boughtDatePassFlag && travelDatePassFlag) {
                     finalList.add(tempOrder);
                 }
@@ -159,14 +160,26 @@ public class OrderServiceImpl implements OrderService {
             OrderServiceImpl.LOGGER.info("[Query Order] Get order num: {}", finalList.size());
             return new Response<>(1, "Get order num", finalList);
         } else {
-            OrderServiceImpl.LOGGER.warn("[Query Order] Orders don't fit the requirement, loginId: {}", qi.getLoginId());
+            OrderServiceImpl.LOGGER.warn("[Query Order] Orders don't fit the requirement, loginId: {}",
+                    qi.getLoginId());
             return new Response<>(1, "Get order num", list);
         }
     }
 
     @Override
     public Response queryOrdersForRefresh(OrderInfo qi, String accountId, HttpHeaders headers) {
-        ArrayList<Order> orders =   queryOrders(qi, accountId, headers).getData();
+        // add new trace
+        TripInfo ti = new TripInfo("Su Zhou", "Shang Hai");
+
+        HttpEntity requestEntity = new HttpEntity(ti, headers);
+        ResponseEntity<Response<ArrayList<RoutePlanResultUnit>>> result = restTemplate.exchange(
+                "http://ts-travel-plan-service:14322/api/v1/travelplanservice/travelPlan/cheapest",
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<Response<ArrayList<RoutePlanResultUnit>>>() {
+                });
+
+        ArrayList<Order> orders = queryOrders(qi, accountId, headers).getData();
         ArrayList<String> stationIds = new ArrayList<>();
         for (Order order : orders) {
             stationIds.add(order.getFrom());
@@ -267,7 +280,8 @@ public class OrderServiceImpl implements OrderService {
             } else if (order.getSeatClass() == SeatClass.HIGHSOFTBED.getCode()) {
                 cstr.setHighSoftBed(cstr.getHighSoftBed() + 1);
             } else {
-                OrderServiceImpl.LOGGER.info("[Calculate Sold Tickets] Seat class not exists. Order ID: {}", order.getId());
+                OrderServiceImpl.LOGGER.info("[Calculate Sold Tickets] Seat class not exists. Order ID: {}",
+                        order.getId());
             }
         }
         return new Response<>(1, success, cstr);
@@ -279,7 +293,7 @@ public class OrderServiceImpl implements OrderService {
         if (orders != null && !orders.isEmpty()) {
             return new Response<>(1, "Success.", orders);
         } else {
-            OrderServiceImpl.LOGGER.warn("Find all orders warn: {}","No content");
+            OrderServiceImpl.LOGGER.warn("Find all orders warn: {}", "No content");
             return new Response<>(0, "No Content.", null);
         }
     }
@@ -288,7 +302,7 @@ public class OrderServiceImpl implements OrderService {
     public Response modifyOrder(String orderId, int status, HttpHeaders headers) {
         Order order = orderRepository.findById(UUID.fromString(orderId));
         if (order == null) {
-            OrderServiceImpl.LOGGER.error("Modify order error.Order not found, OrderId: {}",orderId);
+            OrderServiceImpl.LOGGER.error("Modify order error.Order not found, OrderId: {}", orderId);
             return new Response<>(0, orderNotFound, null);
         } else {
             order.setStatus(status);
@@ -301,7 +315,7 @@ public class OrderServiceImpl implements OrderService {
     public Response getOrderPrice(String orderId, HttpHeaders headers) {
         Order order = orderRepository.findById(UUID.fromString(orderId));
         if (order == null) {
-            OrderServiceImpl.LOGGER.error("Get order price error.Order not found, OrderId: {}",orderId);
+            OrderServiceImpl.LOGGER.error("Get order price error.Order not found, OrderId: {}", orderId);
             return new Response<>(0, orderNotFound, "-1.0");
         } else {
             OrderServiceImpl.LOGGER.info("[Get Order Price] Price: {}", order.getPrice());
@@ -313,7 +327,7 @@ public class OrderServiceImpl implements OrderService {
     public Response payOrder(String orderId, HttpHeaders headers) {
         Order order = orderRepository.findById(UUID.fromString(orderId));
         if (order == null) {
-            OrderServiceImpl.LOGGER.error("Pay order error.Order not found, OrderId: {}",orderId);
+            OrderServiceImpl.LOGGER.error("Pay order error.Order not found, OrderId: {}", orderId);
             return new Response<>(0, orderNotFound, null);
         } else {
             order.setStatus(OrderStatus.PAID.getCode());
@@ -326,7 +340,7 @@ public class OrderServiceImpl implements OrderService {
     public Response getOrderById(String orderId, HttpHeaders headers) {
         Order order = orderRepository.findById(UUID.fromString(orderId));
         if (order == null) {
-            OrderServiceImpl.LOGGER.error("Order not found, OrderId: {}",orderId);
+            OrderServiceImpl.LOGGER.error("Order not found, OrderId: {}", orderId);
             return new Response<>(0, orderNotFound, null);
         } else {
             return new Response<>(1, "Success.", order);
@@ -374,7 +388,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(orderUuid);
 
         if (order == null) {
-            OrderServiceImpl.LOGGER.error("Delete order error.Order not found, OrderId: {}",orderId);
+            OrderServiceImpl.LOGGER.error("Delete order error.Order not found, OrderId: {}", orderId);
             return new Response<>(0, "Order Not Exist.", null);
         } else {
             orderRepository.deleteById(orderUuid);
@@ -387,7 +401,7 @@ public class OrderServiceImpl implements OrderService {
         OrderServiceImpl.LOGGER.info("[Admin Add Order] Ready Add Order.");
         ArrayList<Order> accountOrders = orderRepository.findByAccountId(order.getAccountId());
         if (accountOrders.contains(order)) {
-            OrderServiceImpl.LOGGER.error("[Admin Add Order] Fail.Order already exists, OrderId: {}",order.getId());
+            OrderServiceImpl.LOGGER.error("[Admin Add Order] Fail.Order already exists, OrderId: {}", order.getId());
             return new Response<>(0, "Order already exist", null);
         } else {
             order.setId(UUID.randomUUID());
@@ -403,7 +417,7 @@ public class OrderServiceImpl implements OrderService {
         LOGGER.info("UPDATE ORDER INFO: " + order.toString());
         Order oldOrder = orderRepository.findById(order.getId());
         if (oldOrder == null) {
-            OrderServiceImpl.LOGGER.error("[Admin Update Order] Fail.Order not found, OrderId: {}",order.getId());
+            OrderServiceImpl.LOGGER.error("[Admin Update Order] Fail.Order not found, OrderId: {}", order.getId());
             return new Response<>(0, "Order Not Found, Can't update", null);
         } else {
             OrderServiceImpl.LOGGER.info("{}", oldOrder.toString());
@@ -428,4 +442,3 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 }
-

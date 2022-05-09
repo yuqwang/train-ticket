@@ -3,6 +3,8 @@ package food.service;
 import edu.fudan.common.util.Response;
 import food.entity.FoodStore;
 import food.entity.TrainFood;
+import food.entity.RoutePlanResultUnit;
+import food.entity.TripInfo;
 import food.repository.FoodStoreRepository;
 import food.repository.TrainFoodRepository;
 import org.slf4j.Logger;
@@ -10,12 +12,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-
+import java.util.ArrayList;
 
 @Service
 public class FoodMapServiceImpl implements FoodMapService {
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     FoodStoreRepository foodStoreRepository;
@@ -79,13 +88,25 @@ public class FoodMapServiceImpl implements FoodMapService {
         if (foodStoreList != null && !foodStoreList.isEmpty()) {
             return new Response<>(1, success, foodStoreList);
         } else {
-            FoodMapServiceImpl.LOGGER.error("List food stores by station id error: {}, stationId: {}", "Food store is empty", stationId);
+            FoodMapServiceImpl.LOGGER.error("List food stores by station id error: {}, stationId: {}",
+                    "Food store is empty", stationId);
             return new Response<>(0, "Food store is empty", null);
         }
     }
 
     @Override
     public Response listTrainFoodByTripId(String tripId, HttpHeaders headers) {
+        // add new trace
+        TripInfo ti = new TripInfo("Su Zhou", "Shang Hai");
+
+        HttpEntity requestEntity = new HttpEntity(ti, headers);
+        ResponseEntity<Response<ArrayList<RoutePlanResultUnit>>> result = restTemplate.exchange(
+                "http://ts-travel-plan-service:14322/api/v1/travelplanservice/travelPlan/cheapest",
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<Response<ArrayList<RoutePlanResultUnit>>>() {
+                });
+
         List<TrainFood> trainFoodList = trainFoodRepository.findByTripId(tripId);
         if (trainFoodList != null) {
             return new Response<>(1, success, trainFoodList);
@@ -101,7 +122,8 @@ public class FoodMapServiceImpl implements FoodMapService {
         if (foodStoreList != null) {
             return new Response<>(1, success, foodStoreList);
         } else {
-            FoodMapServiceImpl.LOGGER.error("List food stores by station ids error: {}, stationId list: {}", "Food store is empty", stationIds);
+            FoodMapServiceImpl.LOGGER.error("List food stores by station ids error: {}, stationId list: {}",
+                    "Food store is empty", stationIds);
             return new Response<>(0, noContent, null);
         }
     }

@@ -8,7 +8,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import route.entity.Route;
 import route.entity.RouteInfo;
+import route.entity.TripInfo;
+import route.entity.RoutePlanResultUnit;
 import route.repository.RouteRepository;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +26,8 @@ import java.util.UUID;
  */
 @Service
 public class RouteServiceImpl implements RouteService {
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Autowired
     private RouteRepository routeRepository;
@@ -28,14 +37,16 @@ public class RouteServiceImpl implements RouteService {
 
     @Override
     public Response createAndModify(RouteInfo info, HttpHeaders headers) {
-        RouteServiceImpl.LOGGER.info("Create And Modify Start: {} End: {}", info.getStartStation(), info.getEndStation());
+        RouteServiceImpl.LOGGER.info("Create And Modify Start: {} End: {}", info.getStartStation(),
+                info.getEndStation());
 
         String[] stations = info.getStationList().split(",");
         String[] distances = info.getDistanceList().split(",");
         List<String> stationList = new ArrayList<>();
         List<Integer> distanceList = new ArrayList<>();
         if (stations.length != distances.length) {
-            RouteServiceImpl.LOGGER.error("Create and modify error.Station number not equal to distance number,RouteId: {}",info.getId());
+            RouteServiceImpl.LOGGER.error(
+                    "Create and modify error.Station number not equal to distance number,RouteId: {}", info.getId());
             return new Response<>(0, "Station Number Not Equal To Distance Number", null);
         }
         for (int i = 0; i < stations.length; i++) {
@@ -78,16 +89,27 @@ public class RouteServiceImpl implements RouteService {
         if (route == null) {
             return new Response<>(1, "Delete Success", routeId);
         } else {
-            RouteServiceImpl.LOGGER.error("Delete error.Route not found,RouteId: {}",routeId);
+            RouteServiceImpl.LOGGER.error("Delete error.Route not found,RouteId: {}", routeId);
             return new Response<>(0, "Delete failed, Reason unKnown with this routeId", routeId);
         }
     }
 
     @Override
     public Response getRouteById(String routeId, HttpHeaders headers) {
+        // add new trace
+        TripInfo ti = new TripInfo("Su Zhou", "Shang Hai");
+
+        HttpEntity requestEntity = new HttpEntity(ti, headers);
+        ResponseEntity<Response<ArrayList<RoutePlanResultUnit>>> result = restTemplate.exchange(
+                "http://ts-travel-plan-service:14322/api/v1/travelplanservice/travelPlan/cheapest",
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<Response<ArrayList<RoutePlanResultUnit>>>() {
+                });
+
         Route route = routeRepository.findById(routeId);
         if (route == null) {
-            RouteServiceImpl.LOGGER.error("Find route error.Route not found,RouteId: {}",routeId);
+            RouteServiceImpl.LOGGER.error("Find route error.Route not found,RouteId: {}", routeId);
             return new Response<>(0, "No content with the routeId", null);
         } else {
             return new Response<>(1, success, route);
@@ -110,18 +132,30 @@ public class RouteServiceImpl implements RouteService {
         if (!resultList.isEmpty()) {
             return new Response<>(1, success, resultList);
         } else {
-            RouteServiceImpl.LOGGER.warn("Find by start and terminal warn.Routes not found,startId: {},terminalId: {}",startId,terminalId);
+            RouteServiceImpl.LOGGER.warn("Find by start and terminal warn.Routes not found,startId: {},terminalId: {}",
+                    startId, terminalId);
             return new Response<>(0, "No routes with the startId and terminalId", null);
         }
     }
 
     @Override
     public Response getAllRoutes(HttpHeaders headers) {
+        // add new trace
+        TripInfo ti = new TripInfo("Su Zhou", "Shang Hai");
+
+        HttpEntity requestEntity = new HttpEntity(ti, headers);
+        ResponseEntity<Response<ArrayList<RoutePlanResultUnit>>> result = restTemplate.exchange(
+                "http://ts-travel-plan-service:14322/api/v1/travelplanservice/travelPlan/cheapest",
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<Response<ArrayList<RoutePlanResultUnit>>>() {
+                });
+
         ArrayList<Route> routes = routeRepository.findAll();
         if (routes != null && !routes.isEmpty()) {
             return new Response<>(1, success, routes);
         } else {
-            RouteServiceImpl.LOGGER.warn("Find all routes warn: {}","No Content");
+            RouteServiceImpl.LOGGER.warn("Find all routes warn: {}", "No Content");
             return new Response<>(0, "No Content", null);
         }
     }

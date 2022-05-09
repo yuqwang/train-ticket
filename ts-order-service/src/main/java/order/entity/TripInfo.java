@@ -1,9 +1,10 @@
-package travelplan.entity;
+package order.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.Calendar;
 
 /**
  * @author fdse
