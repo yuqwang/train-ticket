@@ -1,5 +1,6 @@
 package edu.fudan.common.entity;
 
+import edu.fudan.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class Seat {
     @Valid
     @NotNull
-    private Date travelDate;
+    private String travelDate;
 
     @Valid
     @NotNull
@@ -41,13 +42,21 @@ public class Seat {
 
     public Seat(){
         //Default Constructor
-        this.travelDate = new Date();
+        this.travelDate = StringUtils.Date2String(new Date());
         this.trainNumber = "";
         this.startStation = "";
         this.destStation = "";
         this.seatType = 0;
         this.totalNum = 0;
         this.stations = null;
+    }
+
+    public Date getTravelDate(){
+        return StringUtils.String2Date(travelDate);
+    }
+
+    public void setTravelDate(Date travelDate){
+        this.travelDate = StringUtils.Date2String(travelDate);
     }
 
 }

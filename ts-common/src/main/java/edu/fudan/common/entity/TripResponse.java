@@ -1,5 +1,6 @@
 package edu.fudan.common.entity;
 
+import edu.fudan.common.util.StringUtils;
 import lombok.Data;
 
 import javax.validation.Valid;
@@ -28,11 +29,11 @@ public class TripResponse {
 
     @Valid
     @NotNull
-    private Date startTime;
+    private String startTime;
 
     @Valid
     @NotNull
-    private Date endTime;
+    private String endTime;
 
     /**
      * the number of economy seats
@@ -61,12 +62,26 @@ public class TripResponse {
         this.trainTypeName = "";
         this.startStation = "";
         this.terminalStation = "";
-        this.startTime = new Date();
-        this.endTime = new Date();
+        this.startTime = "";
+        this.endTime = "";
         this.economyClass = 0;
         this.confortClass = 0;
         this.priceForEconomyClass = "";
         this.priceForConfortClass = "";
+    }
+
+    public Date getStartTime(){
+        return StringUtils.String2Date(startTime);
+    }
+    public Date getEndTime(){
+        return StringUtils.String2Date(endTime);
+    }
+
+    public void setStartTime(Date startTime){
+        this.startTime = StringUtils.Date2String(startTime);
+    }
+    public void setEndTime(Date endTime){
+        this.endTime = StringUtils.Date2String(endTime);
     }
 
 }

@@ -1,6 +1,10 @@
 package travel.entity;
 
+
+import edu.fudan.common.util.StringUtils;
 import lombok.Data;
+
+import travel.entity.Trip;
 
 import java.util.Date;
 
@@ -16,10 +20,17 @@ public class Travel {
 
     private String endPlace;
 
-    private Date departureTime;
+    private String departureTime;
 
     public Travel(){
         //Default Constructor
+    }
+
+    public Date getDepartureTime(){
+        return StringUtils.String2Date(this.departureTime);
+    }
+    public void setDepartureTime(Date departureTime){
+        this.departureTime = StringUtils.Date2String(departureTime);
     }
 
 }

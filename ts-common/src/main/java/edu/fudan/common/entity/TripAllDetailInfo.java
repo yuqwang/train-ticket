@@ -15,7 +15,7 @@ public class TripAllDetailInfo {
 
     private String tripId;
 
-    private Date travelDate;
+    private String travelDate;
 
     private String from;
 
@@ -33,4 +33,11 @@ public class TripAllDetailInfo {
         return StringUtils.String2Lower(this.to);
     }
 
+    public Date getTravelDate() {
+        return StringUtils.String2Date(travelDate);
+    }
+
+    public void setTravelDate(Date travelDate) {
+        this.travelDate = StringUtils.Date2String(travelDate);
+    }
 }

@@ -1,5 +1,6 @@
 package other.entity;
 
+import edu.fudan.common.util.StringUtils;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,13 +16,13 @@ public class QueryInfo {
      */
     private String loginId;
 
-    private Date travelDateStart;
+    private String travelDateStart;
 
-    private Date travelDateEnd;
+    private String travelDateEnd;
 
-    private Date boughtDateStart;
+    private String boughtDateStart;
 
-    private Date boughtDateEnd;
+    private String boughtDateEnd;
 
     private int state;
 
@@ -35,7 +36,7 @@ public class QueryInfo {
         //Default Constructor
     }
 
-    public void enableTravelDateQuery(Date startTime, Date endTime) {
+    public void enableTravelDateQuery(String startTime, String endTime) {
         enableTravelDateQuery = true;
         travelDateStart = startTime;
         travelDateEnd = endTime;
@@ -47,7 +48,7 @@ public class QueryInfo {
         travelDateEnd = null;
     }
 
-    public void enableBoughtDateQuery(Date startTime, Date endTime) {
+    public void enableBoughtDateQuery(String startTime, String endTime) {
         enableBoughtDateQuery = true;
         boughtDateStart = startTime;
         boughtDateEnd = endTime;
@@ -67,6 +68,22 @@ public class QueryInfo {
     public void disableStateQuery() {
         enableTravelDateQuery = false;
         state = -1;
+    }
+
+    public Date getTravelDateEnd(){
+        return StringUtils.String2Date(travelDateEnd);
+    }
+
+    public Date getTravelDateStart(){
+        return StringUtils.String2Date(travelDateStart);
+    }
+
+    public Date getBoughtDateStart(){
+        return StringUtils.String2Date(boughtDateStart);
+    }
+
+    public Date getBoughtDateEnd(){
+        return StringUtils.String2Date(boughtDateEnd);
     }
 
     public boolean isEnableTravelDateQuery() {

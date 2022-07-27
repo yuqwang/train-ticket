@@ -1,5 +1,6 @@
 package edu.fudan.common.entity;
 
+import edu.fudan.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class OrderTicketsInfo {
 
     private String loginToken;
 
-    private Date date;
+    private String date;
 
     private String from;
 
@@ -51,5 +52,13 @@ public class OrderTicketsInfo {
     private double consigneeWeight;
 
     private boolean isWithin;
+
+    public Date getDate(){
+        return StringUtils.String2Date(date);
+    }
+
+    public void setDate(Date date){
+        this.date = StringUtils.Date2String(date);
+    }
 
 }

@@ -17,7 +17,8 @@ import java.util.Date;
 @Entity
 @Table(name = "trip2")
 @GenericGenerator(name = "jpa-uuid", strategy = "org.hibernate.id.UUIDGenerator")
-public class Trip {
+public class
+Trip {
     @Valid
     @Id
     @GeneratedValue(generator = "jpa-uuid")

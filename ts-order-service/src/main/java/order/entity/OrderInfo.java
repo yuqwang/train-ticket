@@ -1,5 +1,6 @@
 package order.entity;
 
+import edu.fudan.common.util.StringUtils;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,13 +16,13 @@ public class OrderInfo {
      */
     private String loginId;
 
-    private Date travelDateStart;
+    private String travelDateStart;
 
-    private Date travelDateEnd;
+    private String travelDateEnd;
 
-    private Date boughtDateStart;
+    private String boughtDateStart;
 
-    private Date boughtDateEnd;
+    private String boughtDateEnd;
 
     private int state;
 
@@ -44,26 +45,26 @@ public class OrderInfo {
     }
 
     public Date getTravelDateStart() {
-        return travelDateStart;
+        return StringUtils.String2Date(travelDateStart);
     }
 
     public Date getTravelDateEnd() {
-        return travelDateEnd;
+        return StringUtils.String2Date(travelDateEnd);
     }
 
     public Date getBoughtDateStart() {
-        return boughtDateStart;
+        return StringUtils.String2Date(boughtDateStart);
     }
 
     public Date getBoughtDateEnd() {
-        return boughtDateEnd;
+        return StringUtils.String2Date(boughtDateEnd);
     }
 
     public int getState() {
         return state;
     }
 
-    public void enableTravelDateQuery(Date startTime, Date endTime){
+    public void enableTravelDateQuery(String startTime, String endTime){
         enableTravelDateQuery = true;
         travelDateStart = startTime;
         travelDateEnd = endTime;
@@ -75,7 +76,7 @@ public class OrderInfo {
         travelDateEnd = null;
     }
 
-    public void enableBoughtDateQuery(Date startTime, Date endTime){
+    public void enableBoughtDateQuery(String startTime, String endTime){
         enableBoughtDateQuery = true;
         boughtDateStart = startTime;
         boughtDateEnd = endTime;

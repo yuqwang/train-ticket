@@ -3,6 +3,7 @@ package other.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.fudan.common.entity.OrderStatus;
 import edu.fudan.common.entity.SeatClass;
+import edu.fudan.common.util.StringUtils;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
@@ -25,19 +26,18 @@ public class Order {
     @GeneratedValue(generator = "jpa-uuid")
     private String id;
 
-    private Date boughtDate;
+    private String boughtDate;
 
 
-    private Date travelDate;
+    private String travelDate;
 
 
-    private Date travelTime;
+    private String travelTime;
 
     /**
      * Which Account Bought it
      */
     @Column(length = 36)
-    @GeneratedValue(generator = "jpa-uuid")
     private String accountId;
 
     /**
@@ -67,11 +67,9 @@ public class Order {
 
     private String price;
 
-
-
     public Order(){
-        boughtDate = new Date(System.currentTimeMillis());
-        travelDate = new Date(123456789);
+        boughtDate = StringUtils.Date2String(new Date(System.currentTimeMillis()));
+        travelDate = StringUtils.Date2String(new Date(123456789));
         trainNumber = "G1235";
         coachNumber = 5;
         seatClass = SeatClass.FIRSTCLASS.getCode();
@@ -94,9 +92,9 @@ public class Order {
             return false;
         }
         Order other = (Order) obj;
-        return boughtDate.equals(other.getBoughtDate())
-                && travelDate.equals(other.getTravelDate())
-                && travelTime.equals(other.getTravelTime())
+        return getBoughtDate().equals(other.getBoughtDate())
+                && getBoughtDate().equals(other.getTravelDate())
+                && getTravelTime().equals(other.getTravelTime())
                 && accountId .equals( other.getAccountId() )
                 && contactsName.equals(other.getContactsName())
                 && contactsDocumentNumber.equals(other.getContactsDocumentNumber())
@@ -111,16 +109,35 @@ public class Order {
                 && price.equals(other.price);
     }
 
+    public Date getBoughtDate(){
+        return StringUtils.String2Date(boughtDate);
+    }
+
+    public Date getTravelDate(){
+        return StringUtils.String2Date(travelDate);
+    }
+
+    public Date getTravelTime(){
+        return StringUtils.String2Date(travelTime);
+    }
+
+    public void setBoughtDate(Date boughtDate){
+        this.boughtDate = StringUtils.Date2String(boughtDate);
+    }
+
+    public void setTravelDate(Date travelDate){
+        this.travelDate =  StringUtils.Date2String(travelDate);
+    }
+
+    public void setTravelTime(Date travelTime){
+       this.travelTime =  StringUtils.Date2String(travelTime);
+    }
+
     @Override
     public int hashCode() {
         int result = 17;
         result = 31 * result + (id == null ? 0 : id.hashCode());
         return result;
-    }
-
-    public void setTravelDate(int year,int month,int day){
-        Date date = new Date(year,month,day,0,0,0); //NOSONAR
-        this.travelDate = date;
     }
 
 }

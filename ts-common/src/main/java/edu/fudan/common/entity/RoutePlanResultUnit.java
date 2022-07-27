@@ -1,5 +1,6 @@
 package edu.fudan.common.entity;
 
+import edu.fudan.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,8 +30,22 @@ public class RoutePlanResultUnit {
 
     private String priceForFirstClassSeat;
 
-    private Date startTime;
+    private String startTime;
 
-    private Date endTime;
+    private String endTime;
+
+    public Date getStartTime(){
+        return StringUtils.String2Date(startTime);
+    }
+    public Date getEndTime(){
+        return StringUtils.String2Date(endTime);
+    }
+
+    public void setStartTime(Date startTime){
+        this.startTime = StringUtils.Date2String(startTime);
+    }
+    public void setEndTime(Date endTime){
+        this.endTime = StringUtils.Date2String(endTime);
+    }
 
 }

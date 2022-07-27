@@ -1,6 +1,8 @@
 package other.init;
 
 import edu.fudan.common.entity.OrderStatus;
+import edu.fudan.common.util.StringUtils;
+import org.apache.tomcat.jni.Time;
 import other.entity.Order;
 import edu.fudan.common.entity.SeatClass;
 import other.service.OrderOtherService;
@@ -25,7 +27,7 @@ public class InitData implements CommandLineRunner {
         Order order1 = new Order();
 
         order1.setAccountId("4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f");
-        order1.setBoughtDate(new Date(System.currentTimeMillis()));
+        order1.setBoughtDate(new Date());
         order1.setCoachNumber(5);
         order1.setContactsDocumentNumber("Test");
         order1.setContactsName("Test");
