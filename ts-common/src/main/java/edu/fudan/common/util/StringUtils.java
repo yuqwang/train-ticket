@@ -18,7 +18,7 @@ public class StringUtils {
             Date d = formatter.parse(str);
             return d;
         }catch(Exception e){
-               return new Date();
+            return new Date(0);
         }
     }
 

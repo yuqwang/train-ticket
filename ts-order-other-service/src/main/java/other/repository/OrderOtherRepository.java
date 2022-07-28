@@ -50,7 +50,7 @@ public interface OrderOtherRepository extends CrudRepository<Order, String> {
      * @return ArrayList<Order>
      */
 //    @Query("{ 'travelDate' : ?0 , trainNumber : ?1 }")
-    ArrayList<Order> findByTravelDateAndTrainNumber(Date travelDate, String trainNumber);
+    ArrayList<Order> findByTravelDateAndTrainNumber(String travelDate, String trainNumber);
 
     /**
      * delete order by id

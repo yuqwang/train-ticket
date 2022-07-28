@@ -1,6 +1,7 @@
 package other.controller;
 
 import edu.fudan.common.entity.Seat;
+import edu.fudan.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,10 +77,10 @@ public class OrderOtherController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/orderOther/{travelDate}/{trainNumber}")
-    public HttpEntity calculateSoldTicket(@PathVariable Date travelDate, @PathVariable String trainNumber,
+    public HttpEntity calculateSoldTicket(@PathVariable String travelDate, @PathVariable String trainNumber,
                                           @RequestHeader HttpHeaders headers) {
         OrderOtherController.LOGGER.info("[queryAlreadySoldOrders][Calculate Sold Tickets][Date: {} TrainNumber: {}]", travelDate, trainNumber);
-        return ok(orderService.queryAlreadySoldOrders(travelDate, trainNumber, headers));
+        return ok(orderService.queryAlreadySoldOrders(StringUtils.String2Date(travelDate), trainNumber, headers));
     }
 
     @CrossOrigin(origins = "*")
@@ -112,10 +113,10 @@ public class OrderOtherController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/orderOther/security/{checkDate}/{accountId}")
-    public HttpEntity securityInfoCheck(@PathVariable Date checkDate, @PathVariable String accountId,
+    public HttpEntity securityInfoCheck(@PathVariable String checkDate, @PathVariable String accountId,
                                         @RequestHeader HttpHeaders headers) {
         OrderOtherController.LOGGER.info("[checkSecurityAboutOrder][Security Info Get][CheckDate:{} , AccountId:{}]",checkDate,accountId);
-        return ok(orderService.checkSecurityAboutOrder(checkDate, accountId, headers));
+        return ok(orderService.checkSecurityAboutOrder(StringUtils.String2Date(checkDate), accountId, headers));
     }
 
     @CrossOrigin(origins = "*")

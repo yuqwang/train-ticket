@@ -23,7 +23,7 @@ public interface OrderRepository extends JpaRepository<Order, String> {
 
     ArrayList<Order> findByAccountId(String accountId);
 
-    ArrayList<Order> findByTravelDateAndTrainNumber(Date travelDate,String trainNumber);
+    ArrayList<Order> findByTravelDateAndTrainNumber(String travelDate,String trainNumber);
 
     @Override
     void deleteById(String id);

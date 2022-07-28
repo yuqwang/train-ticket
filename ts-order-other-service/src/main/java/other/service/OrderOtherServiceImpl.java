@@ -2,6 +2,7 @@ package other.service;
 
 import edu.fudan.common.entity.*;
 import edu.fudan.common.util.Response;
+import edu.fudan.common.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -49,7 +50,7 @@ public class OrderOtherServiceImpl implements OrderOtherService {
 
     @Override
     public Response getSoldTickets(Seat seatRequest, HttpHeaders headers) {
-        ArrayList<Order> list = orderOtherRepository.findByTravelDateAndTrainNumber(seatRequest.getTravelDate(),
+        ArrayList<Order> list = orderOtherRepository.findByTravelDateAndTrainNumber(StringUtils.Date2String(seatRequest.getTravelDate()),
                 seatRequest.getTrainNumber());
         if (list != null && !list.isEmpty()) {
             Set ticketSet = new HashSet();
@@ -277,7 +278,7 @@ public class OrderOtherServiceImpl implements OrderOtherService {
 
     @Override
     public Response queryAlreadySoldOrders(Date travelDate, String trainNumber, HttpHeaders headers) {
-        ArrayList<Order> orders = orderOtherRepository.findByTravelDateAndTrainNumber(travelDate, trainNumber);
+        ArrayList<Order> orders = orderOtherRepository.findByTravelDateAndTrainNumber(StringUtils.Date2String(travelDate), trainNumber);
         SoldTicket cstr = new SoldTicket();
         cstr.setTravelDate(travelDate);
         cstr.setTrainNumber(trainNumber);

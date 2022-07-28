@@ -51,7 +51,7 @@ public class OrderOtherServiceImplTest {
         Seat seatRequest = new Seat();
         ArrayList<Order> list = new ArrayList<>();
         list.add(new Order());
-        Mockito.when(orderOtherRepository.findByTravelDateAndTrainNumber(Mockito.any(Date.class), Mockito.anyString())).thenReturn(list);
+        Mockito.when(orderOtherRepository.findByTravelDateAndTrainNumber(Mockito.any(String.class), Mockito.anyString())).thenReturn(list);
         Response result = orderOtherServiceImpl.getSoldTickets(seatRequest, headers);
         Assert.assertEquals("Success", result.getMsg());
     }
@@ -59,7 +59,7 @@ public class OrderOtherServiceImplTest {
     @Test
     public void testGetSoldTickets2() {
         Seat seatRequest = new Seat();
-        Mockito.when(orderOtherRepository.findByTravelDateAndTrainNumber(Mockito.any(Date.class), Mockito.anyString())).thenReturn(null);
+        Mockito.when(orderOtherRepository.findByTravelDateAndTrainNumber(Mockito.any(String.class), Mockito.anyString())).thenReturn(null);
         Response result = orderOtherServiceImpl.getSoldTickets(seatRequest, headers);
         Assert.assertEquals(new Response<>(0, "Seat is Null.", null), result);
     }
@@ -229,7 +229,7 @@ public class OrderOtherServiceImplTest {
     @Test
     public void testQueryAlreadySoldOrders() {
         ArrayList<Order> orders = new ArrayList<>();
-        Mockito.when(orderOtherRepository.findByTravelDateAndTrainNumber(Mockito.any(Date.class), Mockito.anyString())).thenReturn(orders);
+        Mockito.when(orderOtherRepository.findByTravelDateAndTrainNumber(Mockito.any(String.class), Mockito.anyString())).thenReturn(orders);
         Response result = orderOtherServiceImpl.queryAlreadySoldOrders(new Date(), "G1234", headers);
         Assert.assertEquals("Success", result.getMsg());
     }

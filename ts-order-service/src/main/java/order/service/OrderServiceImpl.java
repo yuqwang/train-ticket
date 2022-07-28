@@ -2,6 +2,7 @@ package order.service;
 
 import edu.fudan.common.entity.*;
 import edu.fudan.common.util.Response;
+import edu.fudan.common.util.StringUtils;
 import order.entity.OrderAlterInfo;
 import order.entity.Order;
 import order.entity.OrderInfo;
@@ -48,9 +49,10 @@ public class OrderServiceImpl implements OrderService {
     String success = "Success";
     String orderNotFound = "Order Not Found";
 
+
     @Override
     public Response getSoldTickets(Seat seatRequest, HttpHeaders headers) {
-        ArrayList<Order> list = orderRepository.findByTravelDateAndTrainNumber(seatRequest.getTravelDate(),
+        ArrayList<Order> list = orderRepository.findByTravelDateAndTrainNumber(StringUtils.Date2String(seatRequest.getTravelDate()),
                 seatRequest.getTrainNumber());
         if (list != null && !list.isEmpty()) {
             Set ticketSet = new HashSet();
@@ -258,7 +260,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Response queryAlreadySoldOrders(Date travelDate, String trainNumber, HttpHeaders headers) {
-        ArrayList<Order> orders = orderRepository.findByTravelDateAndTrainNumber(travelDate, trainNumber);
+        ArrayList<Order> orders = orderRepository.findByTravelDateAndTrainNumber(StringUtils.Date2String(travelDate), trainNumber);
         SoldTicket cstr = new SoldTicket();
         cstr.setTravelDate(travelDate);
         cstr.setTrainNumber(trainNumber);
