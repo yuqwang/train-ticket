@@ -5,6 +5,8 @@ import edu.fudan.common.entity.TripAllDetail;
 import edu.fudan.common.entity.TripAllDetailInfo;
 import edu.fudan.common.entity.TripResponse;
 import edu.fudan.common.util.Response;
+import edu.fudan.common.util.StringUtils;
+import org.apache.tomcat.jni.Time;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -182,7 +184,7 @@ public class RebookServiceImpl implements RebookService {
         Trip trip = gtdr.getTrip();
         String oldTripId = order.getTrainNumber();
         order.setTrainNumber(info.getTripId());
-        order.setBoughtDate(new Date());
+        order.setBoughtDate(StringUtils.Date2String(new Date()));
         order.setStatus(OrderStatus.CHANGE.getCode());
         order.setPrice(ticketPrice);//Set ticket price
         order.setSeatClass(info.getSeatType());
@@ -225,7 +227,7 @@ public class RebookServiceImpl implements RebookService {
         }
     }
 
-    public Ticket dipatchSeat(Date date, String tripId, String startStationId, String endStataionId, int seatType, HttpHeaders httpHeaders) {
+    public Ticket dipatchSeat(String date, String tripId, String startStationId, String endStataionId, int seatType, HttpHeaders httpHeaders) {
         Seat seatRequest = new Seat();
         seatRequest.setTravelDate(date);
         seatRequest.setTrainNumber(tripId);
@@ -250,15 +252,15 @@ public class RebookServiceImpl implements RebookService {
         return tripId.startsWith("G") || tripId.startsWith("D");
     }
 
-    private boolean checkTime(Date travelDate, Date travelTime) {
+    private boolean checkTime(String travelDate, String travelTime) {
         boolean result = true;
         Calendar calDateA = Calendar.getInstance();
         Date today = new Date();
         calDateA.setTime(today);
         Calendar calDateB = Calendar.getInstance();
-        calDateB.setTime(travelDate);
+        calDateB.setTime(StringUtils.String2Date(travelDate));
         Calendar calDateC = Calendar.getInstance();
-        calDateC.setTime(travelTime);
+        calDateC.setTime(StringUtils.String2Date(travelTime));
         if (calDateA.get(Calendar.YEAR) > calDateB.get(Calendar.YEAR)) {
             result = false;
         } else if (calDateA.get(Calendar.YEAR) == calDateB.get(Calendar.YEAR)) {

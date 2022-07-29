@@ -88,7 +88,7 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         routePlanInfo.setNum(5);
         routePlanInfo.setStartStation(info.getStartPlace());
         routePlanInfo.setEndStation(info.getEndPlace());
-        routePlanInfo.setTravelDate(StringUtils.Date2String(info.getDepartureTime()));
+        routePlanInfo.setTravelDate(info.getDepartureTime());
         ArrayList<RoutePlanResultUnit> routePlanResultUnits = getRoutePlanResultCheapest(routePlanInfo, headers);
 
         if (!routePlanResultUnits.isEmpty()) {
@@ -130,7 +130,7 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         routePlanInfo.setNum(5);
         routePlanInfo.setStartStation(info.getStartPlace());
         routePlanInfo.setEndStation(info.getEndPlace());
-        routePlanInfo.setTravelDate(StringUtils.Date2String(info.getDepartureTime()));
+        routePlanInfo.setTravelDate(info.getDepartureTime());
         ArrayList<RoutePlanResultUnit> routePlanResultUnits = getRoutePlanResultQuickest(routePlanInfo, headers);
 
 
@@ -174,7 +174,7 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         routePlanInfo.setNum(5);
         routePlanInfo.setStartStation(info.getStartPlace());
         routePlanInfo.setEndStation(info.getEndPlace());
-        routePlanInfo.setTravelDate(StringUtils.Date2String(info.getDepartureTime()));
+        routePlanInfo.setTravelDate(info.getDepartureTime());
         ArrayList<RoutePlanResultUnit> routePlanResultUnits = getRoutePlanResultMinStation(routePlanInfo, headers);
 
         if (!routePlanResultUnits.isEmpty()) {
@@ -212,7 +212,7 @@ public class TravelPlanServiceImpl implements TravelPlanService {
         }
     }
 
-    private int getRestTicketNumber(Date travelDate, String trainNumber, String startStationName, String endStationName, int seatType, HttpHeaders headers) {
+    private int getRestTicketNumber(String travelDate, String trainNumber, String startStationName, String endStationName, int seatType, HttpHeaders headers) {
         Seat seatRequest = new Seat();
 
         String fromId = queryForStationId(startStationName, headers);

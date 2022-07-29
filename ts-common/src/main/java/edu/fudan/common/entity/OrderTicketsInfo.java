@@ -53,12 +53,4 @@ public class OrderTicketsInfo {
 
     private boolean isWithin;
 
-    public Date getDate(){
-        return StringUtils.String2Date(date);
-    }
-
-    public void setDate(Date date){
-        this.date = StringUtils.Date2String(date);
-    }
-
 }
