@@ -316,11 +316,11 @@ public class TravelServiceImpl implements TravelService {
     }
 
     private List<TripResponse> getTicketsByBatch(List<Trip> trips, String startPlaceName, String endPlaceName, String departureTime, HttpHeaders headers) {
-
+        List<TripResponse> responses = new ArrayList<>();
         //Determine if the date checked is the same day and after
         if (!afterToday(departureTime)) {
             TravelServiceImpl.LOGGER.info("[getTickets][depaturetime not vailid][departuretime: {}]", departureTime);
-            return null;
+            return responses;
         }
 
         List<Travel> infos = new ArrayList<>();
@@ -349,7 +349,7 @@ public class TravelServiceImpl implements TravelService {
         Response r = re.getBody();
         if(r.getStatus() == 0){
             TravelServiceImpl.LOGGER.info("[getTicketsByBatch][Ts-basic-service response status is 0][response is: {}]", r);
-            return null;
+            return responses;
         }
         Map<String, TravelResult> trMap;
         ObjectMapper mapper = new ObjectMapper();
@@ -357,10 +357,9 @@ public class TravelServiceImpl implements TravelService {
             trMap = mapper.readValue(JsonUtils.object2Json(r.getData()), new TypeReference<Map<String, TravelResult>>(){});
         }catch(Exception e) {
             TravelServiceImpl.LOGGER.warn("[getTicketsByBatch][Ts-basic-service convert data failed][Fail msg: {}]", e.getMessage());
-            return null;
+            return responses;
         }
 
-        List<TripResponse> responses = new ArrayList<>();
         for(Map.Entry<String, TravelResult> trEntry: trMap.entrySet()){
             //Set the returned ticket information
             String tripNumber = trEntry.getKey();
@@ -479,6 +478,9 @@ public class TravelServiceImpl implements TravelService {
 
         Calendar calDateB = Calendar.getInstance();
         calDateB.setTime(StringUtils.String2Date(date));
+
+        TravelServiceImpl.LOGGER.info("[today date][y: {}][m:{}][d: {}]",calDateA.get(Calendar.YEAR), calDateA.get(Calendar.MONTH), calDateA.get(Calendar.DATE));
+        TravelServiceImpl.LOGGER.info("[departrue date][y: {}][m:{}][d: {}]",calDateB.get(Calendar.YEAR), calDateB.get(Calendar.MONTH), calDateB.get(Calendar.DATE));
 
         if (calDateA.get(Calendar.YEAR) > calDateB.get(Calendar.YEAR)) {
             return false;
