@@ -299,6 +299,7 @@ public class TravelServiceImpl implements TravelService {
             gtdr.setTripResponse(null);
             gtdr.setTrip(null);
             TravelServiceImpl.LOGGER.error("[getTripAllDetailInfo][Get trip detail error][Trip not found][TripId: {}]", gtdi.getTripId());
+            return new Response<>(0, "Trip not found", gtdr);
         } else {
             String startPlaceName = gtdi.getFrom();
             String endPlaceName = gtdi.getTo();
@@ -307,6 +308,7 @@ public class TravelServiceImpl implements TravelService {
                 gtdr.setTripResponse(null);
                 gtdr.setTrip(null);
                 TravelServiceImpl.LOGGER.warn("[getTripAllDetailInfo][Get trip detail error][Tickets not found][start: {},end: {},time: {}]", startPlaceName, endPlaceName, gtdi.getTravelDate());
+                return new Response<>(0, "getTickets failed", gtdr);
             } else {
                 gtdr.setTripResponse(tripResponse);
                 gtdr.setTrip(repository.findByTripId(new TripId(gtdi.getTripId())));
