@@ -24,4 +24,12 @@ public class RoutePlanInfo {
     public RoutePlanInfo() {
         //Empty Constructor
     }
+
+    public String getStartStation() {
+        return StringUtils.String2Lower(this.startStation);
+    }
+
+    public String getEndStation() {
+        return StringUtils.String2Lower(this.endStation);
+    }
 }

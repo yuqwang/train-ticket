@@ -25,14 +25,14 @@ public class TripAllDetailInfo {
         //Default Constructor
     }
 
-//    public String getFrom() {
-//        return StringUtils.String2Lower(this.from);
-//    }
-//
-//    public String getTo() {
-//        return StringUtils.String2Lower(this.to);
-//    }
-//
+    public String getFrom() {
+        return StringUtils.String2Lower(this.from);
+    }
+
+    public String getTo() {
+        return StringUtils.String2Lower(this.to);
+    }
+
 //    public Date getTravelDate() {
 //        return StringUtils.String2Date(travelDate);
 //    }

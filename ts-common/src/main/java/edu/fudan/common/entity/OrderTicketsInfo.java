@@ -53,4 +53,12 @@ public class OrderTicketsInfo {
 
     private boolean isWithin;
 
+    public String getFrom() {
+        return StringUtils.String2Lower(this.from);
+    }
+
+    public String getTo() {
+        return StringUtils.String2Lower(this.to);
+    }
+
 }

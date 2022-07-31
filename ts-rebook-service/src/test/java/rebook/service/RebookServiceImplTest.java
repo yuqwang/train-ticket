@@ -139,7 +139,7 @@ public class RebookServiceImplTest {
                 requestEntityTicket,
                 new ParameterizedTypeReference<Response<Ticket>>() {
                 })).thenReturn(reTicket);
-        Ticket result = rebookServiceImpl.dipatchSeat(StringUtils.Date2String(new Date()), "G1234", "start_station", "dest_station", 2, headers);
+        Ticket result = rebookServiceImpl.dipatchSeat(StringUtils.Date2String(new Date()), "G1234", "start_station", "dest_station", 2, 100, null,headers);
         Assert.assertNull(result);
     }
 
