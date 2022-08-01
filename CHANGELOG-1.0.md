@@ -34,7 +34,9 @@ We use spring-cloud-gateway to implement the gateway function.
 
 **Flow Control: Sentinel**
 
+We use Sentinel to implement the flow control for gateway.  For now, the flow control rule is simply defined in route level. We simply limited the QPS towards admin-basic-info-service to no more than 20.
 
+To customize the flow control rule, update the configuration for Sentinel in `GatewayConfiguration.java` file.
 
 **Monitoring: Promethues+Grafana Deployment**
 
@@ -86,5 +88,8 @@ Because the relational nature of the train ticket business is complex, we use a 
 
 ### Bug Fix
 
-* delete user failed. 
-* 
+* update order failed by the administrator.
+* delete order failed by the administrator.
+* delete user failed by the administrator. 
+* delete price failed by the administrator.
+* delete station failed by the administrator.
