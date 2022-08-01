@@ -13,7 +13,13 @@ public class StringUtils {
     }
 
     public static Date String2Date(String str){
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat formatter;
+        if(str.length() > 10){
+            formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        }else{
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+        }
+
         try{
             Date d = formatter.parse(str);
             return d;
