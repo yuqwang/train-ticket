@@ -1,5 +1,6 @@
 package contacts.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import contacts.entity.Contacts;
@@ -44,5 +45,8 @@ public interface ContactsRepository extends CrudRepository<Contacts, String> {
      */
     @Override
     ArrayList<Contacts> findAll();
+
+    @Query(value="SELECT * FROM contacts WHERE account_id = ?1 AND document_number = ?2 AND document_type = ?3", nativeQuery = true)
+    Contacts findByAccountIdAndDocumentTypeAndDocumentType(String account_id, String document_number, int document_type);
 
 }

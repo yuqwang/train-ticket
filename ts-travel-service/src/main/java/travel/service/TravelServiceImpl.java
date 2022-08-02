@@ -25,6 +25,7 @@ import travel.entity.Trip;
 import travel.entity.TripAllDetail;
 import travel.repository.TripRepository;
 
+import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -159,6 +160,7 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
+    @Transactional
     public Response delete(String tripId, HttpHeaders headers) {
         TripId ti = new TripId(tripId);
         if (repository.findByTripId(ti) != null) {

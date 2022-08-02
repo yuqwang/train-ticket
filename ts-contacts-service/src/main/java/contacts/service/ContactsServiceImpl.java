@@ -47,7 +47,7 @@ public class ContactsServiceImpl implements ContactsService {
 
     @Override
     public Response createContacts(Contacts contacts, HttpHeaders headers) {
-        Contacts contactsTemp = contactsRepository.findById(contacts.getId()).orElse(null);
+        Contacts contactsTemp = contactsRepository.findByAccountIdAndDocumentTypeAndDocumentType(contacts.getAccountId(), contacts.getDocumentNumber(), contacts.getDocumentType());
         if (contactsTemp != null) {
             ContactsServiceImpl.LOGGER.warn("[createContacts][Init Contacts, Already Exists][Id: {}]", contacts.getId());
             return new Response<>(0, "Already Exists", contactsTemp);
@@ -59,21 +59,14 @@ public class ContactsServiceImpl implements ContactsService {
 
     @Override
     public Response create(Contacts addContacts, HttpHeaders headers) {
-        Contacts contacts = new Contacts();
-        contacts.setId(UUID.randomUUID().toString());
-        contacts.setName(addContacts.getName());
-        contacts.setPhoneNumber(addContacts.getPhoneNumber());
-        contacts.setDocumentNumber(addContacts.getDocumentNumber());
-        contacts.setAccountId(addContacts.getAccountId());
-        contacts.setDocumentType(addContacts.getDocumentType());
 
-        ArrayList<Contacts> accountContacts = contactsRepository.findByAccountId(addContacts.getAccountId());
+        Contacts c = contactsRepository.findByAccountIdAndDocumentTypeAndDocumentType(addContacts.getAccountId(), addContacts.getDocumentNumber(), addContacts.getDocumentType());
 
-        if (accountContacts.contains(contacts)) {
+        if (c != null) {
             ContactsServiceImpl.LOGGER.warn("[Contacts-Add&Delete-Service.create][AddContacts][Fail.Contacts already exists][contactId: {}]", addContacts.getId());
             return new Response<>(0, "Contacts already exists", null);
         } else {
-            contactsRepository.save(contacts);
+            Contacts contacts = contactsRepository.save(addContacts);
             ContactsServiceImpl.LOGGER.info("[Contacts-Add&Delete-Service.create][AddContacts Success]");
             return new Response<>(1, "Create contacts success", contacts);
         }

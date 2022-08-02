@@ -23,6 +23,7 @@ import travel2.entity.Travel;
 import travel2.entity.TripAllDetail;
 import travel2.repository.TripRepository;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 /**
@@ -154,6 +155,7 @@ public class TravelServiceImpl implements TravelService {
     }
 
     @Override
+    @Transactional
     public Response delete(String tripId, HttpHeaders headers) {
         TripId ti = new TripId(tripId);
         if (repository.findByTripId(ti) != null) {

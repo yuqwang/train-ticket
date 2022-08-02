@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.Id;
-import javax.persistence.Entity;
+import javax.persistence.*;
+
 import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
+
 import java.util.UUID;
 
 /**
@@ -19,6 +18,7 @@ import java.util.UUID;
 @Entity
 @GenericGenerator(name = "jpa-uuid", strategy = "org.hibernate.id.UUIDGenerator")
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Table(indexes = {@Index(name = "account_document_idx", columnList = "account_id, document_number, document_type", unique = true)})
 public class Contacts {
 
     @Id
