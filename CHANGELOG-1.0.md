@@ -13,6 +13,16 @@
 
 ## Deploy v1.0.0
 
+### For quick start
+```bash
+git clone https://github.com/FudanSELab/train-ticket.git release-1.0.0
+cd train-ticket
+make deploy
+```
+
+### With Moinitorig
+
+### With Distributed Tracing
 
 
 ## Changelog since v0.2.0
@@ -48,7 +58,7 @@ To deploy promethues and grafana, execute the following command：
 kubectl apply -f deployment/kubernetes-manifests/prometheus/*
 ```
 
-**Open Tracing: Skywalking+ES Supoort**
+**Distributed Tracing: Skywalking+ES Supoort**
 
 We support skywalking + es solution in k8s deployment.
 

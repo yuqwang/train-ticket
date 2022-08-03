@@ -3,6 +3,7 @@
 Repo=codewisdom
 Tag=latest
 
+
 # build image
 .PHONY: build
 build: clean-image package build-image
@@ -23,6 +24,20 @@ push-image:
 .PHONY: publish-image
 publish-image:
 	@script/publish-docker-images.sh $(Repo) $(Tag)
+
+# deploy
+.PHONY: deploy
+deploy:
+	@hack/deploy/quick-start.sh
+
+.PHONY: deploy-all
+deploy:
+	@hack/deploy/quick-start.sh
+
+# deploy
+.PHONY: reset-deploy
+reset-deploy:
+	@hack/deploy/reset.sh
 
 .PHONY: clean
 clean:
