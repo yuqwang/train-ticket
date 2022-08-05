@@ -2,8 +2,14 @@
 
    * [v1.0.0](#v100-beta0)
       * [Deploy v1.0.0](#deploy-v1.0.0)
+         * [For Quick Start](#for-quick-start)
+         * [Deploy Mysql Clusters For Each Services](#deploy-mysql-clusters-for-each-services)
+         * [With Moinitorig](#with-moinitorig)
+         * [With Distributed Tracing](#with-distributed-tracing)
+         * [Deploy All](#deploy-all)
+         * [Customise Deployment](#customise-deployment)
 
-      * [Changelog since v0.2.0](#changelog-since-v020)
+      * [Changelog since 0.2.1](#changelog-since-v021)
          * [Features Added](#features-added)
          * [Notable Changes](#notable-changes)
          * [Bug fix](#bug-fix)
@@ -13,25 +19,59 @@
 
 ## Deploy v1.0.0
 
-### For quick start
+### For Quick Start
 ```bash
 git clone https://github.com/FudanSELab/train-ticket.git release-1.0.0
 cd train-ticket
 make deploy
 ```
 
+### Deploy Mysql Clusters For Each Services
+
+```bash
+git clone https://github.com/FudanSELab/train-ticket.git release-1.0.0
+cd train-ticket
+make deploy DeployArgs="--indepedent-db"
+```
+
 ### With Moinitorig
+```bash
+git clone https://github.com/FudanSELab/train-ticket.git release-1.0.0
+cd train-ticket
+make deploy DeployArgs="--with-monitoring"
+```
 
 ### With Distributed Tracing
+```bash
+git clone https://github.com/FudanSELab/train-ticket.git release-1.0.0
+cd train-ticket
+make deploy DeployArgs="--with-tracing"
+```
 
+### Deploy All 
+```bash
+git clone https://github.com/FudanSELab/train-ticket.git release-1.0.0
+cd train-ticket
+make deploy DeployArgs="--all"
+```
 
-## Changelog since v0.2.0
+### Customise Deployment
+You can freely combine parameters for custom deployment， for example, deploy with monitoring and tracing:
+```bash
+git clone https://github.com/FudanSELab/train-ticket.git release-1.0.0
+cd train-ticket
+make deploy DeployArgs="--with-tracing --with-monitoring"
+```
+
+## Changelog since v0.2.1
 
 ### Features Added 
 
 **Service Discovery: Nacos**
 
-Use nacos as service register and discovery component. 
+Use nacos as service register and discovery component.
+
+Nacos use mysql cluster to store config information. 
 
 We use nacos 2.0.1 version, for more infromation of nacos, to see: [https://nacos.io/zh-cn/docs/what-is-nacos.html
 ](https://nacos.io/zh-cn/docs/what-is-nacos.html)
@@ -65,12 +105,12 @@ We support skywalking + es solution in k8s deployment.
 To deploy skywalking and grafana, and use skywaling agent, execute the following command：
 
 ```bash
-kubectl apply -f deployment/kubernetes-manifests/skywalking/*
+kubectl apply -f deployment/kubernetes-manifests/skywalking/
 ```
 To use skywalking agent to collect logs and traces, 
 deploy as the following:
 ```bash
-kubectl apply -f deployment/kubernetes-manifests/deployment/kubernetes-manifests/quickstart-k8s-sw/*
+kubectl apply -f deployment/kubernetes-manifests/deployment/kubernetes-manifests/
 ```
 
 
@@ -80,15 +120,17 @@ kubectl apply -f deployment/kubernetes-manifests/deployment/kubernetes-manifests
 
 Unified log format for all services
 
-**Dependency Version Update**
+**Framework Upgrade**
 
-Update spring-boot version from 1.5.0 to 2.3.12.RELEASE.
+Upgrade spring-boot version from 1.5.0 to 2.3.12.RELEASE.
 
-**Data Structrue Unified**
+Upgrade related dependency of services.
+
+**Data Structrue Redesign**
 
 Extract the common data structure of the service and put it in ts-common, instead of redefining them each service once. And data field naming is normalized.
 
-**Dynamic Service Parameter Configuration**
+**Dynamic Service Configuration**
 
 Each service can dynamically configure its own database information, service discovery information, message queue information etc., (k8s deployment through configmap and secret, docker-compose deployment through environment variables) without the need to repackage the image.
 

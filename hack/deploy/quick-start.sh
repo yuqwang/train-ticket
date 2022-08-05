@@ -1,14 +1,22 @@
 #!/bin/bash
-echo "Start deploy mysql cluster for nacos."
-kubectl apply -f deployment/kubernetes-manifests/quickstart-k8s/part0
-echo "Waiting for mysql cluster of nacos to be ready ......"
-kubectl rollout status statefulset/nacos-rdb
-echo "Start deploy nacos, rabbitmq, mysql cluster for train-ticket services."
-kubectl apply -f deployment/kubernetes-manifests/quickstart-k8s/part1
-echo "Waiting for nacos to be ready ......"
-kubectl rollout status statefulset/nacos
-echo "Waiting for mysql of services to be ready ......"
-kubectl rollout status statefulset/ts-mysql-rdb
-echo "Start deploy train-ticket services"
-kubectl apply -f deployment/kubernetes-manifests/quickstart-k8s/part2
 
+TT_ROOT=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
+
+source "$TT_ROOT/deploy-part0.sh"
+source "$TT_ROOT/deploy-part1.sh"
+source "$TT_ROOT/deploy-part2.sh"
+
+function quick_start {
+  deploy_part0
+  deploy_tt_mysql_all_in_one
+  deploy_tt_cm_se
+  deploy_tt_dp
+}
+
+function deploy {
+    if [ $# == 0 ]; then
+      quick_start
+    fi
+}
+
+deploy

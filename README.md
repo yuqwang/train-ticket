@@ -14,38 +14,19 @@ You can get more details at [Wiki Pages](https://github.com/FudanSELab/train-tic
 ![architecture](./image/2.png)
 
 ## Quick Start
-We provide two options to quickly deploy our application: [Using Docker Compose](#Using-Docker-Compose) and [Using Kubernetes](#Using-Kubernetes).
-
-### Using Docker Compose
-The easiest way to get start with the Train Ticket application is by using [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/).
-
-> If you don't have Docker and Docker Compose installed, you can refer to [the Docker website](https://www.docker.com/) to install them.
-
-#### Presequisite
-* Docker
-* Docker Compose
-
-#### 1. Clone the Repository
-```bash
-git clone --depth=1 https://github.com/FudanSELab/train-ticket.git
-cd train-ticket/
-```
-
-#### 2. Start the Application
-```bash
-docker-compose -f deployment/docker-compose-manifests/quickstart-docker-compose.yml up
-```
-Once the application starts, you can visit the Train Ticket web page at [http://localhost:8080](http://localhost:8080).
+We provide k8s deployment to quickly deploy our application:  [Using Kubernetes](#Using-Kubernetes).
 
 ### Using Kubernetes
 Here is the steps to deploy the Train Ticket onto any existing Kubernetes cluster.
 
 #### Presequisite
 * An existing Kubernetes cluster
+* Helm supported, you can see https://helm.sh/docs/helm/helm_install/ for helm install
+* PVC supported, you can see https://openebs.io/docs/2.12.x/user-guides/installation for localPV support.
 
 #### 1. Clone the Repository
 ```bash
-git clone --depth=1 https://github.com/FudanSELab/train-ticket.git
+git clone --depth=1 https://github.com/FudanSELab/train-ticket.git 
 cd train-ticket/
 ```
 

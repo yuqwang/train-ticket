@@ -4,7 +4,7 @@ metadata:
   name: nacos-mysql
 type: Opaque
 stringData:
-  MYSQL_SERVICE_HOST: "nacos-rdb-leader"
+  MYSQL_SERVICE_HOST: "nacos-mysql-leader"
   MYSQL_SERVICE_PORT: "3306"
   MYSQL_SERVICE_DB_NAME: "nacos"
   MYSQL_SERVICE_USER: "nacos"
@@ -29,7 +29,7 @@ spec:
     spec:
       initContainers:
       - name: initmysql
-        image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/mysqlclient:0.1
+        image: codewisdom/mysqlclient:0.1
         imagePullPolicy: IfNotPresent
         envFrom:
           - secretRef:
@@ -56,7 +56,7 @@ spec:
         envFrom:
           - secretRef:
               name: nacos-mysql
-        image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/nacos-server:2.0.1
+        image: nacos/nacos-server:2.0.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8848
