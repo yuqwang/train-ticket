@@ -2,6 +2,7 @@
 
 Repo=codewisdom
 Tag=latest
+Namespace=default
 DeployArgs=""
 
 
@@ -34,7 +35,7 @@ publish-image:
 # DeployArgs "--all"               : deploy train-ticket with mysql cluster each service
 .PHONY: deploy
 deploy:
-	@hack/deploy/deploy.sh "$(DeployArgs)"
+	@hack/deploy/deploy.sh $Namespace "$(DeployArgs)"
 
 # deploy
 .PHONY: reset-deploy

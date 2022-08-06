@@ -33,22 +33,6 @@ keywords:
 - database
 - kubernetes
 
-maintainers:
-- email: andyli@yunify.com
-  name: andy
-- email: changlongguan@yunify.com
-  name: guanchanglong
-- email: zuqianzhang@yunify.com
-  name: zhangzuqian
-- email: jasongao@yunify.com
-  name: jason
-- email: runkecheng@yunify.com
-  name: rinker
-- email: molliezhang@yunify.com
-  name: molliezhang
-- email: dingyuan@yunify.com
-  name: dingyuan
-
 icon: https://xenondb.pek3b.qingstor.com/icons/radondb-mysql.svg
 annotations:
   "app.kubesphere.io/category": "Database & Cache"

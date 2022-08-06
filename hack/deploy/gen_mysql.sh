@@ -1,6 +1,29 @@
 #!/bin/bash
 svc_list="assurance auth config consign-price consign contacts delivery food-delivery inside-payment notification order-other order payment price route security station-food station ticket-office train-food train travel travel2 user voucher wait-order"
 
+function gen_secret_for_nacos {
+  name="$1"
+  hostVal="$2"
+  userVal="$3"
+  passVal="$4"
+  dbVal="$5"
+  file="deployment/kubernetes-manifests/quickstart-k8s/part0/nacos-secret.yaml"
+  cat>>$file<<EOF
+apiVersion: v1
+kind: Secret
+metadata:
+  name: $name
+type: Opaque
+stringData:
+  MYSQL_SERVICE_HOST: "$name-leader"
+  MYSQL_SERVICE_PORT: "3306"
+  MYSQL_SERVICE_DB_NAME: "$dbVal"
+  MYSQL_SERVICE_USER: "$userVal"
+  MYSQL_SERVICE_PASSWORD: "$passVal"
+---
+EOF
+}
+
 function gen_secret_for_tt {
   s="$1"
   hostVal="$2"
@@ -25,7 +48,7 @@ function gen_secret_for_tt {
 apiVersion: v1
 kind: Secret
 metadata:
-name: $name
+  name: $name
 type: Opaque
 stringData:
   $host: "$hostVal"
@@ -54,22 +77,17 @@ function gen_mysql_and_secret_for_services {
     sed "s/ts-mysql-rdb/$mysqlName/g" $template >> $mysqlYaml
 
     # generate responding secret
-    gen_secret_for_tt $s
+    gen_secret_for_tt $s $mysqlName-leader "ts" "Ts_123456" "ts"
   done
 }
 
-function deploy_mysql_and_secret_for_services {
+function gen_secret_for_services {
   for s in $svc_list
-  do
-      echo $s
-      mysqlName="ts-$s"
-      mysqlHost="$mysqlName-mysql-leader"
-      mysqlUser=$mysqlName
-      mysqlPassword="Abcd1234#"
-      mysqlDatabase=$mysqlName
-      helm install $mysqlName --set mysql.mysqlUser=$mysqlUser --set mysql.mysqlPassword=$mysqlPassword --set mysql.mysqlDatabase=$mysqlDatabase deployment/kubernetes-manifests/quickstart-k8s/mysql/charts
-      gen_secret_for_tt $s $mysqlHost $mysqlUser $mysqlPassword $mysqlDatabase
-  done
+    do
+        mysqlHost="ts-$s-mysql-leader"
+        mysqlUser="$1"
+        mysqlPassword="$2"
+        mysqlDatabase="$3"
+        gen_secret_for_tt $s $mysqlHost $mysqlUser $mysqlPassword $mysqlDatabase
+    done
 }
-
-#gen_mysql_and_secret_for_services

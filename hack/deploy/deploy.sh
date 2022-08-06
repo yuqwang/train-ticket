@@ -6,7 +6,8 @@ source "$TT_ROOT/deploy-part0.sh"
 source "$TT_ROOT/deploy-part1.sh"
 source "$TT_ROOT/deploy-part2.sh"
 
-args="$1"
+namespace="$1"
+args="$2"
 argNone=0
 argDB=0
 argMonitoring=0
@@ -15,19 +16,19 @@ argAll=0
 
 
 function quick_start {
-  deploy_part0
-  deploy_tt_mysql_all_in_one
-  deploy_tt_cm_se
-  deploy_tt_dp
+  deploy_part0  $namespace
+  deploy_tt_mysql_all_in_one  $namespace
+  deploy_tt_cm_se  $namespace
+  deploy_tt_dp  $namespace
 }
 
 function deploy_all {
   deploy_monitoring
-  deploy_tracing
-  deploy_part0
-  deploy_tt_mysql_each_service
-  deploy_tt_cm_se
-  deploy_tt_dp_sw
+  deploy_tracing  $namespace
+  deploy_part0  $namespace
+  deploy_tt_mysql_each_service  $namespace
+  deploy_tt_cm_se  $namespace
+  deploy_tt_dp_sw  $namespace
 }
 
 
@@ -44,12 +45,12 @@ function deploy {
 
     deploy_part0
     if [ $argDB == 1 ]; then
-      deploy_tt_mysql_each_service
+      deploy_tt_mysql_each_service  $namespace
     fi
     deploy_tt_cm_se
     if [ $argTracing == 1 ]; then
-      deploy_tracing
-      deploy_tt_dp_sw
+      deploy_tracing  $namespace
+      deploy_tt_dp_sw  $namespace
     fi
     if [ $argMonitoring == 1 ]; then
       deploy_monitoring
