@@ -32,14 +32,7 @@ cd train-ticket/
 
 #### 2. Deploy the application
 ```bash
-cd deployment/kubernetes-manifests/quickstart-k8s
-
-# Deploy the databases
-kubectl apply -f quickstart-ts-deployment-part1.yml
-# Deploy the services
-kubectl apply -f quickstart-ts-deployment-part2.yml
-# Deploy the UI Dashboard
-kubectl apply -f quickstart-ts-deployment-part3.yml
+make deploy
 ```
 
 #### 3. Run `kubectl get pods` to see pods are in a ready state
@@ -54,6 +47,9 @@ There are many other quick deployment ways in [deployment folder](<https://githu
 In the above, We use pre-built images to quickly deploy the application.
 
 If you want to build the application from source, you can refer to [the Installation Guide](https://github.com/FudanSELab/train-ticket/wiki/Installation-Guide).
+
+## test scripts
+Use scripts to test train-ticket: [https://github.com/FudanSELab/train-ticket-auto-query](https://github.com/FudanSELab/train-ticket-auto-query)
 
 ## Screenshot
 ![screenshot](./image/main_interface.png)

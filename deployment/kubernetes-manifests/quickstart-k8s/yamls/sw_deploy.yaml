@@ -530,12 +530,8 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-avatar-mysql
             - configMapRef:
                 name: nacos
-            - configMapRef:
-                name: rabbitmq
           ports:
             - containerPort: 17001
           resources:
@@ -670,8 +666,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-cancel-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -1102,8 +1096,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-execute-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -1246,8 +1238,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-food-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -1318,8 +1308,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-gateway-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -1462,8 +1450,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-news-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -1822,8 +1808,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-preserve-other-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -1894,8 +1878,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-preserve-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -2038,8 +2020,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-rebook-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -2110,8 +2090,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-route-plan-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -2254,8 +2232,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-seat-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -2495,6 +2471,78 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: ts-ticket-office-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-ticket-office-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-ticket-office-service
+    spec:
+      volumes:
+        - name: skywalking-agent
+          emptyDir: {}
+      initContainers:
+        - name: agent-container
+          image: apache/skywalking-java-agent:8.8.0-alpine
+          volumeMounts:
+            - name: skywalking-agent
+              mountPath: /agent
+          command: [ "/bin/sh" ]
+          args: [ "-c", "cp -R /skywalking/agent /agent/" ]
+      containers:
+        - name: ts-ticket-office-service
+          image: codewisdom/ts-ticket-office-service:1.0.0
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: skywalking-agent
+              mountPath: /skywalking
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: SW_AGENT_COLLECTOR_BACKEND_SERVICES
+              value: "skywalking:11800"
+            - name: SW_GRPC_LOG_SERVER_HOST
+              value: "skywalking"
+            - name: SW_GRPC_LOG_SERVER_PORT
+              value: "11800"
+            - name: SW_AGENT_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
+            - name: JAVA_TOOL_OPTIONS
+              value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
+          envFrom:
+            - secretRef:
+                name: ts-ticket-office-mysql
+            - configMapRef:
+                name: nacos
+            - configMapRef:
+                name: rabbitmq
+          ports:
+            - containerPort: 16108
+          resources:
+            requests:
+              cpu: 100m
+              memory: 300Mi
+            limits:
+              cpu: 500m
+              memory: 2000Mi
+          readinessProbe:
+            tcpSocket:
+              port: 16108
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: ts-train-food-service
 spec:
   selector:
@@ -2686,8 +2734,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-travel-plan-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -2974,8 +3020,6 @@ spec:
             - name: JAVA_TOOL_OPTIONS
               value: "-javaagent:/skywalking/agent/skywalking-agent.jar"
           envFrom:
-            - secretRef:
-                name: ts-verification-code-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -2992,6 +3036,50 @@ spec:
           readinessProbe:
             tcpSocket:
               port: 15678
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-voucher-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-voucher-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-voucher-service
+    spec:
+      containers:
+        - name: ts-voucher-service
+          image: codewisdom/ts-voucher-service:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          envFrom:
+            - secretRef:
+                name: ts-voucher-mysql
+            - configMapRef:
+                name: nacos
+          ports:
+            - containerPort: 16101
+          resources:
+            requests:
+              cpu: 100m
+              memory: 300Mi
+            limits:
+              cpu: 500m
+              memory: 2000Mi
+          readinessProbe:
+            tcpSocket:
+              port: 16101
             initialDelaySeconds: 60
             periodSeconds: 10
             timeoutSeconds: 5

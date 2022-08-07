@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: ts-admin-basic-info-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-admin-basic-info-service:re-data
+          image: codewisdom/ts-admin-basic-info-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -22,8 +22,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-admin-basic-info-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -58,7 +56,7 @@ spec:
     spec:
       containers:
         - name: ts-admin-order-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-admin-order-service:re-data
+          image: codewisdom/ts-admin-order-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -66,8 +64,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-admin-order-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -102,7 +98,7 @@ spec:
     spec:
       containers:
         - name: ts-admin-route-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-admin-route-service:re-data
+          image: codewisdom/ts-admin-route-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -110,8 +106,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-admin-route-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -146,7 +140,7 @@ spec:
     spec:
       containers:
         - name: ts-admin-travel-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-admin-travel-service:re-data
+          image: codewisdom/ts-admin-travel-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -154,8 +148,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-admin-travel-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -190,7 +182,7 @@ spec:
     spec:
       containers:
         - name: ts-admin-user-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-admin-user-service:re-data
+          image: codewisdom/ts-admin-user-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -198,8 +190,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-admin-user-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -234,7 +224,7 @@ spec:
     spec:
       containers:
         - name: ts-assurance-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-assurance-service:re-data
+          image: codewisdom/ts-assurance-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -278,7 +268,7 @@ spec:
     spec:
       containers:
         - name: ts-auth-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-auth-service:re-data
+          image: codewisdom/ts-auth-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -330,8 +320,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-avatar-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -366,7 +354,7 @@ spec:
     spec:
       containers:
         - name: ts-basic-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-basic-service:re-data
+          image: codewisdom/ts-basic-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -374,8 +362,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-basic-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -410,7 +396,7 @@ spec:
     spec:
       containers:
         - name: ts-cancel-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-cancel-service:re-data
+          image: codewisdom/ts-cancel-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -418,8 +404,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-cancel-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -454,7 +438,7 @@ spec:
     spec:
       containers:
         - name: ts-config-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-config-service:re-data
+          image: codewisdom/ts-config-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -498,7 +482,7 @@ spec:
     spec:
       containers:
         - name: ts-consign-price-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-consign-price-service:re-data
+          image: codewisdom/ts-consign-price-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -542,7 +526,7 @@ spec:
     spec:
       containers:
         - name: ts-consign-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-consign-service:re-data
+          image: codewisdom/ts-consign-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -586,7 +570,7 @@ spec:
     spec:
       containers:
         - name: ts-contacts-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-contacts-service:re-data
+          image: codewisdom/ts-contacts-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -630,7 +614,7 @@ spec:
     spec:
       containers:
         - name: ts-delivery-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-delivery-service:re-data
+          image: codewisdom/ts-delivery-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -676,7 +660,7 @@ spec:
     spec:
       containers:
         - name: ts-execute-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-execute-service:re-data
+          image: codewisdom/ts-execute-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -684,8 +668,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-execute-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -720,7 +702,7 @@ spec:
     spec:
       containers:
         - name: ts-food-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-food-service:re-data
+          image: codewisdom/ts-food-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -728,8 +710,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-food-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -753,6 +733,52 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  name: ts-food-delivery-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-food-delivery-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-food-delivery-service
+    spec:
+      containers:
+        - name: ts-food-delivery-service
+          image: codewisdom/ts-food-delivery-service:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          envFrom:
+            - secretRef:
+                name: ts-food-delivery-mysql
+            - configMapRef:
+                name: nacos
+            - configMapRef:
+                name: rabbitmq
+          ports:
+            - containerPort: 18957
+          resources:
+            requests:
+              cpu: 100m
+              memory: 300Mi
+            limits:
+              cpu: 500m
+              memory: 2000Mi
+          readinessProbe:
+            tcpSocket:
+              port: 18957
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
   name: ts-gateway-service
 spec:
   selector:
@@ -766,7 +792,7 @@ spec:
     spec:
       containers:
         - name: ts-gateway-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-gateway-service:re-data
+          image: codewisdom/ts-gateway-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -774,8 +800,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-gateway-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -810,7 +834,7 @@ spec:
     spec:
       containers:
         - name: ts-inside-payment-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-inside-payment-service:re-data
+          image: codewisdom/ts-inside-payment-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -854,7 +878,7 @@ spec:
     spec:
       containers:
         - name: ts-news-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-news-service:re-data
+          image: codewisdom/ts-news-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -862,8 +886,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-news-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -898,7 +920,7 @@ spec:
     spec:
       containers:
         - name: ts-notification-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-notification-service:re-data
+          image: codewisdom/ts-notification-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -944,7 +966,7 @@ spec:
     spec:
       containers:
         - name: ts-order-other-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-order-other-service:re-data
+          image: codewisdom/ts-order-other-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -988,7 +1010,7 @@ spec:
     spec:
       containers:
         - name: ts-order-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-order-service:re-data
+          image: codewisdom/ts-order-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1032,7 +1054,7 @@ spec:
     spec:
       containers:
         - name: ts-payment-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-payment-service:re-data
+          image: codewisdom/ts-payment-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1076,7 +1098,7 @@ spec:
     spec:
       containers:
         - name: ts-preserve-other-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-preserve-other-service:re-data
+          image: codewisdom/ts-preserve-other-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1084,8 +1106,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-preserve-other-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -1122,7 +1142,7 @@ spec:
     spec:
       containers:
         - name: ts-preserve-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-preserve-service:re-data
+          image: codewisdom/ts-preserve-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1130,8 +1150,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-preserve-mysql
             - configMapRef:
                 name: nacos
             - configMapRef:
@@ -1168,7 +1186,7 @@ spec:
     spec:
       containers:
         - name: ts-price-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-price-service:re-data
+          image: codewisdom/ts-price-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1212,7 +1230,7 @@ spec:
     spec:
       containers:
         - name: ts-rebook-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-rebook-service:re-data
+          image: codewisdom/ts-rebook-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1220,8 +1238,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-rebook-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -1256,7 +1272,7 @@ spec:
     spec:
       containers:
         - name: ts-route-plan-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-route-plan-service:re-data
+          image: codewisdom/ts-route-plan-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1264,8 +1280,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-route-plan-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -1300,7 +1314,7 @@ spec:
     spec:
       containers:
         - name: ts-route-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-route-service:re-data
+          image: codewisdom/ts-route-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1344,7 +1358,7 @@ spec:
     spec:
       containers:
         - name: ts-seat-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-seat-service:re-data
+          image: codewisdom/ts-seat-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1352,8 +1366,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-seat-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -1388,7 +1400,7 @@ spec:
     spec:
       containers:
         - name: ts-security-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-security-service:re-data
+          image: codewisdom/ts-security-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1432,7 +1444,7 @@ spec:
     spec:
       containers:
         - name: ts-station-food-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-station-food-service:re-data
+          image: codewisdom/ts-station-food-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1476,7 +1488,7 @@ spec:
     spec:
       containers:
         - name: ts-station-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-station-service:re-data
+          image: codewisdom/ts-station-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1520,7 +1532,7 @@ spec:
     spec:
       containers:
         - name: ts-ticket-office-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-ticket-office-service:re-data
+          image: codewisdom/ts-ticket-office-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1564,7 +1576,7 @@ spec:
     spec:
       containers:
         - name: ts-train-food-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-train-food-service:re-data
+          image: codewisdom/ts-train-food-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1608,7 +1620,7 @@ spec:
     spec:
       containers:
         - name: ts-train-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-train-service:re-data
+          image: codewisdom/ts-train-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1652,7 +1664,7 @@ spec:
     spec:
       containers:
         - name: ts-travel-plan-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-travel-plan-service:re-data
+          image: codewisdom/ts-travel-plan-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1660,8 +1672,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-travel-plan-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -1696,7 +1706,7 @@ spec:
     spec:
       containers:
         - name: ts-travel-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-travel-service:re-data
+          image: codewisdom/ts-travel-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1740,7 +1750,7 @@ spec:
     spec:
       containers:
         - name: ts-travel2-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-travel2-service:re-data
+          image: codewisdom/ts-travel2-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1784,7 +1794,7 @@ spec:
     spec:
       containers:
         - name: ts-user-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-user-service:re-data
+          image: codewisdom/ts-user-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1828,7 +1838,7 @@ spec:
     spec:
       containers:
         - name: ts-verification-code-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-verification-code-service:re-data
+          image: codewisdom/ts-verification-code-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1836,8 +1846,6 @@ spec:
                 fieldRef:
                   fieldPath: status.hostIP
           envFrom:
-            - secretRef:
-                name: ts-verification-code-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -1872,7 +1880,7 @@ spec:
     spec:
       containers:
         - name: ts-voucher-service
-          image: registry.cn-hangzhou.aliyuncs.com/train-ticket-reconstruction/ts-voucher-service:re-data
+          image: codewisdom/ts-voucher-service:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1900,3 +1908,74 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-wait-order-service
+spec:
+  selector:
+    matchLabels:
+      app: ts-wait-order-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-wait-order-service
+    spec:
+      containers:
+        - name: ts-wait-order-service
+          image: codewisdom/ts-wait-order-service:1.0.0
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+          envFrom:
+            - secretRef:
+                name: ts-wait-order-service
+            - configMapRef:
+                name: nacos
+          ports:
+            - containerPort: 17525
+          resources:
+            requests:
+              cpu: 100m
+              memory: 300Mi
+            limits:
+              cpu: 500m
+              memory: 2000Mi
+          readinessProbe:
+            tcpSocket:
+              port: 17525
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 5
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-ui-dashboard
+spec:
+  selector:
+    matchLabels:
+      app: ts-ui-dashboard
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ts-ui-dashboard
+    spec:
+      containers:
+        - name: ts-ui-dashboard
+          image: codewisdom/ts-ui-dashboard:1.0.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi

@@ -36,9 +36,6 @@ spec:
     - port: 7848
       name: rpc
       targetPort: 7848
-      {{- if eq .Values.service.type "NodePort" }}
-      nodePort: {{ .Values.service.nodePort }}
-      {{- end }}
   selector:
     app: {{ .Release.Name }}
   type: {{ .Values.service.type }}

@@ -68,7 +68,7 @@ public class PriceServiceImpl implements PriceService {
 
     @Override
     public Response findByRouteIdAndTrainType(String routeId, String trainType, HttpHeaders headers) {
-        PriceServiceImpl.LOGGER.info("[findByRouteIdAndTrainType][Rote: {} , Train Type: {}]", routeId, trainType);
+        PriceServiceImpl.LOGGER.info("[findByRouteIdAndTrainType][Route: {} , Train Type: {}]", routeId, trainType);
         PriceConfig priceConfig = priceConfigRepository.findByRouteIdAndTrainType(routeId, trainType);
         //PriceServiceImpl.LOGGER.info("[findByRouteIdAndTrainType]");
 

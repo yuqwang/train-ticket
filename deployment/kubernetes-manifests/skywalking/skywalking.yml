@@ -87,7 +87,6 @@ metadata:
   labels:
     app: skywalking-ui
   name: skywalking-ui
-  namespace: default
 spec:
   replicas: 1
   selector:

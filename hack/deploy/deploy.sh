@@ -2,33 +2,36 @@
 
 TT_ROOT=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-source "$TT_ROOT/deploy-part0.sh"
-source "$TT_ROOT/deploy-part1.sh"
-source "$TT_ROOT/deploy-part2.sh"
+source "$TT_ROOT/utils.sh"
+
+
 
 namespace="$1"
 args="$2"
-argNone=0
+
+argNone=1
 argDB=0
 argMonitoring=0
 argTracing=0
 argAll=0
 
-
 function quick_start {
-  deploy_part0  $namespace
+  echo "quick start"
+  deploy_infrastructures  $namespace
   deploy_tt_mysql_all_in_one  $namespace
-  deploy_tt_cm_se  $namespace
+  deploy_tt_secret  $namespace
+  deploy_tt_svc $namespace
   deploy_tt_dp  $namespace
 }
 
 function deploy_all {
-  deploy_monitoring
-  deploy_tracing  $namespace
-  deploy_part0  $namespace
+  deploy_infrastructures  $namespace
   deploy_tt_mysql_each_service  $namespace
-  deploy_tt_cm_se  $namespace
+  deploy_tt_secret  $namespace
+  deploy_tt_svc $namespace
   deploy_tt_dp_sw  $namespace
+  deploy_tracing  $namespace
+  deploy_monitoring
 }
 
 
@@ -43,15 +46,24 @@ function deploy {
       exit $?
     fi
 
-    deploy_part0
+    deploy_infrastructures $namespace
+
     if [ $argDB == 1 ]; then
       deploy_tt_mysql_each_service  $namespace
+    else
+      deploy_tt_mysql_all_in_one $namespace
     fi
-    deploy_tt_cm_se
+
+    deploy_tt_secret  $namespace
+    deploy_tt_svc $namespace
+
     if [ $argTracing == 1 ]; then
-      deploy_tracing  $namespace
       deploy_tt_dp_sw  $namespace
+      deploy_tracing  $namespace
+    else
+      deploy_tt_dp $namespace
     fi
+
     if [ $argMonitoring == 1 ]; then
       deploy_monitoring
     fi
@@ -59,13 +71,11 @@ function deploy {
 
 #deploy
 function parse_args {
+    echo "Parse DeployArgs"
     for arg in $args
     do
       echo $arg
       case $arg in
-      "")
-        argNone=1
-        ;;
       "--all")
         argAll=1
         ;;
@@ -82,5 +92,9 @@ function parse_args {
     done
 }
 
-parse_args
+echo "args num: $#"
+if [ $# == 2 ]; then
+  argNone=0
+  parse_args $args
+fi
 deploy
