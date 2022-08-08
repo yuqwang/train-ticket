@@ -2,6 +2,12 @@
 svc_list="assurance auth config consign-price consign contacts delivery food-delivery inside-payment notification order-other order payment price route security station-food station ticket-office train-food train travel travel2 user voucher wait-order"
 
 secret_yaml="deployment/kubernetes-manifests/quickstart-k8s/yamls/secret.yaml"
+dp_sample_yaml="deployment/kubernetes-manifests/quickstart-k8s/yamls/deploy.yaml.sample"
+sw_dp_sample_yaml="deployment/kubernetes-manifests/quickstart-k8s/yamls/sw_deploy.yaml.sample"
+
+dp_yaml="deployment/kubernetes-manifests/quickstart-k8s/yamls/deploy.yaml"
+sw_dp_yaml="deployment/kubernetes-manifests/quickstart-k8s/yamls/sw_deploy.yaml"
+
 
 function gen_secret_for_tt {
   s="$1"
@@ -45,7 +51,7 @@ function gen_secret_for_services {
     mysqlHost="$4"
     useOneHost=1
   fi
-  rm $secret_yaml
+  rm $secret_yaml > /dev/null 2>&1
   touch $secret_yaml
   for s in $svc_list
   do
@@ -56,4 +62,32 @@ function gen_secret_for_services {
   done
 }
 
-#gen_secret_for_services ts ts ts
+function update_tt_dp_cm {
+  nacosCM="$1"
+  rabbitmqCM="$2"
+
+  cp $dp_sample_yaml $dp_yaml
+
+  if [ "$(uname)"="Darwin" ]; then
+    sed -i "" "s/nacos/${nacosCM}/g" $dp_yaml
+    sed -i "" "s/rabbitmq/${rabbitmqCM}/g" $dp_yaml
+  else
+    sed -i "s/nacos/${nacosCM}/g" $dp_yaml
+    sed -i "s/rabbitmq/${rabbitmqCM}/g" $dp_yaml
+  fi
+}
+
+function update_tt_sw_dp_cm {
+  nacosCM="$1"
+  rabbitmqCM="$2"
+
+  cp $sw_dp_sample_yaml $sw_dp_yaml
+  if [ "$(uname)"="Darwin" ]; then
+    sed -i "" "s/nacos/${nacosCM}/g" $sw_dp_yaml
+    sed -i "" "s/rabbitmq/${rabbitmqCM}/g" $sw_dp_yaml
+  else
+    sed -i "s/nacos/${nacosCM}/g" $sw_dp_yaml
+    sed -i "s/rabbitmq/${rabbitmqCM}/g" $sw_dp_yaml
+  fi
+}
+

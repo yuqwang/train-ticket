@@ -8,10 +8,12 @@
          * [With Distributed Tracing](#with-distributed-tracing)
          * [Deploy All](#deploy-all)
          * [Customise Deployment](#customise-deployment)
+         * [Reset Deployment](#reset-deployment)
 
       * [Changelog since 0.2.1](#changelog-since-v021)
          * [Features Added](#features-added)
          * [Notable Changes](#notable-changes)
+         * [Test Support](#test-support)
          * [Bug fix](#bug-fix)
          
          
@@ -24,6 +26,13 @@
 git clone https://github.com/FudanSELab/train-ticket.git release-1.0.0
 cd train-ticket
 make deploy
+
+```
+
+Note: if you want specify namespace, set Namespace paramter:
+
+```bash
+make deploy Namespace=yournamespace
 ```
 
 ### Deploy Mysql Clusters For Each Services
@@ -31,7 +40,7 @@ make deploy
 ```bash
 git clone https://github.com/FudanSELab/train-ticket.git release-1.0.0
 cd train-ticket
-make deploy DeployArgs="--indepedent-db"
+make deploy DeployArgs="--independent-db"
 ```
 
 ### With Moinitorig
@@ -64,6 +73,14 @@ cd train-ticket
 make deploy DeployArgs="--with-tracing --with-monitoring"
 ```
 
+### Reset Deployment
+
+```
+make reset-deploy
+# if you specify namespace when deploy, set namespace as well when reset
+# make reset-deploy Namespace=yournamespace
+```
+
 ## Changelog since v0.2.1
 
 ### Features Added 
@@ -91,33 +108,20 @@ To customize the flow control rule, update the configuration for Sentinel in `Ga
 
 **Monitoring: Promethues+Grafana Deployment**
 
-We support promethues + grafana solution in k8s deployment.
+We support prometheus + grafana solution in k8s deployment.
 
-To deploy promethues and grafana, execute the following command：
-
-```bash
-kubectl apply -f deployment/kubernetes-manifests/prometheus/*
-```
+The deployment manifests of prometheus are located at：deployment/kubernetes-manifests/prometheus
 
 **Distributed Tracing: Skywalking+ES Supoort**
 
 We support skywalking + es solution in k8s deployment.
 
-To deploy skywalking and grafana, and use skywaling agent, execute the following command：
-
-```bash
-kubectl apply -f deployment/kubernetes-manifests/skywalking/
-```
-To use skywalking agent to collect logs and traces, 
-deploy as the following:
-```bash
-kubectl apply -f deployment/kubernetes-manifests/deployment/kubernetes-manifests/
-```
+The deployment manifests of prometheus are located at：deployment/kubernetes-manifests/skywalking
 
 
 ### Notable Changes
 
-**Log Normalization**
+**Log Format Unification**
 
 Unified log format for all services
 
@@ -138,6 +142,13 @@ Each service can dynamically configure its own database information, service dis
 **Mysql Cluster Mode Support**
 
 Because the relational nature of the train ticket business is complex, we use a relational database, ie mysql. To support clustered deployment of mysql, we use randondb's solution for mysql deployment. For more details, see: [https://radondb.io/](https://radondb.io/)
+
+### Test Support
+
+We provide test scripts for functional and performance testing of train-tickets. The script provides some scenarios, such as administrator_operations, normal_query_and_booking, rebooking, rebooking_failure, search_failure, and consign_preserve.
+At the same time, the script supports qos parameter setting, which can easily implement performance testing.
+Access test scripts at: [https://github.com/FudanSELab/train-ticket-auto-query ](https://github.com/FudanSELab/train-ticket-auto-query)
+
 
 ### Bug Fix
 

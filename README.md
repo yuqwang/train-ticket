@@ -31,17 +31,58 @@ cd train-ticket/
 ```
 
 #### 2. Deploy the application
+### For Quick Start
 ```bash
 make deploy
+
+```
+
+Note: if you want specify namespace, set Namespace paramter:
+
+```bash
+make deploy Namespace=yournamespace
+```
+
+### Deploy Mysql Clusters For Each Services
+
+```bash
+make deploy DeployArgs="--independent-db"
+```
+
+### With Moinitorig
+```bash
+make deploy DeployArgs="--with-monitoring"
+```
+
+### With Distributed Tracing
+```bash
+make deploy DeployArgs="--with-tracing"
+```
+
+### Deploy All 
+```bash
+make deploy DeployArgs="--all"
+```
+
+### Customise Deployment
+You can freely combine parameters for custom deployment， for example, deploy with monitoring and tracing:
+
+```bash
+make deploy DeployArgs="--with-tracing --with-monitoring"
+```
+
+### Reset Deployment
+
+```
+make reset-deploy
+# if you specify namespace when deploy, set namespace as well when reset
+# make reset-deploy Namespace=yournamespace
 ```
 
 #### 3. Run `kubectl get pods` to see pods are in a ready state
 
 #### 4. Visit the Train Ticket web page at [http://[Node-IP]:32677](http://[Node-IP]:32677).
 
-### More Deployment Ways
-
-There are many other quick deployment ways in [deployment folder](<https://github.com/FudanSELab/train-ticket/tree/master/deployment>).  For example, you can deploy this system [with Jaeger](<https://github.com/FudanSELab/train-ticket/tree/master/deployment/kubernetes-manifests/k8s-with-jaeger>), and then visit the Jaeger Webpage to view traces.
 
 ## Build From Source
 In the above, We use pre-built images to quickly deploy the application.

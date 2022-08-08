@@ -46,8 +46,8 @@ function deploy_infrastructures {
 }
 
 function deploy_monitoring {
-  echo "Start deploy promethues and grafana"
-  kubectl apply -f deployment/kubernetes-manifests/promethues
+  echo "Start deploy prometheus and grafana"
+  kubectl apply -f deployment/kubernetes-manifests/prometheus
 }
 
 function deploy_tracing {
@@ -60,7 +60,6 @@ function deploy_tt_mysql_all_in_one {
   namespace=$1
   tsMysqlName="tsdb"
   echo "Start deployment Step <2/3>: mysql cluster of train-ticket services----------------------"
-  #kubectl apply -f deployment/kubernetes-manifests/quickstart-k8s/part1/ts-mysql-rdb.yaml -n $namespace
   helm install $tsMysqlName --set mysql.mysqlUser=$tsUser --set mysql.mysqlPassword=$tsPassword --set mysql.mysqlDatabase=$tsDB $mysqlCharts -n $namespace 1>/dev/null
   echo "Waiting for mysql cluster of train-ticket to be ready ......"
   kubectl rollout status statefulset/${tsMysqlName}-mysql -n $namespace
@@ -103,6 +102,7 @@ function deploy_tt_svc {
 function deploy_tt_dp {
   namespace=$1
   echo "Start to deploy train-ticket deployments."
+  update_tt_dp_cm $nacosRelease $rabbitmqRelease
   kubectl apply -f deployment/kubernetes-manifests/quickstart-k8s/yamls/deploy.yaml -n $namespace > /dev/null
   echo "End deployment Step <3/3>----------------------------------------------------------------------"
 }
@@ -110,6 +110,7 @@ function deploy_tt_dp {
 function deploy_tt_dp_sw {
   namespace=$1
   echo "Start to deploy train-ticket deployments with skywalking agent."
+  update_tt_sw_dp_cm $nacosRelease $rabbitmqRelease
   kubectl apply -f deployment/kubernetes-manifests/quickstart-k8s/yamls/sw_deploy.yaml -n $namespace > /dev/null
   echo "End deployment Step <3/3>----------------------------------------------------------------------"
 }
