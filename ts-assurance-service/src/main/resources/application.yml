@@ -2,13 +2,16 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${NACOS_ADDRS:nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local}
+        server-addr: ${NACOS_ADDRS:10.176.122.80:8848}
+#        server-addr: ${NACOS_ADDRS:nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local}
   application:
     name: ts-assurance-service
   datasource:
-    url: jdbc:mysql://${ASSURANCE_MYSQL_HOST:ts-assurance-mysql}:${ASSURANCE_MYSQL_PORT:3306}/${ASSURANCE_MYSQL_DATABASE:ts-assurance-mysql}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${ASSURANCE_MYSQL_HOST:localhost}:${ASSURANCE_MYSQL_PORT:3306}/${ASSURANCE_MYSQL_DATABASE:ts-assurance-mysql}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+#    url: jdbc:mysql://${ASSURANCE_MYSQL_HOST:ts-assurance-mysql}:${ASSURANCE_MYSQL_PORT:3306}/${ASSURANCE_MYSQL_DATABASE:ts-assurance-mysql}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: ${ASSURANCE_MYSQL_USER:root}
-    password: ${ASSURANCE_MYSQL_PASSWORD:root}
+    password: ${ASSURANCE_MYSQL_PASSWORD:cqq2000929}
+#    password: ${ASSURANCE_MYSQL_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:

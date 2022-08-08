@@ -4,6 +4,10 @@ import edu.fudan.common.entity.TravelInfo;
 import edu.fudan.common.entity.TripAllDetailInfo;
 import edu.fudan.common.entity.TripInfo;
 import edu.fudan.common.entity.TripResponse;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -111,6 +115,13 @@ public class TravelController {
      */
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/trips/left")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "TripInfo",dataType = "TripInfo", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 1, message = "Success Query",response = TripResponse.class,responseContainer = "ArrayList"),
+            @ApiResponse(code = 0, message = "No Content")
+    })
     public HttpEntity queryInfo(@RequestBody TripInfo info, @RequestHeader HttpHeaders headers) {
         if (info.getStartPlace() == null || info.getStartPlace().length() == 0 ||
                 info.getEndPlace() == null || info.getEndPlace().length() == 0 ||

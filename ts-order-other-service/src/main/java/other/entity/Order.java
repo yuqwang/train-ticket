@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.fudan.common.entity.OrderStatus;
 import edu.fudan.common.entity.SeatClass;
 import edu.fudan.common.util.StringUtils;
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
@@ -20,6 +21,7 @@ import java.util.Date;
 @GenericGenerator(name = "jpa-uuid", strategy = "org.hibernate.id.UUIDGenerator")
 @ToString
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ApiModel
 public class Order {
     @Id
     @Column(length = 36)

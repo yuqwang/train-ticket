@@ -2,6 +2,7 @@ package contacts.controller;
 
 import contacts.entity.*;
 import edu.fudan.common.util.Response;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,14 @@ public class ContactsController {
 
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/contacts")
+    @ApiOperation("createNewContacts")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "aci", value = "Contacts",dataType = "Contacts", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "Contacts already exists"),
+            @ApiResponse(code = 1, message = "Create contacts success",response = Contacts.class)
+    })
     public ResponseEntity<Response> createNewContacts(@RequestBody Contacts aci,
                                                       @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[createNewContacts][VerifyLogin Success]");
@@ -71,6 +80,13 @@ public class ContactsController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/contacts/account/{accountId}")
+    @ApiOperation("findContactsByAccountId")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "accountId", value = "accountId",dataType = "String", paramType = "path",required = true,defaultValue = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 1, message = "success",response = Contacts.class,responseContainer = "ArrayList")
+    })
     public HttpEntity findContactsByAccountId(@PathVariable String accountId, @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[findContactsByAccountId][Find Contacts By Account Id][accountId: {}]", accountId);
         ContactsController.LOGGER.info("[ContactsService][VerifyLogin Success]");

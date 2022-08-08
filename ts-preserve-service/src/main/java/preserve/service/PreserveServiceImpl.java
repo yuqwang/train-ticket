@@ -174,7 +174,8 @@ public class PreserveServiceImpl implements PreserveService {
         }
         PreserveServiceImpl.LOGGER.info("[preserve][Step 4][Do Order][Do Order Complete]");
 
-        Response returnResponse = new Response<>(1, "Success.", cor.getMsg());
+        //进行了修改，之前这里是cor.getMsg()但是为什么要在放数据的地方放msg呢？
+        Response returnResponse = new Response<>(1, "Success.", cor.getData());
         //5.Check insurance options
         if (oti.getAssurance() == 0) {
             PreserveServiceImpl.LOGGER.info("[preserve][Step 5][Buy Assurance][Do not need to buy assurance]");

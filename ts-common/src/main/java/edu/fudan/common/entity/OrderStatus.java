@@ -1,8 +1,11 @@
 package edu.fudan.common.entity;
 
+import edu.fudan.common.annotation.SwaggerDisplayEnum;
+
 /**
  * @author fdse
  */
+@SwaggerDisplayEnum(index = "code", name = "name")
 public enum OrderStatus {
 
     /**

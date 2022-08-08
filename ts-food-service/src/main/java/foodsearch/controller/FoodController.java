@@ -4,6 +4,10 @@ import edu.fudan.common.util.JsonUtils;
 import foodsearch.entity.*;
 import foodsearch.mq.RabbitSend;
 import foodsearch.service.FoodService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +91,17 @@ public class FoodController {
 
     // This relies on a lot of other services, not completely modified
     @GetMapping(path = "/foods/{date}/{startStation}/{endStation}/{tripId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "date", value = "date",dataType = "String", paramType = "path",required = true,defaultValue = "1367629200000"),
+            @ApiImplicitParam(name = "startStation", value = "startStation",dataType = "String", paramType = "path",required = true,defaultValue = "Shang Hai"),
+            @ApiImplicitParam(name = "endStation", value = "endStation",dataType = "String", paramType = "path",required = true,defaultValue = "Tai Yuan"),
+            @ApiImplicitParam(name = "tripId", value = "tripId",dataType = "String", paramType = "path",required = true,defaultValue = "G1234")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "Get the Get Food Request Failed!"),
+            @ApiResponse(code = 0, message = "Get All Food Failed",response = AllTripFood.class),
+            @ApiResponse(code = 1, message = "Get All Food Success",response = AllTripFood.class)
+    })
     public HttpEntity getAllFood(@PathVariable String date, @PathVariable String startStation,
                                  @PathVariable String endStation, @PathVariable String tripId,
                                  @RequestHeader HttpHeaders headers) {

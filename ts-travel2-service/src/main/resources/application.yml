@@ -6,13 +6,16 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${NACOS_ADDRS:nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local}
+        server-addr: ${NACOS_ADDRS:10.176.122.80:8848}
+#        server-addr: ${NACOS_ADDRS:nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local}
   application:
     name: ts-travel2-service
   datasource:
-    url: jdbc:mysql://${TRAVEL2_MYSQL_HOST:ts-travel2-mysql}:${TRAVEL2_MYSQL_PORT:3306}/${TRAVEL2_MYSQL_DATABASE:ts-travel2-mysql}?useSSL=false
+    url: jdbc:mysql://${TRAVEL2_MYSQL_HOST:localhost}:${TRAVEL2_MYSQL_PORT:3306}/${TRAVEL2_MYSQL_DATABASE:ts-travel2-mysql}?useSSL=false
+#    url: jdbc:mysql://${TRAVEL2_MYSQL_HOST:ts-travel2-mysql}:${TRAVEL2_MYSQL_PORT:3306}/${TRAVEL2_MYSQL_DATABASE:ts-travel2-mysql}?useSSL=false
     username: ${TRAVEL2_MYSQL_USER:root}
-    password: ${TRAVEL2_MYSQL_PASSWORD:Abcd1234#}
+    password: ${TRAVEL2_MYSQL_PASSWORD:cqq2000929}
+#    password: ${TRAVEL2_MYSQL_PASSWORD:Abcd1234#}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

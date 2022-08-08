@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -19,6 +20,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * @date 2017/5/11.
  */
 @RestController
+@ApiIgnore
 @RequestMapping("api/v1/configservice")
 public class ConfigController {
 

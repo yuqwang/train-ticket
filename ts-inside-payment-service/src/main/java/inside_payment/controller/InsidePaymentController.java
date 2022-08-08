@@ -2,6 +2,10 @@ package inside_payment.controller;
 
 import inside_payment.entity.*;
 import inside_payment.service.InsidePaymentService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +33,13 @@ public class InsidePaymentController {
     }
 
     @PostMapping(value = "/inside_payment")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "PaymentInfo",dataType = "PaymentInfo", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "Error. Order status Not allowed to Pay."),
+            @ApiResponse(code = 1, message = "Payment Success")
+    })
     public HttpEntity pay(@RequestBody PaymentInfo info, @RequestHeader HttpHeaders headers) {
         InsidePaymentController.LOGGER.info("[pay][Inside Payment Service.Pay][Pay for: {}]", info.getOrderId());
         return ok(service.pay(info, headers));

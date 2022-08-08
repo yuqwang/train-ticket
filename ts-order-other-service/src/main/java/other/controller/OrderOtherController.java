@@ -2,6 +2,10 @@ package other.controller;
 
 import edu.fudan.common.entity.Seat;
 import edu.fudan.common.util.StringUtils;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +72,12 @@ public class OrderOtherController {
 
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/orderOther/refresh")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "qi", value = "QueryInfo",dataType = "QueryInfo", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 1, message = "success",response = Order.class,responseContainer = "ArrayList")
+    })
     public HttpEntity queryOrdersForRefresh(@RequestBody QueryInfo qi,
                                             @RequestHeader HttpHeaders headers) {
         OrderOtherController.LOGGER.info("[queryOrdersForRefresh][Query Orders][for LoginId:{}]", qi.getLoginId());
