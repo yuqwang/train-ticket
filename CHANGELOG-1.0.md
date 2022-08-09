@@ -112,7 +112,7 @@ We support prometheus + grafana solution in k8s deployment.
 
 The deployment manifests of prometheus are located at：deployment/kubernetes-manifests/prometheus
 
-**Distributed Tracing: Skywalking+ES Supoort**
+**Distributed Tracing: Skywalking+ES Support**
 
 We support skywalking + es solution in k8s deployment.
 
