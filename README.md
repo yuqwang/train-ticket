@@ -117,14 +117,14 @@ We have released a serverless version of Train Ticket.
 ## Paper Reference
 Bowen Li, Xin Peng, Qilin Xiang, Hanzhang Wang, Tao Xie, Jun Sun, Xuanzhe Liu. <br/>
 **Enjoy your observability: an industrial survey of microservice tracing and analysis**<br/>
-[Empirical Software Engineering](https://www.springer.com/journal/10664/), Volume 27 <br/>
+[Empirical Software Engineering](https://www.springer.com/journal/10664/), Volume 27, 25, 2022.<br/>
 Download:[[PDF](https://link.springer.com/content/pdf/10.1007/s10664-021-10063-9.pdf)]
 
 <br/>
 
 Chenxi Zhang, Xin Peng, Chaofeng Sha, Ke Zhang, Zhenqing Fu, Xiya Wu, Qingwei Lin, Dongmei Zhang<br/>
 **DeepTraLog: Trace-Log Combined Microservice Anomaly Detection through Graph-based Deep Learning**<br/>
-In Proceedings of the 44th International Conference on Software EngineeringMay 2022 ([ICSE 2022](https://dblp.uni-trier.de/db/conf/icse/icse2022.html)) , Pittsburgh, USA, May, 2022.<br/>
+In Proceedings of the 44th International Conference on Software Engineering ([ICSE 2022](https://dblp.uni-trier.de/db/conf/icse/icse2022.html)) , Pittsburgh, USA, May, 2022.<br/>
 Download:[[PDF](https://dl.acm.org/doi/pdf/10.1145/3510003.3510180)]
 
 <br/>
@@ -138,7 +138,7 @@ Download:[[PDF](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9402058
 
 Qilin Xiang, Xin Peng, Chuan He, Hanzhang Wang, Tao Xie, Dewei Liu, Gang Zhang, Yuanfang Cai<br/>
 **No Free Lunch: Microservice Practices Reconsidered in Industry**<br/>
-arXiv preprint arXiv:2106.07321, 2021<br/>
+arXiv preprint arXiv:2106.07321, 2021.<br/>
 Download:[[PDF](https://arxiv.org/pdf/2106.07321.pdf)]
 
 <br/>
