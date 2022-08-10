@@ -124,14 +124,14 @@ Download:[[PDF](https://link.springer.com/content/pdf/10.1007/s10664-021-10063-9
 
 Chenxi Zhang, Xin Peng, Chaofeng Sha, Ke Zhang, Zhenqing Fu, Xiya Wu, Qingwei Lin, Dongmei Zhang<br/>
 **DeepTraLog: Trace-Log Combined Microservice Anomaly Detection through Graph-based Deep Learning**<br/>
-In Proceedings of the 44th International Conference on Software EngineeringMay 2022 ([ICSE 2022](https://dblp.uni-trier.de/db/conf/icse/icse2022.html))<br/>
+In Proceedings of the 44th International Conference on Software EngineeringMay 2022 ([ICSE 2022](https://dblp.uni-trier.de/db/conf/icse/icse2022.html)) , Pittsburgh, USA, May, 2022.<br/>
 Download:[[PDF](https://dl.acm.org/doi/pdf/10.1145/3510003.3510180)]
 
 <br/>
 	
 Dewei Liu, Chuan He, Xin Peng, Fan Lin, Chenxi Zhang, Shengfang Gong, Ziang Li, Jiayu Ou, Zheshun Wu<br/>
 **MicroHECL: High-Efficient Root Cause Localization in Large-Scale Microservice Systems**<br/>
-2021 IEEE/ACM 43rd International Conference on Software Engineering: Software Engineering in Practice ([ICSE-SEIP 2021](https://dblp.uni-trier.de/db/conf/icse/seip2021.html#LiuH0LZGLOW21))<br/>
+2021 IEEE/ACM 43rd International Conference on Software Engineering: Software Engineering in Practice ([ICSE-SEIP 2021](https://dblp.uni-trier.de/db/conf/icse/seip2021.html#LiuH0LZGLOW21)) , Madrid, Spain, May, 2021.<br/>
 Download:[[PDF](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=9402058)]
 
 <br/>
@@ -145,7 +145,7 @@ Download:[[PDF](https://arxiv.org/pdf/2106.07321.pdf)]
 
 Xiaofeng Guo, Xin Peng, Hanzhang Wang, Wanxue Li, Huai Jiang, Dan Ding, Tao Xie, Liangfei Su<br/>
 **Graph-based trace analysis for microservice architecture understanding and problem diagnosis**<br/>
-In Proceedings of the 28th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering ([ESEC/FSE 2020](https://dblp.uni-trier.de/db/conf/sigsoft/fse2020.html))<br/>
+In Proceedings of the 28th ACM Joint Meeting on European Software Engineering Conference and Symposium on the Foundations of Software Engineering ([ESEC/FSE 2020](https://dblp.uni-trier.de/db/conf/sigsoft/fse2020.html)) , Virtual Event, USA, November, 2020.<br/>
 Download:[[PDF](https://dl.acm.org/doi/pdf/10.1145/3368089.3417066)]
 
 <br/>
