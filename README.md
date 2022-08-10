@@ -1,7 +1,7 @@
 
 # Train Ticket：A Benchmark Microservice System
-<img src="./image/logo.png">
-----
+# <img src="./image/logo.png">
+
 
 The project is a train ticket booking system based on microservice architecture which contains 41 microservices. The programming languages and frameworks it used are as below.
 - Java - Spring Boot, Spring Cloud
@@ -91,7 +91,7 @@ In the above, We use pre-built images to quickly deploy the application.
 
 If you want to build the application from source, you can refer to [the Installation Guide](https://github.com/FudanSELab/train-ticket/wiki/Installation-Guide).
 
-## test scripts
+## Test scripts
 Use scripts to test train-ticket: [https://github.com/FudanSELab/train-ticket-auto-query](https://github.com/FudanSELab/train-ticket-auto-query)
 
 ## Screenshot
