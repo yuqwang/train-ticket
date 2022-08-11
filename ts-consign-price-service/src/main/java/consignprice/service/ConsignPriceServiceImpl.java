@@ -61,13 +61,13 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
         ConsignPriceServiceImpl.LOGGER.info("[createAndModifyPrice][Create New Price Config]");
         //update price
         ConsignPrice originalConfig;
-        if (repository.findByIndex(0) != null) {
-            originalConfig = repository.findByIndex(0);
+        int index = config.getIndex();
+        if (repository.findByIndex(index) != null) {
+            originalConfig = repository.findByIndex(index);
         } else {
             originalConfig = new ConsignPrice();
         }
-        originalConfig.setId(config.getId());
-        originalConfig.setIndex(0);
+        originalConfig.setIndex(index);
         originalConfig.setInitialPrice(config.getInitialPrice());
         originalConfig.setInitialWeight(config.getInitialWeight());
         originalConfig.setWithinPrice(config.getWithinPrice());

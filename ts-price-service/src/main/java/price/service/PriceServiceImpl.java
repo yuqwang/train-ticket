@@ -37,7 +37,7 @@ public class PriceServiceImpl implements PriceService {
             priceConfig.setFirstClassPriceRate(createAndModifyPriceConfig.getFirstClassPriceRate());
             priceConfig.setRouteId(createAndModifyPriceConfig.getRouteId());
             priceConfig.setTrainType(createAndModifyPriceConfig.getTrainType());
-            priceConfigRepository.save(priceConfig);
+            return savePriceConfig(priceConfig);
         } else {
             // modify
             Optional<PriceConfig> op = priceConfigRepository.findById(createAndModifyPriceConfig.getId());
@@ -51,9 +51,8 @@ public class PriceServiceImpl implements PriceService {
             priceConfig.setFirstClassPriceRate(createAndModifyPriceConfig.getFirstClassPriceRate());
             priceConfig.setRouteId(createAndModifyPriceConfig.getRouteId());
             priceConfig.setTrainType(createAndModifyPriceConfig.getTrainType());
-            priceConfigRepository.save(priceConfig);
+            return savePriceConfig(priceConfig);
         }
-        return new Response<>(1, "Create success", priceConfig);
     }
 
     @Override
@@ -148,8 +147,17 @@ public class PriceServiceImpl implements PriceService {
             priceConfig.setFirstClassPriceRate(c.getFirstClassPriceRate());
             priceConfig.setRouteId(c.getRouteId());
             priceConfig.setTrainType(c.getTrainType());
-            priceConfigRepository.save(priceConfig);
-            return new Response<>(1, "Update success", priceConfig);
+            return savePriceConfig(priceConfig);
         }
     }
+
+    public Response savePriceConfig(PriceConfig priceConfig){
+        try{
+            priceConfigRepository.save(priceConfig);
+            return new Response<>(1, "Save success", priceConfig);
+        }catch (Exception e){
+            return new Response<>(0, "Save failed: price_config with same route_id and train type existed",  e.getMessage());
+        }
+    }
+
 }
