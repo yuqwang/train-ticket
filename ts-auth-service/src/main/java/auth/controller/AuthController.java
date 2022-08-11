@@ -2,7 +2,11 @@ package auth.controller;
 
 import auth.dto.AuthDto;
 import auth.service.UserService;
+import edu.fudan.common.entity.Contacts;
 import edu.fudan.common.util.Response;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,10 @@ public class AuthController {
     }
 
     @PostMapping
+    @ApiImplicitParam(name = "authDto", value = "AuthDto",dataType = "AuthDto", paramType = "body",required = true)
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "SUCCESS", response = AuthDto.class)
+    })
     public HttpEntity<Response> createDefaultUser(@RequestBody AuthDto authDto) {
         logger.info("[createDefaultUser][Create default auth user with authDto][AuthDto: {}]", authDto.toString());
         userService.createDefaultAuthUser(authDto);

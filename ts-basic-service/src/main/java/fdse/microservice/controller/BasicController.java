@@ -1,7 +1,12 @@
 package fdse.microservice.controller;
 
 import edu.fudan.common.entity.Travel;
+import edu.fudan.common.entity.TravelResult;
 import fdse.microservice.service.BasicService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +25,6 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @RestController
 @RequestMapping("/api/v1/basicservice")
-@ApiIgnore
 public class BasicController {
 
     @Autowired
@@ -34,6 +38,12 @@ public class BasicController {
     }
 
     @PostMapping(value = "/basic/travel")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "Travel",dataType = "Travel", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "[queryForTravel][all done]",response = TravelResult.class)
+    })
     public HttpEntity queryForTravel(@RequestBody Travel info, @RequestHeader HttpHeaders headers) {
         // TravelResult
         logger.info("[queryForTravel][Query for travel][Travel: {}]", info.toString());
@@ -41,6 +51,12 @@ public class BasicController {
     }
 
     @PostMapping(value = "/basic/travels")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "infos", value = "Travel",dataType = "Travel", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = TravelResult.class,responseContainer = "Map<String, TravelResult>")
+    })
     public HttpEntity queryForTravels(@RequestBody List<Travel> infos, @RequestHeader HttpHeaders headers) {
         // TravelResult
         logger.info("[queryForTravels][Query for travels][Travels: {}]", infos);
@@ -48,6 +64,12 @@ public class BasicController {
     }
 
     @GetMapping(value = "/basic/{stationName}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "stationName", value = "stationName",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Query For Station Id",response = String.class)
+    })
     public HttpEntity queryForStationId(@PathVariable String stationName, @RequestHeader HttpHeaders headers) {
         // String id
         logger.info("[queryForStationId][Query for stationId by stationName][stationName: {}]", stationName);

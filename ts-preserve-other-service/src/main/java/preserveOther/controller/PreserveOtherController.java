@@ -39,7 +39,7 @@ public class PreserveOtherController {
             @ApiImplicitParam(name = "oti", value = "OrderTicketsInfo",dataType = "OrderTicketsInfo", paramType = "body",required = true)
     })
     @ApiResponses({
-            @ApiResponse(code = 1, message = "Success.",response = Order.class)
+            @ApiResponse(code = 200, message = "Success.",response = Order.class)
     })
     public HttpEntity preserve(@RequestBody OrderTicketsInfo oti,
                                @RequestHeader HttpHeaders headers) {

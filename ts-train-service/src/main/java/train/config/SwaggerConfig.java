@@ -1,4 +1,4 @@
-package auth.config;
+package train.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
-//@EnableSwagger2
 public class SwaggerConfig {
     @Value("${swagger.controllerPackage}")
     private String controllerPackagePath;
@@ -23,7 +22,7 @@ public class SwaggerConfig {
     @Bean
     public Docket createRestApi() {
         SwaggerConfig.LOGGER.info("====-- {}", controllerPackagePath);
-        return new Docket( DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 //是否开启 (true 开启  false隐藏。生产环境建议隐藏)
                 //.enable(false)
@@ -32,7 +31,6 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage(controllerPackagePath))
                 //指定路径处理PathSelectors.any()代表所有的路径
                 .paths(PathSelectors.any())
-//                .paths(PathSelectors.ant("/api/v1/users/login"))
                 .build();
 
     }

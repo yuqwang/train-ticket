@@ -1,5 +1,6 @@
 package fdse.microservice.controller;
 
+import edu.fudan.common.entity.TravelResult;
 import edu.fudan.common.util.Response;
 import fdse.microservice.entity.*;
 import fdse.microservice.service.StationService;
@@ -35,23 +36,44 @@ public class StationController {
     }
 
     @GetMapping(value = "/stations")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Station.class,responseContainer = "List")
+    })
     public HttpEntity query(@RequestHeader HttpHeaders headers) {
         return ok(stationService.query(headers));
     }
 
     @PostMapping(value = "/stations")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "station", value = "Station",dataType = "Station", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Station.class)
+    })
     public ResponseEntity<Response> create(@RequestBody Station station, @RequestHeader HttpHeaders headers) {
         StationController.LOGGER.info("[create][Create station][name: {}]",station.getName());
         return new ResponseEntity<>(stationService.create(station, headers), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/stations")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "station", value = "Station",dataType = "Station", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Station.class)
+    })
     public HttpEntity update(@RequestBody Station station, @RequestHeader HttpHeaders headers) {
         StationController.LOGGER.info("[update][Update station][StationId: {}]",station.getId());
         return ok(stationService.update(station, headers));
     }
 
     @DeleteMapping(value = "/stations/{stationsId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "stationsId", value = "stationsId",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Station.class)
+    })
     public ResponseEntity<Response> delete(@PathVariable String stationsId, @RequestHeader HttpHeaders headers) {
         StationController.LOGGER.info("[delete][Delete station][StationId: {}]",stationsId);
         return ok(stationService.delete(stationsId, headers));

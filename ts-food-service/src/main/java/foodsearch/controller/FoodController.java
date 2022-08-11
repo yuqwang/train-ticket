@@ -1,5 +1,6 @@
 package foodsearch.controller;
 
+import edu.fudan.common.entity.TravelResult;
 import edu.fudan.common.util.JsonUtils;
 import foodsearch.entity.*;
 import foodsearch.mq.RabbitSend;
@@ -52,18 +53,33 @@ public class FoodController {
     }
 
     @GetMapping(path = "/orders")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = FoodOrder.class,responseContainer = "List")
+    })
     public HttpEntity findAllFoodOrder(@RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[Food Service]Try to Find all FoodOrder!");
         return ok(foodService.findAllFoodOrder(headers));
     }
 
     @PostMapping(path = "/orders")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "addFoodOrder", value = "FoodOrder",dataType = "FoodOrder", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = FoodOrder.class)
+    })
     public HttpEntity createFoodOrder(@RequestBody FoodOrder addFoodOrder, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[createFoodOrder][Try to Create a FoodOrder!]");
         return ok(foodService.createFoodOrder(addFoodOrder, headers));
     }
 
     @PostMapping(path = "/createOrderBatch")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "addFoodOrder", value = "FoodOrder",dataType = "FoodOrder", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success")
+    })
     public HttpEntity createFoodBatches(@RequestBody List<FoodOrder> foodOrderList, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[createFoodBatches][Try to Create Food Batches!]");
         return ok(foodService.createFoodOrdersInBatch(foodOrderList, headers));
@@ -71,6 +87,12 @@ public class FoodController {
 
 
     @PutMapping(path = "/orders")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "updateFoodOrder", value = "FoodOrder",dataType = "FoodOrder", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = FoodOrder.class)
+    })
     public HttpEntity updateFoodOrder(@RequestBody FoodOrder updateFoodOrder, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[updateFoodOrder][Try to Update a FoodOrder!]");
         return ok(foodService.updateFoodOrder(updateFoodOrder, headers));
@@ -78,12 +100,24 @@ public class FoodController {
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping(path = "/orders/{orderId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "orderId",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success")
+    })
     public HttpEntity deleteFoodOrder(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[deleteFoodOrder][Try to Cancel a FoodOrder!]");
         return ok(foodService.deleteFoodOrder(orderId, headers));
     }
 
     @GetMapping(path = "/orders/{orderId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "orderId", value = "orderId",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success",response = FoodOrder.class)
+    })
     public HttpEntity findFoodOrderByOrderId(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[findFoodOrderByOrderId][Try to Find FoodOrder By orderId!][orderId: {}]", orderId);
         return ok(foodService.findByOrderId(orderId, headers));
@@ -100,7 +134,7 @@ public class FoodController {
     @ApiResponses({
             @ApiResponse(code = 0, message = "Get the Get Food Request Failed!"),
             @ApiResponse(code = 0, message = "Get All Food Failed",response = AllTripFood.class),
-            @ApiResponse(code = 1, message = "Get All Food Success",response = AllTripFood.class)
+            @ApiResponse(code = 200, message = "Get All Food Success",response = AllTripFood.class)
     })
     public HttpEntity getAllFood(@PathVariable String date, @PathVariable String startStation,
                                  @PathVariable String endStation, @PathVariable String tripId,

@@ -6,13 +6,16 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: ${NACOS_ADDRS:nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local}
+        server-addr: ${NACOS_ADDRS:10.176.122.80:8848}
+#        server-addr: ${NACOS_ADDRS:nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local}
   application:
     name: ts-payment-service
   datasource:
-    url: jdbc:mysql://${PAYMENT_MYSQL_HOST:ts-payment-mysql}:${PAYMENT_MYSQL_PORT:3306}/${PAYMENT_MYSQL_DATABASE:ts-payment-mysql}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${PAYMENT_MYSQL_HOST:localhost}:${PAYMENT_MYSQL_PORT:3306}/${PAYMENT_MYSQL_DATABASE:ts-payment-mysql}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+#    url: jdbc:mysql://${PAYMENT_MYSQL_HOST:ts-payment-mysql}:${PAYMENT_MYSQL_PORT:3306}/${PAYMENT_MYSQL_DATABASE:ts-payment-mysql}?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: ${PAYMENT_MYSQL_USER:root}
-    password: ${PAYMENT_MYSQL_PASSWORD:Abcd1234#}
+    password: ${ASSURANCE_MYSQL_PASSWORD:cqq2000929}
+#    password: ${PAYMENT_MYSQL_PASSWORD:Abcd1234#}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 

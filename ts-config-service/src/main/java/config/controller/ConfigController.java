@@ -2,6 +2,11 @@ package config.controller;
 
 import config.entity.Config;
 import config.service.ConfigService;
+import edu.fudan.common.entity.TravelResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +25,6 @@ import static org.springframework.http.ResponseEntity.ok;
  * @date 2017/5/11.
  */
 @RestController
-@ApiIgnore
 @RequestMapping("api/v1/configservice")
 public class ConfigController {
 
@@ -36,6 +40,9 @@ public class ConfigController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/configs")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Find all  config success",response = Config.class,responseContainer = "List")
+    })
     public HttpEntity queryAll(@RequestHeader HttpHeaders headers) {
         logger.info("[queryAll][Query all configs]");
         return ok(configService.queryAll(headers));
@@ -43,6 +50,12 @@ public class ConfigController {
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/configs")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "Config",dataType = "Config", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Create success",response = Config.class)
+    })
     public HttpEntity<?> createConfig(@RequestBody Config info, @RequestHeader HttpHeaders headers) {
         logger.info("[createConfig][Create config][Config name: {}]", info.getName());
         return new ResponseEntity<>(configService.create(info, headers), HttpStatus.CREATED);
@@ -50,6 +63,12 @@ public class ConfigController {
 
     @CrossOrigin(origins = "*")
     @PutMapping(value = "/configs")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "Config",dataType = "Config", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Update success",response = Config.class)
+    })
     public HttpEntity updateConfig(@RequestBody Config info, @RequestHeader HttpHeaders headers) {
         logger.info("[updateConfig][Update config][Config name: {}]", info.getName());
         return ok(configService.update(info, headers));
@@ -58,6 +77,12 @@ public class ConfigController {
 
     @CrossOrigin(origins = "*")
     @DeleteMapping(value = "/configs/{configName}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "configName", value = "configName",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Delete success",response = Config.class)
+    })
     public HttpEntity deleteConfig(@PathVariable String configName, @RequestHeader HttpHeaders headers) {
         logger.info("[deleteConfig][Delete config][configName: {}]", configName);
         return ok(configService.delete(configName, headers));
@@ -65,6 +90,12 @@ public class ConfigController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/configs/{configName}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "configName", value = "configName",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Config.class)
+    })
     public HttpEntity retrieve(@PathVariable String configName, @RequestHeader HttpHeaders headers) {
         logger.info("[retrieve][Retrieve config][configName: {}]", configName);
         return ok(configService.query(configName, headers));

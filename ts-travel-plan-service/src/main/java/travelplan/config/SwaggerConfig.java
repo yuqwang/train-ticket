@@ -1,4 +1,4 @@
-package auth.config;
+package travelplan.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +25,12 @@ public class SwaggerConfig {
         SwaggerConfig.LOGGER.info("====-- {}", controllerPackagePath);
         return new Docket( DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+//                .pathProvider(new RelativePathProvider() {
+//                    @Override
+//                    public String getApplicationBasePath() {
+//                        return "/test"+ super.getApplicationBasePath();
+//                    }
+//                })
                 //是否开启 (true 开启  false隐藏。生产环境建议隐藏)
                 //.enable(false)
                 .select()
@@ -32,7 +38,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage(controllerPackagePath))
                 //指定路径处理PathSelectors.any()代表所有的路径
                 .paths(PathSelectors.any())
-//                .paths(PathSelectors.ant("/api/v1/users/login"))
+//                .paths(PathSelectors.ant("/api/v1/travel2service/trips/left"))
                 .build();
 
     }

@@ -36,7 +36,7 @@ public class AdminUserController {
     @GetMapping
     @ApiResponses({
             @ApiResponse(code = 0, message = "get all users error"),
-            @ApiResponse(code = 1, message = "Success",response = User.class,responseContainer = "List"),
+            @ApiResponse(code = 200, message = "Success",response = User.class,responseContainer = "List"),
             @ApiResponse(code = 0, message = "NO User")
     })
     public HttpEntity getAllUsers(@RequestHeader HttpHeaders headers) {
@@ -50,7 +50,7 @@ public class AdminUserController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "Update user error"),
-            @ApiResponse(code = 1, message = "SAVE USER SUCCESS",response = User.class),
+            @ApiResponse(code = 200, message = "SAVE USER SUCCESS",response = User.class),
             @ApiResponse(code = 0, message = "USER NOT EXISTS")
     })
     public HttpEntity updateUser(@RequestBody UserDto userDto, @RequestHeader HttpHeaders headers) {
@@ -65,7 +65,7 @@ public class AdminUserController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "Add user error"),
-            @ApiResponse(code = 1, message = "REGISTER USER SUCCESS",response = User.class),
+            @ApiResponse(code = 200, message = "REGISTER USER SUCCESS",response = User.class),
             @ApiResponse(code = 0, message = "USER HAS ALREADY EXISTS")
     })
     public HttpEntity addUser(@RequestBody UserDto userDto, @RequestHeader HttpHeaders headers) {
@@ -79,7 +79,7 @@ public class AdminUserController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "delete user error"),
-            @ApiResponse(code = 1, message = "DELETE SUCCESS"),
+            @ApiResponse(code = 200, message = "DELETE SUCCESS"),
             @ApiResponse(code = 0, message = "USER NOT EXISTS")
     })
     public HttpEntity deleteUser(@PathVariable String userId, @RequestHeader HttpHeaders headers) {

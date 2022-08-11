@@ -1,5 +1,8 @@
 package travel2.controller;
 
+import edu.fudan.common.entity.Route;
+import edu.fudan.common.entity.TrainType;
+import edu.fudan.common.entity.TravelResult;
 import edu.fudan.common.entity.TripResponse;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -13,6 +16,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import travel2.entity.Trip;
+import travel2.entity.TripAllDetail;
 import travel2.service.TravelService;
 
 import java.util.ArrayList;
@@ -37,6 +42,12 @@ public class Travel2Controller {
     }
 
     @GetMapping(value = "/train_types/{tripId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tripId", value = "tripId",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = TrainType.class)
+    })
     public HttpEntity getTrainTypeByTripId(@PathVariable String tripId,
                                            @RequestHeader HttpHeaders headers) {
         // TrainType
@@ -45,6 +56,12 @@ public class Travel2Controller {
     }
 
     @GetMapping(value = "/routes/{tripId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tripId", value = "tripId",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Route.class)
+    })
     public HttpEntity getRouteByTripId(@PathVariable String tripId,
                                        @RequestHeader HttpHeaders headers) {
         Travel2Controller.LOGGER.info("[getRouteByTripId][Get Route By Trip ID][TripId: {}]", tripId);
@@ -53,6 +70,12 @@ public class Travel2Controller {
     }
 
     @PostMapping(value = "/trips/routes")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "routeIds", value = "routeIds",dataType = "String", paramType = "body",allowMultiple = true,required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Trip.class,responseContainer = "ArrayList")
+    })
     public HttpEntity getTripsByRouteId(@RequestBody ArrayList<String> routeIds,
                                         @RequestHeader HttpHeaders headers) {
         // ArrayList<ArrayList<Trip>>
@@ -62,6 +85,12 @@ public class Travel2Controller {
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/trips")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "routeIds", value = "routeIds",dataType = "TravelInfo", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success")
+    })
     public HttpEntity<?> createTrip(@RequestBody edu.fudan.common.entity.TravelInfo routeIds, @RequestHeader HttpHeaders headers) {
         // null
         Travel2Controller.LOGGER.info("[create][Create trip][TripId: {}]", routeIds.getTripId());
@@ -77,6 +106,12 @@ public class Travel2Controller {
      */
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/trips/{tripId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tripId", value = "tripId",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Trip.class)
+    })
     public HttpEntity retrieve(@PathVariable String tripId, @RequestHeader HttpHeaders headers) {
         // Trip
         Travel2Controller.LOGGER.info("[retrieve][Retrieve trip][TripId: {}]",tripId);
@@ -85,6 +120,12 @@ public class Travel2Controller {
 
     @CrossOrigin(origins = "*")
     @PutMapping(value = "/trips")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "info",dataType = "TravelInfo", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Trip.class)
+    })
     public HttpEntity updateTrip(@RequestBody edu.fudan.common.entity.TravelInfo info, @RequestHeader HttpHeaders headers) {
         // Trip
         Travel2Controller.LOGGER.info("[update][Update trip][TripId: {}]",info.getTripId());
@@ -93,6 +134,12 @@ public class Travel2Controller {
 
     @CrossOrigin(origins = "*")
     @DeleteMapping(value = "/trips/{tripId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "tripId", value = "tripId",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = String.class)
+    })
     public HttpEntity deleteTrip(@PathVariable String tripId, @RequestHeader HttpHeaders headers) {
         // string
         Travel2Controller.LOGGER.info("[delete][Delete trip][TripId: {}]",tripId);
@@ -112,7 +159,7 @@ public class Travel2Controller {
             @ApiImplicitParam(name = "info", value = "TripInfo",dataType = "TripInfo", paramType = "body",required = true)
     })
     @ApiResponses({
-            @ApiResponse(code = 1, message = "Success Query",response = TripResponse.class,responseContainer = "ArrayList"),
+            @ApiResponse(code = 200, message = "Success Query",response = TripResponse.class,responseContainer = "ArrayList"),
             @ApiResponse(code = 0, message = "No Content")
     })
     public HttpEntity queryInfo(@RequestBody edu.fudan.common.entity.TripInfo info, @RequestHeader HttpHeaders headers) {
@@ -136,6 +183,12 @@ public class Travel2Controller {
      */
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/trip_detail")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "gtdi", value = "TripAllDetailInfo",dataType = "TripAllDetailInfo", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = TripAllDetail.class)
+    })
     public HttpEntity getTripAllDetailInfo(@RequestBody edu.fudan.common.entity.TripAllDetailInfo gtdi, @RequestHeader HttpHeaders headers) {
         Travel2Controller.LOGGER.info("[getTripAllDetailInfo][Get trip detail][TripId: {}]",gtdi.getTripId());
         return ok(service.getTripAllDetailInfo(gtdi, headers));
@@ -143,6 +196,9 @@ public class Travel2Controller {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/trips")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Trip.class,responseContainer = "List")
+    })
     public HttpEntity queryAll(@RequestHeader HttpHeaders headers) {
         // List<Trip>
         Travel2Controller.LOGGER.info("[queryAll][Query all trips]");
@@ -151,6 +207,9 @@ public class Travel2Controller {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/admin_trip")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = Trip.class,responseContainer = "List")
+    })
     public HttpEntity adminQueryAll(@RequestHeader HttpHeaders headers) {
         // ArrayList<AdminTrip>
         Travel2Controller.LOGGER.info("[adminQueryAll][Admin query all trips]");

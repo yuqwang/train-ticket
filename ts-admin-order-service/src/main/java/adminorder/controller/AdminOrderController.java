@@ -34,7 +34,7 @@ public class AdminOrderController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/adminorder")
-    @ApiResponse(code = 1, message = "Get the orders successfully!",response = Order.class,responseContainer = "ArrayList")
+    @ApiResponse(code = 200, message = "Get the orders successfully!",response = Order.class,responseContainer = "ArrayList")
     public HttpEntity getAllOrders(@RequestHeader HttpHeaders headers) {
         logger.info("[getAllOrders][Get all orders][getAllOrders]");
         return ok(adminOrderService.getAllOrders(headers));
@@ -46,7 +46,7 @@ public class AdminOrderController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "Order already exist"),
-            @ApiResponse(code = 1, message = "Add new Order Success", response = Order.class)
+            @ApiResponse(code = 200, message = "Add new Order Success", response = Order.class)
     })
     public HttpEntity addOrder(@RequestBody Order request, @RequestHeader HttpHeaders headers) {
         logger.info("[addOrder][Add new order][AccountID: {}]", request.getAccountId());
@@ -59,7 +59,7 @@ public class AdminOrderController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "Order Not Found, Can't update"),
-            @ApiResponse(code = 1, message = "Admin Update Order Success",response = Order.class)
+            @ApiResponse(code = 200, message = "Admin Update Order Success",response = Order.class)
     })
     public HttpEntity updateOrder(@RequestBody Order request, @RequestHeader HttpHeaders headers) {
         logger.info("[updateOrder][Update order][AccountID: {}, OrderId: {}]", request.getAccountId(), request.getId());
@@ -73,7 +73,7 @@ public class AdminOrderController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "Order Not Exist."),
-            @ApiResponse(code = 1, message = "Delete Order Success",response = Order.class)
+            @ApiResponse(code = 200, message = "Delete Order Success",response = Order.class)
     })
     public HttpEntity deleteOrder(@PathVariable String orderId, @PathVariable String trainNumber, @RequestHeader HttpHeaders headers) {
         logger.info("[deleteOrder][Delete order][OrderId: {}, TrainNumber: {}]", orderId, trainNumber);

@@ -1,6 +1,11 @@
 package train.controller;
 
+import edu.fudan.common.entity.TravelResult;
 import edu.fudan.common.util.Response;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +37,13 @@ public class TrainController {
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/trains")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "trainType", value = "TrainType",dataType = "TrainType", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 400, message = "train type already exist",response = TrainType.class),
+            @ApiResponse(code = 200, message = "create success")
+    })
     public HttpEntity create(@RequestBody TrainType trainType, @RequestHeader HttpHeaders headers) {
         TrainController.LOGGER.info("[create][Create train][TrainTypeId: {}]",trainType.getId());
         boolean isCreateSuccess = trainService.create(trainType, headers);
@@ -44,6 +56,12 @@ public class TrainController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/trains/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success",response = TrainType.class)
+    })
     public HttpEntity retrieve(@PathVariable String id, @RequestHeader HttpHeaders headers) {
         TrainController.LOGGER.info("[retrieve][Retrieve train][TrainTypeId: {}]",id);
         TrainType trainType = trainService.retrieve(id, headers);
@@ -56,6 +74,12 @@ public class TrainController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/trains/byName/{name}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "name",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success",response = TrainType.class)
+    })
     public HttpEntity retrieveByName(@PathVariable String name, @RequestHeader HttpHeaders headers) {
         TrainController.LOGGER.info("[retrieveByName][Retrieve train][TrainTypeName: {}]", name);
         TrainType trainType = trainService.retrieveByName(name, headers);
@@ -68,6 +92,13 @@ public class TrainController {
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/trains/byNames")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "names", value = "names",dataType = "String", allowMultiple = true,paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 400, message = "train type already exist",response = TrainType.class),
+            @ApiResponse(code = 200, message = "create success")
+    })
     public HttpEntity retrieveByName(@RequestBody List<String> names, @RequestHeader HttpHeaders headers) {
         TrainController.LOGGER.info("[retrieveByNames][Retrieve train][TrainTypeNames: {}]", names);
         List<TrainType> trainTypes = trainService.retrieveByNames(names, headers);
@@ -80,6 +111,12 @@ public class TrainController {
 
     @CrossOrigin(origins = "*")
     @PutMapping(value = "/trains")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "trainType", value = "TrainType",dataType = "TrainType", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "update success",response = boolean.class)
+    })
     public HttpEntity update(@RequestBody TrainType trainType, @RequestHeader HttpHeaders headers) {
         TrainController.LOGGER.info("[update][Update train][TrainTypeId: {}]",trainType.getId());
         boolean isUpdateSuccess = trainService.update(trainType, headers);
@@ -92,6 +129,12 @@ public class TrainController {
 
     @CrossOrigin(origins = "*")
     @DeleteMapping(value = "/trains/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success",response = boolean.class)
+    })
     public HttpEntity delete(@PathVariable String id, @RequestHeader HttpHeaders headers) {
         TrainController.LOGGER.info("[delete][Delete train][TrainTypeId: {}]",id);
         boolean isDeleteSuccess = trainService.delete(id, headers);
@@ -104,6 +147,9 @@ public class TrainController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/trains")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success",response = TrainType.class,responseContainer = "List")
+    })
     public HttpEntity query(@RequestHeader HttpHeaders headers) {
         TrainController.LOGGER.info("[query][Query train]");
         List<TrainType> trainTypes = trainService.query(headers);

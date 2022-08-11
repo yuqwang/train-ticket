@@ -39,8 +39,7 @@ public class CancelController {
             @ApiImplicitParam(name = "orderId", value = "orderId",dataType = "String", paramType = "path",required = true,defaultValue = "fa9bd99c-2f28-45a9-9d87-7630caaccc6a")
     })
     @ApiResponses({
-            @ApiResponse(code = 1, message = "Success. Refoud 0"),
-            @ApiResponse(code = 1, message = "Success. ",response = String.class),
+            @ApiResponse(code = 200, message = "Success. ",response = String.class),
             @ApiResponse(code = 0, message = "Order Status Cancel Not Permitted, Refound error")
     })
     public HttpEntity calculate(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
@@ -55,7 +54,7 @@ public class CancelController {
             @ApiImplicitParam(name = "loginId", value = "loginId",dataType = "String", paramType = "path",required = true,defaultValue = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f")
     })
     @ApiResponses({
-            @ApiResponse(code = 1, message = "Success."),
+            @ApiResponse(code = 200, message = "Success."),
             @ApiResponse(code = 0,message = "Order Status Cancel Not Permitted")
     })
     public HttpEntity cancelTicket(@PathVariable String orderId, @PathVariable String loginId,

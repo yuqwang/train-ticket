@@ -1,4 +1,4 @@
-package auth.config;
+package consignprice.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
-//@EnableSwagger2
 public class SwaggerConfig {
     @Value("${swagger.controllerPackage}")
     private String controllerPackagePath;
@@ -32,7 +31,6 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage(controllerPackagePath))
                 //指定路径处理PathSelectors.any()代表所有的路径
                 .paths(PathSelectors.any())
-//                .paths(PathSelectors.ant("/api/v1/users/login"))
                 .build();
 
     }

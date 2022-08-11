@@ -36,7 +36,7 @@ public class AdminRouteController {
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/adminroute")
     @ApiResponses({
-            @ApiResponse(code = 1, message = "Success",response = Route.class,responseContainer = "ArrayList"),
+            @ApiResponse(code = 200, message = "Success",response = Route.class,responseContainer = "ArrayList"),
             @ApiResponse(code = 0, message = "No Content")
     })
     public HttpEntity getAllRoutes(@RequestHeader HttpHeaders headers) {
@@ -50,8 +50,7 @@ public class AdminRouteController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "Station Number Not Equal To Distance Number"),
-            @ApiResponse(code = 1, message = "Save Success", response = Route.class),
-            @ApiResponse(code = 1, message = "Modify success", response = Route.class)
+            @ApiResponse(code = 200, message = "Save Success", response = Route.class)
     })
     public HttpEntity addRoute(@RequestBody RouteInfo request, @RequestHeader HttpHeaders headers) {
         logger.info("[addRoute][Create and modify route][route id: {}, from station {} to station {}]",
@@ -64,7 +63,7 @@ public class AdminRouteController {
             @ApiImplicitParam(name = "routeId", value = "routeId",dataType = "String", paramType = "path",required = true,defaultValue = "0b23bd3e-876a-4af3-b920-c50a90c90b04")
     })
     @ApiResponses({
-            @ApiResponse(code = 1, message = "Delete Success", response = String.class),
+            @ApiResponse(code = 200, message = "Delete Success", response = String.class),
             @ApiResponse(code = 0, message = "Delete failed, Reason unKnown with this routeId", response = String.class)
     })
     public HttpEntity deleteRoute(@PathVariable String routeId, @RequestHeader HttpHeaders headers) {

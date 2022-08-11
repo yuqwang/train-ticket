@@ -1,5 +1,11 @@
 package plan.controller;
 
+import edu.fudan.common.entity.RoutePlanResultUnit;
+import edu.fudan.common.entity.TravelResult;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +34,36 @@ public class RoutePlanController {
     }
 
     @PostMapping(value = "/routePlan/cheapestRoute")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "RoutePlanInfo",dataType = "RoutePlanInfo", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = RoutePlanResultUnit.class,responseContainer = "ArrayList")
+    })
     public HttpEntity getCheapestRoutes(@RequestBody RoutePlanInfo info, @RequestHeader HttpHeaders headers) {
         RoutePlanController.LOGGER.info("[searchCheapestResult][Get Cheapest Routes][From: {}, To: {}, Num: {}, Date: {}]", info.getStartStation(), info.getEndStation(), + info.getNum(), info.getTravelDate());
         return ok(routePlanService.searchCheapestResult(info, headers));
     }
 
     @PostMapping(value = "/routePlan/quickestRoute")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "RoutePlanInfo",dataType = "RoutePlanInfo", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = RoutePlanResultUnit.class,responseContainer = "ArrayList")
+    })
     public HttpEntity getQuickestRoutes(@RequestBody RoutePlanInfo info, @RequestHeader HttpHeaders headers) {
         RoutePlanController.LOGGER.info("[searchQuickestResult][Get Quickest Routes][From: {}, To: {}, Num: {}, Date: {}]", info.getStartStation(), info.getEndStation(), info.getNum(), info.getTravelDate());
         return ok(routePlanService.searchQuickestResult(info, headers));
     }
 
     @PostMapping(value = "/routePlan/minStopStations")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "RoutePlanInfo",dataType = "RoutePlanInfo", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success",response = RoutePlanResultUnit.class,responseContainer = "ArrayList")
+    })
     public HttpEntity getMinStopStations(@RequestBody RoutePlanInfo info, @RequestHeader HttpHeaders headers) {
         RoutePlanController.LOGGER.info("[searchMinStopStations][Get Min Stop Stations][From: {}, To: {}, Num: {}, Date: {}]", info.getStartStation(), info.getEndStation(), info.getNum(), info.getTravelDate());
         return ok(routePlanService.searchMinStopStations(info, headers));

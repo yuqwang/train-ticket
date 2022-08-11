@@ -37,8 +37,8 @@ public class SwaggerConfig {
                 //扫描的路径包,设置basePackage会将包下的所有被@Api标记类的所有方法作为api
                 .apis(RequestHandlerSelectors.basePackage(controllerPackagePath))
                 //指定路径处理PathSelectors.any()代表所有的路径
-//                .paths(PathSelectors.any())
-                .paths(PathSelectors.ant("/api/v1/rebookservice/rebook"))
+                .paths(PathSelectors.any())
+//                .paths(PathSelectors.ant("/api/v1/rebookservice/rebook"))
                 .build();
 
     }

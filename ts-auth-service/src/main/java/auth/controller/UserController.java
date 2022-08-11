@@ -64,12 +64,21 @@ public class UserController {
     }
 
     @GetMapping
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Get all users",response = User.class,responseContainer = "List")
+    })
     public ResponseEntity<List<User>> getAllUser(@RequestHeader HttpHeaders headers) {
         logger.info("[getAllUser][Get all users]");
         return ResponseEntity.ok().body(userService.getAllUser(headers));
     }
 
     @DeleteMapping("/{userId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userId", value = "userId",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "DELETE USER SUCCESS")
+    })
     public ResponseEntity<Response> deleteUserById(@PathVariable String userId, @RequestHeader HttpHeaders headers) {
         logger.info("[deleteUserById][Delete user][userId: {}]", userId);
         return ResponseEntity.ok(userService.deleteByUserId(userId, headers));

@@ -35,7 +35,7 @@ public class AdminTravelController {
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/admintravel")
     @ApiResponses({
-            @ApiResponse(code = 1, message = "success",response = AdminTrip.class,responseContainer = "ArrayList"),
+            @ApiResponse(code = 200, message = "success",response = AdminTrip.class,responseContainer = "ArrayList"),
             @ApiResponse(code = 0, message = "No Content")
     })
     public HttpEntity getAllTravels(@RequestHeader HttpHeaders headers) {
@@ -48,7 +48,7 @@ public class AdminTravelController {
             @ApiImplicitParam(name = "request", value = "TravelInfo",dataType = "TravelInfo", paramType = "body",required = true)
     })
     @ApiResponses({
-            @ApiResponse(code = 1, message = "[Admin add new travel]"),
+            @ApiResponse(code = 200, message = "[Admin add new travel]"),
             @ApiResponse(code = 0, message = "Admin add new travel failed")
     })
     public HttpEntity addTravel(@RequestBody TravelInfo request, @RequestHeader HttpHeaders headers) {
@@ -63,8 +63,7 @@ public class AdminTravelController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "Admin update travel failed"),
-            @ApiResponse(code = 1, message = "Create trip."),
-            @ApiResponse(code = 1, message = "Trip already exists")
+            @ApiResponse(code = 200, message = "Create trip.")
     })
     public HttpEntity updateTravel(@RequestBody TravelInfo request, @RequestHeader HttpHeaders headers) {
         logger.info("[updateTravel][Update travel][trip id: {}, train type id: {}, form station {} to station {}, login id: {}]",
@@ -78,7 +77,7 @@ public class AdminTravelController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "Admin delete travel failed"),
-            @ApiResponse(code = 1, message = "Delete trip.",response = String.class),
+            @ApiResponse(code = 200, message = "Delete trip.",response = String.class),
             @ApiResponse(code = 0, message = "Trip doesn't exist.",response = String.class)
     })
     public HttpEntity deleteTravel(@PathVariable String tripId, @RequestHeader HttpHeaders headers) {

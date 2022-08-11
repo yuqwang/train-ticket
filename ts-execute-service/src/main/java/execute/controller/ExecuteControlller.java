@@ -33,7 +33,7 @@ public class ExecuteControlller {
     @GetMapping(path = "/execute/execute/{orderId}")
     @ApiResponses({
             @ApiResponse(code = 0,message = "Order Status Wrong"),
-            @ApiResponse(code = 1, message = "Success.")
+            @ApiResponse(code = 200, message = "Success.")
     })
     public HttpEntity executeTicket(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         ExecuteControlller.LOGGER.info("[executeTicket][Execute][Id: {}]", orderId);
@@ -45,7 +45,7 @@ public class ExecuteControlller {
     @GetMapping(path = "/execute/collected/{orderId}")
     @ApiResponses({
             @ApiResponse(code = 0,message = "Order Status Wrong"),
-            @ApiResponse(code = 1, message = "Success.")
+            @ApiResponse(code = 200, message = "Success.")
     })
     public HttpEntity collectTicket(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         ExecuteControlller.LOGGER.info("[collectTicket][Collect][Id: {}]", orderId);

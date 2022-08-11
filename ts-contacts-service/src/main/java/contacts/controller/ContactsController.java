@@ -34,6 +34,9 @@ public class ContactsController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/contacts")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Create contacts success",response = Contacts.class,responseContainer = "ArrayList")
+    })
     public HttpEntity getAllContacts(@RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[getAllContacts][Get All Contacts]");
         return ok(contactsService.getAllContacts(headers));
@@ -47,7 +50,7 @@ public class ContactsController {
     })
     @ApiResponses({
             @ApiResponse(code = 0, message = "Contacts already exists"),
-            @ApiResponse(code = 1, message = "Create contacts success",response = Contacts.class)
+            @ApiResponse(code = 200, message = "Create contacts success",response = Contacts.class)
     })
     public ResponseEntity<Response> createNewContacts(@RequestBody Contacts aci,
                                                       @RequestHeader HttpHeaders headers) {
@@ -57,6 +60,13 @@ public class ContactsController {
 
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/contacts/admin")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "aci", value = "Contacts",dataType = "Contacts", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "Contacts already exists"),
+            @ApiResponse(code = 200, message = "Create contacts success",response = Contacts.class)
+    })
     public HttpEntity<?> createNewContactsAdmin(@RequestBody Contacts aci, @RequestHeader HttpHeaders headers) {
         aci.setId(UUID.randomUUID().toString());
         ContactsController.LOGGER.info("[createNewContactsAdmin][Create Contacts In Admin]");
@@ -66,6 +76,12 @@ public class ContactsController {
 
     @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/contacts/{contactsId}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "contactsId", value = "contactsId",dataType = "String", paramType = "path",required = true),
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Delete success",response = String.class)
+    })
     public HttpEntity deleteContacts(@PathVariable String contactsId, @RequestHeader HttpHeaders headers) {
         return ok(contactsService.delete(contactsId, headers));
     }
@@ -73,6 +89,13 @@ public class ContactsController {
 
     @CrossOrigin(origins = "*")
     @PutMapping(path = "/contacts")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "info", value = "Contacts",dataType = "Contacts", paramType = "body",required = true)
+    })
+    @ApiResponses({
+            @ApiResponse(code = 0, message = "Contacts already exists"),
+            @ApiResponse(code = 200, message = "Modify success",response = Contacts.class)
+    })
     public HttpEntity modifyContacts(@RequestBody Contacts info, @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[Contacts modifyContacts][Modify Contacts] ContactsId: {}", info.getId());
         return ok(contactsService.modify(info, headers));
@@ -85,7 +108,7 @@ public class ContactsController {
             @ApiImplicitParam(name = "accountId", value = "accountId",dataType = "String", paramType = "path",required = true,defaultValue = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f")
     })
     @ApiResponses({
-            @ApiResponse(code = 1, message = "success",response = Contacts.class,responseContainer = "ArrayList")
+            @ApiResponse(code = 200, message = "success",response = Contacts.class,responseContainer = "ArrayList")
     })
     public HttpEntity findContactsByAccountId(@PathVariable String accountId, @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[findContactsByAccountId][Find Contacts By Account Id][accountId: {}]", accountId);
@@ -95,6 +118,12 @@ public class ContactsController {
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/contacts/{id}")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "id", value = "id",dataType = "String", paramType = "path",required = true,defaultValue = "4d2a46c7-71cb-4cf1-b5bb-b68406d9da6f")
+    })
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "success",response = Contacts.class)
+    })
     public HttpEntity getContactsByContactsId(@PathVariable String id, @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[ContactsService][Contacts Id Print][id: {}]", id);
         ContactsController.LOGGER.info("[ContactsService][VerifyLogin Success]");
