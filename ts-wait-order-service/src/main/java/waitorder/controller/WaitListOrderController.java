@@ -1,16 +1,20 @@
 package waitorder.controller;
 
 
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import waitorder.entity.WaitListOrderVO;
 import waitorder.service.WaitListOrderService;
 
 
+import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -33,7 +37,11 @@ public class WaitListOrderController {
     @PostMapping(path = "/order")
     public HttpEntity createNewOrder(@RequestBody WaitListOrderVO createOrder, @RequestHeader HttpHeaders headers) {
         WaitListOrderController.LOGGER.info("[createWaitOrder][Create Wait Order][from {} to {} at {}]", createOrder.getFrom(), createOrder.getTo(), createOrder.getDate());
-        return ok(waitListOrderService.create(createOrder, headers));
+        Response response = waitListOrderService.create(createOrder, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @GetMapping(path = "/orders")
