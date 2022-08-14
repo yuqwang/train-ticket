@@ -32,7 +32,12 @@ public class StationController {
 
     @GetMapping(value = "/stations")
     public HttpEntity query(@RequestHeader HttpHeaders headers) {
-        return ok(stationService.query(headers));
+//        return ok(stationService.query(headers));
+        Response response =stationService.query(headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/stations")
@@ -44,13 +49,23 @@ public class StationController {
     @PutMapping(value = "/stations")
     public HttpEntity update(@RequestBody Station station, @RequestHeader HttpHeaders headers) {
         StationController.LOGGER.info("[update][Update station][StationId: {}]",station.getId());
-        return ok(stationService.update(station, headers));
+//        return ok(stationService.update(station, headers));
+        Response response =stationService.update(station, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(value = "/stations/{stationsId}")
     public ResponseEntity<Response> delete(@PathVariable String stationsId, @RequestHeader HttpHeaders headers) {
         StationController.LOGGER.info("[delete][Delete station][StationId: {}]",stationsId);
-        return ok(stationService.delete(stationsId, headers));
+//        return ok(stationService.delete(stationsId, headers));
+        Response response =stationService.delete(stationsId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
 
@@ -61,7 +76,12 @@ public class StationController {
                                                 String stationName, @RequestHeader HttpHeaders headers) {
         // string
         StationController.LOGGER.info("[queryForId][Query for station id][StationName: {}]",stationName);
-        return ok(stationService.queryForId(stationName, headers));
+//        return ok(stationService.queryForId(stationName, headers));
+        Response response =stationService.queryForId(stationName, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     // according to station name list --->  query all station ids
@@ -69,7 +89,12 @@ public class StationController {
     @PostMapping(value = "/stations/idlist")
     public HttpEntity queryForIdBatch(@RequestBody List<String> stationNameList, @RequestHeader HttpHeaders headers) {
         StationController.LOGGER.info("[queryForIdBatch][Query stations for id batch][StationNameNumbers: {}]",stationNameList.size());
-        return ok(stationService.queryForIdBatch(stationNameList, headers));
+//        return ok(stationService.queryForIdBatch(stationNameList, headers));
+        Response response =stationService.queryForIdBatch(stationNameList, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     // according to station id ---> query station name
@@ -79,7 +104,12 @@ public class StationController {
                                         String stationId, @RequestHeader HttpHeaders headers) {
         StationController.LOGGER.info("[queryById][Query stations By Id][Id: {}]", stationId);
         // string
-        return ok(stationService.queryById(stationId, headers));
+//        return ok(stationService.queryById(stationId, headers));
+        Response response =stationService.queryById(stationId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     // according to station id list  ---> query all station names
@@ -87,7 +117,12 @@ public class StationController {
     @PostMapping(value = "/stations/namelist")
     public HttpEntity queryForNameBatch(@RequestBody List<String> stationIdList, @RequestHeader HttpHeaders headers) {
         StationController.LOGGER.info("[queryByIdBatch][Query stations for name batch][StationIdNumbers: {}]",stationIdList.size());
-        return ok(stationService.queryByIdBatch(stationIdList, headers));
+//        return ok(stationService.queryByIdBatch(stationIdList, headers));
+        Response response =stationService.queryByIdBatch(stationIdList, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
 }

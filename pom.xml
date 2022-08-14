@@ -61,6 +61,10 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
         <!--        需要注意springboot、springcloud、springcloud alibaba之间的版本对应关系-->
 
         <!--        springcloud 相关依赖 在dependency management中-->

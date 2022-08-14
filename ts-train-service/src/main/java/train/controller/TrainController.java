@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import train.entity.TrainType;
 import train.service.TrainService;
@@ -38,7 +40,8 @@ public class TrainController {
         if (isCreateSuccess) {
             return ok(new Response(1, "create success", null));
         } else {
-            return ok(new Response(0, "train type already exist", trainType));
+            Response response = new Response(0, "train type already exist", trainType);
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -48,7 +51,8 @@ public class TrainController {
         TrainController.LOGGER.info("[retrieve][Retrieve train][TrainTypeId: {}]",id);
         TrainType trainType = trainService.retrieve(id, headers);
         if (trainType == null) {
-            return ok(new Response(0, "here is no TrainType with the trainType id: " + id, null));
+            Response response =new Response(0, "here is no TrainType with the trainType id: " + id, null);
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         } else {
             return ok(new Response(1, "success", trainType));
         }
@@ -60,7 +64,8 @@ public class TrainController {
         TrainController.LOGGER.info("[retrieveByName][Retrieve train][TrainTypeName: {}]", name);
         TrainType trainType = trainService.retrieveByName(name, headers);
         if (trainType == null) {
-            return ok(new Response(0, "here is no TrainType with the trainType name: " + name, null));
+            Response response =new Response(0, "here is no TrainType with the trainType name: " + name, null);
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         } else {
             return ok(new Response(1, "success", trainType));
         }
@@ -72,7 +77,8 @@ public class TrainController {
         TrainController.LOGGER.info("[retrieveByNames][Retrieve train][TrainTypeNames: {}]", names);
         List<TrainType> trainTypes = trainService.retrieveByNames(names, headers);
         if (trainTypes == null) {
-            return ok(new Response(0, "here is no TrainTypes with the trainType names: " + names, null));
+            Response response =new Response(0, "here is no TrainTypes with the trainType names: " + names, null);
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         } else {
             return ok(new Response(1, "success", trainTypes));
         }
@@ -86,7 +92,8 @@ public class TrainController {
         if (isUpdateSuccess) {
             return ok(new Response(1, "update success", isUpdateSuccess));
         } else {
-            return ok(new Response(0, "there is no trainType with the trainType id", isUpdateSuccess));
+            Response response =new Response(0, "there is no trainType with the trainType id", isUpdateSuccess);
+            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -98,7 +105,8 @@ public class TrainController {
         if (isDeleteSuccess) {
             return ok(new Response(1, "delete success", isDeleteSuccess));
         } else {
-            return ok(new Response(0, "there is no train according to id", null));
+            Response response =new Response(0, "there is no train according to id", null);
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
         }
     }
 
@@ -110,7 +118,8 @@ public class TrainController {
         if (trainTypes != null && !trainTypes.isEmpty()) {
             return ok(new Response(1, "success", trainTypes));
         } else {
-            return ok(new Response(0, "no content", trainTypes));
+            Response response =new Response(0, "no content", trainTypes);
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
         }
     }
 }
