@@ -27,7 +27,10 @@ spec:
         app: skywalking
     spec:
       containers:
-        - envFrom:
+        - env:
+            - name: SW_SEARCHABLE_TAG_KEYS
+              value: "http.method,status_code,uuid,db.type,db.instance,mq.queue,mq.topic,mq.broker"
+          envFrom:
           - prefix: SW_
             configMapRef: 
               name: skywalking-cm                  
