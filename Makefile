@@ -1,7 +1,7 @@
 # Codewisdom Train-Ticket system
 
-Repo=codewisdom
-Tag=latest
+Repo=registry.cn-hangzhou.aliyuncs.com/lavenpok
+Tag=response
 Namespace="default"
 DeployArgs=""
 
