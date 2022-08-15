@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +40,7 @@ public class CancelController {
         if (response.getStatus() == 1)
             return ok(response);
         else
-            return badRequest().body(response);
+            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -55,7 +56,7 @@ public class CancelController {
             if (response.getStatus() == 1)
                 return ok(response);
             else
-                return badRequest().body(response);
+                return new ResponseEntity(response, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             CancelController.LOGGER.error(e.getMessage());
             return badRequest().body(new Response<>(1, "error", e.getMessage()));

@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.badRequest;
@@ -41,7 +43,7 @@ public class AdminBasicInfoController {
         if (response.getStatus() == 1)
             return ok(response);
         else
-            return badRequest().body(response);
+            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
 //        return ok(adminBasicInfoService.getAllContacts(headers));
     }
 
@@ -90,7 +92,7 @@ public class AdminBasicInfoController {
         if (response.getStatus() == 1)
             return ok(response);
         else
-            return badRequest().body(response);
+            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -138,7 +140,7 @@ public class AdminBasicInfoController {
         if (response.getStatus() == 1)
             return ok(response);
         else
-            return badRequest().body(response);
+            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -186,7 +188,7 @@ public class AdminBasicInfoController {
         if (response.getStatus() == 1)
             return ok(response);
         else
-            return badRequest().body(response);
+            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -234,7 +236,7 @@ public class AdminBasicInfoController {
         if (response.getStatus() == 1)
             return ok(response);
         else
-            return badRequest().body(response);
+            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")

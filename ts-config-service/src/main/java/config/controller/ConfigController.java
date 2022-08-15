@@ -43,7 +43,7 @@ public class ConfigController {
         if (response.getStatus() == 1)
             return ok(response);
         else
-            return badRequest().body(response);
+            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -87,7 +87,7 @@ public class ConfigController {
         if (response.getStatus() == 1)
             return ok(response);
         else
-            return badRequest().body(response);
+            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
 
