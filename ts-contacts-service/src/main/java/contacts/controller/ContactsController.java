@@ -35,7 +35,12 @@ public class ContactsController {
     @GetMapping(path = "/contacts")
     public HttpEntity getAllContacts(@RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[getAllContacts][Get All Contacts]");
-        return ok(contactsService.getAllContacts(headers));
+//        return ok(contactsService.getAllContacts(headers));
+        Response response =contactsService.getAllContacts(headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -54,19 +59,27 @@ public class ContactsController {
         return new ResponseEntity<>(contactsService.createContacts(aci, headers), HttpStatus.CREATED);
     }
 
-
     @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/contacts/{contactsId}")
     public HttpEntity deleteContacts(@PathVariable String contactsId, @RequestHeader HttpHeaders headers) {
-        return ok(contactsService.delete(contactsId, headers));
+//        return ok(contactsService.delete(contactsId, headers));
+        Response response =contactsService.delete(contactsId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
-
 
     @CrossOrigin(origins = "*")
     @PutMapping(path = "/contacts")
     public HttpEntity modifyContacts(@RequestBody Contacts info, @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[Contacts modifyContacts][Modify Contacts] ContactsId: {}", info.getId());
-        return ok(contactsService.modify(info, headers));
+//        return ok(contactsService.modify(info, headers));
+        Response response =contactsService.modify(info, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
@@ -74,7 +87,12 @@ public class ContactsController {
     public HttpEntity findContactsByAccountId(@PathVariable String accountId, @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[findContactsByAccountId][Find Contacts By Account Id][accountId: {}]", accountId);
         ContactsController.LOGGER.info("[ContactsService][VerifyLogin Success]");
-        return ok(contactsService.findContactsByAccountId(accountId, headers));
+//        return ok(contactsService.findContactsByAccountId(accountId, headers));
+        Response response =contactsService.findContactsByAccountId(accountId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -82,9 +100,12 @@ public class ContactsController {
     public HttpEntity getContactsByContactsId(@PathVariable String id, @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[ContactsService][Contacts Id Print][id: {}]", id);
         ContactsController.LOGGER.info("[ContactsService][VerifyLogin Success]");
-        return ok(contactsService.findContactsById(id, headers));
+//        return ok(contactsService.findContactsById(id, headers));
+        Response response =contactsService.findContactsById(id, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
-
-
 
 }

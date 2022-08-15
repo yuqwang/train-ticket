@@ -1,6 +1,7 @@
 package foodsearch.controller;
 
 import edu.fudan.common.util.JsonUtils;
+import edu.fudan.common.util.Response;
 import foodsearch.entity.*;
 import foodsearch.mq.RabbitSend;
 import foodsearch.service.FoodService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,39 +52,69 @@ public class FoodController {
     @GetMapping(path = "/orders")
     public HttpEntity findAllFoodOrder(@RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[Food Service]Try to Find all FoodOrder!");
-        return ok(foodService.findAllFoodOrder(headers));
+//        return ok(foodService.findAllFoodOrder(headers));
+        Response response =foodService.findAllFoodOrder(headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(path = "/orders")
     public HttpEntity createFoodOrder(@RequestBody FoodOrder addFoodOrder, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[createFoodOrder][Try to Create a FoodOrder!]");
-        return ok(foodService.createFoodOrder(addFoodOrder, headers));
+//        return ok(foodService.createFoodOrder(addFoodOrder, headers));
+        Response response =foodService.createFoodOrder(addFoodOrder, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(path = "/createOrderBatch")
     public HttpEntity createFoodBatches(@RequestBody List<FoodOrder> foodOrderList, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[createFoodBatches][Try to Create Food Batches!]");
-        return ok(foodService.createFoodOrdersInBatch(foodOrderList, headers));
+//        return ok(foodService.createFoodOrdersInBatch(foodOrderList, headers));
+        Response response =foodService.createFoodOrdersInBatch(foodOrderList, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
 
     @PutMapping(path = "/orders")
     public HttpEntity updateFoodOrder(@RequestBody FoodOrder updateFoodOrder, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[updateFoodOrder][Try to Update a FoodOrder!]");
-        return ok(foodService.updateFoodOrder(updateFoodOrder, headers));
+//        return ok(foodService.updateFoodOrder(updateFoodOrder, headers));
+        Response response =foodService.updateFoodOrder(updateFoodOrder, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @ResponseStatus(HttpStatus.ACCEPTED)
     @DeleteMapping(path = "/orders/{orderId}")
     public HttpEntity deleteFoodOrder(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[deleteFoodOrder][Try to Cancel a FoodOrder!]");
-        return ok(foodService.deleteFoodOrder(orderId, headers));
+//        return ok(foodService.deleteFoodOrder(orderId, headers));
+        Response response =foodService.deleteFoodOrder(orderId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(path = "/orders/{orderId}")
     public HttpEntity findFoodOrderByOrderId(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[findFoodOrderByOrderId][Try to Find FoodOrder By orderId!][orderId: {}]", orderId);
-        return ok(foodService.findByOrderId(orderId, headers));
+//        return ok(foodService.findByOrderId(orderId, headers));
+        Response response =foodService.findByOrderId(orderId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     // This relies on a lot of other services, not completely modified
@@ -91,7 +123,12 @@ public class FoodController {
                                  @PathVariable String endStation, @PathVariable String tripId,
                                  @RequestHeader HttpHeaders headers) {
         FoodController.LOGGER.info("[getAllFood][Get Food Request!]");
-        return ok(foodService.getAllFood(date, startStation, endStation, tripId, headers));
+//        return ok(foodService.getAllFood(date, startStation, endStation, tripId, headers));
+        Response response =foodService.getAllFood(date, startStation, endStation, tripId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
 }
