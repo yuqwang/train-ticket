@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+import static org.springframework.http.ResponseEntity.badRequest;
+import static org.springframework.http.ResponseEntity.ok;
+
 /**
  * @author fdse
  */
@@ -43,23 +46,28 @@ public class UserController {
         logger.info("Login request of username: {}", dao.getUsername());
         try {
             Response<?> res = tokenService.getToken(dao, headers);
-            return ResponseEntity.ok(res);
+            return ok(res);
         } catch (UserOperationException e) {
             logger.error("[getToken][tokenService.getToken error][UserOperationException, message: {}]", e.getMessage());
-            return ResponseEntity.ok(new Response<>(0, "get token error", null));
+            return badRequest().body(new Response<>(0, "get token error", null));
         }
     }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUser(@RequestHeader HttpHeaders headers) {
         logger.info("[getAllUser][Get all users]");
-        return ResponseEntity.ok().body(userService.getAllUser(headers));
+        return ok().body(userService.getAllUser(headers));
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Response> deleteUserById(@PathVariable String userId, @RequestHeader HttpHeaders headers) {
         logger.info("[deleteUserById][Delete user][userId: {}]", userId);
-        return ResponseEntity.ok(userService.deleteByUserId(userId, headers));
+//        return ResponseEntity.ok(userService.deleteByUserId(userId, headers));
+        Response response = userService.deleteByUserId(userId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
 }

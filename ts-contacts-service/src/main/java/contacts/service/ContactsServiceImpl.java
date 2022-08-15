@@ -74,7 +74,12 @@ public class ContactsServiceImpl implements ContactsService {
 
     @Override
     public Response delete(String contactsId, HttpHeaders headers) {
-        contactsRepository.deleteById(contactsId);
+        try {
+            contactsRepository.deleteById(contactsId);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Response<>(0, "Delete failed",  e.getMessage());
+        }
         Contacts contacts = contactsRepository.findById(contactsId).orElse(null);
         if (contacts == null) {
             ContactsServiceImpl.LOGGER.info("[Contacts-Add&Delete-Service][DeleteContacts Success]");

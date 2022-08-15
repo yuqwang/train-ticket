@@ -2,6 +2,7 @@ package adminroute.controller;
 
 import edu.fudan.common.entity.RouteInfo;
 import adminroute.service.AdminRouteService;
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.http.ResponseEntity.ok;
+import static org.springframework.http.ResponseEntity.badRequest;
 
 /**
  * @author fdse
@@ -32,20 +34,35 @@ public class AdminRouteController {
     @GetMapping(path = "/adminroute")
     public HttpEntity getAllRoutes(@RequestHeader HttpHeaders headers) {
         logger.info("[getAllRoutes][Get all routes request]");
-        return ok(adminRouteService.getAllRoutes(headers));
+//        return ok(adminRouteService.getAllRoutes(headers));
+        Response response = adminRouteService.getAllRoutes(headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @PostMapping(value = "/adminroute")
     public HttpEntity addRoute(@RequestBody RouteInfo request, @RequestHeader HttpHeaders headers) {
         logger.info("[addRoute][Create and modify route][route id: {}, from station {} to station {}]",
                 request.getId(), request.getStartStation(), request.getEndStation());
-        return ok(adminRouteService.createAndModifyRoute(request, headers));
+//        return ok(adminRouteService.createAndModifyRoute(request, headers));
+        Response response = adminRouteService.createAndModifyRoute(request, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @DeleteMapping(value = "/adminroute/{routeId}")
     public HttpEntity deleteRoute(@PathVariable String routeId, @RequestHeader HttpHeaders headers) {
         logger.info("[deleteRoute][Delete route][route id: {}]", routeId);
-        return ok(adminRouteService.deleteRoute(routeId, headers));
+//        return ok(adminRouteService.deleteRoute(routeId, headers));
+        Response response = adminRouteService.deleteRoute(routeId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
 

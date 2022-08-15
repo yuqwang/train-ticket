@@ -2,6 +2,7 @@ package config.controller;
 
 import config.entity.Config;
 import config.service.ConfigService;
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -36,7 +38,12 @@ public class ConfigController {
     @GetMapping(value = "/configs")
     public HttpEntity queryAll(@RequestHeader HttpHeaders headers) {
         logger.info("[queryAll][Query all configs]");
-        return ok(configService.queryAll(headers));
+//        return ok(configService.queryAll(headers));
+        Response response = configService.queryAll(headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @CrossOrigin(origins = "*")
@@ -50,7 +57,12 @@ public class ConfigController {
     @PutMapping(value = "/configs")
     public HttpEntity updateConfig(@RequestBody Config info, @RequestHeader HttpHeaders headers) {
         logger.info("[updateConfig][Update config][Config name: {}]", info.getName());
-        return ok(configService.update(info, headers));
+//        return ok(configService.update(info, headers));
+        Response response = configService.update(info, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
 
@@ -58,14 +70,24 @@ public class ConfigController {
     @DeleteMapping(value = "/configs/{configName}")
     public HttpEntity deleteConfig(@PathVariable String configName, @RequestHeader HttpHeaders headers) {
         logger.info("[deleteConfig][Delete config][configName: {}]", configName);
-        return ok(configService.delete(configName, headers));
+//        return ok(configService.delete(configName, headers));
+        Response response = configService.delete(configName, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/configs/{configName}")
     public HttpEntity retrieve(@PathVariable String configName, @RequestHeader HttpHeaders headers) {
         logger.info("[retrieve][Retrieve config][configName: {}]", configName);
-        return ok(configService.query(configName, headers));
+//        return ok(configService.query(configName, headers));
+        Response response = configService.query(configName, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
 

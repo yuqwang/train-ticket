@@ -1,6 +1,7 @@
 package assurance.controller;
 
 import assurance.service.AssuranceService;
+import edu.fudan.common.util.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
@@ -33,28 +35,48 @@ public class AssuranceController {
     @GetMapping(path = "/assurances")
     public HttpEntity getAllAssurances(@RequestHeader HttpHeaders headers) {
         AssuranceController.LOGGER.info("[getAllAssurances][Get All Assurances]");
-        return ok(assuranceService.getAllAssurances(headers));
+//        return ok(assuranceService.getAllAssurances(headers));
+        Response response = assuranceService.getAllAssurances(headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/assurances/types")
     public HttpEntity getAllAssuranceType(@RequestHeader HttpHeaders headers) {
         AssuranceController.LOGGER.info("[getAllAssuranceType][Get Assurance Type]");
-        return ok(assuranceService.getAllAssuranceTypes(headers));
+//        return ok(assuranceService.getAllAssuranceTypes(headers));
+        Response response = assuranceService.getAllAssuranceTypes(headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/assurances/assuranceid/{assuranceId}")
     public HttpEntity deleteAssurance(@PathVariable String assuranceId, @RequestHeader HttpHeaders headers) {
         AssuranceController.LOGGER.info("[deleteAssurance][Delete Assurance][assuranceId: {}]", assuranceId);
-        return ok(assuranceService.deleteById(UUID.fromString(assuranceId), headers));
+//        return ok(assuranceService.deleteById(UUID.fromString(assuranceId), headers));
+        Response response = assuranceService.deleteById(UUID.fromString(assuranceId), headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/assurances/orderid/{orderId}")
     public HttpEntity deleteAssuranceByOrderId(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         AssuranceController.LOGGER.info("[deleteAssuranceByOrderId][Delete Assurance by orderId][orderId: {}]", orderId);
-        return ok(assuranceService.deleteByOrderId(UUID.fromString(orderId), headers));
+//        return ok(assuranceService.deleteByOrderId(UUID.fromString(orderId), headers));
+        Response response = assuranceService.deleteByOrderId(UUID.fromString(orderId), headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @CrossOrigin(origins = "*")
@@ -64,7 +86,12 @@ public class AssuranceController {
                                       @PathVariable int typeIndex, @RequestHeader HttpHeaders headers) {
         AssuranceController.LOGGER.info("[modifyAssurance][Modify Assurance][assuranceId: {}, orderId: {}, typeIndex: {}]",
                 assuranceId, orderId, typeIndex);
-        return ok(assuranceService.modify(assuranceId, orderId, typeIndex, headers));
+//        return ok(assuranceService.modify(assuranceId, orderId, typeIndex, headers));
+        Response response = assuranceService.modify(assuranceId, orderId, typeIndex, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
 
@@ -73,21 +100,36 @@ public class AssuranceController {
     public HttpEntity createNewAssurance(@PathVariable int typeIndex, @PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         //Assurance
         AssuranceController.LOGGER.info("[createNewAssurance][Create new assurance][typeIndex: {}, orderId: {}]", typeIndex, orderId);
-        return ok(assuranceService.create(typeIndex, orderId, headers));
+//        return ok(assuranceService.create(typeIndex, orderId, headers));
+        Response response = assuranceService.create(typeIndex, orderId, headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/assurances/assuranceid/{assuranceId}")
     public HttpEntity getAssuranceById(@PathVariable String assuranceId, @RequestHeader HttpHeaders headers) {
         AssuranceController.LOGGER.info("[getAssuranceById][Find assurance by assuranceId][assureId: {}]", assuranceId);
-        return ok(assuranceService.findAssuranceById(UUID.fromString(assuranceId), headers));
+//        return ok(assuranceService.findAssuranceById(UUID.fromString(assuranceId), headers));
+        Response response = assuranceService.findAssuranceById(UUID.fromString(assuranceId), headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping(path = "/assurance/orderid/{orderId}")
     public HttpEntity findAssuranceByOrderId(@PathVariable String orderId, @RequestHeader HttpHeaders headers) {
         AssuranceController.LOGGER.info("[findAssuranceByOrderId][Find assurance by orderId][orderId: {}]", orderId);
-        return ok(assuranceService.findAssuranceByOrderId(UUID.fromString(orderId), headers));
+//        return ok(assuranceService.findAssuranceByOrderId(UUID.fromString(orderId), headers));
+        Response response = assuranceService.findAssuranceByOrderId(UUID.fromString(orderId), headers);
+        if (response.getStatus() == 1)
+            return ok(response);
+        else
+            return badRequest().body(response);
     }
 
 }

@@ -17,7 +17,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -85,7 +85,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -153,7 +153,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -221,7 +221,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -289,7 +289,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -357,7 +357,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -427,7 +427,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -497,7 +497,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -565,7 +565,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -633,7 +633,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -701,7 +701,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -771,7 +771,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -841,7 +841,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -911,7 +911,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -981,7 +981,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1053,7 +1053,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1121,7 +1121,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1191,7 +1191,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1263,7 +1263,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1331,7 +1331,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1401,7 +1401,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1469,7 +1469,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1541,7 +1541,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1613,7 +1613,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1685,7 +1685,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1755,7 +1755,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1825,7 +1825,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1895,7 +1895,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -1965,7 +1965,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2035,7 +2035,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2103,7 +2103,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2173,7 +2173,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2241,7 +2241,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2311,7 +2311,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2381,7 +2381,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2451,7 +2451,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2521,7 +2521,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2591,7 +2591,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2661,7 +2661,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2729,7 +2729,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2799,7 +2799,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2869,7 +2869,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -2939,7 +2939,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
@@ -3051,7 +3051,7 @@ spec:
           emptyDir: {}
       initContainers:
         - name: agent-container
-          image: apache/skywalking-java-agent:8.8.0-alpine
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/skywalking-agent:8.8.0
           volumeMounts:
             - name: skywalking-agent
               mountPath: /agent
