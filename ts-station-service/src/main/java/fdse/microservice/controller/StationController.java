@@ -43,7 +43,12 @@ public class StationController {
     @PostMapping(value = "/stations")
     public ResponseEntity<Response> create(@RequestBody Station station, @RequestHeader HttpHeaders headers) {
         StationController.LOGGER.info("[create][Create station][name: {}]",station.getName());
-        return new ResponseEntity<>(stationService.create(station, headers), HttpStatus.CREATED);
+//        return new ResponseEntity<>(stationService.create(station, headers), HttpStatus.CREATED);
+        Response response = stationService.create(station, headers);
+        if (response.getStatus() == 1)
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping(value = "/stations")

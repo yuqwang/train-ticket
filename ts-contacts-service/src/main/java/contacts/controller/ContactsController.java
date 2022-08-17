@@ -48,7 +48,12 @@ public class ContactsController {
     public ResponseEntity<Response> createNewContacts(@RequestBody Contacts aci,
                                                       @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[createNewContacts][VerifyLogin Success]");
-        return new ResponseEntity<>(contactsService.create(aci, headers), HttpStatus.CREATED);
+//        return new ResponseEntity<>(contactsService.create(aci, headers), HttpStatus.CREATED);
+        Response response = contactsService.create(aci, headers);
+        if (response.getStatus() == 1)
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
@@ -56,7 +61,12 @@ public class ContactsController {
     public HttpEntity<?> createNewContactsAdmin(@RequestBody Contacts aci, @RequestHeader HttpHeaders headers) {
         aci.setId(UUID.randomUUID().toString());
         ContactsController.LOGGER.info("[createNewContactsAdmin][Create Contacts In Admin]");
-        return new ResponseEntity<>(contactsService.createContacts(aci, headers), HttpStatus.CREATED);
+//        return new ResponseEntity<>(contactsService.createContacts(aci, headers), HttpStatus.CREATED);
+        Response response = contactsService.createContacts(aci, headers);
+        if (response.getStatus() == 1)
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")

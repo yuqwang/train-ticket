@@ -77,12 +77,12 @@ public class Travel2Controller {
     public HttpEntity<?> createTrip(@RequestBody edu.fudan.common.entity.TravelInfo routeIds, @RequestHeader HttpHeaders headers) {
         // null
         Travel2Controller.LOGGER.info("[create][Create trip][TripId: {}]", routeIds.getTripId());
-        return new ResponseEntity<>(service.create(routeIds, headers), HttpStatus.CREATED);
-//        Response response =service.create(routeIds, headers);
-//        if (response.getStatus() == 1)
-//            return ok(response);
-//        else
-//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+//        return new ResponseEntity<>(service.create(routeIds, headers), HttpStatus.CREATED);
+        Response response = service.create(routeIds, headers);
+        if (response.getStatus() == 1)
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     /**

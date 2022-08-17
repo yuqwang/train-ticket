@@ -70,7 +70,7 @@ public class UserController {
 //        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userDto, headers));
         Response response =userService.saveUser(userDto, headers);
         if (response.getStatus() == 1)
-            return ok(response);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
         else
             return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }

@@ -85,12 +85,12 @@ public class TravelController {
     public HttpEntity<?> createTrip(@RequestBody TravelInfo routeIds, @RequestHeader HttpHeaders headers) {
         // null
         TravelController.LOGGER.info("[create][Create trip][TripId: {}]", routeIds.getTripId());
-        return new ResponseEntity<>(travelService.create(routeIds, headers), HttpStatus.CREATED);
-//        Response response =travelService.create(routeIds, headers);
-//        if (response.getStatus() == 1)
-//            return ok(response);
-//        else
-//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+//        return new ResponseEntity<>(travelService.create(routeIds, headers), HttpStatus.CREATED);
+        Response response = travelService.create(routeIds, headers);
+        if (response.getStatus() == 1)
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     /**

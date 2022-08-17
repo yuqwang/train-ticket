@@ -73,7 +73,12 @@ public class PriceController {
     public HttpEntity<?> create(@RequestBody PriceConfig info,
                                 @RequestHeader HttpHeaders headers) {
         PriceController.LOGGER.info("[createNewPriceConfig][Create price][RouteId: {}, TrainType: {}]",info.getRouteId(),info.getTrainType());
-        return new ResponseEntity<>(service.createNewPriceConfig(info, headers), HttpStatus.CREATED);
+//        return new ResponseEntity<>(service.createNewPriceConfig(info, headers), HttpStatus.CREATED);
+        Response response = service.createNewPriceConfig(info, headers);
+        if (response.getStatus() == 1)
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(value = "/prices/{pricesId}")

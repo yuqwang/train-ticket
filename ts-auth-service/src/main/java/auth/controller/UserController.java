@@ -46,7 +46,10 @@ public class UserController {
         logger.info("Login request of username: {}", dao.getUsername());
         try {
             Response<?> res = tokenService.getToken(dao, headers);
-            return ok(res);
+            if (res.getStatus() == 1)
+                return ok(res);
+            else
+                return badRequest().body(res);
         } catch (UserOperationException e) {
             logger.error("[getToken][tokenService.getToken error][UserOperationException, message: {}]", e.getMessage());
             return badRequest().body(new Response<>(0, "get token error", null));

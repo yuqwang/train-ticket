@@ -50,7 +50,12 @@ public class ConfigController {
     @PostMapping(value = "/configs")
     public HttpEntity<?> createConfig(@RequestBody Config info, @RequestHeader HttpHeaders headers) {
         logger.info("[createConfig][Create config][Config name: {}]", info.getName());
-        return new ResponseEntity<>(configService.create(info, headers), HttpStatus.CREATED);
+//        return new ResponseEntity<>(configService.create(info, headers), HttpStatus.CREATED);
+        Response response = configService.create(info, headers);
+        if (response.getStatus() == 1)
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        else
+            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
