@@ -65,7 +65,7 @@ public class MyFilter extends HttpFilter {
                 System.out.println(status);
                 //输出到status
                 ActiveSpan.tag("status", status);
-                logger.info("status:" + responseBody);
+                logger.info("status:" + status);
             } catch (Exception e) {
                 logger.warn("fail to build http log", e);
             } finally {
