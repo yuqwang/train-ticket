@@ -40,8 +40,7 @@ public class TrainController {
         if (isCreateSuccess) {
             return ok(new Response(1, "create success", null));
         } else {
-            Response response = new Response(0, "train type already exist", trainType);
-            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+            return ok(new Response(0, "train type already exist", trainType));
         }
     }
 
@@ -51,8 +50,8 @@ public class TrainController {
         TrainController.LOGGER.info("[retrieve][Retrieve train][TrainTypeId: {}]",id);
         TrainType trainType = trainService.retrieve(id, headers);
         if (trainType == null) {
-            Response response =new Response(0, "here is no TrainType with the trainType id: " + id, null);
-            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+            return ok(new Response(0, "here is no TrainType with the trainType id: " + id, null));
+//            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         } else {
             return ok(new Response(1, "success", trainType));
         }
@@ -64,8 +63,8 @@ public class TrainController {
         TrainController.LOGGER.info("[retrieveByName][Retrieve train][TrainTypeName: {}]", name);
         TrainType trainType = trainService.retrieveByName(name, headers);
         if (trainType == null) {
-            Response response =new Response(0, "here is no TrainType with the trainType name: " + name, null);
-            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+            return ok(new Response(0, "here is no TrainType with the trainType name: " + name, null));
+//            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         } else {
             return ok(new Response(1, "success", trainType));
         }
@@ -77,8 +76,8 @@ public class TrainController {
         TrainController.LOGGER.info("[retrieveByNames][Retrieve train][TrainTypeNames: {}]", names);
         List<TrainType> trainTypes = trainService.retrieveByNames(names, headers);
         if (trainTypes == null) {
-            Response response =new Response(0, "here is no TrainTypes with the trainType names: " + names, null);
-            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+            return ok(new Response(0, "here is no TrainTypes with the trainType names: " + names, null));
+//            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         } else {
             return ok(new Response(1, "success", trainTypes));
         }
@@ -92,8 +91,8 @@ public class TrainController {
         if (isUpdateSuccess) {
             return ok(new Response(1, "update success", isUpdateSuccess));
         } else {
-            Response response =new Response(0, "there is no trainType with the trainType id", isUpdateSuccess);
-            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+            return ok(new Response(0, "there is no trainType with the trainType id", isUpdateSuccess));
+//            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -105,8 +104,8 @@ public class TrainController {
         if (isDeleteSuccess) {
             return ok(new Response(1, "delete success", isDeleteSuccess));
         } else {
-            Response response =new Response(0, "there is no train according to id", null);
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+            return ok(new Response(0, "there is no train according to id", null));
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
         }
     }
 
@@ -118,8 +117,8 @@ public class TrainController {
         if (trainTypes != null && !trainTypes.isEmpty()) {
             return ok(new Response(1, "success", trainTypes));
         } else {
-            Response response =new Response(0, "no content", trainTypes);
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+            return ok(new Response(0, "no content", trainTypes));
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
         }
     }
 }

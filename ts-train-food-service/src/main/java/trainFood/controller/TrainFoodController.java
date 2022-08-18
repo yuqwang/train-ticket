@@ -31,23 +31,23 @@ public class TrainFoodController {
     @GetMapping("/trainfoods")
     public HttpEntity getAllTrainFood(@RequestHeader HttpHeaders headers) {
         TrainFoodController.LOGGER.info("[Food Map Service][Get All TrainFoods]");
-//        return ok(trainFoodService.listTrainFood(headers));
-        Response response =trainFoodService.listTrainFood(headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return ok(trainFoodService.listTrainFood(headers));
+//        Response response =trainFoodService.listTrainFood(headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping("/trainfoods/{tripId}")
     public HttpEntity getTrainFoodOfTrip(@PathVariable String tripId, @RequestHeader HttpHeaders headers) {
         TrainFoodController.LOGGER.info("[Food Map Service][Get TrainFoods By TripId]");
-//        return ok(trainFoodService.listTrainFoodByTripId(tripId, headers));
-        Response response =trainFoodService.listTrainFoodByTripId(tripId, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return ok(trainFoodService.listTrainFoodByTripId(tripId, headers));
+//        Response response =trainFoodService.listTrainFoodByTripId(tripId, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 }
