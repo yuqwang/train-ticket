@@ -40,36 +40,36 @@ public class BasicController {
     public HttpEntity queryForTravel(@RequestBody Travel info, @RequestHeader HttpHeaders headers) {
         // TravelResult
         logger.info("[queryForTravel][Query for travel][Travel: {}]", info.toString());
-//        return ok(service.queryForTravel(info, headers));
-        Response response = service.queryForTravel(info, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return badRequest().body(response);
+        return ok(service.queryForTravel(info, headers));
+//        Response response = service.queryForTravel(info, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return badRequest().body(response);
     }
 
     @PostMapping(value = "/basic/travels")
     public HttpEntity queryForTravels(@RequestBody List<Travel> infos, @RequestHeader HttpHeaders headers) {
         // TravelResult
         logger.info("[queryForTravels][Query for travels][Travels: {}]", infos);
-//        return ok(service.queryForTravels(infos, headers));
-        Response response = service.queryForTravels(infos, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return badRequest().body(response);
+        return ok(service.queryForTravels(infos, headers));
+//        Response response = service.queryForTravels(infos, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return badRequest().body(response);
     }
 
     @GetMapping(value = "/basic/{stationName}")
     public HttpEntity queryForStationId(@PathVariable String stationName, @RequestHeader HttpHeaders headers) {
         // String id
         logger.info("[queryForStationId][Query for stationId by stationName][stationName: {}]", stationName);
-//        return ok(service.queryForStationId(stationName, headers));
-        Response response = service.queryForStationId(stationName, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return ok(service.queryForStationId(stationName, headers));
+//        Response response = service.queryForStationId(stationName, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
 }

@@ -17,7 +17,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * @author fdse
  */
 @RestController
-@RequestMapping("api/v1/contactservice")
+@RequestMapping("/api/v1/contactservice")
 public class ContactsController {
 
 
@@ -35,12 +35,12 @@ public class ContactsController {
     @GetMapping(path = "/contacts")
     public HttpEntity getAllContacts(@RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[getAllContacts][Get All Contacts]");
-//        return ok(contactsService.getAllContacts(headers));
-        Response response =contactsService.getAllContacts(headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(contactsService.getAllContacts(headers));
+//        Response response =contactsService.getAllContacts(headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -61,35 +61,35 @@ public class ContactsController {
     public HttpEntity<?> createNewContactsAdmin(@RequestBody Contacts aci, @RequestHeader HttpHeaders headers) {
         aci.setId(UUID.randomUUID().toString());
         ContactsController.LOGGER.info("[createNewContactsAdmin][Create Contacts In Admin]");
-//        return new ResponseEntity<>(contactsService.createContacts(aci, headers), HttpStatus.CREATED);
-        Response response = contactsService.createContacts(aci, headers);
-        if (response.getStatus() == 1)
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(contactsService.createContacts(aci, headers), HttpStatus.CREATED);
+//        Response response = contactsService.createContacts(aci, headers);
+//        if (response.getStatus() == 1)
+//            return new ResponseEntity<>(response, HttpStatus.CREATED);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
     @DeleteMapping(path = "/contacts/{contactsId}")
     public HttpEntity deleteContacts(@PathVariable String contactsId, @RequestHeader HttpHeaders headers) {
-//        return ok(contactsService.delete(contactsId, headers));
-        Response response =contactsService.delete(contactsId, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(contactsService.delete(contactsId, headers));
+//        Response response =contactsService.delete(contactsId, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
     @PutMapping(path = "/contacts")
     public HttpEntity modifyContacts(@RequestBody Contacts info, @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[Contacts modifyContacts][Modify Contacts] ContactsId: {}", info.getId());
-//        return ok(contactsService.modify(info, headers));
-        Response response =contactsService.modify(info, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return ok(contactsService.modify(info, headers));
+//        Response response =contactsService.modify(info, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
@@ -110,12 +110,12 @@ public class ContactsController {
     public HttpEntity getContactsByContactsId(@PathVariable String id, @RequestHeader HttpHeaders headers) {
         ContactsController.LOGGER.info("[ContactsService][Contacts Id Print][id: {}]", id);
         ContactsController.LOGGER.info("[ContactsService][VerifyLogin Success]");
-//        return ok(contactsService.findContactsById(id, headers));
-        Response response =contactsService.findContactsById(id, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(contactsService.findContactsById(id, headers));
+//        Response response =contactsService.findContactsById(id, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
 }

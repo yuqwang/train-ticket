@@ -65,12 +65,12 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<Response> deleteUserById(@PathVariable String userId, @RequestHeader HttpHeaders headers) {
         logger.info("[deleteUserById][Delete user][userId: {}]", userId);
-//        return ResponseEntity.ok(userService.deleteByUserId(userId, headers));
-        Response response = userService.deleteByUserId(userId, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return badRequest().body(response);
+        return ResponseEntity.ok(userService.deleteByUserId(userId, headers));
+//        Response response = userService.deleteByUserId(userId, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return badRequest().body(response);
     }
 
 }

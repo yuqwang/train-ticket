@@ -21,7 +21,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * @date 2017/5/11.
  */
 @RestController
-@RequestMapping("api/v1/configservice")
+@RequestMapping("/api/v1/configservice")
 public class ConfigController {
 
     @Autowired
@@ -38,36 +38,36 @@ public class ConfigController {
     @GetMapping(value = "/configs")
     public HttpEntity queryAll(@RequestHeader HttpHeaders headers) {
         logger.info("[queryAll][Query all configs]");
-//        return ok(configService.queryAll(headers));
-        Response response = configService.queryAll(headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return ok(configService.queryAll(headers));
+//        Response response = configService.queryAll(headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
     @PostMapping(value = "/configs")
     public HttpEntity<?> createConfig(@RequestBody Config info, @RequestHeader HttpHeaders headers) {
         logger.info("[createConfig][Create config][Config name: {}]", info.getName());
-//        return new ResponseEntity<>(configService.create(info, headers), HttpStatus.CREATED);
-        Response response = configService.create(info, headers);
-        if (response.getStatus() == 1)
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(configService.create(info, headers), HttpStatus.CREATED);
+//        Response response = configService.create(info, headers);
+//        if (response.getStatus() == 1)
+//            return new ResponseEntity<>(response, HttpStatus.CREATED);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
     @PutMapping(value = "/configs")
     public HttpEntity updateConfig(@RequestBody Config info, @RequestHeader HttpHeaders headers) {
         logger.info("[updateConfig][Update config][Config name: {}]", info.getName());
-//        return ok(configService.update(info, headers));
-        Response response = configService.update(info, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return badRequest().body(response);
+        return ok(configService.update(info, headers));
+//        Response response = configService.update(info, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return badRequest().body(response);
     }
 
 
@@ -75,24 +75,24 @@ public class ConfigController {
     @DeleteMapping(value = "/configs/{configName}")
     public HttpEntity deleteConfig(@PathVariable String configName, @RequestHeader HttpHeaders headers) {
         logger.info("[deleteConfig][Delete config][configName: {}]", configName);
-//        return ok(configService.delete(configName, headers));
-        Response response = configService.delete(configName, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return badRequest().body(response);
+        return ok(configService.delete(configName, headers));
+//        Response response = configService.delete(configName, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return badRequest().body(response);
     }
 
     @CrossOrigin(origins = "*")
     @GetMapping(value = "/configs/{configName}")
     public HttpEntity retrieve(@PathVariable String configName, @RequestHeader HttpHeaders headers) {
         logger.info("[retrieve][Retrieve config][configName: {}]", configName);
-//        return ok(configService.query(configName, headers));
-        Response response = configService.query(configName, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return ok(configService.query(configName, headers));
+//        Response response = configService.query(configName, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
 

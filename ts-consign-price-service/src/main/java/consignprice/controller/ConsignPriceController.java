@@ -36,47 +36,47 @@ public class ConsignPriceController {
     public HttpEntity getPriceByWeightAndRegion(@PathVariable String weight, @PathVariable String isWithinRegion,
                                                 @RequestHeader HttpHeaders headers) {
         logger.info("[getPriceByWeightAndRegion][Get price by weight and region][weight: {}, region: {}]", weight, isWithinRegion);
-//        return ok(service.getPriceByWeightAndRegion(Double.parseDouble(weight),
-//                Boolean.parseBoolean(isWithinRegion), headers));
-        Response response = service.getPriceByWeightAndRegion(Double.parseDouble(weight),
-                Boolean.parseBoolean(isWithinRegion), headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return ok(service.getPriceByWeightAndRegion(Double.parseDouble(weight),
+                Boolean.parseBoolean(isWithinRegion), headers));
+//        Response response = service.getPriceByWeightAndRegion(Double.parseDouble(weight),
+//                Boolean.parseBoolean(isWithinRegion), headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/consignprice/price")
     public HttpEntity getPriceInfo(@RequestHeader HttpHeaders headers) {
         logger.info("[getPriceInfo][Get price info]");
-//        return ok(service.queryPriceInformation(headers));
-        Response response = service.queryPriceInformation(headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return ok(service.queryPriceInformation(headers));
+//        Response response = service.queryPriceInformation(headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/consignprice/config")
     public HttpEntity getPriceConfig(@RequestHeader HttpHeaders headers) {
         logger.info("[getPriceConfig][Get price config]");
-//        return ok(service.getPriceConfig(headers));
-        Response response = service.getPriceConfig(headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        return ok(service.getPriceConfig(headers));
+//        Response response = service.getPriceConfig(headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/consignprice")
     public HttpEntity modifyPriceConfig(@RequestBody ConsignPrice priceConfig,
                                         @RequestHeader HttpHeaders headers) {
         logger.info("[modifyPriceConfig][Create and modify price][config: {}]", priceConfig);
-//        return ok(service.createAndModifyPrice(priceConfig, headers));
-        Response response = service.createAndModifyPrice(priceConfig, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return badRequest().body(response);
+        return ok(service.createAndModifyPrice(priceConfig, headers));
+//        Response response = service.createAndModifyPrice(priceConfig, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return badRequest().body(response);
     }
 }
