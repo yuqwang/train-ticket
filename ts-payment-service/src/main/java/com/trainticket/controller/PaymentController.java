@@ -35,33 +35,33 @@ public class PaymentController {
     @PostMapping(path = "/payment")
     public HttpEntity pay(@RequestBody Payment info, @RequestHeader HttpHeaders headers) {
         PaymentController.LOGGER.info("[pay][Pay][PaymentId: {}]", info.getId());
-//        return ok(service.pay(info, headers));
-        Response response =service.pay(info, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+        return ok(service.pay(info, headers));
+//        Response response =service.pay(info, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(path = "/payment/money")
     public HttpEntity addMoney(@RequestBody Payment info, @RequestHeader HttpHeaders headers) {
         PaymentController.LOGGER.info("[addMoney][Add money][PaymentId: {}]", info.getId());
-//        return ok(service.addMoney(info, headers));
-        Response response =service.addMoney(info, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return ok(service.addMoney(info, headers));
+//        Response response =service.addMoney(info, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping(path = "/payment")
     public HttpEntity query(@RequestHeader HttpHeaders headers) {
         PaymentController.LOGGER.info("[query][Query payment]");
-//        return ok(service.query(headers));
-        Response response =service.query(headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(service.query(headers));
+//        Response response =service.query(headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 }
