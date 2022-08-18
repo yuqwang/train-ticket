@@ -45,12 +45,12 @@ public class TravelController {
                                            @RequestHeader HttpHeaders headers) {
         // TrainType
         TravelController.LOGGER.info("[getTrainTypeByTripId][Get train Type by Trip id][TripId: {}]", tripId);
-//        return ok(travelService.getTrainTypeByTripId(tripId, headers));
-        Response response =travelService.getTrainTypeByTripId(tripId, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(travelService.getTrainTypeByTripId(tripId, headers));
+//        Response response =travelService.getTrainTypeByTripId(tripId, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @GetMapping(value = "/routes/{tripId}")
@@ -58,12 +58,12 @@ public class TravelController {
                                        @RequestHeader HttpHeaders headers) {
         TravelController.LOGGER.info("[getRouteByTripId][Get Route By Trip ID][TripId: {}]", tripId);
         //Route
-//        return ok(travelService.getRouteByTripId(tripId, headers));
-        Response response =travelService.getRouteByTripId(tripId, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(travelService.getRouteByTripId(tripId, headers));
+//        Response response =travelService.getRouteByTripId(tripId, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @PostMapping(value = "/trips/routes")
@@ -71,12 +71,12 @@ public class TravelController {
                                         @RequestHeader HttpHeaders headers) {
         // ArrayList<ArrayList<Trip>>
         TravelController.LOGGER.info("[getTripByRoute][Get Trips by Route ids][RouteIds: {}]", routeIds.size());
-//        return ok(travelService.getTripByRoute(routeIds, headers));
-        Response response =travelService.getTripByRoute(routeIds, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return badRequest().body(response);
+        return ok(travelService.getTripByRoute(routeIds, headers));
+//        Response response =travelService.getTripByRoute(routeIds, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return badRequest().body(response);
 //        ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
@@ -85,12 +85,12 @@ public class TravelController {
     public HttpEntity<?> createTrip(@RequestBody TravelInfo routeIds, @RequestHeader HttpHeaders headers) {
         // null
         TravelController.LOGGER.info("[create][Create trip][TripId: {}]", routeIds.getTripId());
-//        return new ResponseEntity<>(travelService.create(routeIds, headers), HttpStatus.CREATED);
-        Response response = travelService.create(routeIds, headers);
-        if (response.getStatus() == 1)
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(travelService.create(routeIds, headers), HttpStatus.CREATED);
+//        Response response = travelService.create(routeIds, headers);
+//        if (response.getStatus() == 1)
+//            return new ResponseEntity<>(response, HttpStatus.CREATED);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -105,12 +105,12 @@ public class TravelController {
     public HttpEntity retrieve(@PathVariable String tripId, @RequestHeader HttpHeaders headers) {
         // Trip
         TravelController.LOGGER.info("[retrieve][Retrieve trip][TripId: {}]", tripId);
-//        return ok(travelService.retrieve(tripId, headers));
-        Response response =travelService.retrieve(tripId, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(travelService.retrieve(tripId, headers));
+//        Response response =travelService.retrieve(tripId, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -118,12 +118,12 @@ public class TravelController {
     public HttpEntity updateTrip(@RequestBody TravelInfo info, @RequestHeader HttpHeaders headers) {
         // Trip
         TravelController.LOGGER.info("[update][Update trip][TripId: {}]", info.getTripId());
-//        return ok(travelService.update(info, headers));
-        Response response =travelService.update(info, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return ok(travelService.update(info, headers));
+//        Response response =travelService.update(info, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
@@ -131,12 +131,12 @@ public class TravelController {
     public HttpEntity deleteTrip(@PathVariable String tripId, @RequestHeader HttpHeaders headers) {
         // string
         TravelController.LOGGER.info("[delete][Delete trip][TripId: {}]", tripId);
-//        return ok(travelService.delete(tripId, headers));
-        Response response =travelService.delete(tripId, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return ok(travelService.delete(tripId, headers));
+//        Response response =travelService.delete(tripId, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -183,12 +183,12 @@ public class TravelController {
             return ok(errorList);
         }
         TravelController.LOGGER.info("[queryInParallel][Query TripResponse]");
-//        return ok(travelService.queryInParallel(info, headers));
-        Response response =travelService.queryInParallel(info, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return ok(travelService.queryInParallel(info, headers));
+//        Response response =travelService.queryInParallel(info, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -204,12 +204,12 @@ public class TravelController {
         // TripAllDetailInfo
         // TripAllDetail tripAllDetail
         TravelController.LOGGER.info("[getTripAllDetailInfo][Get trip detail][TripId: {}]", gtdi.getTripId());
-//        return ok(travelService.getTripAllDetailInfo(gtdi, headers));
-        Response response =travelService.getTripAllDetailInfo(gtdi, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return ok(travelService.getTripAllDetailInfo(gtdi, headers));
+//        Response response =travelService.getTripAllDetailInfo(gtdi, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @CrossOrigin(origins = "*")
@@ -217,12 +217,12 @@ public class TravelController {
     public HttpEntity queryAll(@RequestHeader HttpHeaders headers) {
         // List<Trip>
         TravelController.LOGGER.info("[queryAll][Query all trips]");
-//        return ok(travelService.queryAll(headers));
-        Response response =travelService.queryAll(headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(travelService.queryAll(headers));
+//        Response response =travelService.queryAll(headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @CrossOrigin(origins = "*")
@@ -230,12 +230,12 @@ public class TravelController {
     public HttpEntity adminQueryAll(@RequestHeader HttpHeaders headers) {
         // ArrayList<AdminTrip>
         TravelController.LOGGER.info("[adminQueryAll][Admin query all trips]");
-//        return ok(travelService.adminQueryAll(headers));
-        Response response =travelService.adminQueryAll(headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(travelService.adminQueryAll(headers));
+//        Response response =travelService.adminQueryAll(headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
 }

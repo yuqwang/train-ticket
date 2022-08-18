@@ -35,44 +35,44 @@ public class UserController {
     @GetMapping
     public ResponseEntity<Response> getAllUser(@RequestHeader HttpHeaders headers) {
         UserController.LOGGER.info("[getAllUser][Get all user]");
-//        return ok(userService.getAllUsers(headers));
-        Response response =userService.getAllUsers(headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(userService.getAllUsers(headers));
+//        Response response =userService.getAllUsers(headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{userName}")
     public ResponseEntity<Response> getUserByUserName(@PathVariable String userName, @RequestHeader HttpHeaders headers) {
         UserController.LOGGER.info("[getUserByUserName][Get user by user name][UserName: {}]",userName);
-//        return ok(userService.findByUserName(userName, headers));
-        Response response =userService.findByUserName(userName, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(userService.findByUserName(userName, headers));
+//        Response response =userService.findByUserName(userName, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
     @GetMapping("/id/{userId}")
     public ResponseEntity<Response> getUserByUserId(@PathVariable String userId, @RequestHeader HttpHeaders headers) {
         UserController.LOGGER.info("[getUserByUserId][Get user by user id][UserId: {}]",userId);
-//        return ok(userService.findByUserId(userId, headers));
-        Response response =userService.findByUserId(userId, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
+        return ok(userService.findByUserId(userId, headers));
+//        Response response =userService.findByUserId(userId, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/register")
     public ResponseEntity<Response> registerUser(@RequestBody UserDto userDto, @RequestHeader HttpHeaders headers) {
         UserController.LOGGER.info("[registerUser][Register user][UserName: {}]",userDto.getUserName());
-//        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userDto, headers));
-        Response response =userService.saveUser(userDto, headers);
-        if (response.getStatus() == 1)
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(userDto, headers));
+//        Response response =userService.saveUser(userDto, headers);
+//        if (response.getStatus() == 1)
+//            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
 
@@ -81,24 +81,24 @@ public class UserController {
                                                    @RequestHeader HttpHeaders headers) {
         // only admin token can delete
         UserController.LOGGER.info("[deleteUserById][Delete user][UserId: {}]",userId);
-//        return ok(userService.deleteUser(userId, headers));
-        Response response =userService.deleteUser(userId, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return ok(userService.deleteUser(userId, headers));
+//        Response response =userService.deleteUser(userId, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
     @PutMapping
     public ResponseEntity<Response> updateUser(@RequestBody UserDto user,
                                                @RequestHeader HttpHeaders headers) {
         UserController.LOGGER.info("[updateUser][Update user][UserId: {}]",user.getUserId());
-//        return ok(userService.updateUser(user, headers));
-        Response response =userService.updateUser(user, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
+        return ok(userService.updateUser(user, headers));
+//        Response response =userService.updateUser(user, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response,HttpStatus.BAD_REQUEST);
     }
 
 }
