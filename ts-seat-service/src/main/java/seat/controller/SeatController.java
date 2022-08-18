@@ -42,12 +42,12 @@ public class SeatController {
     @PostMapping(value = "/seats")
     public HttpEntity create(@RequestBody Seat seatRequest, @RequestHeader HttpHeaders headers) {
         SeatController.LOGGER.info("[distributeSeat][Create seat][TravelDate: {},TrainNumber: {},SeatType: {}]",seatRequest.getTravelDate(),seatRequest.getTrainNumber(),seatRequest.getSeatType());
-//        return ok(seatService.distributeSeat(seatRequest, headers));
-        Response response =seatService.distributeSeat(seatRequest, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+        return ok(seatService.distributeSeat(seatRequest, headers));
+//        Response response =seatService.distributeSeat(seatRequest, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -63,12 +63,12 @@ public class SeatController {
     public HttpEntity getLeftTicketOfInterval(@RequestBody Seat seatRequest, @RequestHeader HttpHeaders headers) {
         // int
         SeatController.LOGGER.info("[getLeftTicketOfInterval][Get left ticket of interval][TravelDate: {},TrainNumber: {},SeatType: {}]",seatRequest.getTravelDate(),seatRequest.getTrainNumber(),seatRequest.getSeatType());
-//        return ok(seatService.getLeftTicketOfInterval(seatRequest, headers));
-        Response response =seatService.getLeftTicketOfInterval(seatRequest, headers);
-        if (response.getStatus() == 1)
-            return ok(response);
-        else
-            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
+        return ok(seatService.getLeftTicketOfInterval(seatRequest, headers));
+//        Response response =seatService.getLeftTicketOfInterval(seatRequest, headers);
+//        if (response.getStatus() == 1)
+//            return ok(response);
+//        else
+//            return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
     }
 
 }
