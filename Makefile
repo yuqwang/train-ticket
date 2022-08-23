@@ -1,10 +1,14 @@
 # Codewisdom Train-Ticket system
 
 Repo=registry.cn-hangzhou.aliyuncs.com/lavenpok
-Tag=response
+Tag=jacoco
 Namespace="default"
 DeployArgs=""
 
+
+.PHONY: add-jacoco
+add-jacoco:
+	@hack/add-jacoco.sh
 
 # build image
 .PHONY: build
