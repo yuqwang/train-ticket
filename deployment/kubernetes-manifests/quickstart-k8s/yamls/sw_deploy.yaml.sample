@@ -25,7 +25,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-admin-basic-info-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-basic-info-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-basic-info-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -93,7 +93,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-admin-order-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-order-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-order-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -161,7 +161,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-admin-route-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-route-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-route-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -229,7 +229,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-admin-travel-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-travel-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-travel-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -297,7 +297,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-admin-user-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-user-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-admin-user-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -365,7 +365,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-assurance-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-assurance-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-assurance-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -435,7 +435,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-auth-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-auth-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-auth-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -573,7 +573,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-basic-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-basic-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-basic-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -641,7 +641,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-cancel-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-cancel-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-cancel-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -709,7 +709,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-config-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-config-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-config-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -779,7 +779,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-consign-price-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-price-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-price-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -849,7 +849,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-consign-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-consign-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -919,7 +919,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-contacts-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-contacts-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-contacts-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -989,7 +989,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-delivery-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-delivery-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-delivery-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1061,7 +1061,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-execute-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-execute-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-execute-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1129,7 +1129,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-food-delivery-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-delivery-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-delivery-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1199,7 +1199,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-food-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-food-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1339,7 +1339,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-inside-payment-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-inside-payment-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-inside-payment-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1409,7 +1409,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-news-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-news-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-news-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1477,7 +1477,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-notification-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-notification-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-notification-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1549,7 +1549,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-order-other-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-other-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-other-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1621,7 +1621,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-order-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-order-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1693,7 +1693,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-payment-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-payment-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-payment-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1763,7 +1763,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-preserve-other-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-other-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-other-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1833,7 +1833,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-preserve-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-preserve-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1903,7 +1903,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-price-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-price-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-price-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -1973,7 +1973,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-rebook-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-rebook-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-rebook-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2043,7 +2043,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-route-plan-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-plan-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-plan-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2111,7 +2111,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-route-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-route-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2181,7 +2181,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-seat-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-seat-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-seat-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2249,7 +2249,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-security-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-security-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-security-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2319,7 +2319,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-station-food-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-station-food-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-station-food-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2389,7 +2389,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-station-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-station-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-station-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2459,7 +2459,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-ticket-office-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ticket-office-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-ticket-office-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2529,7 +2529,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-train-food-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-train-food-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-train-food-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2599,7 +2599,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-train-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-train-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-train-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2669,7 +2669,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-travel-plan-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-plan-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-plan-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2737,7 +2737,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-travel-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2807,7 +2807,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-travel2-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel2-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-travel2-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2877,7 +2877,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-user-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-user-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-user-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -2947,7 +2947,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-verification-code-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-verification-code-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-verification-code-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
@@ -3004,7 +3004,7 @@ spec:
     spec:
       containers:
         - name: ts-voucher-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-voucher-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-voucher-service:jacoco
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -3059,7 +3059,7 @@ spec:
           args: [ "-c", "cp -R /skywalking/agent /agent/" ]
       containers:
         - name: ts-wait-order-service
-          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-wait-order-service:response
+          image: registry.cn-hangzhou.aliyuncs.com/lavenpok/ts-wait-order-service:jacoco
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: skywalking-agent
