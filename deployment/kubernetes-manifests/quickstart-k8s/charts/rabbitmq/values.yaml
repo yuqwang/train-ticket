@@ -14,11 +14,6 @@ rabbitmq:
   replicaCount: 1
   serverPort: 5672
 
-service:
-  #type: ClusterIP
-  type: NodePort
-  port: 15672
-
 resources:
   requests:
     cpu: 100m
