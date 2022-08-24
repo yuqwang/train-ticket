@@ -3,7 +3,11 @@ kind: Service
 metadata:
   name: ts-admin-basic-info-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30010
     - name: http
       port: 18767
   selector:
@@ -14,7 +18,11 @@ kind: Service
 metadata:
   name: ts-admin-order-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30011
     - name: http
       port: 16112
   selector:
@@ -25,7 +33,11 @@ kind: Service
 metadata:
   name: ts-admin-route-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30012
     - name: http
       port: 16113
   selector:
@@ -36,7 +48,11 @@ kind: Service
 metadata:
   name: ts-admin-travel-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30013
     - name: http
       port: 16114
   selector:
@@ -47,7 +63,11 @@ kind: Service
 metadata:
   name: ts-admin-user-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30014
     - name: http
       port: 16115
   selector:
@@ -58,7 +78,11 @@ kind: Service
 metadata:
   name: ts-assurance-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30015
     - name: http
       port: 18888
   selector:
@@ -69,7 +93,11 @@ kind: Service
 metadata:
   name: ts-auth-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30016
     - name: http
       port: 12340
   selector:
@@ -91,7 +119,11 @@ kind: Service
 metadata:
   name: ts-basic-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30017
     - name: http
       port: 15680
   selector:
@@ -102,7 +134,11 @@ kind: Service
 metadata:
   name: ts-cancel-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30018
     - name: http
       port: 18885
   selector:
@@ -113,7 +149,11 @@ kind: Service
 metadata:
   name: ts-config-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30019
     - name: http
       port: 15679
   selector:
@@ -124,7 +164,11 @@ kind: Service
 metadata:
   name: ts-consign-price-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30020
     - name: http
       port: 16110
   selector:
@@ -135,7 +179,11 @@ kind: Service
 metadata:
   name: ts-consign-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30021
     - name: http
       port: 16111
   selector:
@@ -146,7 +194,11 @@ kind: Service
 metadata:
   name: ts-contacts-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30022
     - name: http
       port: 12347
   selector:
@@ -157,7 +209,11 @@ kind: Service
 metadata:
   name: ts-delivery-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30023
     - name: http
       port: 18808
   selector:
@@ -179,7 +235,11 @@ kind: Service
 metadata:
   name: ts-execute-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30024
     - name: http
       port: 12386
   selector:
@@ -190,7 +250,11 @@ kind: Service
 metadata:
   name: ts-food-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30025
     - name: http
       port: 18856
   selector:
@@ -202,6 +266,9 @@ metadata:
   name: ts-gateway-service
 spec:
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30026
     - name: http
       port: 18888
       nodePort: 30467
@@ -214,7 +281,11 @@ kind: Service
 metadata:
   name: ts-inside-payment-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30027
     - name: http
       port: 18673
   selector:
@@ -236,7 +307,11 @@ kind: Service
 metadata:
   name: ts-notification-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30028
     - name: http
       port: 17853
   selector:
@@ -247,7 +322,11 @@ kind: Service
 metadata:
   name: ts-order-other-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30029
     - name: http
       port: 12032
   selector:
@@ -258,7 +337,11 @@ kind: Service
 metadata:
   name: ts-order-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30030
     - name: http
       port: 12031
   selector:
@@ -269,7 +352,11 @@ kind: Service
 metadata:
   name: ts-payment-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30031
     - name: http
       port: 19001
   selector:
@@ -280,7 +367,11 @@ kind: Service
 metadata:
   name: ts-preserve-other-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30032
     - name: http
       port: 14569
   selector:
@@ -291,7 +382,11 @@ kind: Service
 metadata:
   name: ts-preserve-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30033
     - name: http
       port: 14568
   selector:
@@ -302,7 +397,11 @@ kind: Service
 metadata:
   name: ts-price-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30034
     - name: http
       port: 16579
   selector:
@@ -313,7 +412,11 @@ kind: Service
 metadata:
   name: ts-rebook-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30035
     - name: http
       port: 18886
   selector:
@@ -324,7 +427,11 @@ kind: Service
 metadata:
   name: ts-route-plan-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30036
     - name: http
       port: 14578
   selector:
@@ -335,7 +442,11 @@ kind: Service
 metadata:
   name: ts-route-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30037
     - name: http
       port: 11178
   selector:
@@ -346,7 +457,11 @@ kind: Service
 metadata:
   name: ts-seat-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30038
     - name: http
       port: 18898
   selector:
@@ -357,7 +472,11 @@ kind: Service
 metadata:
   name: ts-security-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30039
     - name: http
       port: 11188
   selector:
@@ -368,7 +487,11 @@ kind: Service
 metadata:
   name: ts-station-food-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30040
     - name: http
       port: 18855
   selector:
@@ -379,7 +502,11 @@ kind: Service
 metadata:
   name: ts-station-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30041
     - name: http
       port: 12345
   selector:
@@ -401,7 +528,11 @@ kind: Service
 metadata:
   name: ts-train-food-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30042
     - name: http
       port: 19999
   selector:
@@ -412,7 +543,11 @@ kind: Service
 metadata:
   name: ts-train-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30043
     - name: http
       port: 14567
   selector:
@@ -423,7 +558,11 @@ kind: Service
 metadata:
   name: ts-travel-plan-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30044
     - name: http
       port: 14322
   selector:
@@ -434,7 +573,11 @@ kind: Service
 metadata:
   name: ts-travel-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30045
     - name: http
       port: 12346
   selector:
@@ -445,7 +588,11 @@ kind: Service
 metadata:
   name: ts-travel2-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30046
     - name: http
       port: 16346
   selector:
@@ -456,7 +603,11 @@ kind: Service
 metadata:
   name: ts-user-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30047
     - name: http
       port: 12342
   selector:
@@ -467,7 +618,11 @@ kind: Service
 metadata:
   name: ts-verification-code-service
 spec:
+  type: NodePort
   ports:
+    - name: tcp
+      port: 6305
+      nodePort: 30048
     - name: http
       port: 15678
   selector:
