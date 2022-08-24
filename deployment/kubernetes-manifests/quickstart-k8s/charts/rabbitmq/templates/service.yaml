@@ -6,7 +6,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: {{ .Values.rabbitmq.serverPort }}
+    - name: amqp
+      port: {{ .Values.rabbitmq.serverPort }}
       nodePort: 30555
     - name: http
       protocol: TCP
