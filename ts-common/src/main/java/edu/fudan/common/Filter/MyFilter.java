@@ -1,6 +1,6 @@
 package edu.fudan.common.Filter;
 
-//import edu.fudan.common.mq.RabbitSend;
+import edu.fudan.common.mq.RabbitSend;
 import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
 import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 @WebFilter(urlPatterns = {"/api/v1/*"}, filterName = "MyFilter")
 public class MyFilter extends HttpFilter {
     @Autowired
-//    private RabbitSend sendService;
+    private RabbitSend sendService;
     private static final Logger logger = LoggerFactory.getLogger(MyFilter.class);
     /**
      * 反序列化
@@ -72,18 +72,18 @@ public class MyFilter extends HttpFilter {
                 //输出到status
                 ActiveSpan.tag("status", status);
                 logger.info("status:" + status);
-//                //发送成功的CUD
-//                if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")){
-//                    Response res = JsonUtils.json2Object(responseBody, Response.class);
-//                    String service = request.getRequestURI();
-//                    reg = "(?<=api/v1/)[a-zA-Z0-9]*";
-//                    p = Pattern.compile(reg);
-//                    m = p.matcher(service);
-//                    if (m.find())
-//                        res.setMsg(m.group() + ":" + request.getMethod());
-//                    String infoJson = JsonUtils.object2Json(res);
-//                    sendService.send(infoJson);
-//                }
+                //发送成功的CUD
+                if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")){
+                    Response res = JsonUtils.json2Object(responseBody, Response.class);
+                    String service = request.getRequestURI();
+                    reg = "(?<=api/v1/)[a-zA-Z0-9]*";
+                    p = Pattern.compile(reg);
+                    m = p.matcher(service);
+                    if (m.find())
+                        res.setMsg(m.group() + ":" + request.getMethod());
+                    String infoJson = JsonUtils.object2Json(res);
+                    sendService.send(infoJson);
+                }
             } catch (Exception e) {
                 logger.warn("fail to build http log", e);
             } finally {
