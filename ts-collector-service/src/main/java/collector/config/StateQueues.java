@@ -10,7 +10,7 @@ public class StateQueues {
     public final static String queueName = "state";
 
     @Bean
-    public Queue emailQueue() {
+    public Queue stateQueue() {
         return new Queue(queueName);
     }
 }

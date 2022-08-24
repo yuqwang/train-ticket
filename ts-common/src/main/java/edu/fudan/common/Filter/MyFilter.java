@@ -1,6 +1,6 @@
 package edu.fudan.common.Filter;
 
-import edu.fudan.common.mq.RabbitSend;
+//import edu.fudan.common.mq.RabbitSend;
 import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
 import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 @WebFilter(urlPatterns = {"/api/v1/*"}, filterName = "MyFilter")
 public class MyFilter extends HttpFilter {
     @Autowired
-    private RabbitSend sendService;
+//    private RabbitSend sendService;
     private static final Logger logger = LoggerFactory.getLogger(MyFilter.class);
     /**
      * 反序列化
