@@ -166,6 +166,17 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  name: ts-collector-service
+spec:
+  ports:
+    - name: http
+      port: 16666
+  selector:
+    app: ts-collector-service
+---
+apiVersion: v1
+kind: Service
+metadata:
   name: ts-execute-service
 spec:
   ports:

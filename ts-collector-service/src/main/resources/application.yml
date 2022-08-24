@@ -1,0 +1,13 @@
+server:
+  port: 16666
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_ADDRS:nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local}
+  application:
+    name: ts-collector-service
+  rabbitmq:
+    host: ${rabbitmq_host:localhost}
+    port: 5672
