@@ -72,18 +72,18 @@ public class MyFilter extends HttpFilter {
                 //输出到status
                 ActiveSpan.tag("status", status);
                 logger.info("status:" + status);
-                //发送成功的CUD
-                if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")){
-                    Response res = JsonUtils.json2Object(responseBody, Response.class);
-                    String service = request.getRequestURI();
-                    reg = "(?<=api/v1/)[a-zA-Z0-9]*";
-                    p = Pattern.compile(reg);
-                    m = p.matcher(service);
-                    if (m.find())
-                        res.setMsg(m.group() + ":" + request.getMethod());
-                    String infoJson = JsonUtils.object2Json(res);
-                    sendService.send(infoJson);
-                }
+//                //发送成功的CUD
+//                if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")){
+//                    Response res = JsonUtils.json2Object(responseBody, Response.class);
+//                    String service = request.getRequestURI();
+//                    reg = "(?<=api/v1/)[a-zA-Z0-9]*";
+//                    p = Pattern.compile(reg);
+//                    m = p.matcher(service);
+//                    if (m.find())
+//                        res.setMsg(m.group() + ":" + request.getMethod());
+//                    String infoJson = JsonUtils.object2Json(res);
+//                    sendService.send(infoJson);
+//                }
             } catch (Exception e) {
                 logger.warn("fail to build http log", e);
             } finally {
