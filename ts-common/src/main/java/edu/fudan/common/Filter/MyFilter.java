@@ -7,6 +7,7 @@ import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -27,8 +28,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-@WebFilter(urlPatterns = {"/api/v1/*"}, filterName = "MyFilter")
+//@WebFilter(urlPatterns = {"/api/v1/*"}, filterName = "MyFilter")
+@Component
 public class MyFilter extends HttpFilter {
+    @Autowired
     private RabbitSend sendService;
     private static final Logger logger = LoggerFactory.getLogger(MyFilter.class);
     /**
@@ -98,10 +101,10 @@ public class MyFilter extends HttpFilter {
     @Override
     public void init(FilterConfig arg0) throws ServletException {
         logger.info("初始化过滤器：" + arg0.getFilterName());
-        ServletContext sc = arg0.getServletContext();
-        WebApplicationContext cxt = WebApplicationContextUtils.getWebApplicationContext(sc);
-        if (cxt != null && cxt.getBean("sendService") != null && sendService == null) {
-            sendService = (RabbitSend) cxt.getBean("sendService");
-        }
+//        ServletContext sc = arg0.getServletContext();
+//        WebApplicationContext cxt = WebApplicationContextUtils.getWebApplicationContext(sc);
+//        if (cxt != null && sendService == null) {
+//            sendService = cxt.getBean(RabbitSend.class);
+//        }
     }
 }
