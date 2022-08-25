@@ -8,11 +8,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
@@ -62,9 +65,9 @@ public class MyFilter extends HttpFilter {
                 ActiveSpan.tag("output", responseBody);
                 logger.info("output:" + responseBody);
                 //读取是否成功
-                String reg ="(?<=\"status\"\\:)\\s*\\d*[0-1]";
+                String reg = "(?<=\"status\"\\:)\\s*\\d*[0-1]";
                 Pattern p = Pattern.compile(reg);
-                Matcher m  = p.matcher(responseBody);
+                Matcher m = p.matcher(responseBody);
                 String status = "unknown";
                 if (m.find())
                     status = m.group();
@@ -73,7 +76,7 @@ public class MyFilter extends HttpFilter {
                 ActiveSpan.tag("status", status);
                 logger.info("status:" + status);
                 //发送成功的CUD
-                if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")){
+                if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")) {
                     Response res = JsonUtils.json2Object(responseBody, Response.class);
                     String service = request.getRequestURI();
                     reg = "(?<=api/v1/)[a-zA-Z0-9]*";
@@ -96,5 +99,10 @@ public class MyFilter extends HttpFilter {
     @Override
     public void init(FilterConfig arg0) throws ServletException {
         logger.info("初始化过滤器：" + arg0.getFilterName());
+        ServletContext sc = arg0.getServletContext();
+        WebApplicationContext cxt = WebApplicationContextUtils.getWebApplicationContext(sc);
+        if (cxt != null && cxt.getBean("sendService") != null && sendService == null) {
+            sendService = (RabbitSend) cxt.getBean("sendService");
+        }
     }
 }
