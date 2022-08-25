@@ -29,7 +29,6 @@ import java.util.regex.Pattern;
 
 @WebFilter(urlPatterns = {"/api/v1/*"}, filterName = "MyFilter")
 public class MyFilter extends HttpFilter {
-    @Autowired
     private RabbitSend sendService;
     private static final Logger logger = LoggerFactory.getLogger(MyFilter.class);
     /**
