@@ -13,8 +13,8 @@ public class WebFilterConfig implements WebMvcConfigurer {
     private MyFilter myFilter;
 
     @Bean("myFilterBean")
-    public FilterRegistrationBean myFilterBean() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
+    public FilterRegistrationBean<MyFilter> myFilterBean() {
+        FilterRegistrationBean<MyFilter> registration = new FilterRegistrationBean<>();
         registration.setFilter(myFilter);
         registration.addUrlPatterns("/api/v1/*");
         registration.setName("myFilter");

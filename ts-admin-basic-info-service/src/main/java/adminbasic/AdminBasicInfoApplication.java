@@ -7,6 +7,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -22,7 +23,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @IntegrationComponentScan
 @EnableSwagger2
 @EnableDiscoveryClient
-@ServletComponentScan("edu.fudan.common")
+@ComponentScan("edu.fudan.common")
 public class AdminBasicInfoApplication {
 
     public static void main(String[] args) {
