@@ -50,6 +50,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 18767
           resources:
@@ -118,6 +120,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 16112
           resources:
@@ -186,6 +190,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 16113
           resources:
@@ -254,6 +260,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 16114
           resources:
@@ -322,6 +330,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 16115
           resources:
@@ -392,6 +402,8 @@ spec:
                 name: ts-assurance-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 18888
           resources:
@@ -462,6 +474,8 @@ spec:
                 name: ts-auth-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 12340
           resources:
@@ -598,6 +612,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 15680
           resources:
@@ -666,6 +682,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 18885
           resources:
@@ -736,6 +754,8 @@ spec:
                 name: ts-config-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 15679
           resources:
@@ -806,6 +826,8 @@ spec:
                 name: ts-consign-price-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 16110
           resources:
@@ -876,6 +898,8 @@ spec:
                 name: ts-consign-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 16111
           resources:
@@ -946,6 +970,8 @@ spec:
                 name: ts-contacts-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 12347
           resources:
@@ -1156,6 +1182,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 12386
           resources:
@@ -1226,6 +1254,8 @@ spec:
                 name: ts-food-delivery-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 18957
           resources:
@@ -1436,6 +1466,8 @@ spec:
                 name: ts-inside-payment-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 18673
           resources:
@@ -1790,6 +1822,8 @@ spec:
                 name: ts-payment-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 19001
           resources:
@@ -2000,6 +2034,8 @@ spec:
                 name: ts-price-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 16579
           resources:
@@ -2138,6 +2174,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 14578
           resources:
@@ -2208,6 +2246,8 @@ spec:
                 name: ts-route-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 11178
           resources:
@@ -2276,6 +2316,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 18898
           resources:
@@ -2346,6 +2388,8 @@ spec:
                 name: ts-security-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 11188
           resources:
@@ -2416,6 +2460,8 @@ spec:
                 name: ts-station-food-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 18855
           resources:
@@ -2486,6 +2532,8 @@ spec:
                 name: ts-station-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 12345
           resources:
@@ -2626,6 +2674,8 @@ spec:
                 name: ts-train-food-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 19999
           resources:
@@ -2696,6 +2746,8 @@ spec:
                 name: ts-train-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 14567
           resources:
@@ -2764,6 +2816,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 14322
           resources:
@@ -2834,6 +2888,8 @@ spec:
                 name: ts-travel-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 12346
           resources:
@@ -2904,6 +2960,8 @@ spec:
                 name: ts-travel2-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 16346
           resources:
@@ -2974,6 +3032,8 @@ spec:
                 name: ts-user-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 12342
           resources:
@@ -3042,6 +3102,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 15678
           resources:
@@ -3156,6 +3218,8 @@ spec:
                 name: ts-wait-order-mysql
             - configMapRef:
                 name: nacos
+            - configMapRef:
+                name: rabbitmq
           ports:
             - containerPort: 17525
           resources:
