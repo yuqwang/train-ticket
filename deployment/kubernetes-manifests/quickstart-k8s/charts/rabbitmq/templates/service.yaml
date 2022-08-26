@@ -4,7 +4,9 @@ metadata:
   name: {{ .Release.Name }}
   namespace: {{ .Release.Namespace }}
 spec:
+  type: NodePort
   ports:
     - port: {{ .Values.rabbitmq.serverPort }}
+      nodePort: 30844
   selector:
     app: {{ .Release.Name }}
