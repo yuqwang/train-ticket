@@ -16,7 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableSwagger2
 @EnableDiscoveryClient
-@ServletComponentScan("edu.fudan.common")
+@ComponentScan("edu.fudan.common")
 public class NotificationApplication{
     public static void main(String[] args) {
         SpringApplication.run(NotificationApplication.class, args);

@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@ServletComponentScan("edu.fudan.common")
+@ComponentScan("edu.fudan.common")
 public class VerifyCodeApplication {
     public static void main(String[] args) {
         SpringApplication.run(VerifyCodeApplication.class, args);
