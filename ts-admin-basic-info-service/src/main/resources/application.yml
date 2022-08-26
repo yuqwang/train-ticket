@@ -6,6 +6,9 @@ spring:
     nacos:
       discovery:
         server-addr: ${NACOS_ADDRS:nacos-0.nacos-headless.default.svc.cluster.local,nacos-1.nacos-headless.default.svc.cluster.local,nacos-2.nacos-headless.default.svc.cluster.local}
+  rabbitmq:
+    host: ${rabbitmq_host:localhost}
+    port: 5672
   application:
     name: ts-admin-basic-info-service
 

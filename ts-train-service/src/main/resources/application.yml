@@ -10,6 +10,9 @@ spring:
     username: ${TRAIN_MYSQL_USER:root}
     password: ${TRAIN_MYSQL_PASSWORD:Abcd1234#}
     driver-class-name: com.mysql.cj.jdbc.Driver
+  rabbitmq:
+    host: ${rabbitmq_host:localhost}
+    port: 5672
   jpa:
     hibernate:
       ddl-auto: update

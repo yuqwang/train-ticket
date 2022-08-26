@@ -2,6 +2,9 @@ server:
   port: 15678  # HTTP (Tomcat) port
 
 spring:
+  rabbitmq:
+    host: ${rabbitmq_host:localhost}
+    port: 5672
   cloud:
     nacos:
       discovery:

@@ -4,6 +4,7 @@ import edu.fudan.common.mq.CRUDRabbitSend;
 import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
 import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
+import org.apache.skywalking.apm.toolkit.trace.TraceContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +32,7 @@ public class MyFilter extends HttpFilter {
     @Autowired
     private CRUDRabbitSend sendService;
     private static final Logger logger = LoggerFactory.getLogger(MyFilter.class);
+    private HashMap<String, String> uuidMap;
     /**
      * 反序列化
      */
@@ -44,8 +47,12 @@ public class MyFilter extends HttpFilter {
             filterChain.doFilter(requestWrapper, responseWrapper);
         } finally {
             try {
-//                //获取header
-//                String uuid = request.getHeader("Uid");
+                String traceId = TraceContext.traceId();
+                //获取header
+                String uuid = request.getHeader("Uid");
+                if (uuid != null){
+                    uuidMap.put(traceId, uuid);
+                }
 //                //输出到uuid
 //                ActiveSpan.tag("uuid", uuid);
                 //获取body
@@ -77,13 +84,14 @@ public class MyFilter extends HttpFilter {
                 if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")) {
                     Response res = JsonUtils.json2Object(responseBody, Response.class);
                     String service = request.getRequestURI();
-                    reg = "(?<=api/v1/)[a-zA-Z0-9]*";
-                    p = Pattern.compile(reg);
-                    m = p.matcher(service);
+                    String reg2 = "(?<=api/v1/)[a-zA-Z0-9]*";
+                    Pattern p2 = Pattern.compile(reg2);
+                    m = p2.matcher(service);
                     if (m.find())
                         res.setMsg(m.group() + ":" + request.getMethod());
                     String infoJson = JsonUtils.object2Json(res);
-                    sendService.send(infoJson);
+                    m = p.matcher(infoJson);
+                    sendService.send(m.replaceFirst("\"" + uuidMap.getOrDefault(traceId, traceId) + "\""));
                 }
             } catch (Exception e) {
                 logger.warn("fail to build http log", e);
@@ -97,6 +105,7 @@ public class MyFilter extends HttpFilter {
     @Override
     public void init(FilterConfig arg0) throws ServletException {
         logger.info("初始化过滤器：" + arg0.getFilterName());
+        uuidMap = new HashMap<>();
 //        ServletContext sc = arg0.getServletContext();
 //        WebApplicationContext cxt = WebApplicationContextUtils.getWebApplicationContext(sc);
 //        if (cxt != null && sendService == null) {
