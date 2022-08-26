@@ -22,7 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @IntegrationComponentScan
 @EnableSwagger2
 @EnableDiscoveryClient
-@ComponentScan("edu.fudan.common")
+@ComponentScan({"edu.fudan.common", "contacts"})
 public class ContactsApplication {
 
     public static void main(String[] args) {

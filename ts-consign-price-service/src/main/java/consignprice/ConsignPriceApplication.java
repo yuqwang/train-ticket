@@ -26,7 +26,7 @@ import java.util.Date;
 @IntegrationComponentScan
 @EnableSwagger2
 @EnableDiscoveryClient
-@ComponentScan("edu.fudan.common")
+@ComponentScan({"edu.fudan.common", "consignprice"})
 public class ConsignPriceApplication {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsignPriceApplication.class);

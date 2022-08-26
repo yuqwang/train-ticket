@@ -21,7 +21,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableAsync
 @IntegrationComponentScan
 @EnableDiscoveryClient
-@ComponentScan("edu.fudan.common")
+@ComponentScan({"edu.fudan.common", "user"})
 @EnableSwagger2
 public class UserApplication {
     public static void main(String[] args) {
