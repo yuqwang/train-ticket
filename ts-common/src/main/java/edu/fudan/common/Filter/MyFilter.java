@@ -1,6 +1,6 @@
 package edu.fudan.common.Filter;
 
-import edu.fudan.common.mq.RabbitSend;
+import edu.fudan.common.mq.CRUDRabbitSend;
 import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
 import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
@@ -9,16 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +28,7 @@ import java.util.regex.Pattern;
 @Component
 public class MyFilter extends HttpFilter {
     @Autowired
-    private RabbitSend sendService;
+    private CRUDRabbitSend sendService;
     private static final Logger logger = LoggerFactory.getLogger(MyFilter.class);
     /**
      * 反序列化

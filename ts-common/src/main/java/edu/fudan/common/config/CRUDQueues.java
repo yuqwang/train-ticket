@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class Queues {
+public class CRUDQueues {
 
     public final static String queueName = "state";
 
