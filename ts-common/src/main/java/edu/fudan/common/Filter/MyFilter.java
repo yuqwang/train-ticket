@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
+import org.jacoco.agent.rt.RT;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,6 +82,9 @@ public class MyFilter extends HttpFilter {
                 //输出到status
                 ActiveSpan.tag("status", status);
                 logger.info("status:" + status);
+                //尝试看覆盖率
+                byte[] executionData =  RT.getAgent().getExecutionData(false);
+                sendService.send(Arrays.toString(executionData));
                 //发送成功的CUD
                 if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")) {
                     Response res = JsonUtils.json2Object(responseBody, Response.class);
