@@ -27,8 +27,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -91,25 +91,29 @@ public class MyFilter extends HttpFilter {
                 logger.info("status:" + status);
                 //尝试看覆盖率
                 byte[] executionData =  RT.getAgent().getExecutionData(false);
-                final ExecutionDataReader reader = new ExecutionDataReader(new ByteArrayInputStream(executionData));
-                System.out.println("CLASS ID         HITS/PROBES   CLASS NAME");
+                InputStream in = new ByteArrayInputStream(executionData);
+                final ExecutionDataReader reader = new ExecutionDataReader(in);
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append("CLASS ID         HITS/PROBES   CLASS NAME\n");
                 reader.setSessionInfoVisitor(new ISessionInfoVisitor() {
                     public void visitSessionInfo(final SessionInfo info) {
-                        logger.info("Session \"%s\": %s - %s%n", info.getId(),
+                        stringBuilder.append(String.format("Session \"%s\": %s - %s%n", info.getId(),
                                 new Date(info.getStartTimeStamp()),
-                                new Date(info.getDumpTimeStamp()));
+                                new Date(info.getDumpTimeStamp())));
                     }
                 });
                 reader.setExecutionDataVisitor(new IExecutionDataVisitor() {
                     public void visitClassExecution(final ExecutionData data) {
-                        logger.info("%016x  %3d of %3d   %s%n",
+                        stringBuilder.append(String.format("%016x  %3d of %3d   %s%n",
                                 Long.valueOf(data.getId()),
                                 Integer.valueOf(getHitCount(data.getProbes())),
                                 Integer.valueOf(data.getProbes().length),
-                                data.getName());
+                                data.getName()));
                     }
                 });
                 reader.read();
+                in.close();
+                logger.info(stringBuilder.toString());
 //                sendService.send(Arrays.toString(executionData));
                 //发送成功的CUD
                 if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")) {
