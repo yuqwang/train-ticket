@@ -4,7 +4,7 @@ RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shang
 
 COPY ./jacocoagent.jar /app/
 ADD ./target/ts-user-service-1.0.jar /app/
-ENTRYPOINT exec java -javaagent:/app/jacocoagent.jar=includes=*,output=tcpserver,port=6305,address=0.0.0.0 -Xmx200m -jar /app/${APP_NAME}.jar
+ENTRYPOINT exec java -javaagent:/app/jacocoagent.jar=includes=user.*,output=tcpserver,port=6305,address=0.0.0.0 -Xmx200m -jar /app/${APP_NAME}.jar
 #CMD ["java", "-Xmx200m",  "-jar", "/app/ts-user-service-1.0.jar"]
 
 EXPOSE 6305
