@@ -161,7 +161,7 @@ public class MyFilter extends HttpFilter {
                         break;
                     }
                 }
-                if (disrupted) {
+                if (!disrupted) {
                     flag = true;
                     coverage.get(key).add(newV);
                 }
