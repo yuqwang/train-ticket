@@ -5,6 +5,11 @@ import edu.fudan.common.util.JsonUtils;
 import edu.fudan.common.util.Response;
 import org.apache.skywalking.apm.toolkit.trace.ActiveSpan;
 import org.apache.skywalking.apm.toolkit.trace.TraceContext;
+import org.jacoco.agent.rt.internal_b6258fc.core.data.ExecutionData;
+import org.jacoco.agent.rt.internal_b6258fc.core.data.ExecutionDataReader;
+import org.jacoco.agent.rt.internal_b6258fc.core.data.IExecutionDataVisitor;
+import org.jacoco.agent.rt.internal_b6258fc.core.data.ISessionInfoVisitor;
+import org.jacoco.agent.rt.internal_b6258fc.core.data.SessionInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +25,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -84,7 +91,26 @@ public class MyFilter extends HttpFilter {
                 logger.info("status:" + status);
                 //尝试看覆盖率
                 byte[] executionData =  RT.getAgent().getExecutionData(false);
-                sendService.send(Arrays.toString(executionData));
+                final ExecutionDataReader reader = new ExecutionDataReader(new ByteArrayInputStream(executionData));
+                System.out.println("CLASS ID         HITS/PROBES   CLASS NAME");
+                reader.setSessionInfoVisitor(new ISessionInfoVisitor() {
+                    public void visitSessionInfo(final SessionInfo info) {
+                        logger.info("Session \"%s\": %s - %s%n", info.getId(),
+                                new Date(info.getStartTimeStamp()),
+                                new Date(info.getDumpTimeStamp()));
+                    }
+                });
+                reader.setExecutionDataVisitor(new IExecutionDataVisitor() {
+                    public void visitClassExecution(final ExecutionData data) {
+                        logger.info("%016x  %3d of %3d   %s%n",
+                                Long.valueOf(data.getId()),
+                                Integer.valueOf(getHitCount(data.getProbes())),
+                                Integer.valueOf(data.getProbes().length),
+                                data.getName());
+                    }
+                });
+                reader.read();
+//                sendService.send(Arrays.toString(executionData));
                 //发送成功的CUD
                 if (!request.getMethod().equalsIgnoreCase("get") && status.equals("1")) {
                     Response res = JsonUtils.json2Object(responseBody, Response.class);
@@ -105,6 +131,16 @@ public class MyFilter extends HttpFilter {
                 responseWrapper.copyBodyToResponse();
             }
         }
+    }
+
+    private int getHitCount(final boolean[] data) {
+        int count = 0;
+        for (final boolean hit : data) {
+            if (hit) {
+                count++;
+            }
+        }
+        return count;
     }
 
     @Override
