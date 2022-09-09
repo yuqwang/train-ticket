@@ -11,3 +11,7 @@ spring:
   rabbitmq:
     host: ${rabbitmq_host:localhost}
     port: 5672
+
+grpc:
+  host: ${grpc_host:127.0.0.1"}
+  port: ${grpc_port:50051}

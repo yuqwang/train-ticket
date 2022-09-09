@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "collector.grpc";
+option java_outer_classname = "myProto";
+option objc_class_prefix = "PX";
+
+package protocol;
+
+//定义服务
+service MessageService {
+  //发送Coverage
+  rpc uploadCoverage(CoverageRequest) returns (ResponseMessage) {
+  }
+
+  rpc uploadState(StateRequest) returns (ResponseMessage) {
+  }
+}
+//定义消息类型
+message CoverageRequest {
+  string uuid = 1;
+  int32 spanId = 2;
+  string service = 3;
+  string data = 20;
+}
+message StateRequest {
+  string uuid = 1;
+  int32 spanId = 2;
+  string method = 3;
+  string service = 4;
+  string data = 20;
+}
+message ResponseMessage {
+  string message = 1;
+}
