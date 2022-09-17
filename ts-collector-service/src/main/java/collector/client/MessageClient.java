@@ -59,6 +59,8 @@ public class MessageClient {
 
     public void uploadState(String state) {
         StateMessage stateMessage = JsonUtils.json2Object(state, StateMessage.class);//StateRequest.newBuilder().setName(name).build();
+        if (stateMessage.getData() == null)
+            stateMessage.setData("null");
         StateRequest request = StateRequest.newBuilder().setUuid(stateMessage.getUuid())
                 .setSpanId(stateMessage.getSpanId()).setService(stateMessage.getService())
                 .setMethod(stateMessage.getMethod()).setData(stateMessage.getData().toString()).build();

@@ -13,5 +13,5 @@ spring:
     port: 5672
 
 grpc:
-  host: ${grpc_host:127.0.0.1"}
+  host: ${grpc_host:172.19.109.135}
   port: ${grpc_port:50051}
