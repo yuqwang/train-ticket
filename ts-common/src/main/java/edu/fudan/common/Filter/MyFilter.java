@@ -50,7 +50,6 @@ public class MyFilter extends HttpFilter {
     @Value("${spring.application.name}")
     private String service;
     private static final Logger logger = LoggerFactory.getLogger(MyFilter.class);
-    private HashMap<String, String> uuidMap = new HashMap<>();
     private HashMap<String, ArrayList<String>> coverage = new HashMap<>();
     /**
      * 反序列化
@@ -69,12 +68,11 @@ public class MyFilter extends HttpFilter {
                 String traceId = TraceContext.traceId();
                 int spanId = TraceContext.spanId();
                 //获取header
-                String uuid = request.getHeader("Uid");
-                if (uuid != null) {
-                    uuidMap.put(traceId, uuid);
-                }
-//                //输出到uuid
-//                ActiveSpan.tag("uuid", uuid);
+                String uuid = request.getHeader("uuid");
+                if (uuid == null)
+                    uuid = "null";
+                //输出到uuid
+                ActiveSpan.tag("uuid", uuid);
                 //获取body
                 String body = new String(requestWrapper.getContentAsByteArray(), StandardCharsets.UTF_8);
                 if (StringUtils.hasLength(body)) {
@@ -101,7 +99,6 @@ public class MyFilter extends HttpFilter {
                 ActiveSpan.tag("status", status);
                 logger.info("status:" + status);
 
-                uuid = uuidMap.getOrDefault(traceId, traceId);
                 //尝试看覆盖率
                 boolean flag = false;
                 byte[] executionData = RT.getAgent().getExecutionData(true);
@@ -196,7 +193,6 @@ public class MyFilter extends HttpFilter {
     @Override
     public void init(FilterConfig arg0) throws ServletException {
         logger.info("初始化过滤器：" + arg0.getFilterName());
-        uuidMap = new HashMap<>();
 //        ServletContext sc = arg0.getServletContext();
 //        WebApplicationContext cxt = WebApplicationContextUtils.getWebApplicationContext(sc);
 //        if (cxt != null && sendService == null) {
