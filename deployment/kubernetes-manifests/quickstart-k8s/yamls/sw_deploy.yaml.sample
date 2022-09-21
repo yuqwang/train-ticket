@@ -1093,6 +1093,8 @@ spec:
             - name: skywalking-agent
               mountPath: /skywalking
           env:
+            - name: grpc_host
+              value: "172.19.109.135"
             - name: NODE_IP
               valueFrom:
                 fieldRef:
