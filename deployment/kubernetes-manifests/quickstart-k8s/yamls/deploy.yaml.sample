@@ -56,7 +56,7 @@ spec:
     spec:
       containers:
         - name: ts-admin-order-service
-          image: codewisdom/ts-admin-order-service:1.0.0
+          image: codewisdom/ts-admin-order-service:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -182,7 +182,7 @@ spec:
     spec:
       containers:
         - name: ts-admin-user-service
-          image: codewisdom/ts-admin-user-service:1.0.0
+          image: codewisdom/ts-admin-user-service:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -526,7 +526,7 @@ spec:
     spec:
       containers:
         - name: ts-consign-service
-          image: codewisdom/ts-consign-service:1.0.0
+          image: codewisdom/ts-consign-service:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1234,7 +1234,7 @@ spec:
     spec:
       containers:
         - name: ts-rebook-service
-          image: codewisdom/ts-rebook-service:1.0.0
+          image: codewisdom/ts-rebook-service:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1494,7 +1494,7 @@ spec:
     spec:
       containers:
         - name: ts-station-service
-          image: codewisdom/ts-station-service:1.0.0
+          image: codewisdom/ts-station-service:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1800,7 +1800,7 @@ spec:
     spec:
       containers:
         - name: ts-user-service
-          image: codewisdom/ts-user-service:1.0.0
+          image: codewisdom/ts-user-service:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1930,7 +1930,7 @@ spec:
     spec:
       containers:
         - name: ts-wait-order-service
-          image: codewisdom/ts-wait-order-service:1.0.0
+          image: codewisdom/ts-wait-order-service:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1939,7 +1939,7 @@ spec:
                   fieldPath: status.hostIP
           envFrom:
             - secretRef:
-                name: ts-wait-order-service
+                name: ts-wait-order-mysql
             - configMapRef:
                 name: nacos
           ports:
@@ -1974,7 +1974,7 @@ spec:
     spec:
       containers:
         - name: ts-ui-dashboard
-          image: codewisdom/ts-ui-dashboard:1.0.0
+          image: codewisdom/ts-ui-dashboard:1.0.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080

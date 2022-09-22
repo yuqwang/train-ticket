@@ -145,7 +145,7 @@ app.controller('indexCtrl', function ($scope, $http, $window, loadDataService) {
                     headers: {"Authorization": "Bearer " + sessionStorage.getItem("admin_token")},
                     withCredentials: true,
                     data: {
-                        accountId: $scope.update_user_id,
+                        userId: $scope.update_user_id,
                         userName: $scope.update_user_name,
                         password: $scope.update_user_password,
                         gender: $scope.update_user_gender,

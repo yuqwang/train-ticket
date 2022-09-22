@@ -56,6 +56,7 @@ public class StationServiceImpl implements StationService {
             return new Response<>(0, "Station not exist", null);
         } else {
             Station station = op.get();
+            station.setName(info.getName());
             station.setStayTime(info.getStayTime());
             repository.save(station);
             return new Response<>(1, "Update success", station);

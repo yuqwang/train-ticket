@@ -144,10 +144,8 @@ public class RebookServiceImpl implements RebookService {
 
     @Override
     public Response payDifference(RebookInfo info, HttpHeaders httpHeaders) {
-        httpHeaders = null;
 
         Response queryOrderResult = getOrderByRebookInfo(info, httpHeaders);
-
         if (queryOrderResult.getStatus() == 0) {
             return new Response<>(0, queryOrderResult.getMsg(), null);
         }
@@ -160,7 +158,10 @@ public class RebookServiceImpl implements RebookService {
         gtdi.setTripId(info.getTripId());
         // TripAllDetail
         Response gtdrResposne = getTripAllDetailInformation(gtdi, info.getTripId(), httpHeaders);
+
+
         TripAllDetail gtdr = (TripAllDetail) gtdrResposne.getData();
+
 
         String ticketPrice = "0";
         if (info.getSeatType() == SeatClass.FIRSTCLASS.getCode()) {
@@ -395,6 +396,7 @@ public class RebookServiceImpl implements RebookService {
                 requestEntityGetOrderByRebookInfo,
                 new ParameterizedTypeReference<Response<Order>>() {
                 });
+
         queryOrderResult = reGetOrderByRebookInfo.getBody();
         return queryOrderResult;
     }

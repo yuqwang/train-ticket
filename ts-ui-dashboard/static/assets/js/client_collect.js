@@ -60,7 +60,7 @@ var collectTicket = new Vue({
                         // filter
                         if(result.data[i].status == 1) {
                             that.tempOrderList[tempIndex] = result.data[i];
-                            that.tempOrderList[tempIndex].boughtDate = that.convertNumberToDateTimeString(that.tempOrderList[tempIndex].boughtDate)
+                            // that.tempOrderList[tempIndex].boughtDate = that.convertNumberToDateTimeString(that.tempOrderList[tempIndex].boughtDate)
                             tempIndex++;
                         }
                     }

@@ -203,9 +203,9 @@ function initFoodSelect(tripId, from, to, date) {
 
             if (result.status == 1) {
 
-                var trainFoodList = result.data.trainFoodList[0]['foodList'];
+                var trainFoodList = result.data.trainFoodList;
                 console.log("trainFoodList:");
-                console.log(trainFoodList[0]);
+                console.log(trainFoodList);
 
                 $("#train-food-type-list").html("");
                 $("#food-station-list").html("");

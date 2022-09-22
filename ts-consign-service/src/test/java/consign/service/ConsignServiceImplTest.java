@@ -45,7 +45,7 @@ public class ConsignServiceImplTest {
         HttpEntity requestEntity = new HttpEntity(null, headers);
         Response<Double> response = new Response<>(1, null, 3.0);
         ResponseEntity<Response<Double>> re = new ResponseEntity<>(response, HttpStatus.OK);
-        Consign consignRequest = new Consign(UUID.randomUUID().toString(), UUID.randomUUID(), UUID.randomUUID(), "handle_date", "target_date", "place_from", "place_to", "consignee", "10001", 1.0, true);
+        Consign consignRequest = new Consign(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "handle_date", "target_date", "place_from", "place_to", "consignee", "10001", 1.0, true);
         ConsignRecord consignRecord = new ConsignRecord(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "handle_date", "target_date", "place_from", "place_to", "consignee", "10001", 1.0, 3.0);
         Mockito.when(restTemplate.exchange(
                 "http://ts-consign-price-service:16110/api/v1/consignpriceservice/consignprice/" + consignRequest.getWeight() + "/" + consignRequest.isWithin(),
@@ -63,7 +63,7 @@ public class ConsignServiceImplTest {
         HttpEntity requestEntity = new HttpEntity(null, headers);
         Response<Double> response = new Response<>(1, null, 3.0);
         ResponseEntity<Response<Double>> re = new ResponseEntity<>(response, HttpStatus.OK);
-        Consign consignRequest = new Consign(UUID.randomUUID().toString(), UUID.randomUUID(), UUID.randomUUID(), "handle_date", "target_date", "place_from", "place_to", "consignee", "10001", 1.0, true);
+        Consign consignRequest = new Consign(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "handle_date", "target_date", "place_from", "place_to", "consignee", "10001", 1.0, true);
         ConsignRecord consignRecord = new ConsignRecord(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "handle_date", "target_date", "place_from", "place_to", "consignee", "10001", 2.0, 3.0);
         Mockito.when(repository.findById(Mockito.anyString())).thenReturn(java.util.Optional.of(consignRecord));
         Mockito.when(restTemplate.exchange(
@@ -80,7 +80,7 @@ public class ConsignServiceImplTest {
 
     @Test
     public void testUpdateConsignRecord2() {
-        Consign consignRequest = new Consign(UUID.randomUUID().toString(), UUID.randomUUID(), UUID.randomUUID(), "handle_date", "target_date", "place_from", "place_to", "consignee", "10001", 1.0, true);
+        Consign consignRequest = new Consign(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "handle_date", "target_date", "place_from", "place_to", "consignee", "10001", 1.0, true);
         ConsignRecord consignRecord = new ConsignRecord(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString(), "handle_date", "target_date", "place_from", "place_to", "consignee", "10001", 1.0, 3.0);
         Mockito.when(repository.findById(Mockito.anyString())).thenReturn(java.util.Optional.of(consignRecord));
         Mockito.when(repository.save(Mockito.any(ConsignRecord.class))).thenReturn(null);

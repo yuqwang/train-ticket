@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Response updateUser(UserDto userDto, HttpHeaders headers) {
         LOGGER.info("[updateUser][UPDATE USER: {}]", userDto.toString());
-        User oldUser = userRepository.findByUserName(userDto.getUserName());
+        User oldUser = userRepository.findByUserId(userDto.getUserId());
         if (oldUser != null) {
             User newUser = User.builder().email(userDto.getEmail())
                     .password(userDto.getPassword())

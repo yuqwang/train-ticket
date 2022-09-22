@@ -92,7 +92,7 @@ public class OrderServiceImpl implements OrderService {
             return new Response<>(0, "Order already exist", null);
         } else {
             order.setId(UUID.randomUUID().toString());
-            orderRepository.save(order);
+            order=orderRepository.save(order);
             OrderServiceImpl.LOGGER.info("[create][Order Create Success][Order Price][OrderId:{} , Price: {}]",order.getId(),order.getPrice());
             return new Response<>(1, success, order);
         }

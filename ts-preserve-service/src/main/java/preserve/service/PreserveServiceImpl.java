@@ -389,7 +389,7 @@ public class PreserveServiceImpl implements PreserveService {
     }
 
     private Response createOrder(Order coi, HttpHeaders httpHeaders) {
-        PreserveServiceImpl.LOGGER.info("[createOrder][Preserve Other Service][Get Contacts By Id]");
+        PreserveServiceImpl.LOGGER.info("[createOrder][Preserve Service][create order]");
 
         HttpEntity requestEntityCreateOrderResult = new HttpEntity(coi, httpHeaders);
         String order_service_url = getServiceUrl("ts-order-service");
