@@ -96,7 +96,7 @@ public class OrderOtherServiceImpl implements OrderOtherService {
             return new Response<>(0, "Order already exist", order);
         } else {
             order.setId(UUID.randomUUID().toString());
-            orderOtherRepository.save(order);
+            order=orderOtherRepository.save(order);
             OrderOtherServiceImpl.LOGGER.info("[create][Order Create Success][OrderId:{},Price: {}]",order.getId(),order.getPrice());
             return new Response<>(1, success, order);
         }

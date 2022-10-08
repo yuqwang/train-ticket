@@ -966,7 +966,7 @@ spec:
     spec:
       containers:
         - name: ts-order-other-service
-          image: codewisdom/ts-order-other-service:1.0.0
+          image: codewisdom/ts-order-other-service:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
@@ -1012,7 +1012,7 @@ spec:
     spec:
       containers:
         - name: ts-order-service
-          image: codewisdom/ts-order-service:1.0.0
+          image: codewisdom/ts-order-service:1.0.1
           imagePullPolicy: IfNotPresent
           env:
             - name: NODE_IP
