@@ -65,6 +65,7 @@ public class MyFilter extends HttpFilter {
             filterChain.doFilter(requestWrapper, responseWrapper);
         } finally {
             try {
+                /*
                 String traceId = TraceContext.traceId();
                 int spanId = TraceContext.spanId();
                 //获取header
@@ -101,7 +102,7 @@ public class MyFilter extends HttpFilter {
 
                 //尝试看覆盖率
                 boolean flag = false;
-                byte[] executionData = RT.getAgent().getExecutionData(true);
+                byte[] executionData = RT.getAgent().getExecutionData(false);
                 InputStream in = new ByteArrayInputStream(executionData);
                 final ExecutionDataReader reader = new ExecutionDataReader(in);
                 StringBuilder stringBuilder = new StringBuilder();
@@ -137,6 +138,7 @@ public class MyFilter extends HttpFilter {
                     String infoJson = JsonUtils.object2Json(new StateMessage(uuid, spanId, request.getMethod(), service, res.getData()));
                     crudRabbitSend.send(infoJson);
                 }
+                */
             } catch (Exception e) {
                 logger.warn("fail to build http log", e);
             } finally {

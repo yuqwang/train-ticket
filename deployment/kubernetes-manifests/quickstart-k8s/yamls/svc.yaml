@@ -102,17 +102,7 @@ spec:
       port: 12340
   selector:
     app: ts-auth-service
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ts-avatar-service
-spec:
-  ports:
-    - name: http
-      port: 17001
-  selector:
-    app: ts-avatar-service
+
 ---
 apiVersion: v1
 kind: Service
@@ -218,17 +208,7 @@ spec:
       port: 18808
   selector:
     app: ts-delivery-service
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ts-collector-service
-spec:
-  ports:
-    - name: http
-      port: 16666
-  selector:
-    app: ts-collector-service
+
 ---
 apiVersion: v1
 kind: Service
@@ -511,17 +491,7 @@ spec:
       port: 12345
   selector:
     app: ts-station-service
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ts-ticket-office-service
-spec:
-  ports:
-    - name: http
-      port: 16108
-  selector:
-    app: ts-ticket-office-service
+
 ---
 apiVersion: v1
 kind: Service
