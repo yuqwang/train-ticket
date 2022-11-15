@@ -30,7 +30,11 @@ public class InitData implements CommandLineRunner {
         config.setInitialWeight(1);
         config.setWithinPrice(2);
         config.setBeyondPrice(4);
-
-        service.createAndModifyPrice(config, null);
+        try{
+            //Exceptions may occur when redundant data exists
+            service.createAndModifyPrice(config, null);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
