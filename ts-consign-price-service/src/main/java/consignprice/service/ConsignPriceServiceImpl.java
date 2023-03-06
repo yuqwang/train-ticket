@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author fdse
@@ -57,6 +58,7 @@ public class ConsignPriceServiceImpl implements ConsignPriceService {
     }
 
     @Override
+    @Transactional
     public Response createAndModifyPrice(ConsignPrice config, HttpHeaders headers) {
         ConsignPriceServiceImpl.LOGGER.info("[createAndModifyPrice][Create New Price Config]");
         //update price
