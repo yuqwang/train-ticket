@@ -22,7 +22,7 @@ nacos:
     name: "nacos"
     host: "nacos-mysql-leader"
     username: "nacos"
-    passowrd: "Abcd1234#"
+    password: "Abcd1234#"
     port: "3306"
   headlessService: "nacos-headless"
 service:
